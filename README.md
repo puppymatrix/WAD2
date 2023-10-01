@@ -11,11 +11,13 @@ This template should help get you started developing with Vue 3 in Vite.
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
+cd into frontend folder / backend folder. Run npm install in both folders.
 
 ```sh
 npm install
 ```
 
+## For frontend:
 ### Compile and Hot-Reload for Development
 
 ```sh
@@ -26,4 +28,11 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+## For backend:
+### To start backend server
+
+```sh
+npm start
 ```
