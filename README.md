@@ -18,6 +18,7 @@ npm install
 ```
 
 ## For frontend:
+To use bootstrap together with Vue, there are some compatibility issues. Use this link: https://bootstrap-vue-next.github.io/bootstrap-vue-next/docs/ for Bootstrap w vue.
 ### Compile and Hot-Reload for Development
 
 ```sh
@@ -31,6 +32,7 @@ npm run build
 ```
 
 ## For backend:
+We can just ignore this file for now and not do anything in it. Frontend folder should work as expected.
 ### To start backend server
 
 ```sh
