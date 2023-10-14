@@ -77,6 +77,7 @@
                 <h1>insert stats/charts/graphs</h1>
             </div>
         </div>
+    </div>
 </template>
 
 <style>
