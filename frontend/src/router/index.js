@@ -7,7 +7,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { requiresAuth: true } // protects this route 
     },
     {
       path: '/about',
@@ -24,6 +25,32 @@ const router = createRouter({
         // this generates a separate chunk (About.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import('../views/listingView.vue')
+      },
+
+      {
+        path: '/logIn',
+        name: 'login',
+        // route level code-splitting
+        // this generates a separate chunk (About.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import('../views/logIn.vue')
+      },
+
+      {
+        path: '/signUp',
+        name: 'signUp',
+        // route level code-splitting
+        // this generates a separate chunk (About.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import('../views/signUp.vue')
+      },
+      {
+        path: '/resetPassword',
+        name: 'resetPassword',
+        // route level code-splitting
+        // this generates a separate chunk (About.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import('../views/resetPassword.vue')
       }
   ]
 })

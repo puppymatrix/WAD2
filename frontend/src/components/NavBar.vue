@@ -27,15 +27,13 @@ import { RouterLink, RouterView } from "vue-router";
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"
-                            ><RouterLink to="/about">About</RouterLink></a
-                        >
+                            ><RouterLink to="/about">About</RouterLink></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"
                             ><RouterLink to="/listing"
                                 >Individual listing</RouterLink
-                            ></a
-                        >
+                            ></a>
                     </li>
                     <li class="nav-item dropdown">
                         <a
@@ -63,9 +61,6 @@ import { RouterLink, RouterView } from "vue-router";
                                 >
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
