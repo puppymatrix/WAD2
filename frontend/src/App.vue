@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import NavBarSignedIn from './components/NavBarSignedIn.vue';
 </script>
 
 <template>
@@ -7,7 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
     <div class="wrapper">
-      <NavBar />
+      <NavBarSignedIn />
 
       <!-- <nav>
         <RouterLink to="/">Home</RouterLink>

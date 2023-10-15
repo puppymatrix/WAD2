@@ -129,7 +129,7 @@
 
 
 
-<script>
+<script >
 // vue part
 export default{
     data() {
@@ -149,6 +149,7 @@ methods: {
 }
 }
 //Jquery part (may need to import lib in template above)
+
 var multipleCardCarousel = document.querySelector(
   "#carouselExampleControls"
 );
@@ -181,3 +182,5 @@ if (window.matchMedia("(min-width: 768px)").matches) {
   $(multipleCardCarousel).addClass("slide");
 }
 </script>
+
+

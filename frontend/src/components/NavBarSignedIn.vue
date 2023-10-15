@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
     <!-- BS navbar: start -->
-    <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+    <!-- <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
             <button
@@ -22,7 +22,7 @@ import { RouterLink, RouterView } from "vue-router";
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#"
-                            ><RouterLink to="/home">Home</RouterLink></a
+                            ><RouterLink to="/">Home</RouterLink></a
                         >
                     </li>
                     <li class="nav-item">
@@ -83,14 +83,14 @@ import { RouterLink, RouterView } from "vue-router";
                 </form>
             </div>
         </div>
-    </nav>
+    </nav> -->
     <!-- BS navbar: start -->
 
     <!-- navigation bar for user signed in -->
-    <!-- <div class="row d-none align-items-center" id="nav">
+    <div class="row d-none align-items-center" id="nav">
         <div class="col-1"></div>
         <div class="col-2 p-3 justify-content-center">
-            <img src="../icons/images/logo.png" alt="" class="img-fluid" id="logo">
+            <img src="../components/images/logo.png" alt="" class="img-fluid" id="logo">
         </div>
         <div class="col-6">
             <ul class="nav justify-content-center fs-4 p-4">
@@ -106,13 +106,13 @@ import { RouterLink, RouterView } from "vue-router";
         <div class="col-1"></div>
 
         <div class="col-1 p-3 justify-content-center">
-            <img src="../icons/images/user.png" alt="" class="img-fluid">
+            <img src="../components/images/user.png" alt="" class="img-fluid">
         </div>
         <div class="col-1"></div>
 
     </div>
 
-    <div class="row" style="height: 300px;"></div> -->
+    <div class="row" style="height: 300px;"></div>
 
 
     <!-- navigation bar for user NOT signed in -->

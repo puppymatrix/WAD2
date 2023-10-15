@@ -28,6 +28,7 @@ declare module 'vue' {
     IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
     MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
+    NavBarSignedIn: typeof import('./src/components/NavBarSignedIn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']

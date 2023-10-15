@@ -11,6 +11,13 @@ const router = createRouter({
     //   component: HomeView
     // },
 
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/landingPage.vue')
+
+    }, 
+
     
     {
       path: '/about',
@@ -29,12 +36,7 @@ const router = createRouter({
         component: () => import('../views/listingView.vue')
 
       },
-      {
-        path: '/home',
-        name: 'home',
-        component: () => import('../views/landingPage.vue')
-
-      }, 
+     
       {
         path: '/addListing',
         name: 'addListing',
