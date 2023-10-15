@@ -7,7 +7,7 @@
         <!-- search bar -->
         <div class="container-fluid my-3">
             <form class="d-flex" role="search">
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <input
                         type="search"
                         class="form-control bg-secondary-subtle"
