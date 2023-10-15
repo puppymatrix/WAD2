@@ -9,6 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     BCarousel: typeof import('bootstrap-vue-next')['BCarousel']
     BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
+    BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
+    BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
     IArcticonsapsgo: typeof import('~icons/arcticons/apsgo')['default']
     IArcticonsmapsgo: typeof import('~icons/arcticons/mapsgo')['default']
     IArcticonsMapsgo: typeof import('~icons/arcticons/mapsgo')['default']
@@ -24,6 +26,7 @@ declare module 'vue' {
     IMdiuser: typeof import('~icons/mdi/user')['default']
     'IStreamline:travelMapLocationPinNavigationMapMapsPinGpsLocation': typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
     IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
+    MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

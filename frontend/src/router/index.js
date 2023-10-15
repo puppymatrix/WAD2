@@ -11,13 +11,7 @@ const router = createRouter({
     //   component: HomeView
     // },
 
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: { requiresAuth: true } // protects this route 
-    },
-
+    
     {
       path: '/about',
       name: 'about',
@@ -74,7 +68,7 @@ const router = createRouter({
         // which is lazy-loaded when the route is visited.
         component: () => import('../views/resetPassword.vue')
 
-      }
+      },
   ]
 })
 
