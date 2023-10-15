@@ -37,6 +37,13 @@ import { RouterLink, RouterView } from "vue-router";
                             ></a
                         >
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                            ><RouterLink to="/addListing"
+                                >Add listing</RouterLink
+                            ></a
+                        >
+                    </li>
                     <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
