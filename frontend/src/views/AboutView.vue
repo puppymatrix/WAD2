@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    
+    <NavBar />
 </template>
 
 <style>
@@ -13,4 +13,5 @@
         align-items: center;
     }
 } */
+
 </style>
