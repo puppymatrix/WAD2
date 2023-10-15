@@ -80,7 +80,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 .carousel-inner {
   padding: 1em;
 }
