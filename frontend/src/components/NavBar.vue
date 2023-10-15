@@ -78,6 +78,99 @@ import { RouterLink, RouterView } from "vue-router";
         </div>
     </nav>
     <!-- BS navbar: start -->
+
+    <!-- navigation bar for user signed in -->
+    <!-- <div class="row d-none align-items-center" id="nav">
+        <div class="col-1"></div>
+        <div class="col-2 p-3 justify-content-center">
+            <img src="../icons/images/logo.png" alt="" class="img-fluid" id="logo">
+        </div>
+        <div class="col-6">
+            <ul class="nav justify-content-center fs-4 p-4">
+
+                <li class="nav-item">
+                  <a class="nav-link text-dark" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-dark" href="#" >Listings</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-1"></div>
+
+        <div class="col-1 p-3 justify-content-center">
+            <img src="../icons/images/user.png" alt="" class="img-fluid">
+        </div>
+        <div class="col-1"></div>
+
+    </div>
+
+    <div class="row" style="height: 300px;"></div> -->
+
+
+    <!-- navigation bar for user NOT signed in -->
+
+    <!-- <div class="row d-flex align-items-center" id="nav">
+        <div class="col-1"></div>
+        <div class="col-2 p-4 justify-content-center">
+          <img src="../icons/images/logo.png" alt="" class="img-fluid" id="logo">
+        </div>
+        <div class="col-6">
+          <ul class="nav justify-content-center fs-4 p-4">
+            <li class="nav-item text-dark">
+              <a class="nav-link text-dark" href="#">Home</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link text-dark" href="#" >Listings</a>
+            </li>
+          </ul>
+        </div>
+      
+      
+        <div class="col-3 fs-4 p-3">
+          <button type="button" class="btn btn-link" style="text-decoration: none; color: #43A046">Log In</button>
+          <button type="button" class="btn btn-success base">Sign Up</button>
+        </div>
+      
+        <div class="col-1"></div>
+      </div>
+
+
+    <div class="row" style="height: 300px;"></div> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+#logo {
+    height: 40px;
+}
+
+#nav{
+    background-color: #ebeff3;
+}
+
+.base{
+    color: white;
+    background-color:#43A046
+}
+
+.footer {
+    background-color: #263238;
+    padding-top: 80px;
+    padding-bottom: 100px;
+}
+
+.img_small {
+    height: 50%;
+}
+
+a>li{
+    color: white
+}
+
+
+div img {
+    margin: 5px;
+}
+
+
+</style>
