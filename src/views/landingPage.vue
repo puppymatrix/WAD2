@@ -80,8 +80,8 @@
     </div>
 </template>
 
-<style>
-/* .carousel-inner {
+<style scoped>
+.carousel-inner {
   padding: 1em;
 }
 .card {
@@ -122,7 +122,7 @@
   .card .img-wrapper {
     height: 17em;
   }
-} */
+}
 /*  */
 
 </style>
