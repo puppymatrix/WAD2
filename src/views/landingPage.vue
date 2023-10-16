@@ -14,15 +14,15 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
+        <!-- <div class="row"> -->
+            <!-- <div class="col"> -->
                 <!-- may change to featured food if unable to get location data -->
-                <h2>Featured: Food Near You </h2> 
+                <!-- <h2>Featured: Food Near You </h2>  -->
                 <!-- food carousel -->
-                <div id="carouselExampleControls" class="carousel">
-                    <div class="carousel-inner">
+                <!-- <div id="carouselExampleControls" class="carousel">
+                    <div class="carousel-inner"> -->
                         <!-- need to populate using database aka shift this down to function and process using data -->
-                        <div class="carousel-item active">
+                        <!-- <div class="carousel-item active">
                             <div class="card">
                                 <div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
                                 <div class="card-body">
@@ -41,9 +41,9 @@
                                     <a href="#" class="btn btn-primary">link to listing</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- buttons -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- this shows sponsors (can either use grid and hyperlink or just 1 image) -->
         <div class="row">
             <div class="col">
@@ -134,7 +134,9 @@
 export default{
     data() {
         return {
-            searchInput: ''
+            searchInput: {
+                search: ''
+            },
     }
 }, 
 methods: {
@@ -149,35 +151,35 @@ methods: {
 }
 }
 //Jquery part (may need to import lib in template above)
-var multipleCardCarousel = document.querySelector(
-  "#carouselExampleControls"
-);
-if (window.matchMedia("(min-width: 768px)").matches) {
-  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-    interval: false,
-  });
-  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-  var cardWidth = $(".carousel-item").width();
-  var scrollPosition = 0;
-  $("#carouselExampleControls .carousel-control-next").on("click", function () {
-    if (scrollPosition < carouselWidth - cardWidth * 4) {
-      scrollPosition += cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-    if (scrollPosition > 0) {
-      scrollPosition -= cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-} else {
-  $(multipleCardCarousel).addClass("slide");
-}
+// var multipleCardCarousel = document.querySelector(
+//   "#carouselExampleControls"
+// );
+// if (window.matchMedia("(min-width: 768px)").matches) {
+//   var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+//     interval: false,
+//   });
+//   var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+//   var cardWidth = $(".carousel-item").width();
+//   var scrollPosition = 0;
+//   $("#carouselExampleControls .carousel-control-next").on("click", function () {
+//     if (scrollPosition < carouselWidth - cardWidth * 4) {
+//       scrollPosition += cardWidth;
+//       $("#carouselExampleControls .carousel-inner").animate(
+//         { scrollLeft: scrollPosition },
+//         600
+//       );
+//     }
+//   });
+//   $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+//     if (scrollPosition > 0) {
+//       scrollPosition -= cardWidth;
+//       $("#carouselExampleControls .carousel-inner").animate(
+//         { scrollLeft: scrollPosition },
+//         600
+//       );
+//     }
+//   });
+// } else {
+//   $(multipleCardCarousel).addClass("slide");
+// }
 </script>
