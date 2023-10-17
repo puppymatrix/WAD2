@@ -9,12 +9,35 @@ const router = createRouter({
     //   name: 'home',
     //   component: HomeView
     // },
+
+<<<<<<< HEAD:frontend/src/router/index.js
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/landingPage.vue')
+
+    }, 
+
+    
+=======
+>>>>>>> main:src/router/index.js
     {
         path: '/',
         name: 'home',
         component: () => import('../views/tempHome.vue')
 
     }, 
+
+    {
+        path: '/allListings',
+        name: 'allListings',
+        // route level code-splitting
+        // this generates a separate chunk (About.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import('../views/allListingView.vue')
+
+    }, 
+    
     {
         path: '/listing',
         name: 'listing',
@@ -24,6 +47,10 @@ const router = createRouter({
         component: () => import('../views/listingView.vue')
 
       },
+<<<<<<< HEAD:frontend/src/router/index.js
+     
+=======
+>>>>>>> main:src/router/index.js
       {
         path: '/addListing',
         name: 'addListing',
