@@ -27,10 +27,6 @@ import { RouterLink, RouterView } from "vue-router";
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"
-                            ><RouterLink to="/about">About</RouterLink></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"
                             ><RouterLink to="/listing"
                                 >Individual listing</RouterLink
                             ></a>

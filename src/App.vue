@@ -2,7 +2,6 @@
 import { RouterLink, RouterView } from "vue-router";
 import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
-import NavBarSignedIn from "./components/NavBarSignedIn.vue";
 
 async function test() {
     const docRef = doc(db, "cities", "SF");
@@ -22,7 +21,7 @@ test();
 <template>
     <header>
         <div class="wrapper">
-            <NavBarSignedIn />
+            <NavBar />
         </div>
     </header>
 
