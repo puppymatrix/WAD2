@@ -1,3 +1,7 @@
+<!-- <script setup type="module'">
+import { validateForm} from "../components/functions/functions.js";
+</script> -->
+
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
@@ -12,18 +16,18 @@
             <div class="container" style="padding-top:20%">
                 <h1 class = "m-4 ms-0">Sign up</h1>
 
-                <form>
+                <form @submit.prevent="createAccount">
                     <div class="row">
                         <div class="col col-lg-6 col-md-12 mb-3 pe-0">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
-                            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                            <span v-if="errors.lastName" class="error text-danger ps-2">{{ errors.firstName }}</span>
+                            <input type="text" class="form-control" v-model="formData.firstName" id="firstName" placeholder="Enter First Name">
                         </div>
 
                         <div class="col col-lg-6 col-md-12 mb-3 pe-0">
                             <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name">
-                            <!-- <div id="emailHelp" class="form-text"></div> -->
+                            <span v-if="errors.lastName" class="error text-danger  ps-2">{{ errors.lastName }}</span>
+                            <input type="text" class="form-control" v-model="formData.lastName" id="lastName" placeholder="Enter Last Name">
                         </div>
                     </div>
 
@@ -32,7 +36,7 @@
                         <label for="email">Email address</label>
                         <input type="email" class="form-control ms-3" id="email" placeholder="Enter Email">
                         <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                     </div>
 
 
@@ -62,7 +66,7 @@
                     </div>
                    
                     <div class="row d-flex">
-                        <button type="submit" class="btn btn-success p-2 base">Create Account</button>
+                        <button type="submit" class="btn btn-success p-2 base" @keyup.enter="createAccount">Create Account</button>
                       </div>
 
                     <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
@@ -85,8 +89,23 @@
 <script>
 
 export default {
+
   data() {
     return {
+        formData: {
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: ''
+        // Add more form fields here
+      },
+      errors: {
+        email: '',
+        firstName: '',
+        lastName: '',
+        password: []
+        // Initialize errors for other form fields
+      },
     };
   },
   methods: {
@@ -106,23 +125,50 @@ export default {
         var isValid = true
 
             // form validation 
+
+            var msg = ''
+
+            if (this.formData.email == ""){
+                this.errors.firstName = "Required"
+                isValid = false
+            }
+
+            if (this.formData.email == ""){
+                this.errors.lastName = "Required"
+                isValid = false
+            }
+
             if (!this.formData.email.includes("@")){
                 this.errors.email = "Wrong email format"
                 isValid = false
             }
 
             if (this.formData.password.length < 8){
-                this.errors.password.push('Password does not meet minimum length') 
+                msg = 'Password does not meet minimum length'
+
+                if (!this.errors.password.includes(msg)){
+                    this.errors.password.push(msg) 
+                }
                 isValid = false
             } 
 
             if (!this.hasSpecialCharacters(this.formData.password)){
-                this.errors.password.push('Password requires at least 1 special character') 
+
+                msg = 'Password requires at least 1 special character'
+
+                if (!this.errors.password.includes(msg)){
+                    this.errors.password.push(msg) 
+                }
                 isValid = false
             } 
 
             if (!this.hasUppercaseLetters(this.formData.password)){
-                this.errors.password.push('Password requires at least 1 uppercase letter') 
+
+                msg = 'Password requires at least 1 uppercase letter'
+
+                if (!this.errors.password.includes(msg)){
+                    this.errors.password.push(msg) 
+                }
                 isValid = false
                 
             console.log(this.errors.password)

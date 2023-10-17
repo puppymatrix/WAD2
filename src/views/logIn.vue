@@ -83,7 +83,7 @@
         if (this.checkCredentials(this.email, this.password)) {
             console.log('login successful')
             // next({ path: '/listing' }) // Redirect to the login page
-            this.$router.push('/listing')
+            this.$router.push('/landingPage')
         } else {
             this.errors.logIn = 'Wrong email/password'
         }
