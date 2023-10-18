@@ -112,6 +112,7 @@
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
                 </a>
+                
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
@@ -256,75 +257,13 @@ export default {
     return {
       searchInput: '',
       dataObj: {}, //this is data returned from database
-    //   carousel: `<div class="carousel-item active">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="//via.placeholder.com/500x400/31f?text=1" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 1</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-
-
-    //                     <div class="carousel-item">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="//via.placeholder.com/500x400/e66?text=2" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 2</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                     <div class="carousel-item">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="//via.placeholder.com/500x400/7d2?text=3" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 3</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                     <div class="carousel-item">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="//via.placeholder.com/500x400?text=4" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 4</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                     <div class="carousel-item">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="//via.placeholder.com/500x400/aba?text=5" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 5</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                     <div class="carousel-item">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="//via.placeholder.com/500x400/fc0?text=6" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 6</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>`,
       
     }
   },
   methods:{
     searchDatabase(){
       //take searchInput and pass into database 
-      this.dataObj = db.listings
+      
     }, 
     findListings(){
       //search for top 10 listings near user and return as dataObj, used to put this into makecarousel later on
@@ -372,53 +311,6 @@ export default {
   } 
 }
 
-      this.dataObj = db.listings
-    }, 
-    findListings(){
-      //search for top 10 listings near user and return as dataObj, used to put this into makecarousel later on
-
-    },
-    makeCarousel(){
-      
-    }
-    // makeCarousel(){
-    //   //make carousel 
-    //   let counter = 0
-    //   //add html code to carousel 
-    //   for(listingKey in this.dataObj){
-    //     for(listingObj in this.dataObj[listingKey]){
-    //       //decide 'active' tag
-    //       if(counter == 0){
-    //         //need to edit card stuff
-    //         this.carousel += `<div class="carousel-item active">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="{{ listingObj.image[0] }}" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 1</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>`
-    //         counter += 1
-    //     }else{
-    //       this.carousel += `<div class="carousel-item">
-    //           <div class="col-md-3">
-    //               <div class="card">
-    //                   <div class="card-img">
-    //                     <img src="{{ listingObj.image[0] }}" class="img-fluid">
-    //                   </div>
-    //                   <div class="card-img-overlay">Slide 2</div>
-    //               </div>
-    //           </div>
-    //       </div>`
-    //     }
-    //     }
-    //   }
-    // }
-    
-  } 
-}
 
 
 let items = document.querySelectorAll('.carousel .carousel-item')
