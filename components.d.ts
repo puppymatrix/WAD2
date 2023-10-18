@@ -7,31 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    BCarousel: typeof import('bootstrap-vue-next')['BCarousel']
-    BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
     BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
-    IArcticonsapsgo: typeof import('~icons/arcticons/apsgo')['default']
-    IArcticonsmapsgo: typeof import('~icons/arcticons/mapsgo')['default']
-    IArcticonsMapsgo: typeof import('~icons/arcticons/mapsgo')['default']
-    IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
-    IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
-    IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
-    IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
-    IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
-    IFaAngellist: typeof import('~icons/fa/angellist')['default']
-    IMdiapsgo: typeof import('~icons/mdi/apsgo')['default']
-    IMdigooglemaps: typeof import('~icons/mdi/googlemaps')['default']
-    IMdigoogleMaps: typeof import('~icons/mdi/google-maps')['default']
     IMdiuser: typeof import('~icons/mdi/user')['default']
-    'IStreamline:travelMapLocationPinNavigationMapMapsPinGpsLocation': typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
     IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
-    MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
-    NavBar: typeof import('./src/components/NavBar.vue')['default']
     NavBarSignedIn: typeof import('./src/components/NavBarSignedIn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
-    WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vBTooltip: typeof import('bootstrap-vue-next')['vBTooltip']
   }
 }
