@@ -3,87 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-    <!-- BS navbar: start -->
-    <!-- <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#"
-                            ><RouterLink to="/">Home</RouterLink></a
-                        >
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"
-                            ><RouterLink to="/listing"
-                                >Individual listing</RouterLink
-                            ></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"
-                            ><RouterLink to="/addListing"
-                                >Add listing</RouterLink
-                            ></a
-                        >
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="#">Action</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#"
-                                    >Another action</a
-                                >
-                            </li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                                <a class="dropdown-item" href="#"
-                                    >Something else here</a
-                                >
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input
-                        class="form-control me-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button class="btn btn-outline-success" type="submit">
-                        Search
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav> -->
-    <!-- BS navbar: start -->
-
-    <!-- navigation bar for user signed in -->
-    <div class="row d-none align-items-center" id="nav">
+    <div class="row d-flex align-items-center" id="nav">
         <div class="col-1"></div>
         <div class="col-2 p-3 justify-content-center">
             <img src="../components/images/logo.png" alt="" class="img-fluid" id="logo">
@@ -92,55 +12,77 @@ import { RouterLink, RouterView } from "vue-router";
             <ul class="nav justify-content-center fs-4 p-4">
 
                 <li class="nav-item">
-                  <a class="nav-link text-dark" href="#">Home</a>
+                  <a class="nav-link text-dark" href="/home">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-dark" href="#" >Listings</a>
+                  <a class="nav-link text-dark" href="/listing" >Listings</a>
                 </li>
             </ul>
         </div>
         <div class="col-1"></div>
 
-        <div class="col-1 p-3 justify-content-center">
-            <img src="../components/images/user.png" alt="" class="img-fluid">
+        <div class="col-1 justify-content-center p-0" v-if="isLoggedIn" >
+            <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
+            <div class="dropdown">
+                <img src="../components/images/user.png" alt="" class="img-fluid btn btn-large dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <ul class="dropdown-menu">
+                    <li class = "d-flex">
+                        <img src="../components/icons/myProfile.png" alt="" class="img-fluid col-2">
+                        <!-- insert route to profile button -->
+                        <button class="dropdown-item p-0" type="button">My Profile</button>  
+                    </li>
+                    <li class = "d-flex">
+                        <img src="../components/icons/myListings.png" alt="" class="img-fluid col-2">
+                        <!-- insert route to profile button -->
+                        <button class="dropdown-item p-0" type="button">My Listings</button>
+                    </li>
+                    <li class = "d-flex">
+                        <img src="../components/icons/myChopes.png" alt="" class="img-fluid col-2">
+                        <!-- insert route to profile button -->
+                        <button class="dropdown-item p-0" type="button">My Chope(s)</button>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="col-1"></div>
+
+        <div class="col-2" v-else>
+            <button type="button" class="btn btn-outline-success m-1" @click="navigate=>{$router.push('/logIn')}">Log In</button>
+            <button type="button" class="btn btn-success m-1" @click="navigate=>{$router.push('/signUp')}">Sign Up</button>
+        </div>
+
+        <div class="col-1" v-if="checkPath($route.path)"></div>
 
     </div>
 
-    <div class="row" style="height: 300px;"></div>
-
-
-    <!-- navigation bar for user NOT signed in -->
-
-    <!-- <div class="row d-flex align-items-center" id="nav">
-        <div class="col-1"></div>
-        <div class="col-2 p-4 justify-content-center">
-          <img src="../icons/images/logo.png" alt="" class="img-fluid" id="logo">
-        </div>
-        <div class="col-6">
-          <ul class="nav justify-content-center fs-4 p-4">
-            <li class="nav-item text-dark">
-              <a class="nav-link text-dark" href="#">Home</a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link text-dark" href="#" >Listings</a>
-            </li>
-          </ul>
-        </div>
-      
-      
-        <div class="col-3 fs-4 p-3">
-          <button type="button" class="btn btn-link" style="text-decoration: none; color: #43A046">Log In</button>
-          <button type="button" class="btn btn-success base">Sign Up</button>
-        </div>
-      
-        <div class="col-1"></div>
-      </div>
-
-
-    <div class="row" style="height: 300px;"></div> -->
 </template>
+
+<script>
+    import { isLoggedIn } from ''
+    export default {
+        data() {
+            return {
+                dropDown: false
+            };
+        },
+        methods: {
+            displayDropDown(){ //dropdown hover doesnt work 
+                if (!this.dropDown){
+                    this.dropDown = true
+                } else {
+                    this.dropDown = false
+                }
+
+                console.log(this.dropDown)
+            },
+
+            checkPath(path){ // change this logic to if the user if logged in 
+                var notSignedInPath = ['/logIn', '/signUp', '/resetPassword']
+
+                // console.log(this.$route.path)
+            }
+        },
+    };
+</script>
 
 <style scoped>
 #logo {

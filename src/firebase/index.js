@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -21,7 +23,16 @@ const analytics = getAnalytics(app);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
+//Initialize Google custom authentication
+const auth = getAuth()
+const provider = new GoogleAuthProvider();
+
+
 export {
-    db
+    db,
+    auth,
+    signInWithPopup,
+    provider
 }
+
 

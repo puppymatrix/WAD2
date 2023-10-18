@@ -2,20 +2,22 @@
 import { RouterLink, RouterView } from "vue-router";
 import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
+// import { auth, provider, signInWithPopup } from './firebase/index.js'
 
-async function test() {
-    const docRef = doc(db, "cities", "SF");
-    const docSnap = await getDoc(docRef);
+// async function test() {
+//     const docRef = doc(db, "cities", "SF");
+//     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-    } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
-    }
-}
+//     if (docSnap.exists()) {
+//         console.log("Document data:", docSnap.data());
+//     } else {
+//         // docSnap.data() will be undefined in this case
+//         console.log("No such document!");
+//     }
+// }
 
-test();
+// test();
+
 </script>
 
 <template>
@@ -29,3 +31,10 @@ test();
 </template>
 
 <style scoped></style>
+
+<script>
+    var isLoggedIn = false
+    export {
+        isLoggedIn
+    }
+</script>

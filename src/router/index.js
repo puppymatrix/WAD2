@@ -5,22 +5,13 @@ const router = createRouter({
   routes: [
 
     // {
-    //   path: '/',
+    //   path: '/home',
     //   name: 'home',
-    //   component: HomeView
-    // },
+    //   component: () => import('../views/landingPage.vue') // there's some problem with this path, but i can't figure out why 
 
-<<<<<<< HEAD:frontend/src/router/index.js
-    {
-      path: '/',
-      name: 'home',
-      component: () => import('../views/landingPage.vue')
-
-    }, 
+    // }, 
 
     
-=======
->>>>>>> main:src/router/index.js
     {
         path: '/',
         name: 'home',
@@ -36,10 +27,7 @@ const router = createRouter({
         component: () => import('../views/listingView.vue')
 
       },
-<<<<<<< HEAD:frontend/src/router/index.js
-     
-=======
->>>>>>> main:src/router/index.js
+
       {
         path: '/addListing',
         name: 'addListing',

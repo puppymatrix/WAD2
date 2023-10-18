@@ -18,19 +18,24 @@ import { validateForm} from "../components/functions/functions.js";
 
                 <form @submit.prevent="createAccount">
                     <div class="row">
-                        <div class="col col-lg-6 col-md-12 mb-3 pe-0">
+                        <div class="col-12 col-lg-6 mb-3 pe-0">
                             <label for="firstName" class="form-label">First Name</label>
                             <span v-if="errors.lastName" class="error text-danger ps-2">{{ errors.firstName }}</span>
                             <input type="text" class="form-control" v-model="formData.firstName" id="firstName" placeholder="Enter First Name">
                         </div>
 
-                        <div class="col col-lg-6 col-md-12 mb-3 pe-0">
+                        <div class="col-12 col-lg-6  mb-3 pe-0">
                             <label for="lastName" class="form-label">Last Name</label>
                             <span v-if="errors.lastName" class="error text-danger  ps-2">{{ errors.lastName }}</span>
                             <input type="text" class="form-control" v-model="formData.lastName" id="lastName" placeholder="Enter Last Name">
                         </div>
                     </div>
 
+                    <div class="row pb-2">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control ms-3" id="text" placeholder="Enter username">
+                        <span v-if="errors.username" class="error text-danger">{{ username.email }}</span>
+                    </div>
 
                     <div class="row pb-2">
                         <label for="email">Email address</label>
@@ -39,15 +44,12 @@ import { validateForm} from "../components/functions/functions.js";
                         <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                     </div>
 
-
                     <div class="row">
                         <div class="mb-3 pe-0">
                             <label for="password" class="form-label" >Password</label>
                             <input type="password" class="form-control" id="password" placeholder="Enter Password">
                             <div id="passwordErrors" >
-                                <!-- <ul> -->
                                     <text v-for="error in errors.password" :key="error" class="d-block text-danger">{{ error }}</text>
-                                <!-- </ul> -->
                             </div>   
                         </div>
                     </div>
@@ -95,6 +97,7 @@ export default {
         formData: {
         email: '',
         password: '',
+        username: '',
         firstName: '',
         lastName: ''
         // Add more form fields here
@@ -103,6 +106,7 @@ export default {
         email: '',
         firstName: '',
         lastName: '',
+        username: '',
         password: []
         // Initialize errors for other form fields
       },
@@ -110,7 +114,7 @@ export default {
   },
   methods: {
 
-    createAccount(){
+    createAccount(){ //INCOMPLETE
         // i think this is where it connects to the database 
         if (this.validateForm()){
             //submit
@@ -119,6 +123,10 @@ export default {
             //display errors
         }
    }, 
+
+    usernameExists(){ //INCOMPLETE
+        
+    },
 
     validateForm(){
 
@@ -196,8 +204,5 @@ export default {
         
     },
 };
-
-
-
 
 </script>

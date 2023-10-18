@@ -11,7 +11,7 @@
                 <div class="container" style="padding-top:20%">
                     <h1 class = "m-4 ms-0">Log In</h1>
 
-                    <form @submit.prevent="beforeRouteEnter">
+                    <form @submit.prevent="checkCredentials">
                         <span v-if="errors.logIn" class="error text-danger">{{ errors.logIn }}</span>
                         <div class="row pb-2 ">
                             <label for="email">Email address</label>
@@ -43,7 +43,7 @@
                     
                         <!-- can insert on key down enter to log in instead of pressing the create account button -->
                         <div class="row d-flex">
-                            <button type="submit" class="btn btn-success p-2 base" @keyup.enter="beforeRouteEnter">Log In</button>
+                            <button type="submit" class="btn btn-success p-2 base" @keyup.enter="checkCredentials">Log In</button>
                         </div>
 
                         <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
@@ -64,41 +64,38 @@
 </template>
 
 <script>
+    import { auth, provider, signInWithPopup } from '../firebase/index.js'
     export default {
-  data() {
-    return {
-      formData: {
-        email: '',
-        password: '',
-        // Add more form fields here
-      },
-      errors: {
-        logIn: ''
-        // Initialize errors for other form fields
-      },
+        data() {
+            return {
+            formData: {
+                email: '',
+                password: '',
+                // Add more form fields here
+            },
+            errors: {
+                logIn: ''
+                // Initialize errors for other form fields
+            },
+            };
+        },
+        methods: {
+            checkCredentials() {
+                signInWithPopup(auth, provider)
+                
+                .then((result) => {
+                    console.log(result)
+                    // Handle successful login (e.g., redirect to user profile)
+                    // const credential = provider.credentialFromResult(result);
+                    // const token = credential.accessToken;
+                    
+                    this.$router.push('/')
+                })
+                .catch((error) => {
+                    console.error('Login error', error);
+                });
+            },
+        },
     };
-  },
-  methods: {
-    beforeRouteEnter(to, from, next) {
-        if (this.checkCredentials(this.email, this.password)) {
-            console.log('login successful')
-            // next({ path: '/listing' }) // Redirect to the login page
-            this.$router.push('/landingPage')
-        } else {
-            this.errors.logIn = 'Wrong email/password'
-        }
-    },
-
-   checkCredentials(inputEmail, inputPassword){
-        // access database to check account details 
-
-        return false 
-   }
-   
-
-
-
-  },
-};
 
 </script>
