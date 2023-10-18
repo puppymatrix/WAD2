@@ -14,51 +14,31 @@
             </div>
         </div>
 
-        <!-- <div class="row"> -->
-            <!-- <div class="col"> -->
+        <div class="row"> 
+            <div class="col">
                 <!-- may change to featured food if unable to get location data -->
                 <!-- <h2>Featured: Food Near You </h2>  -->
                 <!-- food carousel -->
-                <!-- <div id="carouselExampleControls" class="carousel">
-                    <div class="carousel-inner"> -->
-                        <!-- need to populate using database aka shift this down to function and process using data -->
-                        <!-- <div class="carousel-item active">
-                            <div class="card">
-                                <div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">food1</h5>
-                                    <p class="card-text">text desription of food/cuuisine? maybe buttons</p>
-                                    <a href="#" class="btn btn-primary">link to listing</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="card">
-                                <div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">food2</h5>
-                                    <p class="card-text">text</p>
-                                    <a href="#" class="btn btn-primary">link to listing</a>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- buttons -->
-                        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                <div class="carousel-container">
+                <button class="prev-button" @click="moveCarousel(-1)">Previous</button>
+                <div class="carousel">
+                    <div v-for="(image, index) in images" :key="index" class="carousel-slide">
+                    <img :src="image.url" :alt="image.title" />
+                    <div class="image-info">
+                        <h2>{{ image.title }}</h2>
+                        <p>{{ image.description }}</p>
+                        <a :href="image.link" target="_blank">Learn More</a>
+                    </div>
                     </div>
                 </div>
+                <button class="next-button" @click="moveCarousel(1)">Next</button>
+                </div>
             </div>
-        </div> -->
+        </div>
         <!-- this shows sponsors (can either use grid and hyperlink or just 1 image) -->
         <div class="row">
             <div class="col">
-
+                <h1>SPONSORS</h1>
             </div>
         </div>
         <!-- statistics -->
@@ -80,106 +60,110 @@
     </div>
 </template>
 
-<style>
-/* .carousel-inner {
-  padding: 1em;
+<style scoped>
+.landing-page {
+  text-align: center;
 }
-.card {
-  margin: 0 0.5em;
-  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
-  border: none;
-}
-.carousel-control-prev,
-.carousel-control-next {
-  background-color: #e1e1e1;
-  width: 6vh;
-  height: 6vh;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-@media (min-width: 768px) {
-  .carousel-item {
-    margin-right: 0;
-    flex: 0 0 33.333333%;
-    display: block;
-  }
-  .carousel-inner {
-    display: flex;
-  }
-}
-.card .img-wrapper {
-    max-width: 100%;
-    height: 13em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.card img {
-    max-height: 100%;
-}
-@media (max-width: 767px) {
-  .card .img-wrapper {
-    height: 17em;
-  }
-} */
-/*  */
 
+.carousel-container {
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  flex: 1;
+}
+
+.carousel-slide {
+  flex: 0 0 33.33%;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
 </style>
 
 
-
 <script>
-// vue part
-export default{
-    data() {
-        return {
-            searchInput: {
-                search: ''
-            },
-    }
-}, 
-methods: {
-    // function to search database and reroute to listing search results screen
-    searchDatabase(userInput){
+// Import necessary functions and modules from Vue
+import { ref, onMounted } from 'vue';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from './firebase'; // Import your Firebase initialization from firebase.js
 
-    }, 
-    //function that takes users location and pulls the top X # of listings to display in carousel
-    populateFoodNearYou(){
+export default {
+  data() {
+    return {
+      formData: {
+        searchInput: '',
+      },
+      images: [], // Initialize as an empty array for the carousel
+    };
+  },
+  methods: {
+    searchDatabase(userInput) {
+      // Your search function logic
+    },
+    populateFoodNearYou() {
+      // Your function to fetch top listings
+    },
+  },
+  setup() {
+    const currentIndex = ref(0);
 
-    }
-}
-}
-//Jquery part (may need to import lib in template above)
-// var multipleCardCarousel = document.querySelector(
-//   "#carouselExampleControls"
-// );
-// if (window.matchMedia("(min-width: 768px)").matches) {
-//   var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-//     interval: false,
-//   });
-//   var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-//   var cardWidth = $(".carousel-item").width();
-//   var scrollPosition = 0;
-//   $("#carouselExampleControls .carousel-control-next").on("click", function () {
-//     if (scrollPosition < carouselWidth - cardWidth * 4) {
-//       scrollPosition += cardWidth;
-//       $("#carouselExampleControls .carousel-inner").animate(
-//         { scrollLeft: scrollPosition },
-//         600
-//       );
-//     }
-//   });
-//   $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-//     if (scrollPosition > 0) {
-//       scrollPosition -= cardWidth;
-//       $("#carouselExampleControls .carousel-inner").animate(
-//         { scrollLeft: scrollPosition },
-//         600
-//       );
-//     }
-//   });
-// } else {
-//   $(multipleCardCarousel).addClass("slide");
-// }
+    const moveCarousel = (step) => {
+      currentIndex.value += step;
+      if (currentIndex.value < 0) {
+        currentIndex.value = images.length - 3; // Show 3 images at a time
+      } else if (currentIndex.value > images.length - 3) {
+        currentIndex.value = 0;
+      }
+    };
+
+    onMounted(async () => {
+      // Fetch image data from Firebase Firestore
+      const imagesCollection = collection(db, 'images'); // Replace 'images' with the name of your Firestore collection
+      const querySnapshot = await getDocs(imagesCollection);
+      this.images = querySnapshot.docs.map((doc) => doc.data());
+    });
+
+    return {
+      currentIndex,
+      moveCarousel,
+    };
+  },
+};
 </script>
+
+
+<!-- THIS IS FOR FIREBASE.JS
+    import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: 'YOUR_API_KEY',
+  authDomain: 'YOUR_AUTH_DOMAIN',
+  projectId: 'YOUR_PROJECT_ID',
+  storageBucket: 'YOUR_STORAGE_BUCKET',
+  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+  appId: 'YOUR_APP_ID',
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export { db };
+ -->
