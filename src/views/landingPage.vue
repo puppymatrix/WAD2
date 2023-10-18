@@ -9,8 +9,8 @@
             </div>
             <!-- link to search bar -->
             <div class="col-6">
-                <input type="text" v-bind="formData.searchInput" placeholder="Enter a cuisine, restaurant or location">
-                <button type="submit" class="btn" @keyup.enter="searchDatabase">Let's Go!</button>
+                <input type="text" v-bind="searchInput" placeholder="Enter a cuisine, restaurant or location">
+                <button type="submit" class="btn" @keyup.enter="searchDatabase()">Let's Go!</button>
             </div>
         </div>
 
@@ -131,93 +131,24 @@
 
 <script >
 // vue part
-export default{
-    data() {
-        return {
-            searchInput: {
-                search: ''
-            },
+export default {
+  data() {
+    return {
+      searchInput: '',
     }
-}, 
-methods: {
-    // function to search database and reroute to listing search results screen
-    searchDatabase(userInput){
-
-    }, 
-    //function that takes users location and pulls the top X # of listings to display in carousel
-    populateFoodNearYou(){
-
+  },
+  methods:{
+    searchDatabase(){
+      //take searchInput and pass into database 
     }
+  }
 }
-}
-//Jquery part (may need to import lib in template above)
-<<<<<<< HEAD:frontend/src/views/landingPage.vue
 
-var multipleCardCarousel = document.querySelector(
-  "#carouselExampleControls"
-);
-if (window.matchMedia("(min-width: 768px)").matches) {
-  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-    interval: false,
-  });
-  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-  var cardWidth = $(".carousel-item").width();
-  var scrollPosition = 0;
-  $("#carouselExampleControls .carousel-control-next").on("click", function () {
-    if (scrollPosition < carouselWidth - cardWidth * 4) {
-      scrollPosition += cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-    if (scrollPosition > 0) {
-      scrollPosition -= cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-} else {
-  $(multipleCardCarousel).addClass("slide");
-}
+
+
+
 </script>
 
 
-=======
-// var multipleCardCarousel = document.querySelector(
-//   "#carouselExampleControls"
-// );
-// if (window.matchMedia("(min-width: 768px)").matches) {
-//   var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-//     interval: false,
-//   });
-//   var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-//   var cardWidth = $(".carousel-item").width();
-//   var scrollPosition = 0;
-//   $("#carouselExampleControls .carousel-control-next").on("click", function () {
-//     if (scrollPosition < carouselWidth - cardWidth * 4) {
-//       scrollPosition += cardWidth;
-//       $("#carouselExampleControls .carousel-inner").animate(
-//         { scrollLeft: scrollPosition },
-//         600
-//       );
-//     }
-//   });
-//   $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-//     if (scrollPosition > 0) {
-//       scrollPosition -= cardWidth;
-//       $("#carouselExampleControls .carousel-inner").animate(
-//         { scrollLeft: scrollPosition },
-//         600
-//       );
-//     }
-//   });
-// } else {
-//   $(multipleCardCarousel).addClass("slide");
-// }
-</script>
->>>>>>> main:src/views/landingPage.vue
+
+
