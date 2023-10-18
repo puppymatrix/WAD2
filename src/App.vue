@@ -2,7 +2,8 @@
 import { RouterLink, RouterView } from "vue-router";
 import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
-// import { auth, provider, signInWithPopup } from './firebase/index.js'
+import { createStore } from "vuex";
+
 
 // async function test() {
 //     const docRef = doc(db, "cities", "SF");
@@ -33,8 +34,5 @@ import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 <style scoped></style>
 
 <script>
-    var isLoggedIn = false
-    export {
-        isLoggedIn
-    }
+   
 </script>

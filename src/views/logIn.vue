@@ -64,7 +64,10 @@
 </template>
 
 <script>
-    import { auth, provider, signInWithPopup } from '../firebase/index.js'
+    import { auth, provider, GoogleAuthProvider, signInWithPopup } from '../firebase/index.js'
+    // import { isLoggedIn } from '../App.vue'
+    import { mapActions } from "vuex";
+
     export default {
         data() {
             return {
@@ -86,14 +89,22 @@
                 .then((result) => {
                     console.log(result)
                     // Handle successful login (e.g., redirect to user profile)
-                    // const credential = provider.credentialFromResult(result);
-                    // const token = credential.accessToken;
-                    
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+                    console.log(credential)
+                    this.$store.commit('setUserLoggedIn')
                     this.$router.push('/')
                 })
                 .catch((error) => {
                     console.error('Login error', error);
                 });
+            },
+
+            ...mapActions(["setUserLoggedIn"]), // Map the setUserLoggedIn action from the store
+                login() {
+                // Perform login logic
+                // Then set the userLoggedIn status to true
+                this.setUserLoggedIn(true);
             },
         },
     };

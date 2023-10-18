@@ -32,7 +32,8 @@ export {
     db,
     auth,
     signInWithPopup,
-    provider
+    provider,
+    GoogleAuthProvider
 }
 
 

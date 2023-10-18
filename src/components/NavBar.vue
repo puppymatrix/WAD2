@@ -21,11 +21,11 @@ import { RouterLink, RouterView } from "vue-router";
         </div>
         <div class="col-1"></div>
 
-        <div class="col-1 justify-content-center p-0" v-if="isLoggedIn" >
+        <div class="col-1 justify-content-center p-0" v-if="userLoggedIn" >
             <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
-            <div class="dropdown">
-                <img src="../components/images/user.png" alt="" class="img-fluid btn btn-large dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <ul class="dropdown-menu">
+            <div class="dropdown" >
+                <img src="../components/images/user.png" alt="" class="img-fluid btn btn-large dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" @mouseover="console.log('yes')">
+                <ul class="dropdown-menu" >
                     <li class = "d-flex">
                         <img src="../components/icons/myProfile.png" alt="" class="img-fluid col-2">
                         <!-- insert route to profile button -->
@@ -41,6 +41,12 @@ import { RouterLink, RouterView } from "vue-router";
                         <!-- insert route to profile button -->
                         <button class="dropdown-item p-0" type="button">My Chope(s)</button>
                     </li>
+                    <li class="dropdown-divider"></li>
+                    <li class = "d-flex">
+                        <img src="../components/icons/myChopes.png" alt="" class="img-fluid col-2">
+                        <!-- insert route to profile button -->
+                        <button class="dropdown-item p-0" type="button">Log Out</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -50,20 +56,25 @@ import { RouterLink, RouterView } from "vue-router";
             <button type="button" class="btn btn-success m-1" @click="navigate=>{$router.push('/signUp')}">Sign Up</button>
         </div>
 
-        <div class="col-1" v-if="checkPath($route.path)"></div>
+        <div class="col-1" v-if="userLoggedIn"></div>
 
     </div>
 
 </template>
 
 <script>
-    import { isLoggedIn } from ''
+    // import { isLoggedIn } from '../App.vue'
+    import { mapState } from "vuex";
+
     export default {
         data() {
             return {
                 dropDown: false
             };
         },
+        computed: {
+                ...mapState(["userLoggedIn"]), // Map the userLoggedIn state from the store
+            },
         methods: {
             displayDropDown(){ //dropdown hover doesnt work 
                 if (!this.dropDown){
@@ -75,11 +86,8 @@ import { RouterLink, RouterView } from "vue-router";
                 console.log(this.dropDown)
             },
 
-            checkPath(path){ // change this logic to if the user if logged in 
-                var notSignedInPath = ['/logIn', '/signUp', '/resetPassword']
 
-                // console.log(this.$route.path)
-            }
+
         },
     };
 </script>
