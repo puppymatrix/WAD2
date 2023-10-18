@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
+import NavBar from "@/components/NavBar.vue";
 
 async function test() {
     const docRef = doc(db, "cities", "SF");
