@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid">
-        <div class="row firstBlock">
+        <div class="row">
             <!-- add in gif thingy -->
             <div class="col-6 px-0">
                 <!-- TODO: CREATE GIF -->
-                <img id="homeImage" src="../components/images/landingPage/groceries.jpeg">
+                <img id="homeImage" src="../components/images/landingPage/groceries.webp">
 
             </div>
             <!-- link to search bar -->
@@ -105,50 +105,50 @@
             </div>
           </div>
         </div>
-        <!-- this shows sponsors (2 rows 4 col each gric) -->
+        <!-- this shows sponsors (2 rows 4 col each grid) -->
         <div class="row mb-5">
             <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
                 
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
         </div>
         <div class="row mt-1">
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/partnerIcons/fairpriceIcon.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
         </div>
@@ -176,22 +176,17 @@
     position: absolute;
     top: 2
 }
-/* .firstBlock{
-    margin:0;
-    padding:0
-} */
 
 #homeImage{
-    min-width:100%
+    min-height:100%
 }
-.row{
-    margin: 150px;
-}
+
 .partnerCol{
     text-align: center;
+    
 }
 .partnerIcon{
-    max-width: 200px;
+    max-width: 70%;
 }
 .stats{
     text-align: center;
