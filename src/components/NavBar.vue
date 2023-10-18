@@ -83,7 +83,7 @@ import { RouterLink, RouterView } from "vue-router";
     <!-- BS navbar: start -->
 
     <!-- navigation bar for user signed in -->
-    <div class="row d-none align-items-center" id="nav">
+    <div class="row d-flex align-items-center" id="nav">
         <div class="col-1"></div>
         <div class="col-2 p-3 justify-content-center">
             <img src="../components/images/logo.png" alt="" class="img-fluid" id="logo">
@@ -108,7 +108,6 @@ import { RouterLink, RouterView } from "vue-router";
 
     </div>
 
-    <div class="row" style="height: 300px;"></div>
 
 
     <!-- navigation bar for user NOT signed in -->
