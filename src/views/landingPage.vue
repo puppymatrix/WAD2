@@ -2,77 +2,168 @@
     <div class="container-fluid">
         <div class="row">
             <!-- add in gif thingy -->
-            <div class="col-6">
+            <div class="col-6 px-0">
                 <!-- TODO: CREATE GIF -->
-                <!-- <img src="homepageGif.gif"> -->
+                <img id="homeImage" src="../components/images/landingPage/groceries.webp">
 
             </div>
             <!-- link to search bar -->
-            <div class="col-6">
-                <input type="text" v-bind="formData.searchInput" placeholder="Enter a cuisine, restaurant or location">
-                <button type="submit" class="btn" @keyup.enter="searchDatabase">Let's Go!</button>
+            <div class="col-6 p-0" style="background-color: #263238; text-align: center">
+                <div id="searchText">
+                    <h1 class="text-light">Something something something something</h1><br>
+                    <div class="input-group mb-3 px-5">
+                        <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- <div class="row"> -->
-            <!-- <div class="col"> -->
-                <!-- may change to featured food if unable to get location data -->
-                <!-- <h2>Featured: Food Near You </h2>  -->
-                <!-- food carousel -->
-                <!-- <div id="carouselExampleControls" class="carousel">
-                    <div class="carousel-inner"> -->
-                        <!-- need to populate using database aka shift this down to function and process using data -->
-                        <!-- <div class="carousel-item active">
-                            <div class="card">
-                                <div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">food1</h5>
-                                    <p class="card-text">text desription of food/cuuisine? maybe buttons</p>
-                                    <a href="#" class="btn btn-primary">link to listing</a>
+        <!-- problematic carousel row -->
+        <div class="row">
+          <div class="col">
+            <div class="container text-center my-4">
+            <h2 class="font-weight-light">Featured: Food Near You</h2>
+            <div class="row mx-auto my-auto justify-content-center">
+                <div id="reccoCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                    <!-- <div class="carousel-inner" role="listbox" v-html="carousel"> -->
+                        <div class="carousel-item active">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="//via.placeholder.com/500x400/31f?text=1" class="img-fluid">
+                                    </div>
+                                    <div class="card-img-overlay">Slide 1</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="carousel-item">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="//via.placeholder.com/500x400/e66?text=2" class="img-fluid">
+                                    </div>
+                                    <div class="card-img-overlay">Slide 2</div>
                                 </div>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <div class="card">
-                                <div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">food2</h5>
-                                    <p class="card-text">text</p>
-                                    <a href="#" class="btn btn-primary">link to listing</a>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="//via.placeholder.com/500x400/7d2?text=3" class="img-fluid">
+                                    </div>
+                                    <div class="card-img-overlay">Slide 3</div>
                                 </div>
                             </div>
-                        </div> -->
-                        <!-- buttons -->
-                        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- this shows sponsors (can either use grid and hyperlink or just 1 image) -->
-        <div class="row">
-            <div class="col">
+                        </div>
+                        <div class="carousel-item">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="//via.placeholder.com/500x400?text=4" class="img-fluid">
+                                    </div>
+                                    <div class="card-img-overlay">Slide 4</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="//via.placeholder.com/500x400/aba?text=5" class="img-fluid">
+                                    </div>
+                                    <div class="card-img-overlay">Slide 5</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="//via.placeholder.com/500x400/fc0?text=6" class="img-fluid">
+                                    </div>
+                                    <div class="card-img-overlay">Slide 6</div>
+                                </div>
+                            </div>
+                        </div>
 
+                    </div>
+                    <!-- buttons -->
+                    <a class="carousel-control-prev bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- this shows sponsors (2 rows 4 col each grid) -->
+        <div class="row mb-5">
+            <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                </a>
+                
+            </div>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
+                </a>
+            </div>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
+                </a>
+            </div>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                </a>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                </a>
+            </div>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                </a>
+            </div>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                </a>
+            </div>
+            <div class="col-3 partnerCol">
+                <a href="https://www.fairprice.com.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                </a>
             </div>
         </div>
         <!-- statistics -->
-        <div class="row">
+        <div class="row stats">
             <div class="col">
                 <h1>insert stats/charts/graphs</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row stats">
             <div class="col">
                 <h1>insert stats/charts/graphs</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row stats">
             <div class="col">
                 <h1>insert stats/charts/graphs</h1>
             </div>
@@ -81,143 +172,160 @@
 </template>
 
 <style scoped>
-.carousel-inner {
-  padding: 1em;
+#searchText{
+    position: absolute;
+    top: 2
 }
-.card {
-  margin: 0 0.5em;
-  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
-  border: none;
+
+#homeImage{
+    min-height:100%
 }
-.carousel-control-prev,
-.carousel-control-next {
-  background-color: #e1e1e1;
-  width: 6vh;
-  height: 6vh;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
+
+.partnerCol{
+    text-align: center;
+    
 }
-@media (min-width: 768px) {
-  .carousel-item {
-    margin-right: 0;
-    flex: 0 0 33.333333%;
-    display: block;
-  }
-  .carousel-inner {
-    display: flex;
-  }
+.partnerIcon{
+    max-width: 70%;
 }
-.card .img-wrapper {
-    max-width: 100%;
-    height: 13em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.card img {
-    max-height: 100%;
+.stats{
+    text-align: center;
 }
 @media (max-width: 767px) {
-  .card .img-wrapper {
-    height: 17em;
-  }
+    .carousel-inner .carousel-item > div {
+        display: none;
+    }
+    .carousel-inner .carousel-item > div:first-child {
+        display: block;
+    }
 }
-/*  */
 
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+    display: flex;
+    
+}
+
+/* medium and up screens */
+@media (min-width: 768px) {
+    
+    .carousel-inner .carousel-item-end.active,
+    .carousel-inner .carousel-item-next {
+      transform: translateX(25%);
+    }
+    
+    .carousel-inner .carousel-item-start.active, 
+    .carousel-inner .carousel-item-prev {
+      transform: translateX(-25%);
+    }
+}
+
+.carousel-inner .carousel-item-end,
+.carousel-inner .carousel-item-start { 
+  transform: translateX(0);
+}
 </style>
 
 
 
 <script >
-// vue part
-export default{
-    data() {
-        return {
-            searchInput: {
-                search: ''
-            },
-    }
-}, 
-methods: {
-    // function to search database and reroute to listing search results screen
-    searchDatabase(userInput){
+// import { db } from "@/firebase";
+// import { db } from "@/firebase";
+// import { collection, doc, setDoc, getDocs } from "firebase/firestore";
 
-    }, 
-    //function that takes users location and pulls the top X # of listings to display in carousel
-    populateFoodNearYou(){
-
-    }
-}
-}
-//Jquery part (may need to import lib in template above)
-<<<<<<< HEAD:frontend/src/views/landingPage.vue
-
-var multipleCardCarousel = document.querySelector(
-  "#carouselExampleControls"
-);
-if (window.matchMedia("(min-width: 768px)").matches) {
-  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-    interval: false,
-  });
-  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-  var cardWidth = $(".carousel-item").width();
-  var scrollPosition = 0;
-  $("#carouselExampleControls .carousel-control-next").on("click", function () {
-    if (scrollPosition < carouselWidth - cardWidth * 4) {
-      scrollPosition += cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-    if (scrollPosition > 0) {
-      scrollPosition -= cardWidth;
-      $("#carouselExampleControls .carousel-inner").animate(
-        { scrollLeft: scrollPosition },
-        600
-      );
-    }
-  });
-} else {
-  $(multipleCardCarousel).addClass("slide");
-}
-</script>
-
-
-=======
-// var multipleCardCarousel = document.querySelector(
-//   "#carouselExampleControls"
-// );
-// if (window.matchMedia("(min-width: 768px)").matches) {
-//   var carousel = new bootstrap.Carousel(multipleCardCarousel, {
-//     interval: false,
-//   });
-//   var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-//   var cardWidth = $(".carousel-item").width();
-//   var scrollPosition = 0;
-//   $("#carouselExampleControls .carousel-control-next").on("click", function () {
-//     if (scrollPosition < carouselWidth - cardWidth * 4) {
-//       scrollPosition += cardWidth;
-//       $("#carouselExampleControls .carousel-inner").animate(
-//         { scrollLeft: scrollPosition },
-//         600
-//       );
-//     }
-//   });
-//   $("#carouselExampleControls .carousel-control-prev").on("click", function () {
-//     if (scrollPosition > 0) {
-//       scrollPosition -= cardWidth;
-//       $("#carouselExampleControls .carousel-inner").animate(
-//         { scrollLeft: scrollPosition },
-//         600
-//       );
-//     }
-//   });
-// } else {
-//   $(multipleCardCarousel).addClass("slide");
+// async function getAllListings() {
+//     const querySnapshot = await getDocs(collection(db, "listings"));
+//     querySnapshot.forEach((doc) => {
+//         // doc.data() is never undefined for query doc snapshots
+//         // console.log(doc.id, " => ", doc.data());
+//         console.log(doc.data().Image[0])
+//     });
+    
 // }
+
+// getAllListings();
+
+// vue part
+export default {
+  data() {
+    return {
+      searchInput: '',
+      dataObj: {}, //this is data returned from database
+      
+    }
+  },
+  methods:{
+    searchDatabase(){
+      //take searchInput and pass into database 
+      
+    }, 
+    findListings(){
+      //search for top 10 listings near user and return as dataObj, used to put this into makecarousel later on
+
+    },
+    makeCarousel(){
+      
+    }
+    // makeCarousel(){
+    //   //make carousel 
+    //   let counter = 0
+    //   //add html code to carousel 
+    //   for(listingKey in this.dataObj){
+    //     for(listingObj in this.dataObj[listingKey]){
+    //       //decide 'active' tag
+    //       if(counter == 0){
+    //         //need to edit card stuff
+    //         this.carousel += `<div class="carousel-item active">
+    //                         <div class="col-md-3">
+    //                             <div class="card">
+    //                                 <div class="card-img">
+    //                                     <img src="{{ listingObj.image[0] }}" class="img-fluid">
+    //                                 </div>
+    //                                 <div class="card-img-overlay">Slide 1</div>
+    //                             </div>
+    //                         </div>
+    //                     </div>`
+    //         counter += 1
+    //     }else{
+    //       this.carousel += `<div class="carousel-item">
+    //           <div class="col-md-3">
+    //               <div class="card">
+    //                   <div class="card-img">
+    //                     <img src="{{ listingObj.image[0] }}" class="img-fluid">
+    //                   </div>
+    //                   <div class="card-img-overlay">Slide 2</div>
+    //               </div>
+    //           </div>
+    //       </div>`
+    //     }
+    //     }
+    //   }
+    // }
+    
+  } 
+}
+
+
+
+let items = document.querySelectorAll('.carousel .carousel-item')
+
+items.forEach((el) => {
+    const minPerSlide = 4
+    let next = el.nextElementSibling
+    for (var i=1; i<minPerSlide; i++) {
+        if (!next) {
+            // wrap carousel by using first child
+        	next = items[0]
+      	}
+        let cloneChild = next.cloneNode(true)
+        el.appendChild(cloneChild.children[0])
+        next = next.nextElementSibling
+    }
+})
+
 </script>
->>>>>>> main:src/views/landingPage.vue
+
+
+
+

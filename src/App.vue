@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { createStore } from "vuex";
+import NavBar from "@/components/NavBar.vue";
 
 
 // async function test() {
