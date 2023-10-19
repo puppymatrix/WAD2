@@ -6,54 +6,36 @@ import { RouterLink, RouterView } from "vue-router";
     <div class="row d-flex align-items-center" id="nav">
         <div class="col-1"></div>
         <div class="col-2 p-3 justify-content-center">
-            <img src="../components/images/logo.png" alt="" class="img-fluid" id="logo">
+            <a href="/"><img src="../components/icons/images/logo.png" alt="" class="img-fluid" id="logo"></a>
+            
         </div>
         <div class="col-6">
             <ul class="nav justify-content-center fs-4 p-4">
 
                 <li class="nav-item">
-                  <a class="nav-link text-dark" href="/home">Home</a>
+                  <a class="nav-link text-dark" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-dark" href="/listing" >Listings</a>
                 </li>
             </ul>
         </div>
-        <div class="col-1"></div>
+        <div class="col-1">
+            <!-- <button @click="read">r</button> -->
+        </div>
 
-        <div class="col-1 justify-content-center p-0" v-if="userLoggedIn" >
+        <div class="col-1 justify-content-center p-0" v-if="$store.state.userLoggedIn" >
             <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
-            <div class="dropdown" >
-                <img src="../components/images/user.png" alt="" class="img-fluid btn btn-large dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" @mouseover="console.log('yes')">
-                <ul class="dropdown-menu" >
-                    <li class = "d-flex">
-                        <img src="../components/icons/myProfile.png" alt="" class="img-fluid col-2">
-                        <!-- insert route to profile button -->
-                        <button class="dropdown-item p-0" type="button">My Profile</button>  
-                    </li>
-                    <li class = "d-flex">
-                        <img src="../components/icons/myListings.png" alt="" class="img-fluid col-2">
-                        <!-- insert route to profile button -->
-                        <button class="dropdown-item p-0" type="button">My Listings</button>
-                    </li>
-                    <li class = "d-flex">
-                        <img src="../components/icons/myChopes.png" alt="" class="img-fluid col-2">
-                        <!-- insert route to profile button -->
-                        <button class="dropdown-item p-0" type="button">My Chope(s)</button>
-                    </li>
-                    <li class="dropdown-divider"></li>
-                    <li class = "d-flex">
-                        <img src="../components/icons/myChopes.png" alt="" class="img-fluid col-2">
-                        <!-- insert route to profile button -->
-                        <button class="dropdown-item p-0" type="button">Log Out</button>
-                    </li>
-                </ul>
+            <div class="d-flex me-3" >
+                <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
+                <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
+                
             </div>
         </div>
 
         <div class="col-2" v-else>
-            <button type="button" class="btn btn-outline-success m-1" @click="navigate=>{$router.push('/logIn')}">Log In</button>
-            <button type="button" class="btn btn-success m-1" @click="navigate=>{$router.push('/signUp')}">Sign Up</button>
+            <button type="button" class="btn btn-outline-success m-1" @click="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+            <button type="button" class="btn btn-success m-1" @click="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
         </div>
 
         <div class="col-1" v-if="userLoggedIn"></div>
@@ -63,31 +45,24 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <script>
-    // import { isLoggedIn } from '../App.vue'
+    import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
+    import { auth } from '../firebase/index.js'
     import { mapState } from "vuex";
-
+    
     export default {
         data() {
             return {
-                dropDown: false
             };
         },
         computed: {
                 ...mapState(["userLoggedIn"]), // Map the userLoggedIn state from the store
             },
         methods: {
-            displayDropDown(){ //dropdown hover doesnt work 
-                if (!this.dropDown){
-                    this.dropDown = true
-                } else {
-                    this.dropDown = false
-                }
-
-                console.log(this.dropDown)
-            },
-
-
-
+           logOut(){
+            
+            this.$store.commit('setUserLoggedIn', false)
+            signOut(auth)
+           }, 
         },
     };
 </script>

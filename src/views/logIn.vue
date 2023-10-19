@@ -2,7 +2,7 @@
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
             <div class="col-6 pe-0">
-                <img src="../components/images/sharing.jpg" alt="" style="width:100%;height:120%">
+                <img src="../components/icons/images/placeholder.png" alt="" style="width:100%;height:120%">
             </div>
             
             <!-- sign in -->
@@ -15,28 +15,26 @@
                         <span v-if="errors.logIn" class="error text-danger">{{ errors.logIn }}</span>
                         <div class="row pb-2 ">
                             <label for="email">Email address</label>
-                            <input type="email" class="form-control ms-2" v-model="formData.email" id="email" placeholder="Enter email">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <input type="email" class="form-control ms-2" v-model="formData.email" id="email">
                         </div>
 
 
                         <div class="row">
-                                <div class="mb-3 pe-0">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" v-model="formData.password" id="password">                                                    
-                                    <br>
-                                    <small id="emailHelp" class="form-text text-muted">Your password must contain at least 8 characters, including 1 special character, and 1 uppercase letter</small>
-
-                                </div>
+                            <!-- <div class="mb-3 pe-0"> -->
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control ms-2" v-model="formData.password" id="password">                                                    
+                                <br>
+                            <!-- </div> -->
                         </div>
                             
                         <div class="row mb-3">
-                            <div class="col-6">
-                                <!-- not sure how to do this LOL -->
+                            <!-- <div class="col-6">
+                                not sure how to do this LOL
                                 <input type="checkbox" id="remember" style="transform: scale(1.5);"> &nbsp Remember me                        
-                            </div>
+                            </div> -->
+                            {{ errors.logIn }}
 
-                            <div class="col-6" style="text-align: right;">
+                            <div class="col-6">
                                 <a href="/resetPassword">Forgot Password?</a>
                             </div>
                         </div>
@@ -53,7 +51,6 @@
                             No account yet? <a href="/signUp" style="display:inline">Sign Up</a>
                             <!-- </div> -->
                         </p>
-                        
                     </form>
                 </div>
             </div>    
@@ -64,45 +61,55 @@
 </template>
 
 <script>
-    import { auth, provider, GoogleAuthProvider, signInWithPopup } from '../firebase/index.js'
-    // import { isLoggedIn } from '../App.vue'
-    import { mapActions } from "vuex";
+import { getAuth, setPersistence, signInWithEmailAndPassword, browserLocalPersistence } from "firebase/auth";    
+import { auth } from '../firebase/index.js'
+import { mapState, mapActions } from 'vuex'
 
     export default {
         data() {
             return {
-            formData: {
-                email: '',
-                password: '',
-                // Add more form fields here
-            },
-            errors: {
-                logIn: ''
-                // Initialize errors for other form fields
-            },
+                formData: {
+                    email: '',
+                    password: '',
+                },
+                errors: {
+                    logIn: ''
+                },
+
+                // userLoggedIn: localStorage.getItem('userLoggedIn') === 'true',            
             };
+        },
+        computed: {
+            ...mapState([
+                'userLoggedIn',
+                'user'
+            ])
         },
         methods: {
             checkCredentials() {
-                signInWithPopup(auth, provider)
-                
-                .then((result) => {
-                    console.log(result)
+                // const auth = getAuth()
+
+                signInWithEmailAndPassword(auth, this.formData.email, this.formData.password)                
+                .then((userCredential) => {
                     // Handle successful login (e.g., redirect to user profile)
-                    const credential = GoogleAuthProvider.credentialFromResult(result);
-                    const token = credential.accessToken;
-                    console.log(credential)
-                    this.$store.commit('setUserLoggedIn')
+                    console.log(userCredential)
+                    var user = userCredential.user
+                    console.log('login successful')                    
+
+                    this.$store.commit('setUser', user) // update
+
                     this.$router.push('/')
                 })
                 .catch((error) => {
-                    console.error('Login error', error);
+                    const errorCode = error.code;
+                    const errorMessage = error.message;    
+                    console.log(errorCode, errorMessage)
+                    this.errors.logIn = 'Wrong email/password'            
                 });
             },
 
             ...mapActions(["setUserLoggedIn"]), // Map the setUserLoggedIn action from the store
                 login() {
-                // Perform login logic
                 // Then set the userLoggedIn status to true
                 this.setUserLoggedIn(true);
             },
