@@ -1,30 +1,12 @@
-<script setup></script>
+<script setup>
+    import SearchBar from "../components/SearchBar.vue";
+</script>
 
 <template>
     <body>
-        <h1 class="px-3">Listing Page</h1>
-
+        
         <!-- search bar -->
-        <div class="container-fluid my-3">
-            <form class="d-flex" role="search">
-                <div class="input-group">
-                    <input
-                        type="search"
-                        class="form-control bg-secondary-subtle"
-                        placeholder="Find the food you want!"
-                    />
-                    <button
-                        class="btn text-bg-listing d-flex align-items-center justify-content-center"
-                        type="button"
-                        id="button-addon2"
-                    >
-                    <!-- <i class="search"></i> -->
-                    <img src="../components/icons/search.jpeg" class="img-fluid" style="width:20px; color: white;"
-                    />
-                    </button>
-                </div>
-            </form>
-        </div>
+        <SearchBar />
 
         <!-- 2 buttons -->
         <div class="container-fluid my-3">
