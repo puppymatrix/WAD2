@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-6">
-            <img src="../components/images/sharing.jpg" alt="" style="width:100%;height:120%">
+            <img src="../components/icons/images/placeholder.png" alt="" style="width:100%;height:120%">
         </div>
         
         <!-- sign in -->

@@ -2,6 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
+import { browserLocalPersistence, initializeAuth, browserPopupRedirectResolver } from 'firebase/auth';
+
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -14,6 +17,7 @@ const firebaseConfig = {
   measurementId: "G-THMJEFRPVB"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -21,7 +25,15 @@ const analytics = getAnalytics(app);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
+const auth = initializeAuth(app, {
+    persistence: browserLocalPersistence,
+    // popupRedirectResolver: browserPopupRedirectResolver
+  });
+
+
 export {
-    db
+    db,
+    auth
 }
+
 
