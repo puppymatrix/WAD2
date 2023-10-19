@@ -18,7 +18,7 @@ const store = createStore({
         }
     },
     actions: {
-    
+        
     },
     modules: {},
 });
