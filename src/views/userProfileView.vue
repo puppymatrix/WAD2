@@ -7,7 +7,7 @@
         <!-- LHS: sticky navbar -->
         <div class="col-sm-2">
             <div class="sideNav">
-                <img id="profilePic" src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp" class="rounded-circle mb-3" style="width: 150px;" alt="Avatar"/>
+                <img id="profilePic" src="../components/images/zenith.jpg" class="rounded-circle mb-3" style="width: 150px;" alt="Avatar"/>
                 <h5 class="mb-2"><strong>{{ name }}</strong></h5>
                 <p class="text-muted">Web designer <span class="badge bg-primary">PRO</span></p>
                 <a href="#userInfo" class="btn">My Info</a> 
