@@ -7,15 +7,17 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BCarousel: typeof import('bootstrap-vue-next')['BCarousel']
+    BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
+    BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
+    BDropdownDivider: typeof import('bootstrap-vue-next')['BDropdownDivider']
+    BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
     BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
     IMdiuser: typeof import('~icons/mdi/user')['default']
     IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
-    NavBarSignedIn: typeof import('./src/components/NavBarSignedIn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-  }
-  export interface ComponentCustomProperties {
-    vBTooltip: typeof import('bootstrap-vue-next')['vBTooltip']
+    SearchBar: typeof import('./src/components/SearchBar.vue')['default']
   }
 }
