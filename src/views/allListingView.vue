@@ -1,31 +1,12 @@
 <script setup>
+import SearchBar from "../components/SearchBar.vue";
 </script>
 
 <template>
     <body>
-        <h1 class="px-3">All Listings Page</h1>
-
+        
         <!-- search bar -->
-        <div class="container-fluid my-3">
-            <form class="d-flex" role="search">
-                <div class="input-group">
-                    <input
-                        type="search"
-                        class="form-control bg-secondary-subtle"
-                        placeholder="Find the food you want!"
-                    />
-                    <button
-                        class="btn text-bg-listing d-flex align-items-center justify-content-center"
-                        type="button"
-                        id="button-addon2"
-                    >
-                    <!-- <i class="search"></i> -->
-                    <img src="../components/icons/search.jpeg" class="img-fluid" style="width:20px; color: white;"
-                    />
-                    </button>
-                </div>
-            </form>
-        </div>
+        <SearchBar />
 
         <!-- Map View button  -->
         <div class="container-fluid my-3">
@@ -51,7 +32,33 @@
 
         <!-- listings -->
         <div class="container-fluid">
-            <h5>All Available Listings</h5>
+            <h5 style="font-style: italic;">Search results for: </h5>
+            <div class="filterBar row d-flex">
+                <ul>
+                    <li><p class="d-inline" style="margin: 2px 5px;">Sort By: </p></li>
+                    <li>
+                        <b-dropdown text="Price">
+                        <b-dropdown-item href="#">Price: Low to High</b-dropdown-item>
+                        <b-dropdown-item href="#">Price: High to Low</b-dropdown-item>
+                        </b-dropdown>
+                    </li>
+                    <li>
+                        <b-dropdown text="Category of Food">
+                        <b-dropdown-item href="#">Vegetables</b-dropdown-item>
+                        <b-dropdown-item href="#">Fruits</b-dropdown-item>
+                        <b-dropdown-item href="#">Dessert</b-dropdown-item>
+                        </b-dropdown>
+                    </li>
+                    <li>
+                        <b-dropdown text="Location">
+                        <b-dropdown-item href="#">Within 2km away</b-dropdown-item>
+                        <b-dropdown-item href="#">Between 2k-5km</b-dropdown-item>
+                        <b-dropdown-item href="#">Between 5km-10km</b-dropdown-item>
+                        <b-dropdown-item href="#">More than 10km</b-dropdown-item>
+                        </b-dropdown>
+                    </li>
+                </ul>
+            </div>
             <div class="album py-2">
                 <div class="container-fluid px-0">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -153,7 +160,14 @@
             </div>
         </div>
 
-
+        <!--Add Listing Button-->
+        <div>
+            <button
+                type="button"
+                class="btn addList d-flex align-items-center justify-content-center"
+                style="position: fixed; bottom: 0; right: 0; margin: 20px; padding: auto; height: 50px; width: 50px; border-radius: 50%; font-size: 30px;"
+            >+</button>
+        </div>
 
     </body>
 </template>
@@ -164,9 +178,35 @@
     color: white;
 }
 
+.filterBar{
+    background-color: lightgrey;
+    padding: 10px;
+    margin: 5px 1px;
+    border-radius: 5px;
+}
+
+.filterBar ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filterBar li{
+    margin: 2px 5px;
+    display: flex;
+}
+
 .card-img-top {
     width: 100%;
     height: 25vw;
     object-fit: cover;
+}
+
+.addList{
+    background-color: #83A538;
+    color: white;
 }
 </style>
