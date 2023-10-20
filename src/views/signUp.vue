@@ -34,7 +34,7 @@ import { validateForm} from "../components/functions/functions.js";
                     <div class="row ">
                         <div class="col mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" v-model="formData.username" id="text" placeholder="Enter username">
+                            <input type="text" class="form-control" v-model="formData.username" id="text" placeholder="Enter Username">
                             <span v-if="errors.username" class="error text-danger">{{ username.email }}</span>
                         </div>
                     </div>
@@ -75,7 +75,7 @@ import { validateForm} from "../components/functions/functions.js";
                    
                     <div class="row d-flex">
                         <div class="col">
-                            <button style="width: 100%" type="submit" class="btn btn-large btn-success p-2 base" @keyup.enter="createAccount">Create Account</button>
+                            <button style="width: 100%" type="submit" class="btn btn-success p-2 base" @keyup.enter="createAccount">Create Account</button>
                         </div>
                         
                       </div>
