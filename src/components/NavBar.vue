@@ -10,7 +10,7 @@ import { RouterLink, RouterView } from "vue-router";
             
         </div>
         <div class="col-6">
-            <ul class="nav justify-content-center fs-4 p-4">
+            <ul class="nav justify-content-center px-4">
 
                 <li class="nav-item">
                   <a class="nav-link" href="/">Home</a>
@@ -105,6 +105,10 @@ div img {
 .nav-link{
     text-decoration: none;
     color: #ebf1e7
+}
+
+nav-link{
+
 }
 
 </style>
