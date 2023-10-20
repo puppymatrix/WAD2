@@ -11,13 +11,13 @@ import { validateForm} from "../components/functions/functions.js";
         
         <!-- sign in -->
         
-        <div class="col-sm-6 px-5">
+        <div class="col-md-6 px-5">
             <!-- filler -->
             <div class="container" style="padding-top:15%">
                 <h1 class = "m-4 ms-0">Sign up</h1>
 
                 <form @submit.prevent="createAccount">
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-12 col-lg-6 mb-3">
                             <label for="firstName" class="form-label">First Name</label>
                             <span v-if="errors.lastName" class="error text-danger ps-2">{{ errors.firstName }}</span>
@@ -31,26 +31,26 @@ import { validateForm} from "../components/functions/functions.js";
                         </div>
                     </div>
 
-                    <div class="row pb-2">
-                        <div class="col">
-                            <label for="username">Username</label>
+                    <div class="row ">
+                        <div class="col mb-3">
+                            <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" v-model="formData.username" id="text" placeholder="Enter username">
                             <span v-if="errors.username" class="error text-danger">{{ username.email }}</span>
                         </div>
                     </div>
 
-                    <div class="row pb-2">
-                        <div class="col">
-                            <label for="email">Email address</label>
+                    <div class="row ">
+                        <div class="col mb-3">
+                            <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
                             <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
                             <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col">
-                            <div class="mb-3">
+                    <div class="row3">
+                        <div class="col mb-3">
+                            <div class="">
                             <label for="password" class="form-label" >Password</label>
                             <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">
                             <div id="passwordErrors" >
@@ -60,7 +60,7 @@ import { validateForm} from "../components/functions/functions.js";
                         </div>
                     </div>
                         
-                    <div class="row mb-3">
+                    <div class="row pb-3">
                             <p>I am a:</p>
                             <div class="col-1"></div>
                             <div class="form-check col-4">
