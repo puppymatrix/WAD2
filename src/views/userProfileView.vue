@@ -301,6 +301,8 @@
 </template>
 
 <style>
+/* raleway font */
+
 #profilePic{
     /* somehow need to fix width */
 
@@ -319,6 +321,7 @@
     margin-top: 20%;
     text-align: center;
     display: block;
+    
 }
 .sideNav a{
     display: block;
