@@ -5,56 +5,62 @@ import { validateForm} from "../components/functions/functions.js";
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
-        <div class="col-6">
-            <img src="../components/icons/images/placeholder.png" alt="" style="width:100%;height:120%">
+        <div class="col-sm-6 px-0">
+            <img src="../components/images/landingPage/groceries.webp" alt="" style="object-fit: cover; height:100%;width:100%">
         </div>
         
         <!-- sign in -->
         
-        <div class="col-6">
+        <div class="col-md-6 px-5">
             <!-- filler -->
-            <div class="container" style="padding-top:20%">
+            <div class="container" style="padding-top:15%">
                 <h1 class = "m-4 ms-0">Sign up</h1>
 
                 <form @submit.prevent="createAccount">
-                    <div class="row">
-                        <div class="col-12 col-lg-6 mb-3 pe-0">
+                    <div class="row ">
+                        <div class="col-12 col-lg-6 mb-3">
                             <label for="firstName" class="form-label">First Name</label>
                             <span v-if="errors.lastName" class="error text-danger ps-2">{{ errors.firstName }}</span>
                             <input type="text" class="form-control" v-model="formData.firstName" id="firstName" placeholder="Enter First Name">
                         </div>
 
-                        <div class="col-12 col-lg-6  mb-3 pe-0">
+                        <div class="col-12 col-lg-6 mb-3">
                             <label for="lastName" class="form-label">Last Name</label>
                             <span v-if="errors.lastName" class="error text-danger  ps-2">{{ errors.lastName }}</span>
                             <input type="text" class="form-control" v-model="formData.lastName" id="lastName" placeholder="Enter Last Name">
                         </div>
                     </div>
 
-                    <div class="row pb-2">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control ms-3" v-model="formData.username" id="text" placeholder="Enter username">
-                        <span v-if="errors.username" class="error text-danger">{{ username.email }}</span>
+                    <div class="row ">
+                        <div class="col mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" v-model="formData.username" id="text" placeholder="Enter Username">
+                            <span v-if="errors.username" class="error text-danger">{{ username.email }}</span>
+                        </div>
                     </div>
 
-                    <div class="row pb-2">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control ms-3" v-model="formData.email" id="email" placeholder="Enter Email">
-                        <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
-                        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                    <div class="row ">
+                        <div class="col mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
+                            <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
+                            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="mb-3 pe-0">
+                    <div class="row3">
+                        <div class="col mb-3">
+                            <div class="">
                             <label for="password" class="form-label" >Password</label>
                             <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">
                             <div id="passwordErrors" >
                                     <text v-for="error in errors.password" :key="error" class="d-block text-danger">{{ error }}</text>
                             </div>   
                         </div>
+                        </div>
                     </div>
                         
-                    <div class="row mb-3">
+                    <div class="row pb-3">
                             <p>I am a:</p>
                             <div class="col-1"></div>
                             <div class="form-check col-4">
@@ -68,13 +74,16 @@ import { validateForm} from "../components/functions/functions.js";
                     </div>
                    
                     <div class="row d-flex">
-                        <button type="submit" class="btn btn-success p-2 base" @keyup.enter="createAccount">Create Account</button>
+                        <div class="col">
+                            <button style="width: 100%" type="submit" class="btn btn-success p-2 base" @keyup.enter="createAccount">Create Account</button>
+                        </div>
+                        
                       </div>
 
                     <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
 
                     <!-- <div class="row"> -->
-                    <p class="mt-2">
+                    <p class="mt-1">
                         Already have an account? Log in <a href="/logIn" style="display:inline">here</a>
                         <!-- </div> -->
                     </p>

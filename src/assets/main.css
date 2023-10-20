@@ -1,4 +1,10 @@
 @import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); 
+
+body{
+    font-family: Raleway;
+    background-color: #ebf1e7; 
+}
 
 #app {
   /* max-width: 1280px; */
