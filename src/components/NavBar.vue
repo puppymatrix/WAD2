@@ -13,10 +13,10 @@ import { RouterLink, RouterView } from "vue-router";
             <ul class="nav justify-content-center fs-4 p-4">
 
                 <li class="nav-item">
-                  <a class="nav-link text-dark" href="/">Home</a>
+                  <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-dark" href="/listing" >Listings</a>
+                  <a class="nav-link" href="/listing" >Listings</a>
                 </li>
             </ul>
         </div>
@@ -73,7 +73,8 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 #nav{
-    background-color: #ebeff3;
+    background-color: #0b2b26;
+    
 }
 
 .base{
@@ -92,7 +93,8 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 a>li{
-    color: white
+    color: white;
+    font-weight: bolder;
 }
 
 
@@ -100,5 +102,9 @@ div img {
     margin: 5px;
 }
 
+.nav-link{
+    text-decoration: none;
+    color: #ebf1e7
+}
 
 </style>
