@@ -1,54 +1,64 @@
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
-            <div class="col-6 pe-0">
-                <img src="../components/icons/images/placeholder.png" alt="" style="width:100%;height:120%">
-            </div>
+            <div class="col-md-6 px-0">
+            <img src="../components/images/landingPage/groceries.webp" alt="" style="object-fit: cover; height:100%;width:100%">
+        </div>
             
             <!-- sign in -->
-            <div class="col-6 pe-0">
+            <div class="col-md-6 px-5">
                 <!-- filler -->
                 <div class="container" style="padding-top:20%">
                     <h1 class = "m-4 ms-0">Log In</h1>
 
                     <form @submit.prevent="checkCredentials">
-                        <span v-if="errors.logIn" class="error text-danger">{{ errors.logIn }}</span>
-                        <div class="row pb-2 ">
-                            <label for="email">Email address</label>
-                            <input type="email" class="form-control ms-2" v-model="formData.email" id="email">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <span v-if="errors.logIn" class="error text-danger">{{ errors.logIn }}</span>
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
+                            </div>
                         </div>
+                        
+  
 
 
                         <div class="row">
                             <!-- <div class="mb-3 pe-0"> -->
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control ms-2" v-model="formData.password" id="password">                                                    
-                                <br>
+                                <div class="col mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">                   
+                                    <br>
+                                </div>
+                                
                             <!-- </div> -->
                         </div>
                             
-                        <div class="row mb-3">
+                        <div class="row">
                             <!-- <div class="col-6">
                                 not sure how to do this LOL
                                 <input type="checkbox" id="remember" style="transform: scale(1.5);"> &nbsp Remember me                        
                             </div> -->
                             {{ errors.logIn }}
 
-                            <div class="col-6">
+                            <div class="col-6 mb-3">
                                 <a href="/resetPassword">Forgot Password?</a>
                             </div>
                         </div>
                     
                         <!-- can insert on key down enter to log in instead of pressing the create account button -->
                         <div class="row d-flex">
-                            <button type="submit" class="btn btn-success p-2 base" @keyup.enter="checkCredentials">Log In</button>
+                            <div class="col">
+                                <button style="width:100%" type="submit" class="btn btn-success p-2 base" @keyup.enter="checkCredentials">Log In</button>
+                            </div>
+                            
                         </div>
 
                         <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
 
                         <!-- <div class="row"> -->
                         <p class="mt-2">
-                            No account yet? <a href="/signUp" style="display:inline">Sign Up</a>
+                            Don't have an account? <a href="/signUp" style="display:inline">Sign Up</a>
                             <!-- </div> -->
                         </p>
                     </form>

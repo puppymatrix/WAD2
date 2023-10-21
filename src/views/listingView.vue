@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <body>
+    <body class="p-5">
         
         <!-- search bar -->
         <SearchBar />
