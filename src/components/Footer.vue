@@ -15,7 +15,7 @@
                             <img src="images/logo.png" alt="" class="p-4" style="width: 80%">
                         </div>
                         <div class="row text-white">
-                            Copyright © 2020 Nexcent ltd. <br>
+                            Copyright © 2020 FoodCatch Pte Ltd. <br>
                             All rights reserved
                         </div>
                         <div class="row" style="margin-top: 20%">
@@ -86,8 +86,8 @@
                 <div class="input-group"> <!-- Use Bootstrap input group to group input and button> -->
                     <input class="form-control" type="search" placeholder="Your Email Address" aria-label="Search">
                     <div class="input-group-append"> <!-- Append the button to the input group -->
-                        <button class="btn" type="submit">
-                            <img src="images/icons/send.png" alt="" >
+                        <button class="btn footerBtn" type="submit">
+                            <img src="images/icons/send.png" alt="" >Submit
                         </button>
                     </div>
                 </div>
@@ -99,8 +99,13 @@
 
 <style>
     .footer {
-    background-color: #263238;
-    padding-top: 80px;
-    padding-bottom: 100px;
-}
+        background-color: #263238;
+        padding-top: 80px;
+        padding-bottom: 100px;
+    }
+
+    .footerBtn{
+        background-color: #558C03;
+        color: white;
+    }
 </style>
