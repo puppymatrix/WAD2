@@ -1,16 +1,16 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bod">
         <div class="row">
             <!-- add in gif thingy -->
-            <div class="col-6 px-0">
+            <div class="col px-0 firstRow">
                 <!-- TODO: CREATE GIF -->
-                <img id="homeImage" src="../components/images/landingPage/groceries.webp">
+                <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
 
             </div>
             <!-- link to search bar -->
-            <div class="col-6 p-0" style="background-color: #263238; text-align: center">
+            <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
                 <div id="searchText">
-                    <h1 class="text-light">Something something something something</h1><br>
+                    <h1 class="">Help reduce food waste today</h1><br>
                     <div class="input-group mb-3 px-5">
                         <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
                         <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04;" @keyup.enter="searchDatabase()">Let's Go!</button>
@@ -21,7 +21,7 @@
         </div>
 
         <!-- problematic carousel row -->
-        <div class="row">
+        <div class="row secondRow">
           <div class="col">
             <div class="container text-center my-4">
             <h2 class="font-weight-light">Featured: Food Near You</h2>
@@ -106,7 +106,35 @@
           </div>
         </div>
         <!-- this shows sponsors (2 rows 4 col each grid) -->
-        <div class="row mb-5">
+
+ 
+        <!-- statistics -->
+        <div class="row stats1">
+            <div class="col-5 p-5 text-light ml-3">
+                <h2><strong>In Singapore alone, 2,000 tonnes of food is thrown away daily.</strong></h2>
+                <h3>That's equivalent to...</h3>
+                <ul>
+                    <li>1 elephant</li>
+                    <li>10 million cats</li>
+                    <li>the empire state building</li>
+                </ul>
+            </div>
+            <div class="col-7">
+                image or smth
+            </div>
+        </div>
+        <div class="row stats">
+            <div class="col">
+                <h1>insert stats/charts/graphs</h1>
+            </div>
+        </div>
+        <div class="row stats">
+            <div class="col">
+                <h1>insert stats/charts/graphs</h1>
+            </div>
+        </div>
+
+        <div class="row mb-5 sponsors">
             <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
@@ -130,60 +158,51 @@
                 </a>
             </div>
         </div>
-        <div class="row mt-1">
-            <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
-                </a>
-            </div>
-            <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
-                </a>
-            </div>
-            <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
-                </a>
-            </div>
-            <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
-                </a>
-            </div>
-        </div>
-        <!-- statistics -->
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
     </div>
 </template>
 
 <style scoped>
+.bod{
+    background-color: #0b2b26;
+}
+.stats1{
+    
+}
 #searchText{
     position: absolute;
-    top: 2
+    justify-content: center;
+    top: 20%
+}
+h1{
+    font-size: 6vw;
+    color: black
+    
+}
+.firstRow{
+    position: relative;
+    
+}
+.secondRow{
+    background-color: #fffdd0;
 }
 
 #homeImage{
-    min-height:100%
+    width:100%;
+    height: auto;
+    background: black;
+    filter:opacity(80%);
 }
 
+.sponsors{
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: #fffdd0;
+    padding-top: 1%;
+    padding-bottom: 3%;
+
+}
 .partnerCol{
     text-align: center;
-    
 }
 .partnerIcon{
     max-width: 70%;

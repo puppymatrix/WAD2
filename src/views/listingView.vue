@@ -3,26 +3,19 @@
 </script>
 
 <template>
-    <body>
+    <body class="p-5">
         
         <!-- search bar -->
         <SearchBar />
 
-        <!-- 2 buttons -->
+        <!-- Button-->
         <div class="container-fluid my-3">
-            <div class="row d-flex justify-content-end">
-                <div class="col-2">
-                    <button
-                        type="button"
-                        class="btn btn-outline-success w-100 d-flex align-items-center justify-content-center"
-                    >
-                        <img
-                            src="../components/icons/googleMaps.png"
-                            alt=""
-                            class="img-fluid me-1"
-                            style="width: 20px"
-                        />
-                        Map View
+            <div class="row">
+                <div class="col-10"></div>
+                <div class="col-2 d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-success d-flex align-items-center justify-content-center" @click="navigate=>{this.$router.push('/mapView')}">
+                    <img src="../components/icons/googleMaps.png" alt="" class="img-fluid me-1" style="width: 20px"/>
+                    Map View
                     </button>
                 </div>
             </div>
