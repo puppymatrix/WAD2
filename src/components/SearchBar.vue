@@ -25,8 +25,6 @@
             </div>
         <!-- </form> -->
 
-        <button @click="updateSearch">emit</button>
-
         {{  query  }}
 
     </div>
