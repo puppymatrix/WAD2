@@ -107,8 +107,8 @@ div img {
     color: #ebf1e7
 }
 
-nav-link{
-
+.nav-link:hover{
+    color: #bee5b0
 }
 
 </style>
