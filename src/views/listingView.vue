@@ -8,16 +8,10 @@
         <!-- search bar -->
         <SearchBar />
 
-        <!-- 2 buttons -->
+        <!-- Button-->
         <div class="container-fluid my-3">
             <div class="row">
-                <div class="col-8"></div>
-                <div class="col-2 d-flex justify-content-center">
-                    <button type="button" class="btn btn-success text-bg-listing">
-
-                        Show Stats
-                    </button>
-                </div>
+                <div class="col-10"></div>
                 <div class="col-2 d-flex justify-content-center">
                     <button type="button" class="btn btn-outline-success d-flex align-items-center justify-content-center" @click="navigate=>{this.$router.push('/mapView')}">
                     <img src="../components/icons/googleMaps.png" alt="" class="img-fluid me-1" style="width: 20px"/>
@@ -30,7 +24,7 @@
         <div class="container-fluid my-3">
             <div class="row">
                 <!-- carousel -->
-                <div class="col-7">
+                <div class="col-md-6">
                     <BCarousel controls indicators imgHeight="450px">
                         <BCarouselSlide
                             img-src="https://domf5oio6qrcr.cloudfront.net/medialibrary/5390/h1218g16207258089583.jpg"
@@ -43,27 +37,22 @@
                         />
                     </BCarousel>
                 </div>
-                <div class="col-5">
+                <div class="col-md-6">
                     <div class="row">
-                        <div class="col-1"></div>
                         <div class="col">
                             <h2>Name of Listing</h2>
                         </div>
-                        <div class="col-1"></div>
                     </div>
 
                     <div class="row">
-                        <div class="col-1"></div>
                         <div class="col">
-                            <h4>Quantity Available</h4>
+                            <h4 id="subheader">Price: <span id="price">$5</span> | Quantity Available: <span id="qty">10</span></h4>
                         </div>
-                        <div class="col-1"></div>
                     </div>
 
                     <div class="row">
-                        <div class="col-1"></div>
                         <div class="col">
-                            <div class="card my-3" style="width: 18rem">
+                            <div class="card my-3" style="width: 100%">
                                 <div class="card-body">
                                     <h5 class="card-title">Food Description</h5>
                                     <p class="card-text">
@@ -71,71 +60,49 @@
                                         card title and make up the bulk of the
                                         card's content.
                                     </p>
-                                    <!-- <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link"
-                                        >Another link</a
-                                    > -->
                                 </div>
                             </div>
                         </div>
-                        <div class="col-1"></div>
                     </div>
 
                     <div class="row py-1">
-                        <div class="col-1"></div>
                         <div class="col">
                             <h6 class="d-inline">Category of Food Listing:</h6>
                             <span class="badge text-bg-listing ms-1"
                                 >Vegetable</span
                             >
                         </div>
-                        <div class="col-1"></div>
                     </div>
 
                     <div class="row py-1">
-                        <div class="col-1"></div>
                         <div class="col">
-                            <h6 class="d-inline">Location:</h6>
+                            <h6 class="d-inline">Type of Food Listing:</h6>
                             <span class="badge text-bg-listing ms-1"
-                                >Ang Mo Kio</span
+                                >Perishable</span
                             >
                         </div>
-                        <div class="col-1"></div>
-                    </div>
-
-                    <div class="row py-1">
-                        <div class="col-1"></div>
-                        <div class="col">
-                            <h6 class="d-inline">Price:</h6>
-                            <span class="badge text-bg-listing ms-1">$5</span>
-                        </div>
-                        <div class="col-1"></div>
                     </div>
 
                     <div class="row pt-1 pb-2">
-                        <div class="col-1"></div>
                         <div class="col">
                             <h6 class="d-inline">Listing Expiry Time:</h6>
                             <span class="badge text-bg-listing ms-1"
                                 >11/10/23</span
                             >
                         </div>
-                        <div class="col-1"></div>
                     </div>
 
-                    <div class="row pb-2">
-                        <div class="col-1"></div>
+                    <div class="row py-1">
                         <div class="col">
-                            <span
-                                class="border-top border-secondary d-flex"
-                            ></span>
+                            <h6 class="d-inline">Location:</h6>
+                            <span class="badge text-bg-listing ms-1"
+                                >Ang Mo Kio Avenue 3</span
+                            >
                         </div>
-                        <div class="col-1"></div>
                     </div>
 
                     <div class="row pt-2">
-                        <div class="col-1"></div>
-                        <div class="col-10">
+                        <div class="col">
                             <div class="d-grid">
                                 <button
                                     class="btn btn-success text-bg-listing"
@@ -145,7 +112,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-1"></div>
                     </div>
                 </div>
             </div>
@@ -157,24 +123,24 @@
                     <div class="row">
                         <div class="col">
                             <img
-                                src="../components/icons/user.png"
+                                src="../components/icons/images/user.png"
                                 class="img-fluid"
                                 alt="..."
                                 style="width: 30px"
                             />
-                            <span class="align-middle ms-2">Justin123</span>
+                            <span class="username align-middle ms-2">Justin123</span>
                         </div>
 
                         <div class="col">
                             <span class="align-middle ms-2">Category: </span>
-                            <span class="badge text-bg-secondary">NTUC</span>
+                            <span class="badge userInfo text-bg-secondary">Business</span>
                         </div>
 
                         <div class="col">
                             <span class="align-middle ms-2"
                                 >Number of Listings:
                             </span>
-                            <span class="badge text-bg-secondary">10</span>
+                            <span class="badge userInfo text-bg-secondary">10</span>
                         </div>
                     </div>
                 </div>
@@ -188,38 +154,20 @@
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         <div class="col">
                             <div class="card shadow-sm">
-                                <svg
-                                    class="bd-placeholder-img card-img-top"
-                                    width="100%"
-                                    height="225"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    role="img"
-                                    aria-label="Placeholder: Thumbnail"
-                                    preserveAspectRatio="xMidYMid slice"
-                                    focusable="false"
-                                >
-                                    <title>Placeholder</title>
-                                    <rect
-                                        width="100%"
-                                        height="100%"
-                                        fill="#55595c"
-                                    />
-                                    <text
-                                        x="50%"
-                                        y="50%"
-                                        fill="#eceeef"
-                                        dy=".3em"
-                                    >
-                                        Thumbnail
-                                    </text>
-                                </svg>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        This is a wider card with supporting
-                                        text below as a natural lead-in to
-                                        additional content. This content is a
-                                        little bit longer.
+                                <img
+                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
+                                    alt=""
+                                    class="card-img-top"
+                                />
+                                <div class="card-body border-top border-2">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
+                                    <h5 class="card-title">Vegetables</h5>
+                                    <p class="card-text d-flex align-items-center mb-3">
+                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
                                     </p>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <IMdiuser class="me-1"/>Glenda123
+                                    </h6>
                                     <div
                                         class="d-flex justify-content-between align-items-center"
                                     >
@@ -305,8 +253,25 @@
 </template>
 
 <style scoped>
+
+#subheader{
+    color: grey;
+}
+
+#price{
+    font-size: 1.5rem;
+    color: #558C03;
+    font-weight: bold;
+}
+
+#qty{
+    font-size: 1.5rem;
+    color: #558C03;
+    font-weight: bold;
+}
 .text-bg-listing {
-    background-color: rgb(67, 160, 70, 1);
+    background-color: #558C03;
+    padding: 10px;
     color: white;
 }
 
@@ -315,4 +280,15 @@
     height: 25vw;
     object-fit: cover;
 }
+
+.username{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #558C03;
+}
+
+.userInfo{
+    padding: 10px;
+}
+
 </style>
