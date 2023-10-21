@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid bod">
         <div class="row">
             <!-- add in gif thingy -->
             <div class="col px-0 firstRow">
@@ -103,6 +103,34 @@
           </div>
         </div>
         <!-- this shows sponsors (2 rows 4 col each grid) -->
+
+ 
+        <!-- statistics -->
+        <div class="row stats1">
+            <div class="col-5 p-5 text-light ml-3">
+                <h2><strong>In Singapore alone, 2,000 tonnes of food is thrown away daily.</strong></h2>
+                <h3>That's equivalent to...</h3>
+                <ul>
+                    <li>1 elephant</li>
+                    <li>10 million cats</li>
+                    <li>the empire state building</li>
+                </ul>
+            </div>
+            <div class="col-7">
+                image or smth
+            </div>
+        </div>
+        <div class="row stats">
+            <div class="col">
+                <h1>insert stats/charts/graphs</h1>
+            </div>
+        </div>
+        <div class="row stats">
+            <div class="col">
+                <h1>insert stats/charts/graphs</h1>
+            </div>
+        </div>
+
         <div class="row mb-5 sponsors">
             <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
             <div class="col-3 partnerCol">
@@ -127,28 +155,16 @@
                 </a>
             </div>
         </div>
- 
-        <!-- statistics -->
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
     </div>
 </template>
 
 <style scoped>
-
+.bod{
+    background-color: #0b2b26;
+}
+.stats1{
+    
+}
 #searchText{
     position: absolute;
     justify-content: center;
@@ -163,6 +179,9 @@ h1{
     position: relative;
     
 }
+.secondRow{
+    background-color: #fffdd0;
+}
 
 #homeImage{
     width:100%;
@@ -174,6 +193,10 @@ h1{
 .sponsors{
     padding-left: 10%;
     padding-right: 10%;
+    background-color: #fffdd0;
+    padding-top: 1%;
+    padding-bottom: 3%;
+
 }
 .partnerCol{
     text-align: center;
