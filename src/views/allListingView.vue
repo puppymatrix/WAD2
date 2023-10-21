@@ -86,7 +86,7 @@ import SearchBar from "../components/SearchBar.vue";
                                                 type="button"
                                                 class="btn btn-sm btn-outline-secondary"
                                             >
-                                                View
+                                                <a href="/listing">View</a>
                                             </button>
                                         </div>
                                     </div>
@@ -117,7 +117,7 @@ import SearchBar from "../components/SearchBar.vue";
                                                 type="button"
                                                 class="btn btn-sm btn-outline-secondary"
                                             >
-                                                View
+                                            <a href="/listing">View</a>
                                             </button>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@ import SearchBar from "../components/SearchBar.vue";
                                                 type="button"
                                                 class="btn btn-sm btn-outline-secondary"
                                             >
-                                                View
+                                            <a href="/listing">View</a>
                                             </button>
                                         </div>
                                     </div>
@@ -165,8 +165,7 @@ import SearchBar from "../components/SearchBar.vue";
             <button
                 type="button"
                 class="btn addList d-flex align-items-center justify-content-center"
-                style="position: fixed; bottom: 0; right: 0; margin: 20px; padding: auto; height: 50px; width: 50px; border-radius: 50%; font-size: 30px;"
-            >+</button>
+            ><a href="/addListing"><span style="color: white;">+</span></a></button>
         </div>
 
     </body>
@@ -207,6 +206,14 @@ import SearchBar from "../components/SearchBar.vue";
 
 .addList{
     background-color: #83A538;
-    color: white;
+    position: fixed; 
+    bottom: 0; 
+    right: 0; 
+    margin: 20px; 
+    padding: auto; 
+    height: 50px; 
+    width: 50px; 
+    border-radius: 50%; 
+    font-size: 30px;
 }
 </style>
