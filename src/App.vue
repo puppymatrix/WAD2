@@ -4,6 +4,7 @@ import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { createStore } from "vuex";
 import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 
 
 // async function test() {
@@ -30,6 +31,11 @@ import NavBar from "@/components/NavBar.vue";
     </header>
 
     <RouterView />
+
+    <div class="wrapper">
+        <Footer />
+    </div>
+    
 </template>
 
 <style scoped></style>
