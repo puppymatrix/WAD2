@@ -11,14 +11,14 @@ declare module 'vue' {
     BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
+    BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
+    BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
     Footer: typeof import('./src/components/Footer.vue')['default']
     IMdiuser: typeof import('~icons/mdi/user')['default']
     IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
-    SearchBar: typeof import('./src/components/SearchBar.vue')['default']
     Test: typeof import('./src/components/test.vue')['default']
   }
 }
