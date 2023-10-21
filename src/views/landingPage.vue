@@ -4,11 +4,11 @@
             <!-- add in gif thingy -->
             <div class="col-6 px-0">
                 <!-- TODO: CREATE GIF -->
-                <img id="homeImage" src="../components/images/landingPage/groceries.webp">
+                <img id="homeImage" src="../components/images/landingPage/groceries.webp" class="img-fluid">
 
             </div>
             <!-- link to search bar -->
-            <div class="col-6 p-0" style="background-color: #263238; text-align: center">
+            <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
                 <div id="searchText">
                     <h1 class="text-light">Something something something something</h1><br>
                     <div class="input-group mb-3 px-5">

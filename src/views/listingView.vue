@@ -13,22 +13,15 @@
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col-2 d-flex justify-content-center">
-                    <button type="button" class="btn btn-outline-success">
+                    <button type="button" class="btn btn-success text-bg-listing">
+
                         Show Stats
                     </button>
                 </div>
                 <div class="col-2 d-flex justify-content-center">
-                    <button
-                        type="button"
-                        class="btn btn-outline-success d-flex align-items-center justify-content-center"
-                    >
-                        <img
-                            src="../components/icons/googleMaps.png"
-                            alt=""
-                            class="img-fluid me-1"
-                            style="width: 20px"
-                        />
-                        Map View
+                    <button type="button" class="btn btn-outline-success d-flex align-items-center justify-content-center" @click="navigate=>{this.$router.push('/mapView')}">
+                    <img src="../components/icons/googleMaps.png" alt="" class="img-fluid me-1" style="width: 20px"/>
+                    Map View
                     </button>
                 </div>
             </div>
