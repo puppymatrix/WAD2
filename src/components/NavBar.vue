@@ -34,8 +34,8 @@ import { RouterLink, RouterView } from "vue-router";
         </div>
 
         <div class="col-2" v-else>
-            <button type="button" class="btn btn-outline-success m-1" @click="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
-            <button type="button" class="btn btn-success m-1" @click="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+            <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+            <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
         </div>
 
         <div class="col-1" v-if="userLoggedIn"></div>
