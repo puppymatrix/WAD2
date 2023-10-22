@@ -67,7 +67,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button style="float: right" type="submit" class="btn btn-primary" @click.enter="updateInfo()">Update</button>
+                            <button style="float: right" type="submit" class="btn btn-success" @click.enter="updateInfo()">Update</button>
                         </div>
                     </div>
  
