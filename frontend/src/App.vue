@@ -1,8 +1,8 @@
-<script setup>
+<!-- <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import { db } from "@/firebase";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
-import NavBarSignedIn from "./components/NavBarSignedIn.vue";
+// import NavBarSignedIn from "./components/NavBarSignedIn.vue";
 
 async function test() {
     const docRef = doc(db, "cities", "SF");
@@ -29,4 +29,4 @@ test();
     <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped></style> -->

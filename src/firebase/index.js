@@ -1,6 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
+
+import { browserLocalPersistence, initializeAuth, browserPopupRedirectResolver } from 'firebase/auth';
+
 import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
@@ -15,6 +18,7 @@ const firebaseConfig = {
   measurementId: "G-THMJEFRPVB"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -22,10 +26,18 @@ const analytics = getAnalytics(app);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
+const auth = initializeAuth(app, {
+    persistence: browserLocalPersistence,
+    // popupRedirectResolver: browserPopupRedirectResolver
+  });
+
+
 // Initialize Cloud Storage and get a reference to the service
 const storage = getStorage(app);
 
 export {
-    db, storage
+    db,
+    auth, storage
 }
+
 
