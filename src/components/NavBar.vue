@@ -4,43 +4,62 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
     <div class="row d-flex align-items-center" id="nav">
-        <div class="col-1"></div>
-        <div class="col-2 p-3 justify-content-center">
-            <a href="/"><img src="../components/icons/images/logo.png" alt="" class="img-fluid" id="logo"></a>
+        <!-- <div class="col-1"></div> -->
+        <!-- logo -->
+        <!-- <div class="col-2 p-3 justify-content-center">
+    
+        </div> -->
+        <!-- logo and links -->
+        <div class="col-8">
+            <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+            <!-- brand image -->
+            <a class="navbar-brand" href="#">
+                <a href="/"><img src="../components/icons/images/logo.png" alt="" class="img-fluid" id="logo"></a>
+            </a>
+            <!-- toggle button???? -->
+            <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
             
-        </div>
-        <div class="col-6">
-            <ul class="nav justify-content-center">
-                <li class="nav-item">
-                  <a class="nav-link" href="/">Home</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item px-3 ml-5">
+                    <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/allListings" >Explore</a>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/allListings" >Explore</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/mapView" >Map</a>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/mapView" >Map</a>
                 </li>
             </ul>
-        </div>
-        <div class="col-1">
-            <!-- <button @click="read">r</button> -->
-        </div>
 
-        <div class="col-1 justify-content-center p-0" v-if="$store.state.userLoggedIn" >
-            <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
-            <div class="d-flex me-3" >
-                <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
-                <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
-                
             </div>
+            </div>
+            </nav>
         </div>
 
-        <div class="col-2" v-else>
-            <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
-            <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+        <div class="col-4" id="rightSideBtns">
+            <!-- profile and logout buttons -->
+            <div class="justify-content-center p-0" v-if="$store.state.userLoggedIn" >
+                <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
+                <div class="d-flex me-3" >
+                    <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
+                    <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
+                    
+                </div>
+            </div>
+            <!-- login and signup buttons -->
+            <div class="me-0" v-else>
+                <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+                <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+            </div>
+
+            <div class="col-1" v-if="userLoggedIn"></div>
         </div>
 
-        <div class="col-1" v-if="userLoggedIn"></div>
 
     </div>
 
@@ -70,6 +89,18 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <style scoped>
+#rightSideBtns{
+    position: absolute;
+    right: 0px;
+    top: 10px;
+
+}
+
+.navbar-toggler{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
 #logo {
     height: 40px;
 }
@@ -106,7 +137,7 @@ div img {
 .nav-link{
     text-decoration: none;
     color: #ebf1e7;
-    font-size: 1.5vw
+    font-size: 25px
 }
 
 .nav-link:hover{
