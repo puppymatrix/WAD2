@@ -167,6 +167,82 @@ async function deleteListings(category) {
     console.log(counter + " documents deleted");
 }
 
+function checkUniqueUsername(username){
+
+    // returns true if username is unique and false if otherwise
+    const usernameRef = collection(db, "userInformation")
+
+    const q = query(usernameRef, where("username", "==", username));
+    
+    const querySnapshot = getDocs(q);
+    // querySnapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   console.log(doc.id, " => ", doc.data());
+      
+    // });
+
+    console.log('length', querySnapshot.length)
+    return (querySnapshot.length == 0)
+}
+
+function matchString(input, pattern) {
+    // Escape special regex characters in the plain string
+    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    
+    // Create a regex object with the escaped pattern
+    const regex = new RegExp(escapedPattern);
+  
+    // Use the test() method to check if the input matches the pattern
+    return regex.test(input);
+}
+
+function filterByDistance(foodArr, distance){
+    var result = []
+
+
+    for(var i=0;i<foodArr.length;i++) {
+        var food = foodArr[i]
+        if (food.distance <= distance){
+            console.log('wothin range')
+            result.push(food)
+        }
+    }
+
+    // console.log(result)
+    return result
+}
+function filterByName(foodArr, name){
+    var result = []
+    var query = name.toLowerCase()
+
+    for(var i=0;i<foodArr.length;i++) {
+        let itemName = foodArr[i].info.ListingName
+        let itemNameArr = itemName.split(" ")
+
+        var output = ""
+
+        for(let word of itemNameArr){
+            word = word.toLowerCase()
+            output += word
+        }
+
+        // console.log()
+        console.log('arr', itemNameArr, 'query', query)
+
+        // if (itemNameArr.includes(query)){
+        //     console.log('true')
+        //     result.push(foodArr[i])
+        // }
+        if (matchString(output, name)){
+            console.log('true')
+            result.push(foodArr[i])
+        }
+    }
+
+    console.log(result)
+    return result
+}
+
 export {
     getAllListings,
     addListingNoImage,
@@ -175,4 +251,9 @@ export {
     getListingsByCategory,
     getListingsByPrice,
     getNearbyListings,
+    checkUniqueUsername,
+    matchString,
+    filterByDistance,
+    filterByName
 };
+

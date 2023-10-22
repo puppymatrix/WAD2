@@ -85,8 +85,6 @@ import { mapState, mapActions } from 'vuex'
                 errors: {
                     logIn: ''
                 },
-
-                // userLoggedIn: localStorage.getItem('userLoggedIn') === 'true',            
             };
         },
         computed: {
