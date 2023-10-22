@@ -1,9 +1,4 @@
 <script setup>
-    import {defineEmits} from 'vue'
-    // const emit = defineEmits([
-    //             // 'search', 
-    //             'custom-event'
-    //         ]);
     
 </script>
 <template>
