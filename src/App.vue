@@ -1,8 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { db } from "@/firebase";
-import { collection, doc, setDoc, getDoc } from "firebase/firestore";
-import { createStore } from "vuex";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue"
 
@@ -26,7 +23,7 @@ import Footer from "@/components/Footer.vue"
 <template>
     <header>
         <div class="wrapper">
-            <NavBar />
+            <!-- <NavBar /> -->
         </div>
     </header>
 

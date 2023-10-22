@@ -10,7 +10,7 @@
             <!-- link to search bar -->
             <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
                 <div id="searchText">
-                    <h1 class="">Help reduce food waste today</h1><br>
+                    <h1 class="welcome">Help reduce food waste today!</h1><br>
                     <div class="input-group mb-3 px-5">
                         <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
                         <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04;" @keyup.enter="searchDatabase()">Let's Go!</button>
@@ -162,6 +162,23 @@
 </template>
 
 <style scoped>
+
+.welcome{
+    font-size: 3vw;
+    /* -webkit-text-stroke: 1px #fff; */
+    color: transparent;
+    background-image: linear-gradient(to right, #fff, #fff);
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-position: -600px 0;
+    animation: backcolor 10s linear infinite alternate;
+}
+
+@keyframes backcolor{
+    100%{
+        background-position: 0 0;
+    }
+}
 .bod{
     background-color: #0b2b26;
 }
