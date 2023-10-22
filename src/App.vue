@@ -23,7 +23,7 @@ import Footer from "@/components/Footer.vue"
 <template>
     <header>
         <div class="wrapper">
-            <!-- <NavBar /> -->
+            <NavBar />
         </div>
     </header>
 
