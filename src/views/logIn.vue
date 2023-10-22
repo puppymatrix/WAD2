@@ -14,12 +14,10 @@
                     <form @submit.prevent="checkCredentials">
                         <div class="row">
                             <div class="col mb-3">
-                                <span v-if="errors.logIn" class="error text-danger">{{ errors.logIn }}</span>
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
                             </div>
                         </div>
-                        
   
 
 
@@ -36,13 +34,21 @@
                                 
                             <!-- </div> -->
                         </div>
-                            
+                        
+                        <div class="row">
+                            <div class="col">
+                                <div class="col mb-3 error py-1">
+                                    <span v-if="errors.logIn" class=" text-danger">{{ errors.logIn }}</span>
+                                    <span v-else="errors.logIn" class="text-danger noError"></span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <!-- <div class="col-6">
                                 not sure how to do this LOL
                                 <input type="checkbox" id="remember" style="transform: scale(1.5);"> &nbsp Remember me                        
                             </div> -->
-                            {{ errors.logIn }}
+                            <!-- {{ errors.logIn }} -->
 
                             <div class="col-6 mb-3">
                                 <a href="/resetPassword">Forgot Password?</a>
@@ -145,6 +151,10 @@ import { mapState, mapActions } from 'vuex'
 </script>
 
 <style>
+.error{
+    font-style: italic;
+}
+
 #pwStatus{
     display: inline
 }
