@@ -1,4 +1,4 @@
-import { db, storage } from "@/firebase";
+import { db } from "@/firebase";
 import {
     collection,
     doc,
@@ -12,13 +12,8 @@ import {
     where,
     limit,
 } from "firebase/firestore";
-import {
-    ref,
-    uploadBytesResumable,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
-import { get } from "jquery";
+
+// listing functions
 
 // default returns all listings in DB
 async function getAllListings(maxReturned) {
@@ -167,6 +162,20 @@ async function deleteListings(category) {
     console.log(counter + " documents deleted");
 }
 
+// User functions
+async function getUser(userId) {
+    const docRef = doc(db, "userInfomation", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        // console.log("Document data:", docSnap.data());
+        return docSnap.data();
+    } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}
+
 export {
     getAllListings,
     addListingNoImage,
@@ -175,4 +184,5 @@ export {
     getListingsByCategory,
     getListingsByPrice,
     getNearbyListings,
+    getUser,
 };
