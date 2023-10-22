@@ -193,7 +193,6 @@
             filterByDistance(foodArr){
                 var result = []
 
-                // console.log(this.foodItems[0])
 
                 for(var i=0;i<foodArr.length;i++) {
                     var food = foodArr[i]
@@ -205,7 +204,6 @@
 
                 console.log(result)
                 return result
-                // console.log('item', this.foodItemsFiltered[0])
             },
             filterByName(foodArr){
                 var result = []
