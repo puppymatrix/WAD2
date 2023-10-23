@@ -315,7 +315,7 @@ async function deleteExpiredChopes() {
                     chopesToUpdate.forEach((index) => {
                         chopes.splice(index, 1);
                     });
-                    batch.update(userRef, { chopes: chopes });
+                    batch.update(userRef, user);
                     hasChanges = true;
                     console.log("Expired chopes removed from user with ID: " + userRef.id);
                 }
