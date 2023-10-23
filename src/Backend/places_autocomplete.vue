@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import GoogleAddressAutocomplete from "vue3-google-address-autocomplete";
 
 const address = ref("");

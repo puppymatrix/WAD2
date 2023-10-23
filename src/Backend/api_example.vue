@@ -141,7 +141,7 @@ export default {
             const longitude = position.coords.longitude;
 
             this.userLocation = { latitude, longitude };
-            console.log(this.userLocation);
+            // console.log(this.userLocation);
             // Do something with the position
         };
 
