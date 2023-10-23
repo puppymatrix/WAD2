@@ -346,6 +346,7 @@ function checkUniqueUsername(username){
    
     console.log('length', querySnapshot.length)
     return (querySnapshot.length == 0)
+}
 
 function filterByDistance(foodArr, filterDistance){
                 var result = []
@@ -362,37 +363,37 @@ function filterByDistance(foodArr, filterDistance){
                 return result
             }
 
-            function filterByName(foodArr, name){
-                var result = []
-                var query = name.toLowerCase()
-            
-                for(var i=0;i<foodArr.length;i++) {
-                    let itemName = foodArr[i].info.ListingName
-                    let itemNameArr = itemName.split(" ")
-            
-                    var output = ""
-            
-                    for(let word of itemNameArr){
-                        word = word.toLowerCase()
-                        output += word
-                    }
-            
-                    // console.log()
-                    console.log('arr', itemNameArr, 'query', query)
-            
-                    // if (itemNameArr.includes(query)){
-                    //     console.log('true')
-                    //     result.push(foodArr[i])
-                    // }
-                    if (matchString(output, name)){
-                        console.log('true')
-                        result.push(foodArr[i])
-                    }
-                }
-            
-                console.log(result)
-                return result
-            }
+function filterByName(foodArr, name){
+    var result = []
+    var query = name.toLowerCase()
+
+    for(var i=0;i<foodArr.length;i++) {
+        let itemName = foodArr[i].info.ListingName
+        let itemNameArr = itemName.split(" ")
+
+        var output = ""
+
+        for(let word of itemNameArr){
+            word = word.toLowerCase()
+            output += word
+        }
+
+        // console.log()
+        console.log('arr', itemNameArr, 'query', query)
+
+        // if (itemNameArr.includes(query)){
+        //     console.log('true')
+        //     result.push(foodArr[i])
+        // }
+        if (matchString(output, name)){
+            console.log('true')
+            result.push(foodArr[i])
+        }
+    }
+
+    console.log(result)
+    return result
+}
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const EARTHRADIUS = 6371; // Radius of the Earth in kilometers
@@ -429,52 +430,6 @@ function matchString(input, pattern) {
 }
 
 
-function filterByDistance(foodArr, distance){
-    var result = []
-
-
-    for(var i=0;i<foodArr.length;i++) {
-        var food = foodArr[i]
-        if (food.distance <= distance){
-            result.push(food)
-        }
-    }
-
-    // console.log(result)
-    return result
-}
-function filterByName(foodArr, name){
-    var result = []
-    var query = name.toLowerCase()
-
-    for(var i=0;i<foodArr.length;i++) {
-        let itemName = foodArr[i].info.ListingName
-        let itemNameArr = itemName.split(" ")
-
-        var output = ""
-
-        for(let word of itemNameArr){
-            word = word.toLowerCase()
-            output += word
-        }
-
-        // console.log()
-        console.log('arr', itemNameArr, 'query', query)
-
-        // if (itemNameArr.includes(query)){
-        //     console.log('true')
-        //     result.push(foodArr[i])
-        // }
-        if (matchString(output, name)){
-            console.log('true')
-            result.push(foodArr[i])
-        }
-    }
-
-    console.log(result)
-    return result
-}
-
 export {
     getAllListings,
     addListingNoImage,
@@ -492,9 +447,6 @@ export {
     chopeListing,
     collectListing,
     deleteExpiredChopes,
-    filterByDistance,
-    filterByName,
-    matchString,
     calculateDistance
 };
 
