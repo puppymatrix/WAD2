@@ -16,6 +16,7 @@ import SearchBar from "../components/SearchBar.vue";
                     <button
                         type="button"
                         class="btn btn-outline-success d-flex align-items-center justify-content-center"
+                        @click="navigate=>{$router.push('/mapView')}"
                     >
                         <img
                             src="../components/icons/googleMaps.png"
@@ -24,6 +25,7 @@ import SearchBar from "../components/SearchBar.vue";
                             style="width: 20px"
                         />
                         Map View
+                       
                     </button>
                 </div>
             </div>

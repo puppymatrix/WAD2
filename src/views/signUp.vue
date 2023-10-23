@@ -1,6 +1,4 @@
-<!-- <script setup type="module'">
-import { validateForm} from "../components/functions/functions.js";
-</script> -->
+
 
 <template>
     <div class="container-fluid"  style = "height: 100%">
@@ -35,7 +33,7 @@ import { validateForm} from "../components/functions/functions.js";
                         <div class="col mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" v-model="formData.username" id="text" placeholder="Enter Username">
-                            <span v-if="errors.username" class="error text-danger">{{ username.email }}</span>
+                            <span v-if="errors.username" class="error text-danger">{{ errors.username }}</span>
                         </div>
                     </div>
 
@@ -84,10 +82,8 @@ import { validateForm} from "../components/functions/functions.js";
 
                     <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
 
-                    <!-- <div class="row"> -->
                     <p class="mt-1">
                         Already have an account? Log in <a href="/logIn" style="display:inline">here</a>
-                        <!-- </div> -->
                     </p>
                        
                 </form>
@@ -103,6 +99,7 @@ import { validateForm} from "../components/functions/functions.js";
 import { db } from "../firebase/index.js";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import { collection, addDoc } from 'firebase/firestore'
+import { checkUniqueUsername } from "../firebase/api";
 
 export default {
 
@@ -112,21 +109,19 @@ export default {
         pwStatus: 'Show Password',
 
         formData: {
-        email: '',
-        password: '',
-        username: '',
-        firstName: '',
-        lastName: '',
-        accountType: 'Individual'
-        // Add more form fields here
-      },
+            email: '',
+            password: '',
+            username: '',
+            firstName: '',
+            lastName: '',
+            accountType: 'Individual'
+        },
       errors: {
         email: '',
         firstName: '',
         lastName: '',
         username: '',
         password: []
-        // Initialize errors for other form fields
       },
     };
   },
@@ -142,8 +137,7 @@ export default {
             }
         },
 
-    createAccount(){ //INCOMPLETE
-        // i think this is where it connects to the database 
+    createAccount(){ 
 
         if (this.validateForm()){
             const auth = getAuth();
@@ -153,7 +147,6 @@ export default {
                 // Signed up 
                 const user = userCredential.user;
                 const uid = user.uid
-                console.log('account creation successful: user.uid')
                 alert('account creation successful')
 
                 //insert into firestore
@@ -162,7 +155,7 @@ export default {
                     lastName: this.formData.lastName,
                     username: this.formData.username,
                     email: this.formData.email,
-                    password: this.formData.password, 
+                    // password: this.formData.password, 
                     accountType: this.formData.accountType,
                     choped: [],
                 };
@@ -174,22 +167,16 @@ export default {
                 if (docRef){
                     console.log("Document inserted successfully");
                 }
-                // return setDoc(userDocRef, userData);
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                // ..
                 console.log('Firebase Authentication Error:', errorCode, errorMessage)
             });
         } else{
             //display errors
         }
    }, 
-
-    usernameExists(){ //INCOMPLETE
-        
-    },
 
     validateForm(){
 
@@ -211,7 +198,10 @@ export default {
                 isValid = false
             }
 
-            if (!this.formData.email.split('@').length == 2){
+            if (this.formData.email == ""){
+                this.errors.email = "Required"
+                isValid = false
+            } else if (!this.formData.email.split('@').length == 2){
                 this.errors.email = "Wrong email format"
                 isValid = false
             }
@@ -224,6 +214,15 @@ export default {
                 }
                 isValid = false
             } 
+
+            if (this.formData.username == ""){
+                this.errors.username = "Required"
+                isValid = false
+            }
+            else if (!checkUniqueUsername(this.formData.username)){
+                this.errors.username = "Username is taken"
+                isValid = false
+            }
 
             if (!this.hasSpecialCharacters(this.formData.password)){
 
