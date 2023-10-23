@@ -334,6 +334,87 @@ async function deleteExpiredChopes() {
     }
 }
 
+function filterByDistance(foodArr, filterDistance){
+                var result = []
+
+                for(var i=0;i<foodArr.length;i++) {
+                    var food = foodArr[i]
+                    if (food.distance <= filterDistance){
+                        // console.log('wothin range')
+                        result.push(food)
+                    }
+                }
+
+                console.log(result)
+                return result
+            }
+
+            function filterByName(foodArr, name){
+                var result = []
+                var query = name.toLowerCase()
+            
+                for(var i=0;i<foodArr.length;i++) {
+                    let itemName = foodArr[i].info.ListingName
+                    let itemNameArr = itemName.split(" ")
+            
+                    var output = ""
+            
+                    for(let word of itemNameArr){
+                        word = word.toLowerCase()
+                        output += word
+                    }
+            
+                    // console.log()
+                    console.log('arr', itemNameArr, 'query', query)
+            
+                    // if (itemNameArr.includes(query)){
+                    //     console.log('true')
+                    //     result.push(foodArr[i])
+                    // }
+                    if (matchString(output, name)){
+                        console.log('true')
+                        result.push(foodArr[i])
+                    }
+                }
+            
+                console.log(result)
+                return result
+            }
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const EARTHRADIUS = 6371; // Radius of the Earth in kilometers
+
+    // Convert latitude and longitude from degrees to radians
+    const radLat1 = (Math.PI * lat1) / 180;
+    const radLon1 = (Math.PI * lon1) / 180;
+    const radLat2 = (Math.PI * lat2) / 180;
+    const radLon2 = (Math.PI * lon2) / 180;
+
+    // Haversine formula
+    const dLat = radLat2 - radLat1;
+    const dLon = radLon2 - radLon1;
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.asin(Math.sqrt(a));
+
+    // Calculate the distance
+    const distance = EARTHRADIUS * c; // Result in kilometers
+
+    return distance;
+}
+
+function matchString(input, pattern) {
+    // Escape special regex characters in the plain string
+    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    
+    // Create a regex object with the escaped pattern
+    const regex = new RegExp(escapedPattern);
+    console.log(input, pattern)
+    // Use the test() method to check if the input matches the pattern
+    return regex.test(input);
+}
+
 
 export {
     getAllListings,
@@ -348,4 +429,8 @@ export {
     chopeListing,
     collectListing,
     deleteExpiredChopes,
+    filterByDistance,
+    filterByName,
+    matchString,
+    calculateDistance
 };
