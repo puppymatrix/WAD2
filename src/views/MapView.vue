@@ -7,6 +7,7 @@
     import { db } from '../firebase/index.js'
     const icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
 
+
     import { matchString, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     
 </script>
@@ -218,7 +219,7 @@
 
                 // console.log(this.foodItems[0])
             },
-            
+
             loadFoodByNameAndDistance(){
                 console.log('foodItems', this.foodItems)
                 this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
@@ -231,4 +232,6 @@
         }
             
     };
+
   </script>
+

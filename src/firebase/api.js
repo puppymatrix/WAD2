@@ -334,6 +334,19 @@ async function deleteExpiredChopes() {
     }
 }
 
+
+function checkUniqueUsername(username){
+
+    // returns true if username is unique and false if otherwise
+    const usernameRef = collection(db, "userInformation")
+
+    const q = query(usernameRef, where("username", "==", username));
+    
+    const querySnapshot = getDocs(q);
+   
+    console.log('length', querySnapshot.length)
+    return (querySnapshot.length == 0)
+
 function filterByDistance(foodArr, filterDistance){
                 var result = []
 
@@ -402,6 +415,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     const distance = EARTHRADIUS * c; // Result in kilometers
 
     return distance;
+
 }
 
 function matchString(input, pattern) {
@@ -410,11 +424,56 @@ function matchString(input, pattern) {
     
     // Create a regex object with the escaped pattern
     const regex = new RegExp(escapedPattern);
-    console.log(input, pattern)
     // Use the test() method to check if the input matches the pattern
     return regex.test(input);
 }
 
+
+function filterByDistance(foodArr, distance){
+    var result = []
+
+
+    for(var i=0;i<foodArr.length;i++) {
+        var food = foodArr[i]
+        if (food.distance <= distance){
+            result.push(food)
+        }
+    }
+
+    // console.log(result)
+    return result
+}
+function filterByName(foodArr, name){
+    var result = []
+    var query = name.toLowerCase()
+
+    for(var i=0;i<foodArr.length;i++) {
+        let itemName = foodArr[i].info.ListingName
+        let itemNameArr = itemName.split(" ")
+
+        var output = ""
+
+        for(let word of itemNameArr){
+            word = word.toLowerCase()
+            output += word
+        }
+
+        // console.log()
+        console.log('arr', itemNameArr, 'query', query)
+
+        // if (itemNameArr.includes(query)){
+        //     console.log('true')
+        //     result.push(foodArr[i])
+        // }
+        if (matchString(output, name)){
+            console.log('true')
+            result.push(foodArr[i])
+        }
+    }
+
+    console.log(result)
+    return result
+}
 
 export {
     getAllListings,
@@ -424,6 +483,10 @@ export {
     getListingsByCategory,
     getListingsByPrice,
     getNearbyListings,
+    checkUniqueUsername,
+    matchString,
+    filterByDistance,
+    filterByName,
     getUser,
     getUsersWhoChopedCollectedListing,
     chopeListing,
@@ -434,3 +497,4 @@ export {
     matchString,
     calculateDistance
 };
+

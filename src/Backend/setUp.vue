@@ -1,5 +1,5 @@
 <template>
-    <body>
+    <div class="p-3">
         <div>
             <button @click="addMultipleListings('cookedFood', 48)">
                 Add random listings for cookedFood category
@@ -14,7 +14,7 @@
         </div>
         <br />
         <button @click="addRandomUsers()">Add Random Users</button>
-    </body>
+    </div>
 </template>
 
 <script>
