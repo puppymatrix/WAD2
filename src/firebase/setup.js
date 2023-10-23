@@ -10,10 +10,9 @@ import {
     deleteDoc,
 } from "firebase/firestore";
 
-import {
-    ref,
-    getDownloadURL,
-} from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
+
+import { getAllListings } from "@/firebase/api";
 
 async function deleteListings(category) {
     const q = query(
@@ -164,4 +163,53 @@ async function addCategories(foodCategories) {
     console.log("Document written with ID: ", docRef.id);
 }
 
-export { addRandomListing, deleteListings };
+// Create 10 random users with 10 listings and 10 chopes each
+async function addRandomUsers() {
+    for (let i = 0; i < 10; i++) {
+        const { email, password } = generateRandomUser();
+        const listings = await getAllListings();
+        const { selectedListings, selectedChopes } =
+            selectRandomListingsAndChopes(listings);
+        let userType;
+        if (i % 2 === 0) {
+            userType = "individual";
+        } else {
+            userType = "business";
+        }
+        // Add a new document in collection "listings"
+        const docRef = await addDoc(collection(db, "userInformation"), {
+            email,
+            password,
+            chopes: selectedChopes,
+            myListings: selectedListings,
+            accountType: userType,
+        });
+        console.log("Document written with ID: ", docRef.id);
+    }
+}
+
+// Function to generate a random email and password
+function generateRandomUser() {
+    const email = Math.random().toString(36).substring(2, 5) + "@example.com";
+    const password = Math.random().toString(36).substring(2, 10);
+    return { email, password };
+}
+
+// Function to randomly select 10 listings and 10 chopes
+function selectRandomListingsAndChopes(listings) {
+    const selectedListings = [];
+    const selectedChopes = [];
+    for (let i = 0; i < 10; i++) {
+        const randomIndex = Math.floor(Math.random() * listings.length);
+        selectedListings.push(listings[randomIndex].Id);
+        selectedChopes.push({
+            listingId: listings[randomIndex].Id,
+            collected: Math.random() < 0.5,
+        });
+    }
+    return { selectedListings, selectedChopes };
+}
+
+
+
+export { addRandomListing, deleteListings, addRandomUsers };
