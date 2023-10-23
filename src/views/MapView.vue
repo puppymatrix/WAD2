@@ -7,7 +7,8 @@
     import { db } from '../firebase/index.js'
     const icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
 
-    import { matchString, filterByDistance, filterByName } from "../firebase/api"
+
+    import { matchString, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     
 </script>
 
@@ -98,7 +99,7 @@
                     class="form-control bg-secondary-subtle" 
                     placeholder="Find the food you want!" 
                     v-model="searchQuery"
-                    @keyup.enter="loadFood()"
+                    @keyup.enter="loadFoodByNameAndDistance"
                 />
                 <button class="btn text-bg-listing d-flex align-items-center justify-content-center" type="button" id="button-addon2" >
                 <!-- <i class="search"></i> -->
@@ -208,7 +209,7 @@
                 // doc.data() is never undefined for query doc snapshots
                 // console.log(doc.id, " => ", doc.data().Location);
 
-                let distanceToUser = Number.parseFloat(this.calculateDistance(this.userLocation.lat, this.userLocation.lng, doc.data().Location.latitude, doc.data().Location.longitude).toFixed(3))
+                let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, doc.data().Location.latitude, doc.data().Location.longitude).toFixed(3))
                 this.foodItems.push({
                     listingId: doc.id,
                     info: doc.data(),
@@ -218,28 +219,7 @@
 
                 // console.log(this.foodItems[0])
             },
-            calculateDistance(userLat, userLong, foodLat, foodLong) {
-                const earthRadius = 6371; // Radius of the Earth in kilometers
 
-                // Convert latitude and longitude from degrees to radians
-                const radLat1 = (Math.PI * userLat) / 180;
-                const radLon1 = (Math.PI * userLong) / 180;
-                const radLat2 = (Math.PI * foodLat) / 180;
-                const radLon2 = (Math.PI * foodLong) / 180;
-
-                // Haversine formula
-                const dLat = radLat2 - radLat1;
-                const dLon = radLon2 - radLon1;
-                const a =
-                    Math.sin(dLat / 2) ** 2 +
-                    Math.cos(radLat1) * Math.cos(radLat2) * Math.sin(dLon / 2) ** 2;
-                const c = 2 * Math.asin(Math.sqrt(a));
-
-                // Calculate the distance
-                const distance = earthRadius * c; // Result in kilometers
-
-                return distance;
-            },
             loadFoodByNameAndDistance(){
                 console.log('foodItems', this.foodItems)
                 this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
@@ -252,4 +232,6 @@
         }
             
     };
+
   </script>
+
