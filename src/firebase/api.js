@@ -175,12 +175,7 @@ function checkUniqueUsername(username){
     const q = query(usernameRef, where("username", "==", username));
     
     const querySnapshot = getDocs(q);
-    // querySnapshot.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   console.log(doc.id, " => ", doc.data());
-      
-    // });
-
+   
     console.log('length', querySnapshot.length)
     return (querySnapshot.length == 0)
 }
@@ -203,7 +198,6 @@ function filterByDistance(foodArr, distance){
     for(var i=0;i<foodArr.length;i++) {
         var food = foodArr[i]
         if (food.distance <= distance){
-            console.log('wothin range')
             result.push(food)
         }
     }

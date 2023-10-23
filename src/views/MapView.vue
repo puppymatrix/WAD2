@@ -106,14 +106,18 @@
                 />
                 </button>
             </div>
-<!-- 
-            <div class="row">
-                Distance (in KM): <input type="number" class="" v-model="filterDistance">
-            </div> -->
+
 
             <div class="row slidecontainer">
             Distance (in KM): {{ filterDistance }}
                 <input type="range" min="1" max="100" v-model="filterDistance" class="slider" id="myRange">
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <button @click="loadByDistance" class = "btn btn-secondary">Food Nearby</button>
+                </div>
+                <div class="col-10"></div>
             </div>
 
         </div>    
@@ -123,11 +127,7 @@
     </div>
   </template>
 
-  <!-- 
-    docs: https://www.npmjs.com/package/vue3-google-map
-    need: 
-    - geolocation API  
-   -->
+  
   
   <script>
     import { defineComponent } from "vue";
@@ -240,11 +240,13 @@
 
                 return distance;
             },
-            
-
-            loadFood(){
+            loadFoodByNameAndDistance(){
                 console.log('foodItems', this.foodItems)
                 this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
+                console.log(this.foodItemsFiltered)
+            },
+            loadByDistance(){
+                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
                 console.log(this.foodItemsFiltered)
             }
         }
