@@ -14,12 +14,10 @@
                     <form @submit.prevent="checkCredentials">
                         <div class="row">
                             <div class="col mb-3">
-                                <span v-if="errors.logIn" class="error text-danger">{{ errors.logIn }}</span>
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
                             </div>
                         </div>
-                        
   
 
 
@@ -27,19 +25,30 @@
                             <!-- <div class="mb-3 pe-0"> -->
                                 <div class="col mb-3">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">                   
+                                    <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">    
+                                    <label class="mx-2"><input type="checkbox" id="toggle-password" v-bind="showPassword" @click="togglePassword()"/> 
+                                <div id="pwStatus"> &nbsp{{ pwStatus }}</div></label>               
                                     <br>
+                                   
                                 </div>
                                 
                             <!-- </div> -->
                         </div>
-                            
+                        
+                        <div class="row">
+                            <div class="col">
+                                <div class="col mb-3 error py-1">
+                                    <span v-if="errors.logIn" class=" text-danger">{{ errors.logIn }}</span>
+                                    <span v-else="errors.logIn" class="text-danger noError"></span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <!-- <div class="col-6">
                                 not sure how to do this LOL
                                 <input type="checkbox" id="remember" style="transform: scale(1.5);"> &nbsp Remember me                        
                             </div> -->
-                            {{ errors.logIn }}
+                            <!-- {{ errors.logIn }} -->
 
                             <div class="col-6 mb-3">
                                 <a href="/resetPassword">Forgot Password?</a>
@@ -78,6 +87,9 @@ import { mapState, mapActions } from 'vuex'
     export default {
         data() {
             return {
+                showPassword: false, //to toggle password view
+                pwStatus: 'Show Password',
+
                 formData: {
                     email: '',
                     password: '',
@@ -96,6 +108,16 @@ import { mapState, mapActions } from 'vuex'
             ])
         },
         methods: {
+            togglePassword(){
+            this.showPassword = !this.showPassword
+            if(this.showPassword){ //show password
+                document.getElementById('password').type = "text"
+                this.pwStatus = "Hide Password"
+            }else{ //mask password
+                document.getElementById('password').type = "password"
+                this.pwStatus = "Show Password"
+            }
+        },
             checkCredentials() {
                 // const auth = getAuth()
 
@@ -127,3 +149,13 @@ import { mapState, mapActions } from 'vuex'
     };
 
 </script>
+
+<style>
+.error{
+    font-style: italic;
+}
+
+#pwStatus{
+    display: inline
+}
+</style>
