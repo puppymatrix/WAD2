@@ -32,6 +32,16 @@ const router = createRouter({
     },
 
     {
+      path: '/lister',
+      name: 'lister',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/listerView.vue')
+
+    },
+
+    {
       path: '/mapView',
       name: 'mapView',
       // route level code-splitting
