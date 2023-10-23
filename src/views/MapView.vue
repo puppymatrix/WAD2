@@ -5,31 +5,89 @@
     import { collection, getDocs, query } from "firebase/firestore";
 
     import { db } from '../firebase/index.js'
-    const image = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+    const icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+
+    import { matchString, filterByDistance, filterByName } from "../firebase/api"
+    
 </script>
 
 <template>
     <div class="row">
         <div class="col-1"></div>
         <div class="container m-3 col-10">
+
+            <div id="map"></div>
             <!-- map centered in singapore for now -->
             <GoogleMap 
                 api-key="AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE" 
                 style="width: 100%; 
                 height: 500px"
                 :center="userLocation" 
-                :zoom="12" 
+                :zoom="12"
                 >
                 <!-- user location marker, restyle this   -->
-                <Marker :options="{ position: userLocation, icon: image }">
+                <Marker :options="{ 
+                                    position: userLocation, 
+                                    icon: icon,
+                                    background
+                                }">
                     <!-- //nest information inside  -->
                 </Marker>
 
-                other markers
-                <Marker :options="{ position: {lat: listing.info.Location.latitude, lng: listing.info.Location.longitude} }" v-for="listing in foodItemsFiltered"/>
+                <!-- other markers -->
 
-                <!-- <InfoWindow :options="{ position: center, content: 'Hello World!' }" />
-                <InfoWindow :options="{ position: { lat: 1.290270, lng: 103.851959 } }"> Content passed through slot </InfoWindow> -->
+                <Marker :options="{ position: {
+                                                lat: listing.info.Location.latitude, 
+                                                lng: listing.info.Location.longitude,
+                                                
+                                            },
+                                    scale: 1.5,
+                                   
+                                    }" 
+                    v-for="listing in foodItemsFiltered">
+
+                    <InfoWindow :options="{
+                                            minWidth: 100,
+                                            maxWidth: 300           
+                    }" >
+
+
+                        <div class="card">
+                            <div id="carouselExample" class="carousel slide">
+                                <div class="carousel-inner"
+                                    v-for="(url, index) in listing.info.ImageUrls" :key="index" 
+                                    :class="index == 0 ? 'carousel-item active' : 'carousel-item'">                
+                                        <img :src=url class="d-block w-100" alt="..."> 
+                                </div>
+                                    
+                                
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">{{ listing.info.ListingName }}</h5>
+                                <ul>
+                                    <li>Category: {{ listing.info.Category }}</li>
+                                    <li>Expiry Date: {{ listing.info.ExpiryDate.toDate() }}</li>
+                                    <li>Perishable: {{ listing.info.Perishable ? "Yes": "no" }}</li>
+                                    <li>Price: {{ listing.info.Price }}</li>
+                                    <li>Quantity Available: {{ listing.info.QtyAvailable }}</li>
+                                </ul>                                
+                                <a href="#" class="btn btn-link">View more...</a>
+                            </div>
+                        </div>
+                    </InfoWindow>
+                </Marker>
+
+
             </GoogleMap>           
             <br> 
 
@@ -48,14 +106,18 @@
                 />
                 </button>
             </div>
-<!-- 
-            <div class="row">
-                Distance (in KM): <input type="number" class="" v-model="filterDistance">
-            </div> -->
+
 
             <div class="row slidecontainer">
             Distance (in KM): {{ filterDistance }}
                 <input type="range" min="1" max="100" v-model="filterDistance" class="slider" id="myRange">
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <button @click="loadByDistance" class = "btn btn-secondary">Food Nearby</button>
+                </div>
+                <div class="col-10"></div>
             </div>
 
         </div>    
@@ -65,11 +127,7 @@
     </div>
   </template>
 
-  <!-- 
-    docs: https://www.npmjs.com/package/vue3-google-map
-    need: 
-    - geolocation API  
-   -->
+  
   
   <script>
     import { defineComponent } from "vue";
@@ -91,17 +149,9 @@
                 // center: { lat: 1.290270, lng: 103.851959 } // center on singapore for now -> CHANGE TO user's current location (https://www.youtube.com/watch?v=KARBEHUyooM)
             }
         },
-        // computed:{
-        //     coordinates(){
-        //         return this.getCoordinates()
-        //     },
-        //     userLocation(){
-        //         return this.getUserLocation()
-        //     }
-
-        // },
         methods: {
             getCoordinates() {
+                // this function gets the coordinates
                 const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
 
                 console.log(url)
@@ -190,59 +240,16 @@
 
                 return distance;
             },
-            filterByDistance(foodArr){
-                var result = []
-
-
-                for(var i=0;i<foodArr.length;i++) {
-                    var food = foodArr[i]
-                    if (food.distance <= this.filterDistance){
-                        console.log('wothin range')
-                        result.push(food)
-                    }
-                }
-
-                console.log(result)
-                return result
-            },
-            filterByName(foodArr){
-                var result = []
-                var query = this.searchQuery.toLowerCase()
-
-                for(var i=0;i<foodArr.length;i++) {
-                    let itemName = foodArr[i].info.ListingName
-                    let itemNameArr = itemName.split(" ")
-
-                    for(let word of itemNameArr){
-                        word = word.toLowerCase()
-                    }
-
-                    // console.log()
-                    console.log('arr', itemNameArr, 'query', query)
-
-                    if (itemNameArr.includes(query)){
-                        console.log('true')
-                        result.push(foodArr[i])
-                    }
-                }
-
-                console.log(result)
-                return result
-            },
-
-            loadFood(){
+            loadFoodByNameAndDistance(){
                 console.log('foodItems', this.foodItems)
-                this.foodItemsFiltered = this.filterByDistance(this.filterByName(this.foodItems))
+                this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
+                console.log(this.foodItemsFiltered)
+            },
+            loadByDistance(){
+                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
                 console.log(this.foodItemsFiltered)
             }
         }
             
     };
   </script>
-  
- 
-<!-- 
-    outstanding: connect to firestore and query food items 
-        - get location of food and plot onto the map 
-        - 
- -->
