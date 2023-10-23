@@ -12,7 +12,7 @@
                 <div class="col-8">
                     <div class="container justify-content-center align-items-center">
                         <div class="row">
-                            <img src="images/logo.png" alt="" class="p-4" style="width: 80%">
+                            <!-- <img src="images/logo.png" alt="" class="p-4" style="width: 80%"> -->
                         </div>
                         <div class="row text-white">
                             Copyright © 2020 FoodCatch Pte Ltd. <br>
@@ -20,10 +20,10 @@
                         </div>
                         <div class="row" style="margin-top: 20%">
                             <div class="col-10 ps-0">
-                                <img src="images/icons/instagram.png" alt="" class="img-fluid">
+                                <!-- <img src="images/icons/instagram.png" alt="" class="img-fluid">
                                 <img src="images/icons/basketball.png" alt="" class="img-fluid">
                                 <img src="images/icons/twitter.png" alt="" class="img-fluid">
-                                <img src="images/icons/youtube.png" alt="" class="img-fluid">
+                                <img src="images/icons/youtube.png" alt="" class="img-fluid"> -->
                             </div>
                             <div class="col-2"></div>
                         </div>
@@ -87,7 +87,7 @@
                     <input class="form-control" type="search" placeholder="Your Email Address" aria-label="Search">
                     <div class="input-group-append"> <!-- Append the button to the input group -->
                         <button class="btn footerBtn" type="submit">
-                            <img src="images/icons/send.png" alt="" >Submit
+                            <!-- <img src="images/icons/send.png" alt="" >Submit -->
                         </button>
                     </div>
                 </div>

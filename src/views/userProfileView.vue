@@ -7,13 +7,13 @@
         <!-- LHS: sticky navbar -->
         <div class="col-sm-3">
             <div class="sideNav">
-                <img id="profilePic" src="../components/images/zenith.jpg" class="rounded-circle mb-3" style="height: 150px; border: 1px solid #f2f2f2;" alt="Avatar"/>
-                <h5 class="mb-2" style=""><strong>{{ fName +" "+ lName }}</strong></h5>
+                <!-- <img id="profilePic" src="../components/images/zenith.jpg" class="rounded-circle mb-3" style="height: 150px; border: 1px solid #f2f2f2;" alt="Avatar"/> -->
+                <h5 class="mb-2" style="">Welcome, <strong>{{ fName +" "+ lName }}</strong></h5>
                 <p class="text-muted"><span class="badge bg-warning">INDIVIDUAL</span></p>
                 <a href="#userInfo" class="btn">My Info</a> 
                 <a href="#userListings" class="btn">My Listings</a> 
                 <a href="#chopedListings" class="btn">My Chopes</a> 
-                <a href="#others" class="btn">Others</a> 
+                
             </div>
         </div>
         <!-- spacer -->
@@ -67,7 +67,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button style="float: right" type="submit" class="btn btn-primary" @click.enter="updateInfo()">Update</button>
+                            <button style="float: right" type="submit" class="btn btn-success" @click.enter="updateInfo()">Update</button>
                         </div>
                     </div>
  
@@ -285,15 +285,11 @@
                 </div>
             </div>
             <!-- others div -->
-            <div class="row" id="others">
-              <div class="col">
-                <h1>Other stuff</h1>
-              </div>
-            </div>
+            
         </div>
     </div> 
     <a id="linkTop" href="#top">
-        <img src="arrow">
+        <!-- <img src="arrow"> -->
         Back to Top
     </a>
 </div> 
@@ -301,12 +297,7 @@
 </template>
 
 <style>
-/* raleway font */
 
-#profilePic{
-    /* somehow need to fix width */
-
-}
 #pwStatus{
     display: inline
 }
@@ -336,6 +327,16 @@
     bottom: 20px; /* Place the button at the bottom of the page */
     right: 30px;
     position: fixed;
+    background-color: #A1BF73;
+    color: black;
+    padding: 1%;
+    border-radius: 50%;
+    
+}
+
+#linkTop:hover{
+    background-color: green;
+    color: white
 }
 
 
@@ -378,6 +379,7 @@ export default {
         }
     }
 }
+
 
 
 

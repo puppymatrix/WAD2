@@ -54,6 +54,8 @@
                             <div id="passwordErrors" >
                                     <text v-for="error in errors.password" :key="error" class="d-block text-danger">{{ error }}</text>
                             </div>   
+                            <label class="mx-2"><input type="checkbox" id="toggle-password" v-bind="showPassword" @click="togglePassword()"/> 
+                                <div id="pwStatus"> &nbsp{{ pwStatus }}</div></label>
                         </div>
                         </div>
                     </div>
@@ -103,6 +105,9 @@ export default {
 
   data() {
     return {
+        showPassword: false, //to toggle password view
+        pwStatus: 'Show Password',
+
         formData: {
             email: '',
             password: '',
@@ -121,6 +126,16 @@ export default {
     };
   },
   methods: {
+    togglePassword(){
+            this.showPassword = !this.showPassword
+            if(this.showPassword){ //show password
+                document.getElementById('password').type = "text"
+                this.pwStatus = "Hide Password"
+            }else{ //mask password
+                document.getElementById('password').type = "password"
+                this.pwStatus = "Show Password"
+            }
+        },
 
     createAccount(){ 
 
@@ -256,3 +271,8 @@ export default {
 };
 
 </script>
+<style>
+#pwStatus{
+    display: inline
+}
+</style>

@@ -1,4 +1,4 @@
-import { db, storage } from "@/firebase";
+import { db } from "@/firebase";
 import {
     collection,
     doc,
@@ -11,14 +11,10 @@ import {
     query,
     where,
     limit,
+    writeBatch,
 } from "firebase/firestore";
-import {
-    ref,
-    uploadBytesResumable,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
-import { get } from "jquery";
+
+// listing functions
 
 // default returns all listings in DB
 async function getAllListings(maxReturned) {
@@ -249,5 +245,10 @@ export {
     matchString,
     filterByDistance,
     filterByName
+    getUser,
+    getUsersWhoChopedCollectedListing,
+    chopeListing,
+    collectListing,
+    deleteExpiredChopes,
 };
 

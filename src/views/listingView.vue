@@ -151,8 +151,8 @@
             <h5>Similar food listings</h5>
             <div class="album py-2">
                 <div class="container-fluid px-0">
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        <div class="col">
+                    <div class="row g-3">
+                        <div class="col-lg-3 col-md-4 col-sm-12">
                             <div class="card shadow-sm">
                                 <img
                                     src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
@@ -183,7 +183,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-3 col-md-4 col-sm-12">
                             <div class="card shadow-sm">
                                 <img
                                     src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
@@ -214,7 +214,69 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <div class="card shadow-sm">
+                                <img
+                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
+                                    alt=""
+                                    class="card-img-top"
+                                />
+                                <div class="card-body border-top border-2">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
+                                    <h5 class="card-title">Vegetables</h5>
+                                    <p class="card-text d-flex align-items-center mb-3">
+                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
+                                    </p>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <IMdiuser class="me-1"/>Glenda123
+                                    </h6>
+                                    <div
+                                        class="d-flex justify-content-between align-items-center"
+                                    >
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline-secondary"
+                                            >
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <div class="card shadow-sm">
+                                <img
+                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
+                                    alt=""
+                                    class="card-img-top"
+                                />
+                                <div class="card-body border-top border-2">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
+                                    <h5 class="card-title">Vegetables</h5>
+                                    <p class="card-text d-flex align-items-center mb-3">
+                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
+                                    </p>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <IMdiuser class="me-1"/>Glenda123
+                                    </h6>
+                                    <div
+                                        class="d-flex justify-content-between align-items-center"
+                                    >
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline-secondary"
+                                            >
+                                                View
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-12">
                             <div class="card shadow-sm">
                                 <img
                                     src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
