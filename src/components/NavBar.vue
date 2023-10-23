@@ -15,7 +15,7 @@ import { RouterLink, RouterView } from "vue-router";
             <div class="container-fluid">
             <!-- brand image -->
             <a class="navbar-brand" href="#">
-                <a href="/"><img src="../components/icons/images/logo.png" alt="" class="img-fluid" id="logo"></a>
+                <a href="/"><img src="../components/icons/foodcatch-logo.png" style="height: 40px;" alt="" class="img-fluid" id="logo"></a>
             </a>
             <!-- toggle button???? -->
             <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
