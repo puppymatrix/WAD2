@@ -15,10 +15,12 @@ export default {
 </script>
 
 <template>
-    <!-- <uploadFile />
+    <!-- <setup />
+    <hr> -->
+    <uploadFile />
     <hr>
     <api_example />
-    <hr> -->
-    <user_api />
+    <hr>
+    <!-- <user_api /> -->
 
 </template>
