@@ -10,7 +10,7 @@ import { RouterLink, RouterView } from "vue-router";
     
         </div> -->
         <!-- logo and links -->
-        <div class="col-8">
+        <div class="col">
             <nav class="navbar navbar-expand-md">
             <div class="container-fluid">
             <!-- brand image -->
@@ -22,7 +22,7 @@ import { RouterLink, RouterView } from "vue-router";
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            
+            <!-- navbar -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item px-3 ml-5">
@@ -34,6 +34,24 @@ import { RouterLink, RouterView } from "vue-router";
                 <li class="nav-item px-3">
                     <a class="nav-link" href="/mapView" >Map</a>
                 </li>
+                <li class="nav-item px-3 ">
+                <!-- profile and logout buttons -->
+                    <div class="justify-content-center p-0" v-if="$store.state.userLoggedIn" >
+                        <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
+                        <div class="d-flex me-3" >
+                            <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
+                            <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
+                            
+                        </div>
+                    </div>
+                    <!-- login and signup buttons -->
+                    <div class="me-0" v-else>
+                        <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+                        <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+                    </div>
+
+                    <div class="col-1" v-if="userLoggedIn"></div>           
+                </li>
             </ul>
 
             </div>
@@ -41,24 +59,24 @@ import { RouterLink, RouterView } from "vue-router";
             </nav>
         </div>
 
-        <div class="col-4" id="rightSideBtns">
+        <!-- <div class="col-4" id="rightSideBtns"> -->
             <!-- profile and logout buttons -->
-            <div class="justify-content-center p-0" v-if="$store.state.userLoggedIn" >
+            <!-- <div class="justify-content-center p-0" v-if="$store.state.userLoggedIn" > -->
                 <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
-                <div class="d-flex me-3" >
+                <!-- <div class="d-flex me-3" >
                     <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
                     <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
                     
                 </div>
-            </div>
+            </div> -->
             <!-- login and signup buttons -->
-            <div class="me-0" v-else>
+            <!-- <div class="me-0" v-else>
                 <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
                 <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
             </div>
 
             <div class="col-1" v-if="userLoggedIn"></div>
-        </div>
+        </div> -->
 
 
     </div>
@@ -96,11 +114,11 @@ import { RouterLink, RouterView } from "vue-router";
 
 }
 
-.navbar-toggler{
+/* .navbar-toggler{
     position: absolute;
     left: 10px;
     top: 10px;
-}
+} */
 #logo {
     height: 40px;
 }
