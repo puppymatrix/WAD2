@@ -1,4 +1,4 @@
-import { db, storage } from "@/firebase";
+import { db } from "@/firebase";
 import {
     collection,
     doc,
@@ -11,17 +11,13 @@ import {
     query,
     where,
     limit,
+    writeBatch,
 } from "firebase/firestore";
-import {
-    ref,
-    uploadBytesResumable,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
-import { get } from "jquery";
+
+// listing functions
 
 // default returns all listings in DB
-async function getAllListings(maxReturned) {
+async function getAllListings(maxReturned = null) {
     let listings = [];
     let q;
     if (typeof maxReturned == "number" && maxReturned >= 0) {
@@ -167,6 +163,247 @@ async function deleteListings(category) {
     console.log(counter + " documents deleted");
 }
 
+// User functions
+async function getUser(userId, type = "all") {
+    const docRef = doc(db, "userInformation", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        // console.log("Document data:", docSnap.data());
+        if (type == "all") {
+            return docSnap.data();
+        } else if (type == "listings") {
+            return docSnap.data()["myListings"];
+        } else if (type == "chopes") {
+            return docSnap.data()["chopes"];
+        }
+    } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}
+
+async function getUsersWhoChopedCollectedListing(listingId) {
+    const users = await getAllUsers();
+    const usersWhoChoped = users.filter((user) => {
+        return (
+            user.details.chopes &&
+            user.details.chopes.some((chope) => chope.listingId === listingId)
+        );
+    });
+    const usersWhoCollected = users.filter((user) => {
+        return (
+            user.details.chopes &&
+            user.details.chopes.some((chope) => chope.collected === true)
+        );
+    });
+
+    return { usersWhoChoped, usersWhoCollected };
+}
+
+async function getAllUsers() {
+    let users = [];
+    const q = query(collection(db, "userInformation"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        users.push({
+            Id: doc.id,
+            details: doc.data(),
+        });
+
+        // console.log(doc.id, " => ", doc.data());
+    });
+    return users;
+}
+
+async function chopeListing(userId, listingId) {
+    const user = await getUser(userId);
+    if (user != null) {
+        if (user.hasOwnProperty("chopes")) {
+            user.chopes.push({
+                listingId: listingId,
+                collected: false,
+                timestamp: Timestamp.now(),
+            });
+        } else {
+            user.chopes = [
+                {
+                    listingId: listingId,
+                    collected: false,
+                    timestamp: Timestamp.now(),
+                },
+            ];
+        }
+        const userRef = doc(db, "userInformation", userId);
+        await setDoc(userRef, user);
+        console.log("Choped listing successfully");
+    } else {
+        console.log("No such document!");
+    }
+}
+
+async function collectListing(userId, listingId) {
+    const user = await getUser(userId);
+    if (user != null) {
+        if (user.hasOwnProperty("chopes")) {
+            const index = user.chopes.findIndex(
+                (chope) => chope.listingId == listingId
+            );
+            if (index != -1) {
+                user.chopes[index].collected = true;
+                const userRef = doc(db, "userInformation", userId);
+                await setDoc(userRef, user);
+                console.log("Collected successfully");
+            } else {
+                console.log("No such document!");
+            }
+        } else {
+            console.log("No such document!");
+        }
+    } else {
+        console.log("No such document!");
+    }
+}
+
+async function deleteExpiredChopes() {
+    try {
+        const now = Timestamp.now(); // Make sure Timestamp is correctly defined
+        const usersRef = collection(db, "userInformation");
+        const usersSnapshot = await getDocs(usersRef);
+
+        const batch = writeBatch(db);
+        let hasChanges = false;
+
+        // usersSnapshot.forEach(async (userData) => {
+        for (const userData of usersSnapshot.docs) {
+            const user = userData.data();
+            const userRef = userData.ref;
+
+            if (user.hasOwnProperty("chopes")) {
+                const chopes = user.chopes;
+                const chopesToUpdate = []; // Initialize an array to track chopes to be updated
+
+                for (let i = 0; i < chopes.length; i++) {
+                    const chope = chopes[i];
+
+                    if (!chope.hasOwnProperty("timestamp")) {
+                        continue;
+                    }
+                    const chopeAge =
+                        now.toMillis() - chope.timestamp.toMillis();
+
+                    if (!chope.collected) {
+                        const listingRef = doc(db, "listings", chope.listingId);
+                        const listingDoc = await getDoc(listingRef);
+                        const perishable =
+                            listingDoc.data().Perishable || false;
+
+                        if (
+                            (perishable && chopeAge > 12 * 60 * 60 * 1000) ||
+                            (!perishable && chopeAge > 48 * 60 * 60 * 1000)
+                        ) {
+                            // Add chopes that should be removed to the chopesToUpdate array
+                            chopesToUpdate.push(i);
+                            console.log(chope.listingId + " expired");
+                        }
+                    }
+                }
+
+                if (chopesToUpdate.length > 0) {
+                    // Remove the expired chopes from the user's chopes array
+                    chopesToUpdate.forEach((index) => {
+                        chopes.splice(index, 1);
+                    });
+                    batch.update(userRef, user);
+                    hasChanges = true;
+                    console.log("Expired chopes removed from user with ID: " + userRef.id);
+                }
+            }
+        };
+
+        // Check if there are chopes to update before committing the batch
+        if (hasChanges) {
+            await batch.commit();
+            console.log("Expired chopes successfully deleted!");
+        } else {
+            console.log("No chopes to update.");
+        }
+    } catch (e) {
+        console.error("An error occurred: ", e);
+    }
+}
+
+function checkUniqueUsername(username){
+
+    // returns true if username is unique and false if otherwise
+    const usernameRef = collection(db, "userInformation")
+
+    const q = query(usernameRef, where("username", "==", username));
+    
+    const querySnapshot = getDocs(q);
+   
+    console.log('length', querySnapshot.length)
+    return (querySnapshot.length == 0)
+}
+
+function matchString(input, pattern) {
+    // Escape special regex characters in the plain string
+    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    
+    // Create a regex object with the escaped pattern
+    const regex = new RegExp(escapedPattern);
+  
+    // Use the test() method to check if the input matches the pattern
+    return regex.test(input);
+}
+
+function filterByDistance(foodArr, distance){
+    var result = []
+
+
+    for(var i=0;i<foodArr.length;i++) {
+        var food = foodArr[i]
+        if (food.distance <= distance){
+            result.push(food)
+        }
+    }
+
+    // console.log(result)
+    return result
+}
+function filterByName(foodArr, name){
+    var result = []
+    var query = name.toLowerCase()
+
+    for(var i=0;i<foodArr.length;i++) {
+        let itemName = foodArr[i].info.ListingName
+        let itemNameArr = itemName.split(" ")
+
+        var output = ""
+
+        for(let word of itemNameArr){
+            word = word.toLowerCase()
+            output += word
+        }
+
+        // console.log()
+        console.log('arr', itemNameArr, 'query', query)
+
+        // if (itemNameArr.includes(query)){
+        //     console.log('true')
+        //     result.push(foodArr[i])
+        // }
+        if (matchString(output, name)){
+            console.log('true')
+            result.push(foodArr[i])
+        }
+    }
+
+    console.log(result)
+    return result
+}
+
 export {
     getAllListings,
     addListingNoImage,
@@ -175,4 +412,14 @@ export {
     getListingsByCategory,
     getListingsByPrice,
     getNearbyListings,
+    checkUniqueUsername,
+    matchString,
+    filterByDistance,
+    filterByName,
+    getUser,
+    getUsersWhoChopedCollectedListing,
+    chopeListing,
+    collectListing,
+    deleteExpiredChopes,
 };
+

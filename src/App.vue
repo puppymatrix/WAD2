@@ -1,39 +1,44 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue"
-
-
-// async function test() {
-//     const docRef = doc(db, "cities", "SF");
-//     const docSnap = await getDoc(docRef);
-
-//     if (docSnap.exists()) {
-//         console.log("Document data:", docSnap.data());
-//     } else {
-//         // docSnap.data() will be undefined in this case
-//         console.log("No such document!");
-//     }
-// }
-
-// test();
-
-</script>
-
 <template>
-    <header>
-        <div class="wrapper">
-            <NavBar />
-        </div>
-    </header>
+    <div>
+        <header>
+            <div class="wrapper">
+                <NavBar />
+            </div>
+        </header>
 
-    <RouterView />
+        <RouterView />
 
-    <Footer />
+        <Footer />
+    </div>
 </template>
 
-<style scoped></style>
-
 <script>
-   
+import { auth as fb_auth } from "@/firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
+
+export default {
+    components: {
+        NavBar,
+        Footer,
+    },
+    created() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, get the UID
+                const uid = user.uid;
+                this.$store.commit('setUser', uid); // Call the setUser mutation to update the state
+                // console.log(uid);
+                // Do something with the UID, such as store it in Vuex or pass it down to child components as a prop
+            } else {
+                // User is signed out
+                this.$store.commit('setUser', null); // Call the setUser mutation to update the state
+            }
+        });
+    },
+};
 </script>
+
+<style scoped></style>

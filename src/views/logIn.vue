@@ -80,9 +80,8 @@
 </template>
 
 <script>
-import { getAuth, setPersistence, signInWithEmailAndPassword, browserLocalPersistence } from "firebase/auth";    
+import { signInWithEmailAndPassword } from "firebase/auth";    
 import { auth } from '../firebase/index.js'
-import { mapState, mapActions } from 'vuex'
 
     export default {
         data() {
@@ -97,15 +96,7 @@ import { mapState, mapActions } from 'vuex'
                 errors: {
                     logIn: ''
                 },
-
-                // userLoggedIn: localStorage.getItem('userLoggedIn') === 'true',            
             };
-        },
-        computed: {
-            ...mapState([
-                'userLoggedIn',
-                'user'
-            ])
         },
         methods: {
             togglePassword(){
@@ -124,11 +115,8 @@ import { mapState, mapActions } from 'vuex'
                 signInWithEmailAndPassword(auth, this.formData.email, this.formData.password)                
                 .then((userCredential) => {
                     // Handle successful login (e.g., redirect to user profile)
-                    console.log(userCredential)
-                    var user = userCredential.user
+                    // console.log(userCredential)
                     console.log('login successful')                    
-
-                    this.$store.commit('setUser', user) // update
 
                     this.$router.push('/')
                 })
@@ -138,12 +126,6 @@ import { mapState, mapActions } from 'vuex'
                     console.log(errorCode, errorMessage)
                     this.errors.logIn = 'Wrong email/password'            
                 });
-            },
-
-            ...mapActions(["setUserLoggedIn"]), // Map the setUserLoggedIn action from the store
-                login() {
-                // Then set the userLoggedIn status to true
-                this.setUserLoggedIn(true);
             },
         },
     };

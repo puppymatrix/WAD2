@@ -1,17 +1,20 @@
 <template>
-    <div>
-        <button @click="addMultipleListings('cookedFood', 48)">
-            Add random listings for cookedFood category
-        </button>
-    </div>
-    <br />
+    <div class="p-3">
+        <div>
+            <button @click="addMultipleListings('cookedFood', 48)">
+                Add random listings for cookedFood category
+            </button>
+        </div>
+        <br />
 
-    <div>
-        <button @click="deleteListings('cookedFood')">
-            Delete random listings for cookedFood category
-        </button>
+        <div>
+            <button @click="deleteListings('cookedFood')">
+                Delete random listings for cookedFood category
+            </button>
+        </div>
+        <br />
+        <button @click="addRandomUsers()">Add Random User Chope, Collected and Listing Data</button>
     </div>
-    <br />
 </template>
 
 <script>
@@ -19,12 +22,9 @@ import * as setup from "../firebase/setup";
 
 export default {
     data() {
-        return {
-            
-        };
+        return {};
     },
     methods: {
-        
         async addMultipleListings(category, numImages) {
             for (let i = 0; i < 40; i++) {
                 await setup.addRandomListing(category, numImages);
@@ -33,6 +33,9 @@ export default {
         },
         deleteListings(category) {
             setup.deleteListings(category);
+        },
+        addRandomUsers() {
+            setup.addRandomUsers();
         },
     },
 };

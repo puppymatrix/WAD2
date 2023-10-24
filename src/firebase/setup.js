@@ -8,12 +8,13 @@ import {
     query,
     where,
     deleteDoc,
+    setDoc,
+    doc,
 } from "firebase/firestore";
 
-import {
-    ref,
-    getDownloadURL,
-} from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
+
+import { getAllListings } from "@/firebase/api";
 
 async function deleteListings(category) {
     const q = query(
@@ -164,4 +165,72 @@ async function addCategories(foodCategories) {
     console.log("Document written with ID: ", docRef.id);
 }
 
-export { addRandomListing, deleteListings };
+// Create 10 random users with 10 listings and 10 chopes each
+async function addRandomUsers() {
+    const uids = [
+        "hLsxEeCGy9aikhnx1t5h41JJpfx2",
+        "mqSYVrEMlng7sObUxUkqYv6VNIy1",
+        "bo4p9RULhzTR7BO6ERHPzXqJFZ63",
+        "qY7DY1vLaCZkB2XubzS6gwePiIr1",
+        "kqAvshLF4cdmISgqj5DpsSRKIbd2",
+        "8BT1kBQSvAMqcSFqOp0dgQoM8d23",
+        "o9V5ztWbHdgC0gYzYdsweEeYVUH3",
+        "dsixaJZEmYWbBHcFxA3ACRyZiIp1",
+    ];
+    for (let i = 0; i < uids.length; i++) {
+        const listings = await getAllListings();
+        const { selectedListings, selectedChopes } =
+            selectRandomListingsAndChopes(listings);
+        let userType;
+        if (i % 2 === 0) {
+            userType = "individual";
+        } else {
+            userType = "business";
+        }
+        // Add a new document in collection "listings"
+        const docRef = await setDoc(
+            doc(db, "userInformation", uids[i]),
+            {
+                chopes: selectedChopes,
+                myListings: selectedListings,
+                accountType: userType,
+            }
+        );
+        console.log("Document written with ID: ", uids[i]);
+    }
+}
+
+// Function to generate a random email and password
+function generateRandomUser() {
+    const email = Math.random().toString(36).substring(2, 5) + "@example.com";
+    const password = Math.random().toString(36).substring(2, 10);
+    return { email, password };
+}
+
+// Function to randomly select 10 listings and 10 chopes
+function selectRandomListingsAndChopes(listings) {
+    const selectedListings = [];
+    const selectedChopes = [];
+    for (let i = 0; i < 10; i++) {
+        const randomIndex = Math.floor(Math.random() * listings.length);
+        selectedListings.push(listings[randomIndex].Id);
+        selectedChopes.push({
+            listingId: listings[randomIndex].Id,
+            collected: Math.random() < 0.5,
+            timestamp: Timestamp.fromDate(getRandomChopeDate()),
+        });
+    }
+    return { selectedListings, selectedChopes };
+}
+
+function getRandomChopeDate() {
+    const minDate = new Date(2023, 9, 25);
+    const maxDate = new Date(2023, 10, 14);
+    const randomDate = new Date(
+        minDate.getTime() +
+            Math.random() * (maxDate.getTime() - minDate.getTime())
+    );
+    return randomDate;
+}
+
+export { addRandomListing, deleteListings, addRandomUsers };
