@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, routerKey } from "vue-router";
 </script>
 
 <template>
@@ -39,9 +39,8 @@ import { RouterLink, RouterView } from "vue-router";
                     <div class="justify-content-center p-0" v-if="isAuthenticated" >
                         <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
                         <div class="d-flex me-3" >
-                            <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large "  @click="navigate=>{this.$router.push('/profile')}">
-                            <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
-                            
+                            <button type="button" class="btn btn-success m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
+                            <button type="button" class="btn btn-secondary m-1" @click="logOut">Log Out</button>
                         </div>
                     </div>
                     <!-- login and signup buttons -->
@@ -64,6 +63,7 @@ import { RouterLink, RouterView } from "vue-router";
 <script>
 import { getAuth, signOut } from "firebase/auth";
 import { mapGetters } from "vuex";
+import router from "../router/index"
 
 export default {
     data() {
@@ -80,6 +80,8 @@ export default {
                 .then(() => {
                     // Sign-out successful.
                     console.log("sign out successful");
+                    router.push('/')
+                    alert("sign out successful")
                 })
                 .catch((error) => {
                     console.log("An error occured");
