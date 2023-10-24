@@ -39,9 +39,9 @@ import SearchBar from "../components/SearchBar.vue";
                 <ul>
                     <li><p class="d-inline" style="margin: 2px 5px;">Sort By: </p></li>
                     <li>
-                        <b-dropdown text="Price">
-                        <b-dropdown-item href="#">Price: Low to High</b-dropdown-item>
-                        <b-dropdown-item href="#">Price: High to Low</b-dropdown-item>
+                        <b-dropdown text="Price" v-model="filterDistance">
+                        <b-dropdown-item href="#" value="ascending">Price: Low to High</b-dropdown-item>
+                        <b-dropdown-item href="#" value="descending ">Price: High to Low</b-dropdown-item>
                         </b-dropdown>
                     </li>
                     <li>
@@ -52,11 +52,11 @@ import SearchBar from "../components/SearchBar.vue";
                         </b-dropdown>
                     </li>
                     <li>
-                        <b-dropdown text="Location">
-                        <b-dropdown-item href="#">Within 2km away</b-dropdown-item>
-                        <b-dropdown-item href="#">Between 2k-5km</b-dropdown-item>
-                        <b-dropdown-item href="#">Between 5km-10km</b-dropdown-item>
-                        <b-dropdown-item href="#">More than 10km</b-dropdown-item>
+                        <b-dropdown text="Location" v-model="filterDistance">
+                        <b-dropdown-item href="#" value="2">Within 2km away</b-dropdown-item>
+                        <b-dropdown-item href="#" value="5">Between 2k-5km</b-dropdown-item>
+                        <b-dropdown-item href="#" value="10">Between 5km-10km</b-dropdown-item>
+                        <b-dropdown-item href="#" value="9999">More than 10km</b-dropdown-item>
                         </b-dropdown>
                     </li>
                 </ul>
