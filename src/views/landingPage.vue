@@ -1,14 +1,26 @@
 <template>
     <div class="container-fluid bod">
         <div class="row">
-            <!-- add in gif thingy -->
+            <!-- Header Design -->
             <div class="col px-0 firstRow">
-                <!-- TODO: CREATE GIF -->
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
 
+                <div id="searchText">
+                    <h1 class="welcome">Help reduce food waste by: </h1><br>
+                    <div class="typingWords">
+                        <h2>
+                            <span class="typed-text">{{ typeValue }}</span>
+                            <span class="typed-cursor" :class="{'typing': typeStatus}">&nbsp;</span>
+                        </h2>
+                    </div>
+                    <div class="input-group mb-3 px-5">
+                        <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                    </div>
+                </div>
             </div>
             <!-- link to search bar -->
-            <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
+            <!-- <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
                 <div id="searchText">
                     <h1 class="welcome">Help reduce food waste today!</h1><br>
                     <div class="input-group mb-3 px-5">
@@ -17,8 +29,24 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
         </div>
+
+        <!-- Try with firebase -->
+        <!-- <div class="row">
+            <Vue3Marquee :pause-on-hover="true">
+                <div class="card" v-for="listing in allListings" :key="listing">
+                    <img
+                    :class="{ unfade: hover, faded: !hover }"
+                    class="marquee-listing-image"
+                    :src="listing.ImageUrls[0]"
+                    width="235"
+                    height="350"
+                    />
+                    <h6 class="marquee-listing-title display-5 text-center">{{ listing.ListingName }}</h6>
+                </div>
+            </Vue3Marquee>
+        </div> -->
 
         <!-- problematic carousel row -->
         <div class="row secondRow">
@@ -105,36 +133,43 @@
             </div>
           </div>
         </div>
+
+        <!--New Body-->
+
+        <!-- About the Company ie what we do-->
+        <div id="aboutUs" class="row d-flex p-4 justify-content-center align-items-center">
+            <div class="col-md-2 d-flex justify-content-center align-content-center">
+                <img src="src\components\images\landingPage\zero-waste.jpg" style="height: 200px ">
+            </div>
+            <div class="col-md-10">
+                <h1 class="text-left" style="color: #97BF04;">About Us</h1>
+                <p class="text-left" style="color: white;">FoodCatch is a platform that aims to reduce food waste by connecting consumers to food establishments and fellow Singaporeans with excess food. We also aim to reduce food waste by encouraging consumers to buy ugly food. </p>
+            </div>
+        </div>
+
+        <!--Statistics-->
+
+        <div id="stats" class="row allStats d-flex justify-content-center align-items-center">
+            <!-- <img src="../components/images/landingPage/stats-background.jpg" class="statsBackground"> -->
+            <div class="col-md-3 stats">
+                <h3>We throw away more than 2,000 tonnes of food daily in Singapore</h3>
+                <p>That's equivalent to 2 million kilograms!</p>
+            </div>
+
+            <div class="col-md-3 stats">
+                <h3>9 million people are reported to die from hunger each year</h3>
+                <p>This includes 3.1 million children!</p>
+            </div>
+
+            <div class="col-md-3 stats">
+                <h3>Food waste produces a lot of greenhouse gases</h3>
+                <p>This causes global warming and climate change!</p>
+            </div>
+        </div>
+
+        <!--Key Partner-->
         <!-- this shows sponsors (2 rows 4 col each grid) -->
-
- 
-        <!-- statistics -->
-        <div class="row stats1">
-            <div class="col-5 p-5 text-light ml-3">
-                <h2><strong>In Singapore alone, 2,000 tonnes of food is thrown away daily.</strong></h2>
-                <h3>That's equivalent to...</h3>
-                <ul>
-                    <li>1 elephant</li>
-                    <li>10 million cats</li>
-                    <li>the empire state building</li>
-                </ul>
-            </div>
-            <div class="col-7">
-                image or smth
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-
-        <div class="row mb-5 sponsors">
+        <div id="partners" class="row mb-5 sponsors">
             <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
@@ -159,13 +194,14 @@
             </div>
         </div>
     </div>
+    
 </template>
 
 <style scoped>
 
-.welcome{
+/* .welcome{
     font-size: 3vw;
-    /* -webkit-text-stroke: 1px #fff; */
+    -webkit-text-stroke: 1px #fff; 
     color: transparent;
     background-image: linear-gradient(to right, #fff, #fff);
     background-repeat: no-repeat;
@@ -178,18 +214,19 @@
     100%{
         background-position: 0 0;
     }
-}
+} */
 .bod{
     background-color: #0b2b26;
 }
-.stats1{
     
-}
 #searchText{
     position: absolute;
     justify-content: center;
+    align-content: center;
     top: 20%
 }
+
+
 h1{
     font-size: 6vw;
     color: black
@@ -197,17 +234,92 @@ h1{
 }
 .firstRow{
     position: relative;
-    
-}
-.secondRow{
-    background-color: #fffdd0;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
 }
 
 #homeImage{
     width:100%;
     height: auto;
     background: black;
-    filter:opacity(80%);
+    filter:opacity(30%);
+}
+
+#searchText{
+    position: absolute;
+    justify-content: center;
+    top: 20%
+}
+
+.typed-text{
+    color: #A1BF73;
+    font-size: 5vw;
+    font-weight:300;
+}
+
+.typed-cursor{
+    display: inline-block;
+    margin-left: 3px;
+    width: 3px;
+    background-color: #fff;
+    animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink{
+    49% {background-color: #fff}
+    50% {background-color: transparent}
+    99% {background-color: transparent}
+}
+
+.typing{
+    animation: none;
+}
+
+.welcome{
+    font-size: 6vw;
+    color: white;
+
+}
+
+.typingWords{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.secondRow{
+    background-color: #fffdd0;
+}
+
+/* .statsBackground{
+    height: 400px; 
+    width: 100%; 
+    object-fit: cover; 
+    object-position: 0 0;
+    position: absolute;
+    z-index: 1;
+    opacity: 0.5;
+} */
+
+.allStats{
+    background-image: url("../components/images/landingPage/stats-background.jpg");
+    background-size: cover;
+    opacity: 80%;
+    padding: 20px;
+}
+
+
+.stats{
+    color: white;
+    font-weight: bold;
+    position: relative;
+    border: white solid 1px;
+    margin: 10px;
+    background-color: grey;
+    opacity: 80%;
 }
 
 .sponsors{
@@ -239,8 +351,7 @@ h1{
 .carousel-inner .carousel-item.active,
 .carousel-inner .carousel-item-next,
 .carousel-inner .carousel-item-prev {
-    display: flex;
-    
+    display: flex; 
 }
 
 /* medium and up screens */
@@ -266,6 +377,9 @@ h1{
 
 
 <script >
+    
+    import { Vue3Marquee } from "vue3-marquee";
+
 // import { db } from "@/firebase";
 // import { db } from "@/firebase";
 // import { collection, doc, setDoc, getDocs } from "firebase/firestore";
@@ -289,9 +403,55 @@ export default {
       searchInput: '',
       dataObj: {}, //this is data returned from database
       
+
+      // typing effect
+      typeValue: '',
+      typeStatus: false,
+      typeArray: ['Listing excess food', 'Buying ugly food'],
+      typingSpeed: 200, 
+      erasingSpeed: 100, 
+      newTextDelay: 2000, 
+      typeArrayIndex: 0, 
+      charIndex: 0
     }
   },
+    components: {
+        Vue3Marquee
+    },
   methods:{
+    typeText(){
+        if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
+            if (!this.typeStatus){
+                this.typeStatus = true;
+            }
+
+            this.typeValue += this.typeArray[this.typeArrayIndex].charAt(this.charIndex);
+            this.charIndex += 1;
+
+            setTimeout(this.typeText, this.typingSpeed);
+        }else{
+            this.typeStatus = false;
+            setTimeout(this.eraseText, this.newTextDelay);
+        }
+    },
+    eraseText(){
+        if (this.charIndex > 0){
+            if (!this.typeStatus){
+                this.typeStatus = true;
+            }
+
+            this.typeValue = this.typeArray[this.typeArrayIndex].substring(0, this.charIndex -1);
+            this.charIndex -= 1;
+            setTimeout(this.eraseText, this.erasingSpeed);
+        }else{
+            this.typeStatus = false;
+            this.typeArrayIndex += 1;
+            if (this.typeArrayIndex >= this.typeArray.length){
+                this.typeArrayIndex = 0;
+            }
+            setTimeout(this.typeText, this.typingSpeed + 1000);
+        }
+    },
     searchDatabase(){
       //take searchInput and pass into database 
       
@@ -302,7 +462,7 @@ export default {
     },
     makeCarousel(){
       
-    }
+    },
     // makeCarousel(){
     //   //make carousel 
     //   let counter = 0
@@ -338,8 +498,11 @@ export default {
     //     }
     //   }
     // }
-    
-  } 
+  },
+  
+  created(){
+    setTimeout(this.typeText, this.newTextDelay + 200)
+  }
 }
 
 
