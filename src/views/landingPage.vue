@@ -177,7 +177,7 @@
 
         <!--Key Partner-->
         <div id="partners" class="row sponsors">
-            <h1 class="text-center" style="color: #0b2b26;">Our Partners</h1>
+            <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
