@@ -195,7 +195,7 @@
             </div>
             <div class="col-3 partnerCol px-4">
                 <a href="https://giant.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giantLogo.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
             </div>
         </div>
