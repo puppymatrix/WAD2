@@ -10,57 +10,63 @@ import { RouterLink, RouterView } from "vue-router";
     
         </div> -->
         <!-- logo and links -->
-        <div class="col-8">
+        <div class="col">
             <nav class="navbar navbar-expand-md">
-                <div class="container-fluid">
-                    <!-- brand image -->
-                    <a class="navbar-brand" href="#">
-                        <a href="/"
-                            ><img
-                                src="../components/icons/foodcatch-logo.png"
-                                style="height: 40px"
-                                alt=""
-                                class="img-fluid"
-                                id="logo"
-                        /></a>
-                    </a>
-                    <!-- toggle button???? -->
-                    <button
-                        class="navbar-toggler btn btn-success"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+            <div class="container-fluid">
+            <!-- brand image -->
+            <a class="navbar-brand" href="#">
+                <a href="/"><img src="../components/icons/foodcatch-logo.png" style="height: 40px;" alt="" class="img-fluid" id="logo"></a>
+            </a>
+            <!-- toggle button???? -->
+            <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                    <div
-                        class="collapse navbar-collapse"
-                        id="navbarSupportedContent"
-                    >
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item px-3 ml-5">
-                                <a class="nav-link" href="/">Home</a>
-                            </li>
-                            <li class="nav-item px-3">
-                                <a class="nav-link" href="/allListings"
-                                    >Explore</a
-                                >
-                            </li>
-                            <li class="nav-item px-3">
-                                <a class="nav-link" href="/mapView">Map</a>
-                            </li>
-                        </ul>
+            <!-- navbar -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item px-3 ml-5">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/allListings" >Explore</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/mapView" >Map</a>
+                </li>
+                <li class="nav-item px-3 ">
+                <!-- profile and logout buttons -->
+                    <div class="justify-content-center p-0" v-if="$store.state.userLoggedIn" >
+                        <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
+                        <div class="d-flex me-3" >
+                            <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
+                            <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
+                            
+                        </div>
                     </div>
-                </div>
+                    <!-- login and signup buttons -->
+                    <div class="me-0" v-else>
+                        <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+                        <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+                    </div>
+
+                    <div class="col-1" v-if="userLoggedIn"></div>           
+                </li>
+            </ul>
+
+            </div>
+            </div>
             </nav>
         </div>
 
-        <div class="col-4" id="rightSideBtns">
+        <!-- <div class="col-4" id="rightSideBtns"> -->
             <!-- profile and logout buttons -->
+            <!-- <div class="justify-content-center p-0" v-if="$store.state.userLoggedIn" > -->
+                <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
+                <!-- <div class="d-flex me-3" >
+                    <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
+                    <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
+                    
             <!-- $store.state.userLoggedIn -->
             <div class="justify-content-center p-0" v-if="isAuthenticated">
                 <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
@@ -81,38 +87,18 @@ import { RouterLink, RouterView } from "vue-router";
                         class="img-fluid btn btn-large"
                         @click="logOut"
                     />
+
                 </div>
-            </div>
+            </div> -->
             <!-- login and signup buttons -->
-            <div class="me-0" v-else>
-                <button
-                    type="button"
-                    class="btn btn-outline-success m-1"
-                    @click.prevent="
-                        (navigate) => {
-                            $router.push('/logIn');
-                        }
-                    "
-                    v-if="$route.path != '/logIn'"
-                >
-                    Log In
-                </button>
-                <button
-                    type="button"
-                    class="btn btn-success m-1"
-                    @click.prevent="
-                        (navigate) => {
-                            $router.push('/signUp');
-                        }
-                    "
-                    v-if="$route.path != '/signUp'"
-                >
-                    Sign Up
-                </button>
+
+            <!-- <div class="me-0" v-else>
+                <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+                <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
             </div>
 
-            <!-- <div class="col-1" v-if="userLoggedIn"></div> -->
-        </div>
+            <div class="col-1" v-if="userLoggedIn"></div>
+        </div> -->
     </div>
 </template>
 
@@ -153,11 +139,12 @@ export default {
     top: 10px;
 }
 
-.navbar-toggler {
+
+/* .navbar-toggler{
     position: absolute;
     left: 10px;
     top: 10px;
-}
+} */
 #logo {
     height: 40px;
 }
