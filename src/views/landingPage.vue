@@ -189,13 +189,13 @@
                 </a>
             </div>
             <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
+                <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
             <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+                <a href="https://foodbank.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
             </div>
         </div>
@@ -325,6 +325,7 @@ h1{
 }
 .partnerIcon{
     max-width: 70%;
+    height: 50%;
 }
 
 @media (max-width: 767px) {
