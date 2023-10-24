@@ -65,7 +65,7 @@ import { RouterLink, RouterView } from "vue-router";
                 <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
                 <!-- <div class="d-flex me-3" >
                     <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
-                    <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
+                    <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut"> -->
                     
             <!-- $store.state.userLoggedIn -->
             <div class="justify-content-center p-0" v-if="isAuthenticated">
