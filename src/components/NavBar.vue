@@ -67,9 +67,31 @@ import { RouterLink, RouterView } from "vue-router";
                     <img src="../components/icons/images/user.png" alt="" class="img-fluid btn btn-large"  @click="navigate=>{this.$router.push('/profile')}">
                     <img src="../components/icons/logout.png" alt="" class="img-fluid btn btn-large" @click="logOut">
                     
+            <!-- $store.state.userLoggedIn -->
+            <div class="justify-content-center p-0" v-if="isAuthenticated">
+                <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
+                <div class="d-flex me-3">
+                    <img
+                        src="../components/icons/images/user.png"
+                        alt=""
+                        class="img-fluid btn btn-large"
+                        @click="
+                            (navigate) => {
+                                this.$router.push('/profile');
+                            }
+                        "
+                    />
+                    <img
+                        src="../components/icons/logout.png"
+                        alt=""
+                        class="img-fluid btn btn-large"
+                        @click="logOut"
+                    />
+
                 </div>
             </div> -->
             <!-- login and signup buttons -->
+
             <!-- <div class="me-0" v-else>
                 <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
                 <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
@@ -77,42 +99,46 @@ import { RouterLink, RouterView } from "vue-router";
 
             <div class="col-1" v-if="userLoggedIn"></div>
         </div> -->
-
-
     </div>
-
 </template>
 
 <script>
-    import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
-    import { auth } from '../firebase/index.js'
-    import { mapState } from "vuex";
-    
-    export default {
-        data() {
-            return {
-            };
-        },
-        computed: {
-                ...mapState(["userLoggedIn"]), // Map the userLoggedIn state from the store
-            },
-        methods: {
-           logOut(){
-            
-            this.$store.commit('setUserLoggedIn', false)
+import { getAuth, signOut } from "firebase/auth";
+import { mapGetters } from "vuex";
+
+export default {
+    data() {
+        return {};
+    },
+    computed: {
+        ...mapGetters(["isAuthenticated","currentUser"]),
+    },
+    methods: {
+        logOut() {
+            console.log(this.currentUser);
+            const auth = getAuth();
             signOut(auth)
-           }, 
+                .then(() => {
+                    // Sign-out successful.
+                    console.log("sign out successful");
+                })
+                .catch((error) => {
+                    console.log("An error occured");
+                });
+
+            // this.$store.commit('setUserLoggedIn', false)
         },
-    };
+    },
+};
 </script>
 
 <style scoped>
-#rightSideBtns{
+#rightSideBtns {
     position: absolute;
     right: 0px;
     top: 10px;
-
 }
+
 
 /* .navbar-toggler{
     position: absolute;
@@ -123,14 +149,13 @@ import { RouterLink, RouterView } from "vue-router";
     height: 40px;
 }
 
-#nav{
+#nav {
     background-color: #0b2b26;
-    
 }
 
-.base{
+.base {
     color: white;
-    background-color:#43A046
+    background-color: #43a046;
 }
 
 .footer {
@@ -143,28 +168,26 @@ import { RouterLink, RouterView } from "vue-router";
     height: 50%;
 }
 
-a>li{
+a > li {
     color: white;
 }
-
 
 div img {
     margin: 5px;
 }
 
-.nav-link{
+.nav-link {
     text-decoration: none;
     color: #ebf1e7;
-    font-size: 25px
+    font-size: 25px;
 }
 
-.nav-link:hover{
-    color: #bee5b0
+.nav-link:hover {
+    color: #bee5b0;
 }
 
-.nav-item{
+.nav-item {
     padding-left: 2.5%;
-    padding-right: 2.5%
+    padding-right: 2.5%;
 }
-
 </style>
