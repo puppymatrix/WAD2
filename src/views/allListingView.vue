@@ -13,7 +13,8 @@ import SearchBar from "../components/SearchBar.vue";
                     <SearchBar />
                 </div>
                 <div class="col-2 d-flex justify-content-center p-0">
-                    <button
+                    <div id="mapBtn" class="my-auto">
+                        <button
                         type="button"
                         class="btn btn-outline-success d-flex align-items-center justify-content-center"
                         @click="navigate=>{$router.push('/mapView')}"
@@ -22,11 +23,12 @@ import SearchBar from "../components/SearchBar.vue";
                             src="../components/icons/googleMaps.png"
                             alt=""
                             class="img-fluid me-1"
-                            style="width: 20px"
+                            style="width: 20px;;"
                         />
                         Map View
-                       
                     </button>
+                    </div>
+
                 </div>
             </div>
         </div>
