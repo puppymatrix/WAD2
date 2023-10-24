@@ -194,7 +194,7 @@
                 </a>
             </div>
             <div class="col-3 partnerCol">
-                <a href="https://foodbank.sg/">
+                <a href="https://giant.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
             </div>
