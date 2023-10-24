@@ -188,14 +188,14 @@
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
+            <div class="col-3 partnerCol px-0">
                 <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
+            <div class="col-3 partnerCol px-4">
                 <a href="https://giant.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giantLogo.png">
                 </a>
             </div>
         </div>
@@ -322,10 +322,10 @@ h1{
 }
 .partnerCol{
     text-align: center;
+    margin: auto
 }
 .partnerIcon{
     max-width: 70%;
-    height: 50%;
 }
 
 @media (max-width: 767px) {
