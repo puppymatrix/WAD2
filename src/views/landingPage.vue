@@ -1,24 +1,35 @@
 <template>
     <div class="container-fluid bod">
         <div class="row">
-            <!-- add in gif thingy -->
+            <!-- Header Design -->
             <div class="col px-0 firstRow">
-                <!-- TODO: CREATE GIF -->
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
 
-            </div>
-            <!-- link to search bar -->
-            <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
                 <div id="searchText">
-                    <h1 class="welcome">Help reduce food waste today!</h1><br>
+                    <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
-                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-bind="searchInput">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
                     </div>
                 </div>
-
             </div>
         </div>
+
+        <!-- Try with firebase -->
+        <!-- <div class="row">
+            <Vue3Marquee :pause-on-hover="true">
+                <div class="card" v-for="listing in allListings" :key="listing">
+                    <img
+                    :class="{ unfade: hover, faded: !hover }"
+                    class="marquee-listing-image"
+                    :src="listing.ImageUrls[0]"
+                    width="235"
+                    height="350"
+                    />
+                    <h6 class="marquee-listing-title display-5 text-center">{{ listing.ListingName }}</h6>
+                </div>
+            </Vue3Marquee>
+        </div> -->
 
         <!-- problematic carousel row -->
         <div class="row secondRow">
@@ -105,91 +116,107 @@
             </div>
           </div>
         </div>
-        <!-- this shows sponsors (2 rows 4 col each grid) -->
 
- 
-        <!-- statistics -->
-        <div class="row stats1">
-            <div class="col-5 p-5 text-light ml-3">
-                <h2><strong>In Singapore alone, 2,000 tonnes of food is thrown away daily.</strong></h2>
-                <h3>That's equivalent to...</h3>
-                <ul>
-                    <li>1 elephant</li>
-                    <li>10 million cats</li>
-                    <li>the empire state building</li>
-                </ul>
-            </div>
-            <div class="col-7">
-                image or smth
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
-            </div>
-        </div>
-        <div class="row stats">
-            <div class="col">
-                <h1>insert stats/charts/graphs</h1>
+        <!-- About the Company -->
+        <div id="aboutUs" class="row thirdRow">
+            <div class="container-fluid p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="row align-items-center">
+                            <div class="col-6 p-4">
+                                <video id="groceries1" src="..\components\images\landingPage\groceries1.mp4" autoplay muted loop style="width: 100%"></video>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="row d-flex justify-content-start mb-3">
+                                    <div class="col">
+                                        <img src="..\components\images\landingPage\groceries3.jpg" style="width: 100%; overflow: hidden;">
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-start">
+                                    <div class="col">
+                                        <img src="..\components\images\landingPage\groceries2.jpg" style="width: 100%; overflow: hidden;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h1 class="text-left" style="color: #97BF04;">About Us</h1>
+                        <div class="typingWords">
+                            <h2>
+                                <span class="typed-text">{{ typeValue }}</span>
+                                <span class="typed-cursor" :class="{'typing': typeStatus}">&nbsp;</span>
+                            </h2>
+                        </div>
+                        <p class="text-left" style="color: white;">FoodCatch is a platform that aims to reduce food waste by connecting consumers to food establishments and fellow Singaporeans with excess food. This is in alignment with SDG12 - Responsible Consumption </p>
+                    </div>
+                </div>     
             </div>
         </div>
 
-        <div class="row mb-5 sponsors">
-            <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
+        <!--Statistics-->
+
+        <div id="stats" class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-3 stats">
+                <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
+                <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
+            </div>
+
+            <div class="col-md-3 stats">
+                <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
+                <p class="statsDesc">This includes 3.1 million children!</p>
+            </div>
+
+            <div class="col-md-3 stats">
+                <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
+                <p class="statsDesc">This causes global warming and climate change!</p>
+            </div>
+        </div>
+
+        <!--Key Partner-->
+        <div id="partners" class="row sponsors">
+            <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
-                
             </div>
             <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
+                <a href="https://www.breadtalk.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
+            <div class="col-3 partnerCol px-0">
+                <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
-                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
+            <div class="col-3 partnerCol px-4">
+                <a href="https://giant.sg/">
+                    <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
             </div>
         </div>
     </div>
+    
 </template>
 
 <style scoped>
 
-.welcome{
-    font-size: 3vw;
-    /* -webkit-text-stroke: 1px #fff; */
-    color: transparent;
-    background-image: linear-gradient(to right, #fff, #fff);
-    background-repeat: no-repeat;
-    -webkit-background-clip: text;
-    background-position: -600px 0;
-    animation: backcolor 10s linear infinite alternate;
-}
-
-@keyframes backcolor{
-    100%{
-        background-position: 0 0;
-    }
-}
 .bod{
     background-color: #0b2b26;
 }
-.stats1{
     
-}
 #searchText{
     position: absolute;
     justify-content: center;
+    align-content: center;
     top: 20%
 }
+
+
 h1{
     font-size: 6vw;
     color: black
@@ -197,36 +224,110 @@ h1{
 }
 .firstRow{
     position: relative;
-    
-}
-.secondRow{
-    background-color: #fffdd0;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
 }
 
 #homeImage{
     width:100%;
     height: auto;
     background: black;
-    filter:opacity(80%);
+    filter:opacity(30%);
+}
+
+#searchText{
+    position: absolute;
+    justify-content: center;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.typed-text{
+    color: #A1BF73;
+    font-size: 4vw;
+    font-weight:300;
+}
+
+.typed-cursor{
+    display: inline-block;
+    margin-left: 3px;
+    width: 3px;
+    background-color: #fff;
+    animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink{
+    49% {background-color: #fff}
+    50% {background-color: transparent}
+    99% {background-color: transparent}
+}
+
+.typing{
+    animation: none;
+}
+
+.welcome{
+    font-size: 6vw;
+    color: white;
+    text-align: center;
+
+}
+
+.typingWords{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: left;
+}
+
+
+.secondRow{
+    background-color: #fffdd0;
+}
+
+
+#stats{
+    background-image: url("../components/images/landingPage/stats-background.jpg");
+    background-size: cover;
+    opacity: 80%;
+    padding: 20px;
+}
+
+
+.stats{
+    position: relative;
+    border: border solid 1px;
+    margin: 10px;
+    background-color: rgba(255, 255, 255, 0.971);
+    opacity: 80%;
+}
+
+.statsHeader{
+    color:  #0b2b26;
+    text-align: center;
+}
+
+.statsDesc{
+    font-style: bold;
+    font-size: 18px;
+    text-align: center;
 }
 
 .sponsors{
-    padding-left: 10%;
-    padding-right: 10%;
     background-color: #fffdd0;
-    padding-top: 1%;
-    padding-bottom: 3%;
+    padding: 20px;
 
 }
 .partnerCol{
     text-align: center;
+    margin: auto
 }
 .partnerIcon{
     max-width: 70%;
 }
-.stats{
-    text-align: center;
-}
+
 @media (max-width: 767px) {
     .carousel-inner .carousel-item > div {
         display: none;
@@ -239,8 +340,7 @@ h1{
 .carousel-inner .carousel-item.active,
 .carousel-inner .carousel-item-next,
 .carousel-inner .carousel-item-prev {
-    display: flex;
-    
+    display: flex; 
 }
 
 /* medium and up screens */
@@ -266,6 +366,9 @@ h1{
 
 
 <script >
+    
+    
+
 // import { db } from "@/firebase";
 // import { db } from "@/firebase";
 // import { collection, doc, setDoc, getDocs } from "firebase/firestore";
@@ -289,9 +392,55 @@ export default {
       searchInput: '',
       dataObj: {}, //this is data returned from database
       
+
+      // typing effect
+      typeValue: '',
+      typeStatus: false,
+      typeArray: ['Listing excess food', 'Purchasing excess food', 'Reducing food waste'],
+      typingSpeed: 200, 
+      erasingSpeed: 100, 
+      newTextDelay: 2000, 
+      typeArrayIndex: 0, 
+      charIndex: 0
     }
   },
+    // components: {
+    //     Vue3Marquee
+    // },
   methods:{
+    typeText(){
+        if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
+            if (!this.typeStatus){
+                this.typeStatus = true;
+            }
+
+            this.typeValue += this.typeArray[this.typeArrayIndex].charAt(this.charIndex);
+            this.charIndex += 1;
+
+            setTimeout(this.typeText, this.typingSpeed);
+        }else{
+            this.typeStatus = false;
+            setTimeout(this.eraseText, this.newTextDelay);
+        }
+    },
+    eraseText(){
+        if (this.charIndex > 0){
+            if (!this.typeStatus){
+                this.typeStatus = true;
+            }
+
+            this.typeValue = this.typeArray[this.typeArrayIndex].substring(0, this.charIndex -1);
+            this.charIndex -= 1;
+            setTimeout(this.eraseText, this.erasingSpeed);
+        }else{
+            this.typeStatus = false;
+            this.typeArrayIndex += 1;
+            if (this.typeArrayIndex >= this.typeArray.length){
+                this.typeArrayIndex = 0;
+            }
+            setTimeout(this.typeText, this.typingSpeed + 1000);
+        }
+    },
     searchDatabase(){
       //take searchInput and pass into database 
       
@@ -302,7 +451,7 @@ export default {
     },
     makeCarousel(){
       
-    }
+    },
     // makeCarousel(){
     //   //make carousel 
     //   let counter = 0
@@ -338,8 +487,11 @@ export default {
     //     }
     //   }
     // }
-    
-  } 
+  },
+  
+  created(){
+    setTimeout(this.typeText, this.newTextDelay + 200)
+  }
 }
 
 
