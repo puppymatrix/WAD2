@@ -11,7 +11,8 @@
             <div class="row d-flex justify-content-center align-items-center">
                 <img src=".\icons\foodcatch-logo.png" alt="" class="p-3" style="width: 250px;">
                 <p style="color: white; font-style: italic; text-align: center">Say no to food waste today!</p>
-
+            </div>
+        </div>
         <!-- second column -->
 
         <div class="col-lg-2 text-white p-4 text-center text-lg-start">
@@ -61,6 +62,7 @@
             </form>
         </div>
     </div>
+    
 
 
     <div class="row">
