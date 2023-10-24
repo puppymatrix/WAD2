@@ -378,7 +378,7 @@ h1{
 
 <script >
     
-    import { Vue3Marquee } from "vue3-marquee";
+    
 
 // import { db } from "@/firebase";
 // import { db } from "@/firebase";
