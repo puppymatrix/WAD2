@@ -12,6 +12,7 @@ import "bootstrap/dist/js/bootstrap.js"
 
 import { onAuthStateChanged } from 'firebase/auth'
 
+
 const app = createApp(App)
 
 app.use(router)
