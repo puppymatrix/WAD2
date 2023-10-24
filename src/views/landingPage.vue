@@ -6,30 +6,13 @@
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
 
                 <div id="searchText">
-                    <h1 class="welcome">Help reduce food waste by: </h1><br>
-                    <div class="typingWords">
-                        <h2>
-                            <span class="typed-text">{{ typeValue }}</span>
-                            <span class="typed-cursor" :class="{'typing': typeStatus}">&nbsp;</span>
-                        </h2>
-                    </div>
+                    <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-bind="searchInput">
                         <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
                     </div>
                 </div>
             </div>
-            <!-- link to search bar -->
-            <!-- <div class="col-6 p-0 d-flex justify-content-center align-items-center" style="background-color: #263238; text-align: center">
-                <div id="searchText">
-                    <h1 class="welcome">Help reduce food waste today!</h1><br>
-                    <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Enter a cuisine, restaurant or location" v-bind="searchInput">
-                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04;" @keyup.enter="searchDatabase()">Let's Go!</button>
-                    </div>
-                </div>
-
-            </div> -->
         </div>
 
         <!-- Try with firebase -->
@@ -134,51 +117,74 @@
           </div>
         </div>
 
-        <!--New Body-->
+        <!-- About the Company -->
+        <div id="aboutUs" class="row thirdRow">
+            <div class="container-fluid p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="row align-items-center">
+                            <div class="col-6 p-4">
+                                <video id="groceries1" src="..\components\images\landingPage\groceries1.mp4" autoplay muted loop style="width: 100%"></video>
+                            </div>
 
-        <!-- About the Company ie what we do-->
-        <div id="aboutUs" class="row d-flex p-4 justify-content-center align-items-center">
-            <div class="col-md-2 d-flex justify-content-center align-content-center">
-                <img src="src\components\images\landingPage\zero-waste.jpg" style="height: 200px ">
-            </div>
-            <div class="col-md-10">
-                <h1 class="text-left" style="color: #97BF04;">About Us</h1>
-                <p class="text-left" style="color: white;">FoodCatch is a platform that aims to reduce food waste by connecting consumers to food establishments and fellow Singaporeans with excess food. We also aim to reduce food waste by encouraging consumers to buy ugly food. </p>
+                            <div class="col-6">
+                                <div class="row d-flex justify-content-start mb-3">
+                                    <div class="col">
+                                        <img src="..\components\images\landingPage\groceries3.jpg" style="width: 100%; overflow: hidden;">
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-start">
+                                    <div class="col">
+                                        <img src="..\components\images\landingPage\groceries2.jpg" style="width: 100%; overflow: hidden;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h1 class="text-left" style="color: #97BF04;">About Us</h1>
+                        <div class="typingWords">
+                            <h2>
+                                <span class="typed-text">{{ typeValue }}</span>
+                                <span class="typed-cursor" :class="{'typing': typeStatus}">&nbsp;</span>
+                            </h2>
+                        </div>
+                        <p class="text-left" style="color: white;">FoodCatch is a platform that aims to reduce food waste by connecting consumers to food establishments and fellow Singaporeans with excess food. This is in alignment with SDG12 - Responsible Consumption </p>
+                    </div>
+                </div>     
             </div>
         </div>
 
         <!--Statistics-->
 
-        <div id="stats" class="row allStats d-flex justify-content-center align-items-center">
-            <!-- <img src="../components/images/landingPage/stats-background.jpg" class="statsBackground"> -->
+        <div id="stats" class="row d-flex justify-content-center align-items-center">
             <div class="col-md-3 stats">
-                <h3>We throw away more than 2,000 tonnes of food daily in Singapore</h3>
-                <p>That's equivalent to 2 million kilograms!</p>
+                <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
+                <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
             </div>
 
             <div class="col-md-3 stats">
-                <h3>9 million people are reported to die from hunger each year</h3>
-                <p>This includes 3.1 million children!</p>
+                <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
+                <p class="statsDesc">This includes 3.1 million children!</p>
             </div>
 
             <div class="col-md-3 stats">
-                <h3>Food waste produces a lot of greenhouse gases</h3>
-                <p>This causes global warming and climate change!</p>
+                <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
+                <p class="statsDesc">This causes global warming and climate change!</p>
             </div>
         </div>
 
         <!--Key Partner-->
-        <!-- this shows sponsors (2 rows 4 col each grid) -->
-        <div id="partners" class="row mb-5 sponsors">
-            <h2 class="pb-5" style="text-align: center;"> Our Partners </h2>
+        <div id="partners" class="row sponsors">
+            <h1 class="text-center" style="color: #0b2b26;">Our Partners</h1>
             <div class="col-3 partnerCol">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
-                
             </div>
             <div class="col-3 partnerCol">
-                <a href="https://www.fairprice.com.sg/">
+                <a href="https://www.breadtalk.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
@@ -199,22 +205,6 @@
 
 <style scoped>
 
-/* .welcome{
-    font-size: 3vw;
-    -webkit-text-stroke: 1px #fff; 
-    color: transparent;
-    background-image: linear-gradient(to right, #fff, #fff);
-    background-repeat: no-repeat;
-    -webkit-background-clip: text;
-    background-position: -600px 0;
-    animation: backcolor 10s linear infinite alternate;
-}
-
-@keyframes backcolor{
-    100%{
-        background-position: 0 0;
-    }
-} */
 .bod{
     background-color: #0b2b26;
 }
@@ -249,12 +239,15 @@ h1{
 #searchText{
     position: absolute;
     justify-content: center;
-    top: 20%
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .typed-text{
     color: #A1BF73;
-    font-size: 5vw;
+    font-size: 4vw;
     font-weight:300;
 }
 
@@ -279,14 +272,14 @@ h1{
 .welcome{
     font-size: 6vw;
     color: white;
+    text-align: center;
 
 }
 
 .typingWords{
     margin-bottom: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
 }
 
 
@@ -294,17 +287,8 @@ h1{
     background-color: #fffdd0;
 }
 
-/* .statsBackground{
-    height: 400px; 
-    width: 100%; 
-    object-fit: cover; 
-    object-position: 0 0;
-    position: absolute;
-    z-index: 1;
-    opacity: 0.5;
-} */
 
-.allStats{
+#stats{
     background-image: url("../components/images/landingPage/stats-background.jpg");
     background-size: cover;
     opacity: 80%;
@@ -313,21 +297,27 @@ h1{
 
 
 .stats{
-    color: white;
-    font-weight: bold;
     position: relative;
-    border: white solid 1px;
+    border: border solid 1px;
     margin: 10px;
-    background-color: grey;
+    background-color: rgba(255, 255, 255, 0.971);
     opacity: 80%;
 }
 
+.statsHeader{
+    color:  #0b2b26;
+    text-align: center;
+}
+
+.statsDesc{
+    font-style: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
 .sponsors{
-    padding-left: 10%;
-    padding-right: 10%;
     background-color: #fffdd0;
-    padding-top: 1%;
-    padding-bottom: 3%;
+    padding: 20px;
 
 }
 .partnerCol{
@@ -336,9 +326,7 @@ h1{
 .partnerIcon{
     max-width: 70%;
 }
-.stats{
-    text-align: center;
-}
+
 @media (max-width: 767px) {
     .carousel-inner .carousel-item > div {
         display: none;
@@ -407,7 +395,7 @@ export default {
       // typing effect
       typeValue: '',
       typeStatus: false,
-      typeArray: ['Listing excess food', 'Buying ugly food'],
+      typeArray: ['Listing excess food', 'Purchasing excess food', 'Reducing food waste'],
       typingSpeed: 200, 
       erasingSpeed: 100, 
       newTextDelay: 2000, 
