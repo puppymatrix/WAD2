@@ -1,15 +1,10 @@
 <script setup>
-    import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
-    // import SearchBar from "../components/SearchBar.vue";
     import axios from 'axios'
     import { collection, getDocs, query } from "firebase/firestore";
 
     import { db } from '../firebase/index.js'
-    const icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
 
-
-    import { matchString, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
-    
+    import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
 </script>
 
 <template>
@@ -17,25 +12,25 @@
         <div class="col-1"></div>
         <div class="container m-3 col-10">
 
-            <div id="map"></div>
-            <!-- map centered in singapore for now -->
-            <GoogleMap 
+            <Map
+                :apiKey="key"
+                :foodItemsFiltered="foodItemsFiltered"
+                :userLocation="userLocation"
+                >
+            </Map>
+            <!-- <GoogleMap 
                 api-key="AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE" 
                 style="width: 100%; 
                 height: 500px"
                 :center="userLocation" 
                 :zoom="12"
                 >
-                <!-- user location marker, restyle this   -->
                 <Marker :options="{ 
                                     position: userLocation, 
                                     icon: icon,
-                                    background
-                                }">
-                    <!-- //nest information inside  -->
-                </Marker>
 
-                <!-- other markers -->
+                                }">
+                </Marker>
 
                 <Marker :options="{ position: {
                                                 lat: listing.info.Location.latitude, 
@@ -50,9 +45,7 @@
                     <InfoWindow :options="{
                                             minWidth: 100,
                                             maxWidth: 300           
-                    }" >
-
-
+                                            }" >
                         <div class="card">
                             <div id="carouselExample" class="carousel slide">
                                 <div class="carousel-inner"
@@ -87,9 +80,7 @@
                         </div>
                     </InfoWindow>
                 </Marker>
-
-
-            </GoogleMap>           
+            </GoogleMap>            -->
             <br> 
 
             <!-- search bar  -->
@@ -110,7 +101,7 @@
 
 
             <div class="row slidecontainer">
-            Distance (in KM): {{ filterDistance }}
+                <h5>Distance (in KM): {{ filterDistance }}</h5>
                 <input type="range" min="1" max="100" v-model="filterDistance" class="slider" id="myRange">
             </div>
 
@@ -132,22 +123,29 @@
   
   <script>
     import { defineComponent } from "vue";
+import { list } from 'firebase/storage';
     
     export default {
         mounted(){
             this.getUserLocation(),
-            this.getAllFood()
+            this.loadFood()
         },
+        props: {
+                'apiKey': String,
+                'foodItemsFilteredArr': Array, 
+                'userLocationObj': Object,
+                'listingArr': Array
+        },
+        
         data(){
             return {
-                filterDistance: 0,
+                filterDistance: 10,
                 searchQuery: '',
-                userLocation: '',
+                userLocation: {},
                 foodItems: [],
                 foodItemsFiltered: [],
                 coord: { lat: 1.290270, lng: 103.851959 },
                 key: 'AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE',
-                // center: { lat: 1.290270, lng: 103.851959 } // center on singapore for now -> CHANGE TO user's current location (https://www.youtube.com/watch?v=KARBEHUyooM)
             }
         },
         methods: {
@@ -160,7 +158,7 @@
                 axios.get(url)
                 .then(
                     response => {
-                        console.log(response)
+                        // console.log(response)
 
                         const data = response.data.results[0];
                         var latitude = parseFloat(data.geometry.location.lat)
@@ -184,13 +182,11 @@
                 axios.post(url)
                 .then(
                     response => {
-                        console.log('location', response)
+                        // console.log('location', response)
                         const data = response.data
-                        // this.userLocation = data.location
 
-                        console.log('userLocation', data.location)
+                        // console.log('userLocation', data.location)
                         this.userLocation = data.location
-                        // console.log('update', this.userLocation)
                     }   
                 )
 
@@ -200,24 +196,27 @@
                     }
                 )
             },
-            async getAllFood(){
+            async loadFood(){
 
-                const q = query(collection(db, "listings"));
+                const data = getAllListings()
+                data.then(
+                    listing => {
+                        console.log(listing)
+                        // this.foodItems.push({
+                        //     listingId: doc.id,
+                        //     info: doc.data(),
+                        //     distance: distanceToUser // straight line distance from user location to food location
+                        // })
+                        for (let i=0;i<listing.length;i++){
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
-                const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                // console.log(doc.id, " => ", doc.data().Location);
-
-                let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, doc.data().Location.latitude, doc.data().Location.longitude).toFixed(3))
-                this.foodItems.push({
-                    listingId: doc.id,
-                    info: doc.data(),
-                    distance: distanceToUser // straight line distance from user location to food location
-                })
-                });
-
-                // console.log(this.foodItems[0])
+                            this.foodItems.push({
+                                                info: listing[i],
+                                                distance: distanceToUser
+                                            })
+                        }
+                    }
+                )    
             },
 
             loadFoodByNameAndDistance(){

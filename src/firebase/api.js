@@ -344,7 +344,7 @@ function checkUniqueUsername(username){
     
     const querySnapshot = getDocs(q);
    
-    console.log('length', querySnapshot.length)
+    // console.log('length', querySnapshot.length)
     return (querySnapshot.length == 0)
 }
 
@@ -368,7 +368,10 @@ function filterByName(foodArr, name){
     var query = name.toLowerCase()
 
     for(var i=0;i<foodArr.length;i++) {
-        let itemName = foodArr[i].info.ListingName
+        if (i == 0){
+            console.log(foodArr[i])
+        }
+        let itemName = foodArr[i].info.details.ListingName
         let itemNameArr = itemName.split(" ")
 
         var output = ""
@@ -429,6 +432,19 @@ function matchString(input, pattern) {
     return regex.test(input);
 }
 
+async function getAllCategories(){
+    var result = []
+    const querySnapshot = await getDocs(collection(db, "categories"));
+    
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+        result.push(doc.data())
+      });
+
+    return result
+}
+
 
 export {
     getAllListings,
@@ -447,6 +463,8 @@ export {
     chopeListing,
     collectListing,
     deleteExpiredChopes,
-    calculateDistance
+    calculateDistance,
+    getAllCategories
+
 };
 
