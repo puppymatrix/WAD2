@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store/store.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,7 +28,10 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/listingView.vue')
+      component: () => import('../views/listingView.vue'),
+      meta: {
+        authRequired: true,
+      },
 
     },
 
@@ -94,7 +98,10 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/userProfileView.vue')
+      component: () => import('../views/userProfileView.vue'),
+      meta: {
+        authRequired: true,
+      },
 
     },
 
@@ -117,5 +124,20 @@ const router = createRouter({
 
 ]
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.authRequired)) {
+      if (store.getters.isAuthenticated) {
+        next();
+      } else {
+        alert('You must be logged in to see this page');
+        next({
+          path: '/logIn',
+        });
+      }
+    } else {
+      next();
+    }
+  });
 
 export default router
