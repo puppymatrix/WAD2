@@ -17,7 +17,7 @@ import {
 // listing functions
 
 // default returns all listings in DB
-async function getAllListings(maxReturned) {
+async function getAllListings(maxReturned = null) {
     let listings = [];
     let q;
     if (typeof maxReturned == "number" && maxReturned >= 0) {

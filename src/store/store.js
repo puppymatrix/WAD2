@@ -1,26 +1,20 @@
 import { createStore } from "vuex";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const store = createStore({
-    state: {
-        userLoggedIn: false,
-        user: '' // Initially, the user is not logged in
+export default createStore({
+  state: {
+    user: null,
+  },
+  getters: {
+    isAuthenticated: (state) => !!state.user,
+    currentUser: (state) => state.user,
+  },
+  mutations: {
+    setUser(state, user) {
+      state.user = user;
     },
-    getters:{
-
-    },
-    mutations: {
-        setUserLoggedIn(state, value) {
-            state.userLoggedIn = value
-        },
-
-        setUser(state, user){
-            state.userLoggedIn = user
-        }
-    },
-    actions: {
-        
-    },
-    modules: {},
+  },
+  actions: {
+  },
+  modules: {},
 });
-
-export default store

@@ -6,16 +6,22 @@ import { getAllListings, filterByName, getAllCategories } from "../firebase/api.
 
 <template>
     <body>
+
         
         <!-- search bar -->
         <SearchBar @search="searchFood"/>
         <!-- <div ></div> -->
+        
         <!-- Map View button  -->
         <div class="container-fluid my-3">
             <div class="row">
-                <div class="col-10"></div>
-                <div class="col-2 d-flex justify-content-center">
-                    <button
+                <div class="col-10 p-0">
+                    <!-- search bar -->
+                    <SearchBar />
+                </div>
+                <div class="col-2 d-flex justify-content-center p-0">
+                    <div id="mapBtn" class="my-auto">
+                        <button
                         type="button"
                         class="btn btn-outline-success d-flex align-items-center justify-content-center"
                         @click="navigate=>{$router.push('/mapView')}"
@@ -24,11 +30,12 @@ import { getAllListings, filterByName, getAllCategories } from "../firebase/api.
                             src="../components/icons/googleMaps.png"
                             alt=""
                             class="img-fluid me-1"
-                            style="width: 20px"
+                            style="width: 20px;;"
                         />
                         Map View
-                       
                     </button>
+                    </div>
+
                 </div>
             </div>
         </div>
