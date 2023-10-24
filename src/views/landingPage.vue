@@ -415,9 +415,9 @@ export default {
       charIndex: 0
     }
   },
-    components: {
-        Vue3Marquee
-    },
+    // components: {
+    //     Vue3Marquee
+    // },
   methods:{
     typeText(){
         if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
