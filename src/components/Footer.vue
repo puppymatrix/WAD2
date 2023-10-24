@@ -55,7 +55,7 @@
                     <input class="form-control" type="search" placeholder="Your Email Address" aria-label="Search">
                     <div class="input-group-append"> <!-- Append the button to the input group -->
                         <button class="btn footerBtn" type="submit">
-                            <!-- <img src="images/icons/send.png" alt="" >Submit -->
+                            <img src=".\icons\send.png" alt="" > Submit
                         </button>
                     </div>
                 </div>
