@@ -74,12 +74,7 @@
 
 export default defineComponent({
   components: { GoogleMap, Marker, InfoWindow },
-  // setup() {
-    
 
-
-  //   return { userMarkerOptions, foodMarker };
-  // },
   props: {
     apiKey: {
       type: String,
@@ -95,7 +90,6 @@ export default defineComponent({
     },
     
   },
-  loader: { '.js': 'jsx' }
   
 });
 </script>

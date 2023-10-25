@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView, routerKey } from "vue-router";
+// import { RouterLink, RouterView, routerKey } from "vue-router";
 </script>
 
 <template>
@@ -49,7 +49,6 @@ import { RouterLink, RouterView, routerKey } from "vue-router";
                         <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
 
-                    <div class="col-1" v-if="userLoggedIn"></div>           
                 </li>
             </ul>
 
@@ -87,7 +86,6 @@ export default {
                     console.log("An error occured");
                 });
 
-            // this.$store.commit('setUserLoggedIn', false)
         },
     },
 };

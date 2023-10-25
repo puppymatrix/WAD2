@@ -17,6 +17,7 @@ import { auth as fb_auth } from "@/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
+import { getUser, getUserLocation } from "./firebase/api.js";
 
 export default {
     components: {
@@ -32,9 +33,14 @@ export default {
                 this.$store.commit('setUser', uid); // Call the setUser mutation to update the state
                 // console.log(uid);
                 // Do something with the UID, such as store it in Vuex or pass it down to child components as a prop
+                var userLocation = getUserLocation()
+                console.log('app', userLocation)
+                this.$store.commit('setLocation', userLocation); // Call the setUser mutation to update the state
+
             } else {
                 // User is signed out
                 this.$store.commit('setUser', null); // Call the setUser mutation to update the state
+                
             }
         });
     },

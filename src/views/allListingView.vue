@@ -1,6 +1,7 @@
 <script setup>
 import SearchBar from "../components/SearchBar.vue";
 import { getAllListings, filterByName, getAllCategories } from "../firebase/api.js"
+import { mapGetters } from 'vuex'
 
 </script>
 
@@ -178,6 +179,10 @@ export default {
             allCategories:[]
         }
     },
+
+    computed: {
+        ...mapGetters(['userLocation'])
+    },
     methods:{
         async loadListings(){
             const data = getAllListings(this.maxReturn)
@@ -186,7 +191,7 @@ export default {
                     // console.log(listing)
 
                     for (let i=0;i<listing.length;i++){
-                            // let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+                            let distanceToUser = Number.parseFloat(calculateDistance(userLocation.lat, userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
                             this.foodItems.push({
                                                 info: listing[i],
