@@ -1,6 +1,6 @@
 <script setup>
 
-    import { getAllListings, filterByDistance, filterByName, calculateDistance, getCoordinates, getUserLocation } from "../firebase/api"
+    import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     import { mapGetters } from 'vuex'
 
 </script>
@@ -115,6 +115,8 @@
             
         </div>
     </div>
+
+    {{  currentUserLocation }}
   </template>
 
   
@@ -184,7 +186,6 @@
             },
             searchLocation(){
                 this.getCoordinates()
-                this.getUserLocation()
             },
             getUserLocation(){
                 const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
@@ -212,8 +213,8 @@
         methods: {
             
             searchLocation(){
-                this.// getCoordinates()
-                this.getUserLocation('AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE')
+                // this.// getCoordinates()
+                // this.getUserLocation('AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE')
             },
             async loadFood(){
 
@@ -221,14 +222,14 @@
                 data.then(
                     listing => {
                         console.log(listing)
-                        console.log('userLocation', this.userLocation)
+                        console.log('userLocation', this.currentUserLocation)
                         // this.foodItems.push({
                         //     listingId: doc.id,
                         //     info: doc.data(),
                         //     distance: distanceToUser // straight line distance from user location to food location
                         // })
                         for (let i=0;i<listing.length;i++){
-                            let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
                             this.foodItems.push({
                                                 info: listing[i],

@@ -1,6 +1,6 @@
 <script setup>
 import SearchBar from "../components/SearchBar.vue";
-import { getAllListings, filterByName, getAllCategories } from "../firebase/api.js"
+import { getAllListings, filterByName, getAllCategories, calculateDistance } from "../firebase/api.js"
 import { mapGetters } from 'vuex'
 
 </script>
@@ -8,17 +8,12 @@ import { mapGetters } from 'vuex'
 <template>
     <body>
 
-        
-        <!-- search bar -->
-        <SearchBar @search="searchFood"/>
-        <!-- <div ></div> -->
-        
         <!-- Map View button  -->
         <div class="container-fluid my-3">
             <div class="row">
                 <div class="col-10 p-0">
                     <!-- search bar -->
-                    <SearchBar />
+                    <SearchBar  @search="searchFood"/>
                 </div>
                 <div class="col-2 d-flex justify-content-center p-0">
                     <div id="mapBtn" class="my-auto">
@@ -43,6 +38,9 @@ import { mapGetters } from 'vuex'
 
 
         <!-- listings -->
+        {{ filterPrice  }}
+        {{ filterCategory }}
+        {{ filterDistance }}
         <div class="container-fluid" >
             <h5 style="font-style: italic;">Search results for: </h5>
             <div class="filterBar row d-flex">
@@ -50,23 +48,25 @@ import { mapGetters } from 'vuex'
                 <ul>
                     <li><p class="d-inline" style="margin: 2px 5px;">Sort By: </p></li>
                     <li>
-                        <b-dropdown text="Price">
-                        <b-dropdown-item href="#">Price: Low to High</b-dropdown-item>
-                        <b-dropdown-item href="#">Price: High to Low</b-dropdown-item>
+                        <b-dropdown text="Price" v-model="filterPrice">
+                            <b-dropdown-item href="#" @click="change=>{this.filterPrice = 'ascending'}">Low to High</b-dropdown-item>
+                            <b-dropdown-item href="#" @click="change=>{this.filterPrice = 'descending'}">High to Low</b-dropdown-item>
                         </b-dropdown>
                     </li>
                     <li>
-                        <b-dropdown text="Category of Food">
-                        <b-dropdown-item href="#" v-for="category in allCategories">{{ category }}</b-dropdown-item>
-                       
+                        <b-dropdown text="Category of Food" v-model="filterCategory">
+                        <!-- <b-dropdown text="Category of Food" v-model="filterCategory"></b-dropdown> -->
+                            <b-dropdown-item v-for="category in allCategories" :value="category" @click="change=>{this.filterCategory = category}">{{ category }}</b-dropdown-item>
+
                         </b-dropdown>
                     </li>
                     <li>
-                        <b-dropdown text="Location">
-                        <b-dropdown-item href="#">Within 2km away</b-dropdown-item>
-                        <b-dropdown-item href="#">Between 2k-5km</b-dropdown-item>
-                        <b-dropdown-item href="#">Between 5km-10km</b-dropdown-item>
-                        <b-dropdown-item href="#">More than 10km</b-dropdown-item>
+                        <b-dropdown text="Location" v-model="filterDistance">
+                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '2'}">Within 2km away</b-dropdown-item>
+                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '5'}">Within 5km away</b-dropdown-item>
+                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '10'}">Within 10km away</b-dropdown-item>
+                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '20'}">Within 20km away</b-dropdown-item>
+                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '99999'}">All</b-dropdown-item>
                         </b-dropdown>
                     </li>
                 </ul>
@@ -82,13 +82,17 @@ import { mapGetters } from 'vuex'
                                     class="card-img-top"
                                 />
                                 <div class="card-body border-top border-2">
-                                    <h6 
-                                        class="card-subtitle mb-2 text-body-secondary">Category: {{ item.info.details.Category }}</h6>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ item.info.details.Category }}</h6>
                                     <h5 class="card-title">Name: {{ item.info.details.ListingName }}</h5>
                                     <p class="card-text d-flex align-items-center mb-3">
                                          SMU School of Economics
                                     </p>
                                     <!-- need to getLister -->
+                                    <p class="card-text d-flex align-items-center mb-3">
+                                        Price: {{item.info.details.Price }} <br>
+                                        Distance: {{item.distance}}
+                                    </p>
+                                    
                                     <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
                                         <p class="me-1">Glenda123</p>
                                     </h6>
@@ -125,16 +129,19 @@ import { mapGetters } from 'vuex'
                                     </p>
                                     <!-- need to getLister -->
                                     <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <p class="card-text d-flex align-items-center mb-3">
+                                            Price: {{item.info.details.Price }} <br>
+                                            Distance: {{item.distance}}
+                                        </p>                                    
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
                                         <p class="me-1">Glenda123</p>
                                     </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
+                                    <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <button
                                                 type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
+                                                class="btn btn-sm btn-outline-secondary">
                                                 <a href="/listing">View</a>
                                             </button>
                                         </div>
@@ -142,9 +149,7 @@ import { mapGetters } from 'vuex'
                                 </div>
                             </div>
                         </div>
-       
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -173,7 +178,7 @@ export default {
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
-            filterPrice: 9999,
+            filterPrice: 'ascending',
             filterDistance: 10000,
             filterCategory: 'all',
             allCategories:[]
@@ -181,21 +186,20 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['userLocation'])
+        ...mapGetters(['currentUserLocation'])
     },
     methods:{
         async loadListings(){
             const data = getAllListings(this.maxReturn)
             data.then(
                 listing => {
-                    // console.log(listing)
 
                     for (let i=0;i<listing.length;i++){
-                            let distanceToUser = Number.parseFloat(calculateDistance(userLocation.lat, userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
                             this.foodItems.push({
                                                 info: listing[i],
-                                                distance: ''
+                                                distance: distanceToUser
                                             })
                         }
                     console.log(this.foodItems, 'listings loaded')
@@ -213,11 +217,22 @@ export default {
             )
            
         },
-        searchFood(searchVal){
+        searchFood(searchVal){ // incomplete
             console.log('searchVal', searchVal)
             this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
-            // this.query=searchVal
-            console.log('filtered')
+
+            for(let i=0;i<this.foodItemsFiltered;i++){
+                if (!(this.foodItemsFiltered[i].distance <= this.filterDistance && this.foodItemsFiltered[i].info.details.Category == this.filterCategory.toLowerCase())){
+                    this.foodItemsFiltered.slice(i,i+1)
+                }
+            }
+
+            if (this.filterPrice == 'ascending') {
+                this.foodItemsFiltered.sort((a, b) => a.info.details.Price - b.info.details.Price);
+            } else if (this.filterPrice == 'descending') {
+                this.foodItemsFiltered.sort((a, b) => b.info.details.Price - a.info.details.Price);
+            }
+            console.log('filtered', this.foodItemsFiltered)
         }
     }
     

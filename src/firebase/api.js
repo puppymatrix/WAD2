@@ -386,17 +386,13 @@ function filterByName(foodArr, name){
         // console.log()
         console.log('arr', itemNameArr, 'query', query)
 
-        // if (itemNameArr.includes(query)){
-        //     console.log('true')
-        //     result.push(foodArr[i])
-        // }
         if (matchString(output, name)){
             console.log('true')
             result.push(foodArr[i])
         }
     }
 
-    console.log(result)
+    // console.log(result)
     return result
 }
 
@@ -447,50 +443,8 @@ async function getAllCategories(){
     return result
 }
 
-async function getCoordinates(query) {
-    // this function gets the coordinates
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE&address=${query}`;
 
-    axios.get(url)
-    .then(
-        response => {
-            // console.log(response)
 
-            const data = response.data.results[0];
-            var latitude = parseFloat(data.geometry.location.lat)
-            var longitude = parseFloat(data.geometry.location.lng)
-
-            return {lat: latitude, lng: longitude}
-        })
-    .catch(
-        error => {
-            console.log(error)
-            console.log(error.response.data.error_message)
-
-    })
-}
-
-async function getUserLocation(){
-    const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE`
-
-        axios.post(url)
-        .then(
-            response => {
-                // console.log('location', response)
-                const data = response.data
-    
-                return data.location
-            }   
-        )
-    
-        .catch(
-            error => {
-                console.log(error)
-                console.log(error.response.data.error_message)
-            }
-        )
-    }
-// }
 
 
 export {

@@ -17,14 +17,21 @@ import { auth as fb_auth } from "@/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
-import { getUser, getUserLocation } from "./firebase/api.js";
+import { getUser } from "./firebase/api.js";
+import axios from "axios";
 
 export default {
     components: {
         NavBar,
         Footer,
     },
+    data(){
+        return {
+            userLocation: ""
+        }
+    },
     created() {
+        this.getUserLocation()
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -32,10 +39,9 @@ export default {
                 const uid = user.uid;
                 this.$store.commit('setUser', uid); // Call the setUser mutation to update the state
                 // console.log(uid);
-                // Do something with the UID, such as store it in Vuex or pass it down to child components as a prop
-                var userLocation = getUserLocation()
-                console.log('app', userLocation)
-                this.$store.commit('setLocation', userLocation); // Call the setUser mutation to update the state
+                
+                if (this.userLocation != "")
+                this.$store.commit('setLocation', this.userLocation); // Call the setUser mutation to update the state
 
             } else {
                 // User is signed out
@@ -44,6 +50,29 @@ export default {
             }
         });
     },
+
+    methods: {
+        async getUserLocation(){
+        const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE`
+
+        var loc = await axios.post(url)
+            .then(
+                response => {
+                    const data = response.data
+                    // Call the setUser mutation to update the state
+                    console.log('resp', data.location)
+                    this.userLocation = data.location
+                } )
+        
+            .catch(
+                error => {
+                    console.log(error)
+                    console.log(error.response.data.error_message)
+                }
+            )
+      
+        }
+    }
 };
 </script>
 

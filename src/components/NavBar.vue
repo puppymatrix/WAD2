@@ -94,14 +94,14 @@ export default {
 <style scoped>
 @media (min-width: 768px) {
 
-                #pinned{
-                    position: absolute;
-                    top: 20px;
-                    right: 5px;
-            }
+        #pinned{
+            position: absolute;
+            top: 20px;
+            right: 5px;
+    }
 
 
-        }
+}
 
 
 #rightSideBtns {
