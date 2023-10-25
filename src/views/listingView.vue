@@ -1,5 +1,8 @@
 <script setup>
     import SearchBar from "../components/SearchBar.vue";
+    import { getAllListings, filterByName } from "src/firebase/api.js"
+    import { collection, getDocs, query } from "firebase/firestore";
+
 </script>
 
 <template>
@@ -7,6 +10,9 @@
         
         <!-- search bar -->
         <SearchBar />
+        <div @search="searchFood"></div>
+
+        {{ query }}
 
         <!-- Button-->
         <div class="container-fluid my-3">
@@ -313,6 +319,8 @@
         </div>
     </body>
 </template>
+
+
 
 <style scoped>
 

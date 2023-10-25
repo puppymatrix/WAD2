@@ -1,16 +1,23 @@
 <script setup>
 import SearchBar from "../components/SearchBar.vue";
+import { getAllListings, matchString, getAllCategories, calculateDistance } from "../firebase/api.js"
+
 </script>
 
 <template>
     <body>
 
+        
+        <!-- search bar -->
+        <SearchBar @search="searchFood"/>
+        <!-- <div ></div> -->
+        
         <!-- Map View button  -->
         <div class="container-fluid my-3">
             <div class="row">
                 <div class="col-10 p-0">
                     <!-- search bar -->
-                    <SearchBar />
+                    <!-- <SearchBar /> -->
                 </div>
                 <div class="col-2 d-flex justify-content-center p-0">
                     <div id="mapBtn" class="my-auto">
@@ -23,7 +30,7 @@ import SearchBar from "../components/SearchBar.vue";
                             src="../components/icons/googleMaps.png"
                             alt=""
                             class="img-fluid me-1"
-                            style="width: 20px;;"
+                            style="width: 20px;"
                         />
                         Map View
                     </button>
@@ -35,52 +42,54 @@ import SearchBar from "../components/SearchBar.vue";
 
 
         <!-- listings -->
-        <div class="container-fluid">
+        <div class="container-fluid" >
             <h5 style="font-style: italic;">Search results for: </h5>
             <div class="filterBar row d-flex">
+                <!-- vfor categories -->
                 <ul>
                     <li><p class="d-inline" style="margin: 2px 5px;">Sort By: </p></li>
                     <li>
-                        <b-dropdown text="Price">
-                        <b-dropdown-item href="#">Price: Low to High</b-dropdown-item>
-                        <b-dropdown-item href="#">Price: High to Low</b-dropdown-item>
+                        <b-dropdown text="Price" v-model="filterDistance">
+                        <b-dropdown-item href="#" value="ascending">Price: Low to High</b-dropdown-item>
+                        <b-dropdown-item href="#" value="descending ">Price: High to Low</b-dropdown-item>
                         </b-dropdown>
                     </li>
                     <li>
-                        <b-dropdown text="Category of Food">
-                        <b-dropdown-item href="#">Vegetables</b-dropdown-item>
-                        <b-dropdown-item href="#">Fruits</b-dropdown-item>
-                        <b-dropdown-item href="#">Dessert</b-dropdown-item>
+                        <b-dropdown text="Category of Food" v-model="filterCategory">
+                        <b-dropdown-item href="#" v-for="category in allCategories" :value = "category">{{ category }} </b-dropdown-item>
+                       
                         </b-dropdown>
                     </li>
                     <li>
-                        <b-dropdown text="Location">
-                        <b-dropdown-item href="#">Within 2km away</b-dropdown-item>
-                        <b-dropdown-item href="#">Between 2k-5km</b-dropdown-item>
-                        <b-dropdown-item href="#">Between 5km-10km</b-dropdown-item>
-                        <b-dropdown-item href="#">More than 10km</b-dropdown-item>
+                        <b-dropdown text="Location" v-model="filterDistance">
+                        <b-dropdown-item href="#" value="2">Within 2km away</b-dropdown-item>
+                        <b-dropdown-item href="#" value="5">Between 2k-5km</b-dropdown-item>
+                        <b-dropdown-item href="#" value="10">Between 5km-10km</b-dropdown-item>
+                        <b-dropdown-item href="#" value="9999">More than 10km</b-dropdown-item>
                         </b-dropdown>
                     </li>
                 </ul>
             </div>
             <div class="album py-2">
                 <div class="container-fluid px-0">
-                    <div class="row  g-3">
-                        <div class="col-lg-3 col-md-4 col-sm-12">
+                    <div class="row g-3" v-if="foodItemsFiltered.length==0" >
+                        <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in foodItems">
                             <div class="card shadow-sm">
                                 <img
-                                    src="https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2Farchive%2Fd852987f86aeae8b65926f9e7a260c28285ea744"
+                                    :src="item.info.details.ImageUrls[0]"
                                     alt=""
                                     class="card-img-top"
                                 />
                                 <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Vegetables</h5>
+                                    <h6 
+                                        class="card-subtitle mb-2 text-body-secondary">Category: {{ item.info.details.Category }}</h6>
+                                    <h5 class="card-title">Name: {{ item.info.details.ListingName }}</h5>
                                     <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
+                                         SMU School of Economics
                                     </p>
+                                    <!-- need to getLister -->
                                     <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
+                                        <p class="me-1">Glenda123</p>
                                     </h6>
                                     <div
                                         class="d-flex justify-content-between align-items-center"
@@ -97,162 +106,44 @@ import SearchBar from "../components/SearchBar.vue";
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Ice cream</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                            <a href="/listing">View</a>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Ice cream</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                            <a href="/listing">View</a>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Ice cream</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                            <a href="/listing">View</a>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Banana</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                            <a href="/listing">View</a>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-3 col-md-4">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Banana</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                            <a href="/listing">View</a>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+       
                     </div>
+                    <div class="row g-3" v-else>
+                        <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in foodItemsFiltered">
+                            <div class="card shadow-sm">
+                                <img
+                                    :src="item.info.details.ImageUrls[0]"
+                                    alt=""
+                                    class="card-img-top"
+                                />
+                                <div class="card-body border-top border-2">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ item.info.details.Category }}</h6>
+                                    <h5 class="card-title">{{ item.info.details.ListingName }}</h5>
+                                    <p class="card-text d-flex align-items-center mb-3">
+                                         SMU School of Economics
+                                    </p>
+                                    <!-- need to getLister -->
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <p class="me-1">Glenda123</p>
+                                    </h6>
+                                    <div
+                                        class="d-flex justify-content-between align-items-center"
+                                    >
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline-secondary"
+                                            >
+                                                <a href="/listing">View</a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+       
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -267,6 +158,85 @@ import SearchBar from "../components/SearchBar.vue";
 
     </body>
 </template>
+
+<script>
+export default {
+    mounted(){
+        console.log('mounted')
+        this.loadListings()
+        this.loadCategories()
+    },
+    data(){
+        return {
+            query: "",
+            foodItems: [],
+            foodItemsFiltered: [],
+            maxReturn: -1,
+            filterPrice: 9999,
+            filterDistance: 9999,
+            filterCategory: 'all',
+            allCategories:[]
+        }
+    },
+    methods:{
+        async loadListings(){
+            const data = getAllListings(this.maxReturn)
+            data.then(
+                listing => {
+                    // console.log(listing)
+
+                    for (let i=0;i<listing.length;i++){
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+
+                            this.foodItems.push({
+                                                info: listing[i],
+                                                distance: distanceToUser
+                                            })
+                        }
+                    console.log(this.foodItems, 'listings loaded')
+                }
+            )
+        }, 
+
+        async loadCategories(){
+            const data = getAllCategories()
+            data.then(
+                categories => {
+                    console.log(categories)
+                    this.allCategories = categories[0].categories
+                }
+            )
+           
+        },
+        searchFood(searchVal){
+            console.log('searchVal', searchVal)
+            // this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
+            for (i=0;i<this.foodItems.length;i++){
+                let name = this.foodItems[i].info.details.ListingName
+                let category = this.foodItems[i].info.details.Category
+                let distance = this.foodItems[i].distance
+
+                if (matchString(searchVal, name) & category == this.filterCategory & distance <= this.filterDistance){
+                    this.foodItemsFiltered.push(this.foodItems[i])
+                }
+            }
+
+            //sort by htl or lth
+            if (this.filterPrice == 'ascending'){
+                this.foodItemsFiltered.sort((a, b) => a.info.details.Price - b.info.detail.Price)
+            } else  if (this.filterPrice == 'descending'){
+                this.foodItemsFiltered.sort((a, b) => b.info.details.Price - a.info.detail.Price)
+            }
+        
+            console.log('filtered')
+        },
+
+
+    }
+    
+}
+
+</script>
 
 <style scoped>
 .text-bg-listing {

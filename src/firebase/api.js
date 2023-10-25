@@ -334,6 +334,7 @@ async function deleteExpiredChopes() {
     }
 }
 
+
 function checkUniqueUsername(username){
 
     // returns true if username is unique and false if otherwise
@@ -343,41 +344,34 @@ function checkUniqueUsername(username){
     
     const querySnapshot = getDocs(q);
    
-    console.log('length', querySnapshot.length)
+    // console.log('length', querySnapshot.length)
     return (querySnapshot.length == 0)
 }
 
-function matchString(input, pattern) {
-    // Escape special regex characters in the plain string
-    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    
-    // Create a regex object with the escaped pattern
-    const regex = new RegExp(escapedPattern);
-  
-    // Use the test() method to check if the input matches the pattern
-    return regex.test(input);
-}
+function filterByDistance(foodArr, filterDistance){
+                var result = []
 
-function filterByDistance(foodArr, distance){
-    var result = []
+                for(var i=0;i<foodArr.length;i++) {
+                    var food = foodArr[i]
+                    if (food.distance <= filterDistance){
+                        // console.log('wothin range')
+                        result.push(food)
+                    }
+                }
 
+                console.log(result)
+                return result
+            }
 
-    for(var i=0;i<foodArr.length;i++) {
-        var food = foodArr[i]
-        if (food.distance <= distance){
-            result.push(food)
-        }
-    }
-
-    // console.log(result)
-    return result
-}
 function filterByName(foodArr, name){
     var result = []
     var query = name.toLowerCase()
 
     for(var i=0;i<foodArr.length;i++) {
-        let itemName = foodArr[i].info.ListingName
+        if (i == 0){
+            console.log(foodArr[i])
+        }
+        let itemName = foodArr[i].info.details.ListingName
         let itemNameArr = itemName.split(" ")
 
         var output = ""
@@ -404,6 +398,99 @@ function filterByName(foodArr, name){
     return result
 }
 
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const EARTHRADIUS = 6371; // Radius of the Earth in kilometers
+
+    // Convert latitude and longitude from degrees to radians
+    const radLat1 = (Math.PI * lat1) / 180;
+    const radLon1 = (Math.PI * lon1) / 180;
+    const radLat2 = (Math.PI * lat2) / 180;
+    const radLon2 = (Math.PI * lon2) / 180;
+
+    // Haversine formula
+    const dLat = radLat2 - radLat1;
+    const dLon = radLon2 - radLon1;
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(radLat1) * Math.cos(radLat2) * Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.asin(Math.sqrt(a));
+
+    // Calculate the distance
+    const distance = EARTHRADIUS * c; // Result in kilometers
+
+    return distance;
+
+}
+
+function matchString(input, pattern) {
+    // Escape special regex characters in the plain string
+    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    
+    // Create a regex object with the escaped pattern
+    const regex = new RegExp(escapedPattern);
+    // Use the test() method to check if the input matches the pattern
+    return regex.test(input);
+}
+
+async function getAllCategories(){
+    var result = []
+    const querySnapshot = await getDocs(collection(db, "categories"));
+    
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+        result.push(doc.data())
+      });
+
+    return result
+}
+
+async function getCoordinates() {
+    // this function gets the coordinates
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
+
+    console.log(url)
+
+    axios.get(url)
+    .then(
+        response => {
+            // console.log(response)
+
+            const data = response.data.results[0];
+            var latitude = parseFloat(data.geometry.location.lat)
+            var longitude = parseFloat(data.geometry.location.lng)
+
+            this.coord = {lat: latitude, lng: longitude}
+        })
+    .catch(
+        error => {
+            console.log(error)
+            console.log(error.response.data.error_message)
+
+    })
+}
+
+async function getUserLocation(){
+    const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
+    axios.post(url)
+    .then(
+        response => {
+            // console.log('location', response)
+            const data = response.data
+
+            // console.log('userLocation', data.location)
+            this.userLocation = data.location
+        }   
+    )
+
+    .catch(
+        error => {
+            console.log(error)
+        }
+    )
+}
+
+
 export {
     getAllListings,
     addListingNoImage,
@@ -421,5 +508,9 @@ export {
     chopeListing,
     collectListing,
     deleteExpiredChopes,
+    calculateDistance,
+    getAllCategories,
+    getUserLocation,
+    getCoordinates
 };
 
