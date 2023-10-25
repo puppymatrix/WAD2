@@ -1,6 +1,6 @@
 <script setup>
 import SearchBar from "../components/SearchBar.vue";
-import { getAllListings, filterByName, getAllCategories } from "../firebase/api.js"
+import { getAllListings, matchString, getAllCategories, calculateDistance } from "../firebase/api.js"
 
 </script>
 
@@ -17,7 +17,7 @@ import { getAllListings, filterByName, getAllCategories } from "../firebase/api.
             <div class="row">
                 <div class="col-10 p-0">
                     <!-- search bar -->
-                    <SearchBar />
+                    <!-- <SearchBar /> -->
                 </div>
                 <div class="col-2 d-flex justify-content-center p-0">
                     <div id="mapBtn" class="my-auto">
@@ -30,7 +30,7 @@ import { getAllListings, filterByName, getAllCategories } from "../firebase/api.
                             src="../components/icons/googleMaps.png"
                             alt=""
                             class="img-fluid me-1"
-                            style="width: 20px;;"
+                            style="width: 20px;"
                         />
                         Map View
                     </button>
@@ -55,8 +55,8 @@ import { getAllListings, filterByName, getAllCategories } from "../firebase/api.
                         </b-dropdown>
                     </li>
                     <li>
-                        <b-dropdown text="Category of Food">
-                        <b-dropdown-item href="#" v-for="category in allCategories">{{ category }}</b-dropdown-item>
+                        <b-dropdown text="Category of Food" v-model="filterCategory">
+                        <b-dropdown-item href="#" v-for="category in allCategories" :value = "category">{{ category }} </b-dropdown-item>
                        
                         </b-dropdown>
                     </li>
@@ -173,7 +173,7 @@ export default {
             foodItemsFiltered: [],
             maxReturn: -1,
             filterPrice: 9999,
-            filterDistance: 10000,
+            filterDistance: 9999,
             filterCategory: 'all',
             allCategories:[]
         }
@@ -186,11 +186,11 @@ export default {
                     // console.log(listing)
 
                     for (let i=0;i<listing.length;i++){
-                            // let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
                             this.foodItems.push({
                                                 info: listing[i],
-                                                distance: ''
+                                                distance: distanceToUser
                                             })
                         }
                     console.log(this.foodItems, 'listings loaded')
@@ -210,10 +210,28 @@ export default {
         },
         searchFood(searchVal){
             console.log('searchVal', searchVal)
-            this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
-            // this.query=searchVal
+            // this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
+            for (i=0;i<this.foodItems.length;i++){
+                let name = this.foodItems[i].info.details.ListingName
+                let category = this.foodItems[i].info.details.Category
+                let distance = this.foodItems[i].distance
+
+                if (matchString(searchVal, name) & category == this.filterCategory & distance <= this.filterDistance){
+                    this.foodItemsFiltered.push(this.foodItems[i])
+                }
+            }
+
+            //sort by htl or lth
+            if (this.filterPrice == 'ascending'){
+                this.foodItemsFiltered.sort((a, b) => a.info.details.Price - b.info.detail.Price)
+            } else  if (this.filterPrice == 'descending'){
+                this.foodItemsFiltered.sort((a, b) => b.info.details.Price - a.info.detail.Price)
+            }
+        
             console.log('filtered')
-        }
+        },
+
+
     }
     
 }

@@ -445,6 +445,51 @@ async function getAllCategories(){
     return result
 }
 
+async function getCoordinates() {
+    // this function gets the coordinates
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
+
+    console.log(url)
+
+    axios.get(url)
+    .then(
+        response => {
+            // console.log(response)
+
+            const data = response.data.results[0];
+            var latitude = parseFloat(data.geometry.location.lat)
+            var longitude = parseFloat(data.geometry.location.lng)
+
+            this.coord = {lat: latitude, lng: longitude}
+        })
+    .catch(
+        error => {
+            console.log(error)
+            console.log(error.response.data.error_message)
+
+    })
+}
+
+async function getUserLocation(){
+    const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
+    axios.post(url)
+    .then(
+        response => {
+            // console.log('location', response)
+            const data = response.data
+
+            // console.log('userLocation', data.location)
+            this.userLocation = data.location
+        }   
+    )
+
+    .catch(
+        error => {
+            console.log(error)
+        }
+    )
+}
+
 
 export {
     getAllListings,
@@ -464,7 +509,8 @@ export {
     collectListing,
     deleteExpiredChopes,
     calculateDistance,
-    getAllCategories
-
+    getAllCategories,
+    getUserLocation,
+    getCoordinates
 };
 
