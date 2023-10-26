@@ -217,7 +217,7 @@ export default {
             )
            
         },
-        searchFood(searchVal){ // incomplete
+        searchFood(searchVal){ // incomplete do something about all 
             console.log('searchVal', searchVal)
             this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
 

@@ -27,7 +27,7 @@ export default {
     <!-- <hr> -->
     <!-- <upload_file /> -->
     <!-- <hr> -->
-    <!-- <api_example /> -->
+    <api_example />
     <hr />
     <user_api />
     <p> {{ currentUser }} </p>
