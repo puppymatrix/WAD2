@@ -13,12 +13,28 @@
             </button>
         </div>
         <br />
-        <button @click="addRandomUsers()">Add Random User Chope, Collected and Listing Data</button>
+        <button @click="addRandomUsers()">
+            Add Random User Chope, Collected and Listing Data
+        </button>
+        <br />
+        <br />
+        <button @click="addListingOwners()">
+            Add Random owners for listings
+        </button>
+        <br />
+        <br />
+        <button @click="addLocationName()">Add location name to listing</button>
+        <br />
+        <br />
+        <button @click="updateOwnerListings()">Update Owner myListing</button>
     </div>
 </template>
 
 <script>
 import * as setup from "../firebase/setup";
+import { db } from "@/firebase";
+
+import { setDoc, doc } from "firebase/firestore";
 
 export default {
     data() {
@@ -36,6 +52,16 @@ export default {
         },
         addRandomUsers() {
             setup.addRandomUsers();
+        },
+        addListingOwners() {
+            setup.addListingOwners();
+        },
+        async updateOwnerListings() {
+            await setup.updateOwnerListings();
+            console.log("updated owner listings");
+        },
+        async addLocationName() {
+            await setup.addLocationName();
         },
     },
 };

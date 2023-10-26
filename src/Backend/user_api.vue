@@ -1,17 +1,22 @@
 <template class="p-3 text-dark">
     <!-- replace with your user id -->
-    <button @click="getUser('juixCOJFG68RMjXrJVOQ')">
+    <button @click="getUser('8BT1kBQSvAMqcSFqOp0dgQoM8d23')">
         Get User data. Check console.
     </button>
     <br />
     <br />
-    <button @click="getUser('V2FPBCzywG766IO9UWQB', 'listings')">
+    <button @click="getUser('8BT1kBQSvAMqcSFqOp0dgQoM8d23', 'listings')">
         Get User Listing data. Check console.
     </button>
     <br />
     <br />
-    <button @click="getUser('V2FPBCzywG766IO9UWQB', 'chopes')">
+    <button @click="getUser('8BT1kBQSvAMqcSFqOp0dgQoM8d23', 'chopes')">
         Get User chopes data. Check console.
+    </button>
+    <br />
+    <br />
+    <button @click="updateUser('kqAvshLF4cdmISgqj5DpsSRKIbd2','natalie', 'portman', 'nataliePortman123', 'business')">
+        Update User data.
     </button>
     <br />
     <br />
@@ -67,6 +72,9 @@ export default {
         },
         async deleteExpiredChopes() {
             await api.deleteExpiredChopes();
+        },
+        async updateUser(userId, firstName, lastName, username, accountType) {
+            await api.updateUser(userId, firstName, lastName, username, accountType);
         },
     },
     mounted() {},
