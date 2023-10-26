@@ -54,6 +54,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { storage, db } from "@/firebase";
 import * as api from "../firebase/api";
 import places_api from "../Backend/places_autocomplete.vue";
+import { mapGetters } from "vuex";
 
 export default {
     data() {
@@ -69,6 +70,10 @@ export default {
             uploadProgress: null,
             address: "",
         };
+    },
+    computed: {
+        // ...mapState(["userLoggedIn"]), // Map the userLoggedIn state from the store
+        ...mapGetters(["isAuthenticated", "currentUser"]),
     },
     methods: {
         handleFileUpload(event) {
@@ -116,6 +121,7 @@ export default {
                                 QtyAvailable: this.qty_available,
                                 Price: this.price,
                                 ImageUrls: fileUrls,
+                                Owner: this.currentUser,
                             });
 
                             alert("Listing added successfully!");

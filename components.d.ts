@@ -9,7 +9,10 @@ declare module 'vue' {
   export interface GlobalComponents {
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
+    Footer: typeof import('./src/components/Footer.vue')['default']
     Map: typeof import('./src/components/Map.vue')['default']
+    MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
+    NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./src/components/SearchBar.vue')['default']

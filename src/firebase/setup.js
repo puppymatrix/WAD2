@@ -14,7 +14,9 @@ import {
 
 import { ref, getDownloadURL } from "firebase/storage";
 
-import { getAllListings } from "@/firebase/api";
+import { getAllListings, getUser } from "@/firebase/api";
+
+import Chance from "chance";
 
 async function deleteListings(category) {
     const q = query(
@@ -168,14 +170,26 @@ async function addCategories(foodCategories) {
 // Create 10 random users with 10 listings and 10 chopes each
 async function addRandomUsers() {
     const uids = [
-        "hLsxEeCGy9aikhnx1t5h41JJpfx2",
-        "mqSYVrEMlng7sObUxUkqYv6VNIy1",
-        "bo4p9RULhzTR7BO6ERHPzXqJFZ63",
-        "qY7DY1vLaCZkB2XubzS6gwePiIr1",
-        "kqAvshLF4cdmISgqj5DpsSRKIbd2",
-        "8BT1kBQSvAMqcSFqOp0dgQoM8d23",
-        "o9V5ztWbHdgC0gYzYdsweEeYVUH3",
-        "dsixaJZEmYWbBHcFxA3ACRyZiIp1",
+        { id: "hLsxEeCGy9aikhnx1t5h41JJpfx2", email: "abc@123.com" },
+        {
+            id: "mqSYVrEMlng7sObUxUkqYv6VNIy1",
+            email: "zxlee.2022@scis.smu.edu.sg",
+        },
+        { id: "bo4p9RULhzTR7BO6ERHPzXqJFZ63", email: "elephant@gmail.com" },
+        {
+            id: "qY7DY1vLaCZkB2XubzS6gwePiIr1",
+            email: "justinlee01.jl@hmail.com",
+        },
+        { id: "kqAvshLF4cdmISgqj5DpsSRKIbd2", email: "cat@gmail.com" },
+        { id: "8BT1kBQSvAMqcSFqOp0dgQoM8d23", email: "dog@gmail.com" },
+        {
+            id: "o9V5ztWbHdgC0gYzYdsweEeYVUH3",
+            email: "glenda.ng.2021@business.smu.edu.sg",
+        },
+        {
+            id: "dsixaJZEmYWbBHcFxA3ACRyZiIp1",
+            email: "justinlee01.jl@gmail.com",
+        },
     ];
     for (let i = 0; i < uids.length; i++) {
         const listings = await getAllListings();
@@ -187,15 +201,22 @@ async function addRandomUsers() {
         } else {
             userType = "business";
         }
+
+        const chance = new Chance();
+
+        const firstName = chance.first();
+        const lastName = chance.last();
+        const username = chance.twitter();
+
         // Add a new document in collection "listings"
-        const docRef = await setDoc(
-            doc(db, "userInformation", uids[i]),
-            {
-                chopes: selectedChopes,
-                myListings: selectedListings,
-                accountType: userType,
-            }
-        );
+        await setDoc(doc(db, "userInformation", uids[i].id), {
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            chopes: selectedChopes,
+            accountType: userType,
+            email: uids[i].email,
+        });
         console.log("Document written with ID: ", uids[i]);
     }
 }
@@ -233,4 +254,107 @@ function getRandomChopeDate() {
     return randomDate;
 }
 
-export { addRandomListing, deleteListings, addRandomUsers };
+async function addListingOwners() {
+    let counter = 0;
+    const listings = await getAllListings();
+    const uids = [
+        "hLsxEeCGy9aikhnx1t5h41JJpfx2",
+        "mqSYVrEMlng7sObUxUkqYv6VNIy1",
+        "bo4p9RULhzTR7BO6ERHPzXqJFZ63",
+        "qY7DY1vLaCZkB2XubzS6gwePiIr1",
+        "kqAvshLF4cdmISgqj5DpsSRKIbd2",
+        "8BT1kBQSvAMqcSFqOp0dgQoM8d23",
+        "o9V5ztWbHdgC0gYzYdsweEeYVUH3",
+        "dsixaJZEmYWbBHcFxA3ACRyZiIp1",
+    ];
+
+    for (const listing of listings) {
+        await setDoc(
+            doc(db, "listings", listing.Id),
+            {
+                Owner: uids[Math.floor(Math.random() * uids.length)],
+            },
+            { merge: true }
+        );
+        console.log("Document written with ID: ", listing.Id);
+        counter++;
+    }
+    console.log(counter + " documents updated");
+}
+
+async function updateOwnerListings() {
+    const listings = await getAllListings();
+
+    for (const listing of listings) {
+        const owner = listing.details.Owner;
+        const userData = await getUser(owner);
+        // console.log(userData);
+
+        if (userData.hasOwnProperty("myListings")) {
+            let userListings = userData.myListings;
+            userListings.push(listing.Id);
+            await setDoc(
+                doc(db, "userInformation", owner),
+                {
+                    myListings: userListings,
+                },
+                { merge: true }
+            );
+        } else {
+            let userListings = [listing.Id];
+            await setDoc(
+                doc(db, "userInformation", owner),
+                {
+                    myListings: userListings,
+                },
+                { merge: true }
+            );
+        }
+    }
+}
+
+async function addLocationName() {
+    let counter = 0;
+    const listings = await getAllListings();
+    const locations = [
+        "Orchard Road",
+        "Marina Bay Sands",
+        "Gardens by the Bay",
+        "Sentosa Island",
+        "Chinatown",
+        "Clarke Quay",
+        "Merlion Park",
+        "Singapore Zoo",
+        "Universal Studios Singapore",
+        "Haw Par Villa",
+        "Bukit Timah Nature Reserve",
+        "Fort Canning Park",
+        "East Coast Park",
+        "Pulau Ubin",
+        "MacRitchie Reservoir"
+      ];
+
+    for (const listing of listings) {
+        let location = listing.details.Location;
+        location.name = locations[Math.floor(Math.random() * locations.length)];
+        await setDoc(
+            doc(db, "listings", listing.Id),
+            {
+                Location: location,
+            },
+            { merge: true }
+        );
+        console.log("Document written with ID: ", listing.Id);
+        counter++;
+    }
+    console.log(counter + " documents updated");
+}
+
+export {
+    addRandomListing,
+    deleteListings,
+    addRandomUsers,
+    addListingOwners,
+    updateOwnerListings,
+    addLocationName,
+};
