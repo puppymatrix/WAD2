@@ -14,6 +14,8 @@ import {
     writeBatch,
 } from "firebase/firestore";
 
+import axios from 'axios'
+
 // listing functions
 
 // default returns all listings in DB
@@ -397,17 +399,13 @@ function filterByName(foodArr, name){
         // console.log()
         console.log('arr', itemNameArr, 'query', query)
 
-        // if (itemNameArr.includes(query)){
-        //     console.log('true')
-        //     result.push(foodArr[i])
-        // }
         if (matchString(output, name)){
             console.log('true')
             result.push(foodArr[i])
         }
     }
 
-    console.log(result)
+    // console.log(result)
     return result
 }
 
@@ -502,6 +500,9 @@ async function getUserLocation(){
         }
     )
 }
+
+
+
 
 
 export {

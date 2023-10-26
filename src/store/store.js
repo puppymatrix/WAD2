@@ -1,6 +1,8 @@
 import { createStore } from "vuex";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {getCoordinates} from "../firebase/api.js"
+// import { getUserLocation } from "../firebase/api.js"
+
+// var userLocation = getUserLocation()
 
 export default createStore({
   state: {
@@ -10,7 +12,7 @@ export default createStore({
   getters: {
     isAuthenticated: (state) => !!state.user,
     currentUser: (state) => state.user,
-    userLocation: (state) => state.location,
+    currentUserLocation: (state) => state.location
   },
   mutations: {
     setUser(state, user) {
@@ -18,9 +20,8 @@ export default createStore({
     },
     setLocation(state, location) {
       state.location = location;
-    },
+    }
   },
-  actions: {
-  },
+  actions: {},
   modules: {},
 });
