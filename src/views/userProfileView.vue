@@ -62,7 +62,7 @@ import { getUser } from "../firebase/api.js"
                         <div class="col">
                             <div class="form-group">
                                 <label for="userEmail">Email</label>
-                                <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Email" v-bind:value="userEmail">
+                                <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Email" v-bind:value="userEmail" disabled>
                             </div>
                         </div>
                     </div>
