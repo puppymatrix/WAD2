@@ -50,12 +50,12 @@ import { getUser } from "../firebase/api.js"
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" aria-describedby="password" placeholder="Enter Password" v-bind:value="userPw">
                                 <label><input type="checkbox" id="toggle-password" v-bind="showPassword" @click="togglePassword()"/> 
                                 <div id="pwStatus"> &nbsp{{ pwStatus }}</div></label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="row mb-2">
