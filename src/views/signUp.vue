@@ -154,15 +154,13 @@ export default {
                     firstName: this.formData.firstName,
                     lastName: this.formData.lastName,
                     username: this.formData.username,
-                    email: this.formData.email,
-                    // password: this.formData.password, 
                     accountType: this.formData.accountType,
-                    choped: [],
+                    email: this.formData.email,
                 };
 
                 console.log(this.formData.accountType)
 
-                const docRef = addDoc(collection(db, "userInformation"), userData);
+                const docRef = setDoc(doc(db, "userInformation", uid), userData);
                 this.$router.push('/logIn')
                 if (docRef){
                     console.log("Document inserted successfully");

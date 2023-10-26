@@ -115,7 +115,7 @@ import { auth } from '../firebase/index.js'
                 signInWithEmailAndPassword(auth, this.formData.email, this.formData.password)                
                 .then((userCredential) => {
                     // Handle successful login (e.g., redirect to user profile)
-                    // console.log(userCredential)
+                    console.log(userCredential)
                     console.log('login successful')                    
 
                     this.$router.push('/')

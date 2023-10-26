@@ -125,6 +125,7 @@ async function getNearbyListings(userLocation, maxDistance) {
     return listings;
 }
 
+// not used
 async function addListingNoImage(
     expiry_date,
     location,
@@ -215,6 +216,17 @@ async function getAllUsers() {
         // console.log(doc.id, " => ", doc.data());
     });
     return users;
+}
+
+async function updateUser(firstName, lastName, username, accountType) {
+    const userData = {
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        accountType: accountType,
+    };
+
+    const docRef = setDoc(doc(db, "userInformation", uid), userData, {merge: true});
 }
 
 async function chopeListing(userId, listingId) {

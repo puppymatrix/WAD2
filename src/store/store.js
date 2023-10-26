@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default createStore({
   state: {
