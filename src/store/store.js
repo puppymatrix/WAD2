@@ -1,27 +1,29 @@
 import { createStore } from "vuex";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import createPersistedState from "vuex-persistedstate";
 // import { getUserLocation } from "../firebase/api.js"
 
 // var userLocation = getUserLocation()
 
 export default createStore({
-  state: {
-    user: null,
-    location: null
-  },
-  getters: {
-    isAuthenticated: (state) => !!state.user,
-    currentUser: (state) => state.user,
-    currentUserLocation: (state) => state.location
-  },
-  mutations: {
-    setUser(state, user) {
-      state.user = user;
+    plugins: [createPersistedState()],
+    state: {
+        user: null,
+        location: null,
     },
-    setLocation(state, location) {
-      state.location = location;
-    }
-  },
-  actions: {},
-  modules: {},
+    getters: {
+        isAuthenticated: (state) => !!state.user,
+        currentUser: (state) => state.user,
+        currentUserLocation: (state) => state.location,
+    },
+    mutations: {
+        setUser(state, user) {
+            state.user = user;
+        },
+        setLocation(state, location) {
+            state.location = location;
+        },
+    },
+    actions: {},
+    modules: {},
 });

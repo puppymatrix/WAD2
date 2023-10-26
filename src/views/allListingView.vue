@@ -156,10 +156,12 @@ import { mapGetters } from 'vuex'
 
         <!--Add Listing Button-->
         <div>
+            <router-link to="/addListing">
             <button
                 type="button"
                 class="btn addList d-flex align-items-center justify-content-center"
-            ><a href="/addListing"><span style="color: white;">+</span></a></button>
+            ><span style="color: white;">+</span></button>
+            </router-link>
         </div>
 
     </body>

@@ -452,8 +452,8 @@ async function getAllCategories(){
         // console.log(doc.id, " => ", doc.data());
         result.push(doc.data())
       });
-
-    return result
+      
+    return result;
 }
 
 async function getCoordinates() {

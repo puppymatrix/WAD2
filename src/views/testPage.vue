@@ -25,11 +25,11 @@ export default {
 <template>
     <!-- <setup /> -->
     <!-- <hr> -->
-    <!-- <upload_file /> -->
+    <upload_file />
     <!-- <hr> -->
     <!-- <api_example /> -->
     <hr />
     <!-- <user_api /> -->
-    <p> {{ currentUser }} </p>
-    <p> {{ isAuthenticated }} </p>
+    <!-- <p> {{ currentUser }} </p>
+    <p> {{ isAuthenticated }} </p> -->
 </template>

@@ -39,7 +39,7 @@ export default {
                 this.$store.commit('setUser', uid); // Call the setUser mutation to update the state
                 // console.log(uid);
                 
-                if (this.userLocation != "")
+                // if (this.userLocation != "")
                 this.$store.commit('setLocation', this.userLocation); // Call the setUser mutation to update the state
 
             } else {
@@ -59,7 +59,7 @@ export default {
                 response => {
                     const data = response.data
                     // Call the setUser mutation to update the state
-                    console.log('resp', data.location)
+                    // console.log('resp', data.location)
                     this.userLocation = data.location
                 } )
         

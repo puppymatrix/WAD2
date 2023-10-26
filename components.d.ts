@@ -7,8 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    BButton: typeof import('bootstrap-vue-next')['BButton']
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
+    BFormFile: typeof import('bootstrap-vue-next')['BFormFile']
     BFormOption: typeof import('bootstrap-vue-next')['BFormOption']
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
     BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']

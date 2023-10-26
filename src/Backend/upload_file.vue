@@ -47,6 +47,13 @@
                 required
             />
             <br />
+            <label for="Description">Description of Listing:</label>
+            <textarea
+                class="form-control me-2 mb-3"
+                placeholder="Input Description of Listing"
+                v-model="description"
+            ></textarea>
+            <br />
             <input type="file" @change="handleFileUpload" multiple />
             <div v-if="files.length > 0">Selected files: {{ fileNames }}</div>
             <button type="submit" :disabled="files.length > 3">Submit</button>
@@ -77,6 +84,7 @@ export default {
             files: {},
             uploadProgress: null,
             address: "",
+            description: "",
         };
     },
     computed: {
@@ -88,7 +96,9 @@ export default {
             if (this.files.length === 0) {
                 return "";
             }
-            return Array.from(this.files).map(file => file.name).join(', ');
+            return Array.from(this.files)
+                .map((file) => file.name)
+                .join(", ");
         },
     },
     methods: {
@@ -139,6 +149,7 @@ export default {
                                 Price: this.price,
                                 ImageUrls: fileUrls,
                                 Owner: this.currentUser,
+                                Description: this.description,
                             });
 
                             alert("Listing added successfully!");
