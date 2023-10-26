@@ -1,4 +1,6 @@
-
+<script setup>
+  import { Icon } from '@iconify/vue';
+</script>
 
 <template>
     <div class="container-fluid"  style = "height: 100%">
@@ -49,7 +51,10 @@
                     <div class="row3">
                         <div class="col mb-3">
                             <div class="">
-                            <label for="password" class="form-label" >Password</label>
+                            <label for="password" class="form-label" >
+                                Password <Icon icon="mdi:information-slab-circle-outline" class="infoIcon mb-1"/>
+               : <p id="moreInfo">{{pwReq}}</p>
+                            </label>
                             <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">
                             <div id="passwordErrors" >
                                     <text v-for="error in errors.password" :key="error" class="d-block text-danger">{{ error }}</text>
@@ -107,6 +112,7 @@ export default {
     return {
         showPassword: false, //to toggle password view
         pwStatus: 'Show Password',
+        pwReq: 'Password should at least 8 characters, 1 special character, and 1 uppercase letter',
 
         formData: {
             email: '',
@@ -273,4 +279,13 @@ export default {
 #pwStatus{
     display: inline
 }
+#moreInfo{
+    font-size: 12px;
+    display: none;
+  }
+
+  .infoIcon:hover + #moreInfo{
+    display: inline;
+    color: green;
+  }
 </style>

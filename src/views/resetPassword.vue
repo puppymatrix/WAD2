@@ -1,7 +1,8 @@
 <template>
-    <div class="row">
+    <div class="container-fluid" style = "height: 100%">
+        <div class="row">
         <div class="col-6">
-            <img src="../components/icons/images/placeholder.png" alt="" style="width:100%;height:120%">
+            <img src="../components/images/landingPage/groceries.webp" alt="" style="object-fit: cover; height:100%;width:100%">
         </div>
         
         <!-- sign in -->
@@ -41,6 +42,8 @@
         </div>    
         
     </div>
+    </div>
+    
 </template>
 
 <script>
