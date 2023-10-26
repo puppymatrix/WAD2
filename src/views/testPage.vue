@@ -23,12 +23,12 @@ export default {
 </script>
 
 <template>
-    <setup />
+    <!-- <setup />
     <hr>
     <upload_file />
     <hr>
-    <api_example />
+    <api_example /> -->
     <hr />
     <user_api />
-    <p> {{ currentUser }} </p>
+    <!-- <p> {{ currentUser }} </p> -->
 </template>

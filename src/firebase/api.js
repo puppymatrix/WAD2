@@ -218,7 +218,7 @@ async function getAllUsers() {
     return users;
 }
 
-async function updateUser(firstName, lastName, username, accountType) {
+async function updateUser(uid, firstName, lastName, username, accountType) {
     const userData = {
         firstName: firstName,
         lastName: lastName,
@@ -226,7 +226,8 @@ async function updateUser(firstName, lastName, username, accountType) {
         accountType: accountType,
     };
 
-    const docRef = setDoc(doc(db, "userInformation", uid), userData, {merge: true});
+    await setDoc(doc(db, "userInformation", uid), userData, {merge: true});
+    console.log("User updated successfully");
 }
 
 async function chopeListing(userId, listingId) {
@@ -523,6 +524,8 @@ export {
     calculateDistance,
     getAllCategories,
     getUserLocation,
-    getCoordinates
+    getCoordinates,
+    updateUser
+
 };
 

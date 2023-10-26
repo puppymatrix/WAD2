@@ -15,6 +15,11 @@
     </button>
     <br />
     <br />
+    <button @click="updateUser('kqAvshLF4cdmISgqj5DpsSRKIbd2','natalie', 'portman', 'nataliePortman123', 'business')">
+        Update User data.
+    </button>
+    <br />
+    <br />
     <button @click="getUsersWhoChopedCollectedListing('QekL49WhpOPKKFAYEIzl')">
         Get User chopes/collected data per listingId. Check console.
     </button>
@@ -67,6 +72,9 @@ export default {
         },
         async deleteExpiredChopes() {
             await api.deleteExpiredChopes();
+        },
+        async updateUser(userId, firstName, lastName, username, accountType) {
+            await api.updateUser(userId, firstName, lastName, username, accountType);
         },
     },
     mounted() {},

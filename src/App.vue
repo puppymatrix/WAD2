@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { auth as fb_auth } from "@/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
