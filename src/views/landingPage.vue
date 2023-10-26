@@ -1,3 +1,7 @@
+<script setup>
+    import CarouselMarquee from "../components/CarouselMarquee.vue";
+</script>
+
 <template>
     <div class="container-fluid bod">
         <div class="row">
@@ -14,23 +18,9 @@
                 </div>
             </div>
         </div>
-
-        <!-- Try with firebase -->
-        <!-- <div class="row">
-            <Vue3Marquee :pause-on-hover="true">
-                <div class="card" v-for="listing in allListings" :key="listing">
-                    <img
-                    :class="{ unfade: hover, faded: !hover }"
-                    class="marquee-listing-image"
-                    :src="listing.ImageUrls[0]"
-                    width="235"
-                    height="350"
-                    />
-                    <h6 class="marquee-listing-title display-5 text-center">{{ listing.ListingName }}</h6>
-                </div>
-            </Vue3Marquee>
-        </div> -->
-
+        <div class="row secondRow">
+            <CarouselMarquee/>
+        </div>
         <!-- problematic carousel row -->
         <div class="row secondRow">
           <div class="col">
