@@ -49,7 +49,7 @@ import { RouterLink, RouterView, routerKey } from "vue-router";
                         <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
 
-                    <div class="col-1" v-if="userLoggedIn"></div>           
+                    <!-- <div class="col-1" v-if="userLoggedIn"></div>            -->
                 </li>
             </ul>
 
