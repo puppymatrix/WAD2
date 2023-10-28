@@ -107,10 +107,8 @@ router.beforeEach((to, from, next) => {
       if (store.getters.isAuthenticated) {
         next();
       } else {
-        alert('You must be logged in to see this page');
-        next({
-          path: '/logIn',
-        });
+        store.commit("setVisible", true);
+        next({ path: from.path }); // Pass the current path as a parameter to next()
       }
     } else {
       next();

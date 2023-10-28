@@ -1,8 +1,5 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast();
 </script>
 
 <template>

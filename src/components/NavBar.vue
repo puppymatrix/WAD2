@@ -3,6 +3,7 @@
 </script>
 
 <template>
+    <Toast />
     <div class="row d-flex align-items-center" id="nav">
         <!-- <div class="col-1"></div> -->
         <!-- logo -->
@@ -73,17 +74,23 @@ export default {
     },
     methods: {
         logOut() {
-            console.log(this.currentUser);
+            // console.log(this.currentUser);
             const auth = getAuth();
             signOut(auth)
                 .then(() => {
                     // Sign-out successful.
-                    console.log("sign out successful");
+                    // console.log("sign out successful");
                     router.push('/')
-                    alert("sign out successful")
+                    this.$toast.add({
+                    severity: "info",
+                    summary: "Sign Out Successful",
+                    detail: "Thanks for visiting FoodCatch!",
+                    life: 3000,
+                    
+                });
                 })
                 .catch((error) => {
-                    console.log("An error occured");
+                    console.log(error.message);
                 });
 
         },
