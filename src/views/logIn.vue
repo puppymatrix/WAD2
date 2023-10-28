@@ -110,7 +110,6 @@ import { auth } from '../firebase/index.js'
             }
         },
             checkCredentials() {
-                // const auth = getAuth()
 
                 signInWithEmailAndPassword(auth, this.formData.email, this.formData.password)                
                 .then((userCredential) => {

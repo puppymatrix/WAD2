@@ -86,6 +86,7 @@ const router = createRouter({
         component: () => import('../views/testPage.vue')
 
     },
+
 ]
 })
 

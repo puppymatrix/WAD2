@@ -1,10 +1,8 @@
 <script setup>
-    import axios from 'axios'
-    import { collection, getDocs, query } from "firebase/firestore";
 
-    import { db } from '../firebase/index.js'
+    import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
+    import { mapGetters } from 'vuex'
 
-    import { getAllListings, filterByDistance, filterByName, calculateDistance, getCoordinates, getUserLocation } from "../firebase/api"
 </script>
 
 <template>
@@ -15,7 +13,7 @@
             <Map
                 :apiKey="key"
                 :foodItemsFiltered="foodItemsFiltered"
-                :userLocation="userLocation"
+                :userLocation="currentUserLocation"
                 >
             </Map>
             <!-- <GoogleMap 
@@ -117,18 +115,31 @@
             
         </div>
     </div>
+
+    {{  currentUserLocation }}
   </template>
 
   
   
   <script>
-    import { defineComponent } from "vue";
-import { list } from 'firebase/storage';
+
     
     export default {
         mounted(){
-            this.getUserLocation(),
+            // getUserLocation(),
             this.loadFood()
+        },
+        
+        data(){
+            return {
+                filterDistance: 10,
+                searchQuery: '',
+                // userLocation: {},
+                foodItems: [],
+                foodItemsFiltered: [],
+                coord: { lat: 1.290270, lng: 103.851959 },
+                key: 'AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE',
+            }
         },
         props: {
                 'apiKey': String,
@@ -141,7 +152,7 @@ import { list } from 'firebase/storage';
             return {
                 filterDistance: 10,
                 searchQuery: '',
-                userLocation: {},
+                // userLocation: {},
                 foodItems: [],
                 foodItemsFiltered: [],
                 coord: { lat: 1.290270, lng: 103.851959 },
@@ -154,23 +165,51 @@ import { list } from 'firebase/storage';
         methods: {
             
             searchLocation(){
-                getCoordinates()
-                getUserLocation()
+                this.getCoordinates()
             },
+            getUserLocation(){
+                const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
+                axios.post(url)
+                .then(
+                    response => {
+                        // console.log('location', response)
+                        const data = response.data
+
+                        // console.log('userLocation', data.location)
+                        this.userLocation = data.location
+                    }   
+                )
+
+                .catch(
+                    error => {
+                        console.log(error)
+                    }
+                )
+            }
+        },
+        computed :{
+            ...mapGetters(['currentUserLocation'])
+        },
+        methods: {
             
+            searchLocation(){
+                // this.// getCoordinates()
+                // this.getUserLocation('AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE')
+            },
             async loadFood(){
 
                 const data = getAllListings()
                 data.then(
                     listing => {
                         console.log(listing)
+                        console.log('userLocation', this.currentUserLocation)
                         // this.foodItems.push({
                         //     listingId: doc.id,
                         //     info: doc.data(),
                         //     distance: distanceToUser // straight line distance from user location to food location
                         // })
                         for (let i=0;i<listing.length;i++){
-                            let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
                             this.foodItems.push({
                                                 info: listing[i],
@@ -186,6 +225,7 @@ import { list } from 'firebase/storage';
                 this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
                 console.log(this.foodItemsFiltered)
             },
+
             loadByDistance(){
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
                 console.log(this.foodItemsFiltered)
