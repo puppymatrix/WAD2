@@ -92,6 +92,12 @@ const router = createRouter({
       component: () => import('../views/routingTest.vue')
 
   },
+  {
+    path: '/mapView2',
+    name: 'mapView2',
+    component: () => import('../views/mapView2.vue')
+
+},
 
 ]
 })

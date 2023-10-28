@@ -6,6 +6,8 @@
 </script>
 
 <template>
+    {{ routeRequest.travelMode }}
+
     <div class="row justify-content-center" >
         <div class="container col-8 m-3">
             <div id="map" style="height:600px" ></div>
@@ -14,12 +16,13 @@
                 <option value="DRIVING">Car</option>
             </select>             -->
 
-            <div id="transit">
-                <button id='transit' class='btn btn-secondary' @click="toggle=>{this.routeRequest.travelMode='TRANSIT'; console.log(this.routeRequest.travelMode)}">Transit</button>
-                <button id='driving' class='btn btn-secondary' @click="toggle=>{this.routeRequest.travelMode='DRIVING'; console.log(this.routeRequest.travelMode)}">Drive</button>
+            <div id="travelGrp" role="group" aria-label="Basic example">
+                <button id='transit'  @click="toggle=>{this.routeRequest.travelMode='TRANSIT'; console.log(this.routeRequest.travelMode)}">Transit</button>
+                <button id='driving' @click="toggle=>{this.routeRequest.travelMode='DRIVING'; console.log(this.routeRequest.travelMode)}">Drive</button>
             </div>
             <searchBar/>
         </div>
+
     </div>
    
 </template>
@@ -40,8 +43,9 @@ export default {
                 gestureHandling: 'cooperative'
             },
             map: null,
+            core: null,
             provideRouteAlternatives: true,
-            loader:null,
+            loader: null,
             directionsService: null,
             directionsRenderer: null,
             routeRequest: {
@@ -57,7 +61,15 @@ export default {
                                     },
                     provideRouteAlternatives: true,
                     // unitSystem: 'METRIC',
-                    }
+                    },
+            userMarker: {
+                    path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+                    fillColor: "blue",
+                    fillOpacity: 1,
+                    strokeWeight: 0,
+                    rotation: 0,
+                    scale: 2,
+                    },
         }
     },
     computed: {
@@ -79,9 +91,9 @@ export default {
     // },
     watch:{
         routeRequest:{
-            handler: function(){
+            handler(){
                 this.initMap()
-                this.loadRoute()
+                this.createtravelButtons
             },
             deep: true
         }
@@ -98,54 +110,49 @@ export default {
             // Promise for a specific library
 
             const map = await this.loader.importLibrary('maps')
+
             const marker = await this.loader.importLibrary('marker')
             const routes = await this.loader.importLibrary('routes')
+
+            this.core = await this.loader.importLibrary('core')
+
+            this.map = new map.Map(document.getElementById("map"), this.mapOptions);
+            this.createtravelButtons()
+
             this.directionsService = new routes.DirectionsService();
             this.directionsRenderer = new routes.DirectionsRenderer();
 
-            this.map = new map.Map(document.getElementById("map"), this.mapOptions);
-            this.directionsRenderer.setMap(this.map);
+            if (this.routeRequest){
+                // this.directionsRenderer.setMap(this.map);
+                this.loadRoute()
 
-            const svgMarker = {
-                    path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
-                    fillColor: "blue",
-                    fillOpacity: 1,
-                    strokeWeight: 0,
-                    rotation: 0,
-                    scale: 2,
-                    // anchor: new core.Point(40, 20),
-                };
+            }
 
             console.log('map', map)
 
+            //plot user location
             var marker1 = new marker.Marker({
-                // position: { lat: 1.290270, lng: 103.851959 },
                 position: this.currentUserLocation,
                 map: this.map,
-                icon: svgMarker
+                icon: this.userMarker
               
             });
 
-            // console.log(directionsService.route())
-           this.loadRoute()
-            this.createtravelButtons()
+            // this.createtravelButtons()
+
             console.log(this.routeRequest.travelMode)
         },
 
-        async loadRoute(){
+         loadRoute(){
 
             if (this.directionsService != null){
 
-                var route = await this.directionsService.route(this.routeRequest, (result, status) => {
+                var route = this.directionsService.route(this.routeRequest, (result, status) => {
                     if (status == 'OK') {
-                        console.log('result', result)
-                        if (!this.directionsRenderer.getDirections()){
-                            this.directionsRenderer.setMap(null);
-                            
-                        }
-                        console.log(this.map)
+                    
                         this.directionsRenderer.setMap(this.map);
                         this.directionsRenderer.setDirections(result);
+
                     }
                 })
             }
@@ -180,16 +187,30 @@ export default {
             return { coords, isSupported }
         },
 
+        
+
         createtravelButtons() {
-            const transitControl = document.createElement("div");
-            const core = this.loader.importLibrary('core')
-
-            console.log('btn', this.loader)
-            
-
-            this.map.controls[this.map.ControlPosition.TOP_RIGHT].push(transitControl);
+            const transitControl = document.getElementById("travelGrp"); 
+            console.log('btns created', this.map)
+            this.map.controls[this.core.ControlPosition.TOP_CENTER].push(transitControl);
         }
     }
 }
 
 </script>
+
+<style>
+#travelGrp{
+    background-color: "#fff";
+    /* box-shadow: 0 2px 6px rgba(0,0,0,0.3); */
+    color: rgb(25,25,25);
+    cursor: wait;
+    font-family: Roboto, Arial,sans-serif;
+    font-size: 16px;
+    line-height: 38px;
+    margin: 8px 0 22px;
+    padding: 0 5px;
+    text-align: center;
+    border: none
+}
+</style>
