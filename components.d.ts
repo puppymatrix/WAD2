@@ -12,6 +12,7 @@ declare module 'vue' {
     BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
+    CarouselMarquee2: typeof import('./src/components/CarouselMarquee2.vue')['default']
     BFormFile: typeof import('bootstrap-vue-next')['BFormFile']
     BFormOption: typeof import('bootstrap-vue-next')['BFormOption']
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
@@ -25,6 +26,5 @@ declare module 'vue' {
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SearchBar: typeof import('./src/components/SearchBar.vue')['default']
   }
 }

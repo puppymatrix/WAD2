@@ -122,6 +122,8 @@ export default {
 
 #nav {
     background-color: #0b2b26;
+    width: 100%;
+    margin: 0;
 }
 
 .base {
