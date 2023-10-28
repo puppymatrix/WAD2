@@ -10,6 +10,7 @@ export default createStore({
     state: {
         user: null,
         location: null,
+        visible: false,
     },
     getters: {
         isAuthenticated: (state) => !!state.user,
@@ -22,6 +23,9 @@ export default createStore({
         },
         setLocation(state, location) {
             state.location = location;
+        },
+        setVisible(state, value) {
+            state.visible = value;
         },
     },
     actions: {},
