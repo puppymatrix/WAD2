@@ -86,6 +86,12 @@ const router = createRouter({
         component: () => import('../views/testPage.vue')
 
     },
+    {
+      path: '/routingTest',
+      name: 'routingtest',
+      component: () => import('../views/routingTest.vue')
+
+  },
 
 ]
 })

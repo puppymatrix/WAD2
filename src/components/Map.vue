@@ -1,6 +1,7 @@
 <script setup>
   import { defineComponent } from "vue";
   import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
+  
 </script>
 
 <template>

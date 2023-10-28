@@ -3,6 +3,7 @@
     import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     import { mapGetters } from 'vuex'
 
+    import routingTest from './routingTest.vue'
 </script>
 
 <template>
@@ -16,6 +17,13 @@
                 :userLocation="currentUserLocation"
                 >
             </Map>
+            <!-- <routingTest
+                :apiKey="key"
+                :foodItemsFiltered="foodItemsFiltered"
+                :userLocation="currentUserLocation"
+            >
+
+            </routingTest> -->
             <!-- <GoogleMap 
                 api-key="AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE" 
                 style="width: 100%; 
@@ -116,7 +124,7 @@
         </div>
     </div>
 
-    {{  currentUserLocation }}
+    <!-- {{  currentUserLocation }} -->
   </template>
 
   
@@ -148,17 +156,6 @@
                 'listingArr': Array
         },
         
-        data(){
-            return {
-                filterDistance: 10,
-                searchQuery: '',
-                // userLocation: {},
-                foodItems: [],
-                foodItemsFiltered: [],
-                coord: { lat: 1.290270, lng: 103.851959 },
-                key: 'AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE',
-            }
-        },
         methods: {
             getCoordinates() {
                 // this function gets the coordinates
@@ -192,10 +189,8 @@
                 axios.post(url)
                 .then(
                     response => {
-                        // console.log('location', response)
                         const data = response.data
 
-                        // console.log('userLocation', data.location)
                         this.userLocation = data.location
                     }   
                 )
@@ -256,3 +251,9 @@
 
   </script>
 
+<style>
+    .text-bg-listing {
+    background-color: #558C03;
+    color: white;
+}
+</style>

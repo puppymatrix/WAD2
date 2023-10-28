@@ -38,9 +38,10 @@ import { mapGetters } from 'vuex'
 
 
         <!-- listings -->
-        {{ filterPrice  }}
+        <h3> {{ filterPrice  }}
         {{ filterCategory }}
-        {{ filterDistance }}
+        {{ filterDistance }}</h3>
+       
         <div class="container-fluid" >
             <h5 style="font-style: italic;">Search results for: </h5>
             <div class="filterBar row d-flex">
