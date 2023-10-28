@@ -13,11 +13,10 @@
 </template>
 
 <script>
-import { auth as fb_auth } from "@/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
-import { getUser } from "./firebase/api.js";
+import { getUser, getUserLocation } from "./firebase/api.js";
 import axios from "axios";
 
 export default {
@@ -40,7 +39,7 @@ export default {
                 this.$store.commit('setUser', uid); // Call the setUser mutation to update the state
                 // console.log(uid);
                 
-                if (this.userLocation != "")
+                // if (this.userLocation != "")
                 this.$store.commit('setLocation', this.userLocation); // Call the setUser mutation to update the state
 
             } else {
@@ -60,7 +59,7 @@ export default {
                 response => {
                     const data = response.data
                     // Call the setUser mutation to update the state
-                    console.log('resp', data.location)
+                    // console.log('resp', data.location)
                     this.userLocation = data.location
                 } )
         

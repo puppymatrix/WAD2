@@ -1,6 +1,6 @@
 <script setup>
     import SearchBar from "../components/SearchBar.vue";
-    import { getAllListings, filterByName } from "src/firebase/api.js"
+    import { getAllListings, filterByName } from "@/firebase/api.js"
     import { collection, getDocs, query } from "firebase/firestore";
 
 </script>

@@ -32,15 +32,30 @@
             <input
                 type="number"
                 id="qty_available"
-                min=0
+                min="0"
                 v-model="qty_available"
                 required
             />
             <br />
             <label for="price">Price:</label>
-            <input type="number" id="price" min=0 step=0.05 v-model="price" required />
+            <input
+                type="number"
+                id="price"
+                min="0"
+                step="0.05"
+                v-model="price"
+                required
+            />
+            <br />
+            <label for="Description">Description of Listing:</label>
+            <textarea
+                class="form-control me-2 mb-3"
+                placeholder="Input Description of Listing"
+                v-model="description"
+            ></textarea>
             <br />
             <input type="file" @change="handleFileUpload" multiple />
+            <div v-if="files.length > 0">Selected files: {{ fileNames }}</div>
             <button type="submit" :disabled="files.length > 3">Submit</button>
             <div v-if="uploadProgress !== null">{{ uploadProgress }}%</div>
         </form>
@@ -54,6 +69,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { storage, db } from "@/firebase";
 import * as api from "../firebase/api";
 import places_api from "../Backend/places_autocomplete.vue";
+import { mapGetters } from "vuex";
 
 export default {
     data() {
@@ -65,10 +81,25 @@ export default {
             listing_name: "",
             qty_available: 0,
             price: 0,
-            files: [],
+            files: {},
             uploadProgress: null,
             address: "",
+            description: "",
         };
+    },
+    computed: {
+        // ...mapState(["userLoggedIn"]), // Map the userLoggedIn state from the store
+        ...mapGetters(["isAuthenticated", "currentUser"]),
+
+        fileNames() {
+            console.log(this.files);
+            if (this.files.length === 0) {
+                return "";
+            }
+            return Array.from(this.files)
+                .map((file) => file.name)
+                .join(", ");
+        },
     },
     methods: {
         handleFileUpload(event) {
@@ -101,14 +132,15 @@ export default {
                         console.error(error);
                     },
                     async () => {
-                        const downloadURL =
-                            await getDownloadURL(fileRef);
+                        const downloadURL = await getDownloadURL(fileRef);
                         fileUrls.push(downloadURL);
 
                         if (fileUrls.length === this.files.length) {
                             // All files have been uploaded, add listing to Firestore
                             await addDoc(collection(db, "listings"), {
-                                ExpiryDate: Timestamp.fromDate(new Date(this.expiry_date)),
+                                ExpiryDate: Timestamp.fromDate(
+                                    new Date(this.expiry_date)
+                                ),
                                 Location: this.location,
                                 Category: this.category,
                                 Perishable: this.perishable,
@@ -116,6 +148,8 @@ export default {
                                 QtyAvailable: this.qty_available,
                                 Price: this.price,
                                 ImageUrls: fileUrls,
+                                Owner: this.currentUser,
+                                Description: this.description,
                             });
 
                             alert("Listing added successfully!");

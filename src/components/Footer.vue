@@ -65,7 +65,7 @@
     
 
 
-    <div class="row">
+    <div class="row lastRow">
         <div class="col-12 text-center copyright">
             Copyright © 2020 FoodCatch Pte Ltd. <br>
             All rights reserved
@@ -78,6 +78,14 @@
         background-color: #0b2b26;
         padding-top: 20px;
         padding-bottom: 20px;
+        width: 100%;
+        margin: 0;
+    }
+
+    .lastRow{
+        width: 100%;
+        background-color: #1A2327;
+        margin: 0;
     }
 
     .footerBtn{
@@ -85,8 +93,7 @@
         color: white;
     }
 
-    .copyright{
-        background-color: #1A2327; 
+    .copyright{ 
         color: white; 
         padding: 10px;
     }
@@ -95,4 +102,6 @@
         color: #558C03;
         font-weight: bold;
     }
+
+    
 </style>

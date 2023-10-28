@@ -26,7 +26,7 @@ import { mapGetters } from 'vuex'
                             src="../components/icons/googleMaps.png"
                             alt=""
                             class="img-fluid me-1"
-                            style="width: 20px;;"
+                            style="width: 20px;"
                         />
                         Map View
                     </button>
@@ -157,10 +157,12 @@ import { mapGetters } from 'vuex'
 
         <!--Add Listing Button-->
         <div>
+            <router-link to="/addListing">
             <button
                 type="button"
                 class="btn addList d-flex align-items-center justify-content-center"
-            ><a href="/addListing"><span style="color: white;">+</span></a></button>
+            ><span style="color: white;">+</span></button>
+            </router-link>
         </div>
 
     </body>

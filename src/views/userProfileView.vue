@@ -1,15 +1,16 @@
 <script setup>
+import { getUser } from "../firebase/api.js"
 </script>
 
 <template>
 <div class="container-fluid">
     <div class="row" id="top">
         <!-- LHS: sticky navbar -->
-        <div class="col-sm-3">
+        <div class="col-sm-3 ms-sm-5 ">
             <div class="sideNav">
                 <!-- <img id="profilePic" src="../components/images/zenith.jpg" class="rounded-circle mb-3" style="height: 150px; border: 1px solid #f2f2f2;" alt="Avatar"/> -->
                 <h5 class="mb-2" style="">Welcome, <strong>{{ fName +" "+ lName }}</strong></h5>
-                <p class="text-muted"><span class="badge bg-warning">INDIVIDUAL</span></p>
+                <p class="text-muted"><span class="badge bg-warning">{{userAccountType}}</span></p>
                 <a href="#userInfo" class="btn">My Info</a> 
                 <a href="#userListings" class="btn">My Listings</a> 
                 <a href="#chopedListings" class="btn">My Chopes</a> 
@@ -21,7 +22,7 @@
             
         </div> -->
         <!-- RHS actual info -->
-        <div class="col" style="background: lightgray; padding: 5%; margin: 5%; border-radius: 5px;">
+        <div class="col ms-sm-5" style="background: lightgray; padding: 5%; margin: 5%; border-radius: 5px;">
             <!--   userInfo div -->
             <div class="row" id="userInfo">
                 <div class="col">
@@ -49,19 +50,19 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" aria-describedby="password" placeholder="Enter Password" v-bind:value="userPw">
                                 <label><input type="checkbox" id="toggle-password" v-bind="showPassword" @click="togglePassword()"/> 
                                 <div id="pwStatus"> &nbsp{{ pwStatus }}</div></label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col">
                             <div class="form-group">
                                 <label for="userEmail">Email</label>
-                                <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Email" v-bind:value="userEmail">
+                                <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Email" v-bind:value="userEmail" disabled>
                             </div>
                         </div>
                     </div>
@@ -307,11 +308,12 @@
     padding: 5%;
     /* margin-top: 5%; */
     border-radius: 5%;
+    
     /* margin-left: 5%; */
-    margin-left: 5%;
-    margin-top: 20%;
+    /* margin-left: 5%; */
+    margin-top: 22%;
     text-align: center;
-    display: block;
+    /* display: block; */
     
 }
 .sideNav a{
@@ -343,27 +345,48 @@
 </style>
 
 <script>
+import { mapGetters } from "vuex";
 
 export default {
-
+    mounted(){
+        console.log("mounted")
+        // console.log(this.currentUser)
+        this.getUserInfo()
+        
+    },
     data(){
         return{
-            fName:`Zenith`,
-            lName:`Tay`,
-            userPw:`password`,
-            userName: `zenith123`,
-            userPhoto: ``,
-            userAccountType: `individual/business`,
-            userEmail: `zenith@gmail.com`,
+            fName:``,
+            lName:``,
+            userPw:``,
+            userName: ``,
+            userAccountType: ``,
+            userEmail: ``,
             userChoped:[],
             userListings: [],
             showPassword: false, //to toggle password view
             pwStatus: 'Show Password',
             
         }
-        
+    },
+
+    computed: {
+        ...mapGetters(["isAuthenticated","currentUser"]),
     },
     methods: {
+        async getUserInfo(){
+            console.log(this.currentUser)
+            const userData = await getUser(this.currentUser)
+            console.log(userData)
+            this.fName = userData.firstName
+            this.lName = userData.lastName
+            this.userName = userData.username
+            this.userAccountType = userData.accountType
+            this.userEmail = userData.email
+            this.userPw = userData.password 
+            this.userListings = userData.myListings //array of listing IDs
+            this.userChoped = userData.chopes //this is an object 
+        },
         updateInfo(){
             //update firebase 
         },

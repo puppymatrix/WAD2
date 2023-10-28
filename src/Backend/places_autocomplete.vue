@@ -16,10 +16,11 @@ const address = ref("");
 const emit = defineEmits(["location-selected"]);
 
 function callbackFunction(place) {
+    // console.log(place)
     const latitidue = place.geometry.location.lat();
     const longitude = place.geometry.location.lng();
-    const location = { latitidue, longitude };
-
+    const name = place.name;
+    const location = { latitidue, longitude, name };
     
     // Emit an event with the location object
     emit("location-selected", location);

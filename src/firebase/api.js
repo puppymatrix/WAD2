@@ -127,6 +127,7 @@ async function getNearbyListings(userLocation, maxDistance) {
     return listings;
 }
 
+// not used
 async function addListingNoImage(
     expiry_date,
     location,
@@ -217,6 +218,18 @@ async function getAllUsers() {
         // console.log(doc.id, " => ", doc.data());
     });
     return users;
+}
+
+async function updateUser(uid, firstName, lastName, username, accountType) {
+    const userData = {
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
+        accountType: accountType,
+    };
+
+    await setDoc(doc(db, "userInformation", uid), userData, {merge: true});
+    console.log("User updated successfully");
 }
 
 async function chopeListing(userId, listingId) {
@@ -439,8 +452,53 @@ async function getAllCategories(){
         // console.log(doc.id, " => ", doc.data());
         result.push(doc.data())
       });
+      
+    return result;
+}
 
-    return result
+async function getCoordinates() {
+    // this function gets the coordinates
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
+
+    console.log(url)
+
+    axios.get(url)
+    .then(
+        response => {
+            // console.log(response)
+
+            const data = response.data.results[0];
+            var latitude = parseFloat(data.geometry.location.lat)
+            var longitude = parseFloat(data.geometry.location.lng)
+
+            this.coord = {lat: latitude, lng: longitude}
+        })
+    .catch(
+        error => {
+            console.log(error)
+            console.log(error.response.data.error_message)
+
+    })
+}
+
+async function getUserLocation(){
+    const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
+    axios.post(url)
+    .then(
+        response => {
+            // console.log('location', response)
+            const data = response.data
+
+            // console.log('userLocation', data.location)
+            this.userLocation = data.location
+        }   
+    )
+
+    .catch(
+        error => {
+            console.log(error)
+        }
+    )
 }
 
 
@@ -465,7 +523,10 @@ export {
     collectListing,
     deleteExpiredChopes,
     calculateDistance,
-    getAllCategories
+    getAllCategories,
+    getUserLocation,
+    getCoordinates,
+    updateUser
 
 };
 
