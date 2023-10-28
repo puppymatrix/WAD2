@@ -3,6 +3,7 @@
     import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     import { mapGetters } from 'vuex'
 
+    import routingTest from './routingTest.vue'
 </script>
 
 <template>
@@ -16,6 +17,13 @@
                 :userLocation="currentUserLocation"
                 >
             </Map>
+            <!-- <routingTest
+                :apiKey="key"
+                :foodItemsFiltered="foodItemsFiltered"
+                :userLocation="currentUserLocation"
+            >
+
+            </routingTest> -->
             <!-- <GoogleMap 
                 api-key="AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE" 
                 style="width: 100%; 
@@ -116,7 +124,7 @@
         </div>
     </div>
 
-    {{  currentUserLocation }}
+    <!-- {{  currentUserLocation }} -->
   </template>
 
   
@@ -172,10 +180,8 @@
                 axios.post(url)
                 .then(
                     response => {
-                        // console.log('location', response)
                         const data = response.data
 
-                        // console.log('userLocation', data.location)
                         this.userLocation = data.location
                     }   
                 )
@@ -185,16 +191,6 @@
                         console.log(error)
                     }
                 )
-            }
-        },
-        computed :{
-            ...mapGetters(['currentUserLocation'])
-        },
-        methods: {
-            
-            searchLocation(){
-                // this.// getCoordinates()
-                // this.getUserLocation('AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE')
             },
             async loadFood(){
 
@@ -221,18 +217,33 @@
             },
 
             loadFoodByNameAndDistance(){
-                console.log('foodItems', this.foodItems)
-                this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
-                console.log(this.foodItemsFiltered)
+            console.log('foodItems', this.foodItems)
+            this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
+            console.log(this.foodItemsFiltered)
             },
 
             loadByDistance(){
-                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
-                console.log(this.foodItemsFiltered)
+            this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
+            console.log(this.foodItemsFiltered)
             }
-        }
+        },
+        computed :{
+            ...mapGetters(['currentUserLocation'])
+        },
+        methods: {
+            
+            // searchLocation(){
+            //     this.// getCoordinates()
+            //     this.getUserLocation('AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE')
+            // },
             
     };
 
   </script>
 
+<style>
+    .text-bg-listing {
+    background-color: #558C03;
+    color: white;
+}
+</style>
