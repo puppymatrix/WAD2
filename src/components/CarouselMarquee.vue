@@ -99,9 +99,7 @@
 
   .card {
     height: 100%;
-    width: 235px;
     border: 0px;
-    margin: 20px 20px;
     padding: 20px;
     display: flex;
     justify-content: center;

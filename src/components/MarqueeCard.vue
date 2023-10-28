@@ -8,8 +8,8 @@
         :class="{ unfade: hover, faded: !hover }"
         class="marquee-listing-image"
         :src="listingImage"
-        width="235"
-        height="350"
+        height= "25vw"
+        object-fit = "cover"    
       />
       <h6 class="marquee-listing-name text-center">{{ listingName }}</h6>
     <!-- </router-link> -->
@@ -39,6 +39,7 @@
     position: absolute;
     object-fit: cover;
     height: 100%;
+    padding: 10px;
   }
   
   .marquee-listing-name {
