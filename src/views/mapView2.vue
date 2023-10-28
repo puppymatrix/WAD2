@@ -112,9 +112,9 @@
                 //load destination into the routeRequest object here 
 
                 this.loader = new Loader({ 
-                                        apiKey: this.key,
-                                        version: "weekly",
-                                    })
+                                            apiKey: this.key,
+                                            version: "weekly",
+                                        })
                 const map = await this.loader.importLibrary('maps')
 
                 const marker = await this.loader.importLibrary('marker')
@@ -123,7 +123,7 @@
                 this.core = await this.loader.importLibrary('core')
 
                 this.map = new map.Map(document.getElementById("map"), this.mapOptions);
-                this.createTravelButtons()
+                // this.createTravelButtons()
 
                 this.directionsService = new routes.DirectionsService();
                 this.directionsRenderer = new routes.DirectionsRenderer();
@@ -143,18 +143,54 @@
 
                 //load filtered food items 
 
-                console.log('foodItemsFiltered', this.foodItemsFiltered)
+                // console.log('foodItemsFiltered', this.foodItemsFiltered)
                 if (this.foodItemsFiltered.length > 0){
                     for(const item of this.foodItemsFiltered){
-                        // console.log('asdad', this.foodItemsFiltered[0])
+
+                        let contentString = `<div class="card">
+                                                <img src='${ item.info.details.ImageUrls[0] }' class="card-img-top" alt="...">
+
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${ item.info.details.ListingName }</h5>
+                                                    <ul>
+                                                        <li>Category: ${item.info.details.Category}</li>
+                                                        <li>Expiry Date: ${ item.info.details.ExpiryDate.toDate() }</li>
+                                                        <li>Perishable: ${ item.info.details.Perishable ? "Yes": "No" }</li>
+                                                        <li>Price: ${ item.info.details.Price }</li>
+                                                        <li>Quantity Available: ${ item.info.details.QtyAvailable }</li>
+                                                    </ul>                                
+                                                    <a href="#" class="btn btn-link">View more...</a>
+                                                </div>
+                                            </div>`
 
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        new marker.Marker({
+                        // add routing options here 
+
+                        let newMarker = new marker.Marker({
                             position: { lat: latitude, lng: longitude},
                             map: this.map,                    
                         })
+
+                        let info = new map.InfoWindow({
+                            content: contentString,
+                            anchor: newMarker,
+                            options: {
+                                maxWidth: 300,
+                                minWidth: 100,
+                                 }
+                        });
+
+                        newMarker.addListener("click", () => {
+                            // console.log('heard')
+                            info.open(
+                                {
+                                anchor: newMarker,
+                                map,
+                            }
+                            );
+                        });
                     }
                 }
                 
