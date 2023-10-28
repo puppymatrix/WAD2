@@ -71,7 +71,6 @@
 
 <script>
 
-// const { marker } = await await google.maps.importLibrary("marker")
 
 export default defineComponent({
   components: { GoogleMap, Marker, InfoWindow },

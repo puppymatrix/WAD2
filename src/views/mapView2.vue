@@ -12,10 +12,22 @@
         <div class="container m-3 col-10">
 
             <div id="map" style="height:600px"></div>
-            <div id="travelGrp" role="group" aria-label="Basic example">
-                <button id='transit'  @click="toggle=>{this.routeRequest.travelMode='TRANSIT'; console.log(this.routeRequest.travelMode)}">Transit</button>
-                <button id='driving' @click="toggle=>{this.routeRequest.travelMode='DRIVING'; console.log(this.routeRequest.travelMode)}">Drive</button>
+
+            <div class="row m-3">
+                <div class="col-2">
+                    <h5>Transport Mode:</h5>
+                </div>
+
+                <div class="col-6">
+                <div id="travelGrp" role="group" aria-label="Basic example" style="display:inline">
+                    <button id='transit'  @click="toggle=>{this.routeRequest.travelMode='TRANSIT'; }">Transit</button>
+                    <button id='driving' @click="toggle=>{this.routeRequest.travelMode='DRIVING'; }">Drive</button>
+                </div>
             </div>
+            </div>
+           
+
+           
             
             <!-- search bar  -->
                 <!-- pass props here  -->
@@ -179,6 +191,7 @@
                             options: {
                                 maxWidth: 300,
                                 minWidth: 100,
+                                zIndex: 999
                                  }
                         });
 
