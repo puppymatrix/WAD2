@@ -3,6 +3,7 @@
     import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
+    import  SearchBar  from '../components/SearchBar.vue'
 
 </script>
 
@@ -11,7 +12,50 @@
         <div class="col-1"></div>
         <div class="container m-3 col-10">
 
-            <div id="map" style="height:600px"></div>
+            <div class="row justify-content-center">
+                <div class="col-4 bg-white" id="infoWindow" v-if="selected"> 
+                    <h2>Listing Information</h2>
+
+                    <div class="container-fluid" style="overflow: scroll; max-height: 300px">
+
+                        <div class="card">
+                            <div id="carouselExample" class="carousel slide">
+                                <div class="carousel-inner"
+                                    v-for="(url, index) in selected.info.details.ImageUrls" :key="index" 
+                                    :class="index == 0 ? 'carousel-item active' : 'carousel-item'" style="">                
+                                        <img :src=url class="d-block w-100" alt="..."> 
+                                </div>
+                                    
+                                
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
+                                <!-- <ul style="list-style-type: none"> -->
+                                    <li>Category: {{ selected.info.details.Category }}</li>
+                                    <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
+                                    <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
+                                    <li>Price: {{ selected.info.details.Price }}</li>
+                                    <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
+                                <!-- </ul>                                 -->
+                                <a href="#" class="btn btn-link">View more...</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="map" style="height:400px" class="col-8"></div>
+            </div>
+           
 
             <div class="row m-3">
                 <div class="col-2">
@@ -25,15 +69,10 @@
                 </div>
             </div>
             </div>
-           
-
-           
-            
             <!-- search bar  -->
-                <!-- pass props here  -->
-            <searchBar />
+            <SearchBar @search="loadFoodByNameAndDistance"/>
 
-            <div class="row slidecontainer">
+            <div class="row slidecontainer" >
                 <h5>Distance (in KM): {{ filterDistance }}</h5>
                 <input type="range" min="1" max="100" v-model="filterDistance" class="slider" id="myRange">
             </div>
@@ -56,8 +95,8 @@
     export default {
         mounted(){
             // getUserLocation(),
-            this.initMap()
-            this.loadFood()
+             this.initMap()
+             this.loadFood()
         },
         
         data(){
@@ -67,8 +106,9 @@
                 // userLocation: {},
                 foodItems: [],
                 foodItemsFiltered: [],
-                coord: { lat: 1.290270, lng: 103.851959 },
+                // coord: { lat: 1.290270, lng: 103.851959 },
                 key: 'AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE',
+                selected: null,
 
                 // map variables
                 mapOptions: {
@@ -84,8 +124,8 @@
                 directionsService: null,
                 directionsRenderer: null,
                 routeRequest: {
-                                origin: {},
-                                destination: { lat: 1.350270, lng: 103.901959 },
+                                origin: null,
+                                destination: null,
                                 travelMode: 'TRANSIT',
                                 transitOptions: {  
                                                 modes: ['BUS', 'TRAIN']
@@ -104,15 +144,16 @@
                             strokeWeight: 0,
                             rotation: 0,
                             scale: 2,
-                        }
+                        },
+
             }
         },
-        // props: {
-        //         'apiKey': String,
-        //         'foodItemsFilteredArr': Array, 
-        //         'userLocationObj': Object,
-        //         'listingArr': Array
-        // },
+        props: {
+                'apiKey': String,
+                'foodItemsFilteredArr': Array, 
+                'userLocationObj': Object,
+                'listingArr': Array
+        },
         
         computed :{
             ...mapGetters(['currentUserLocation'])
@@ -129,19 +170,19 @@
                                         })
                 const map = await this.loader.importLibrary('maps')
 
+
+                this.map = new map.Map(document.getElementById("map"), this.mapOptions);    
+                
                 const marker = await this.loader.importLibrary('marker')
-                const routes = await this.loader.importLibrary('routes')
 
-                this.core = await this.loader.importLibrary('core')
+                console.log(this.map)
+                
+                if (this.routeRequest.destination){
+                    console.log('adr')
+                    const routes = await this.loader.importLibrary('routes')
 
-                this.map = new map.Map(document.getElementById("map"), this.mapOptions);
-                // this.createTravelButtons()
-
-                this.directionsService = new routes.DirectionsService();
-                this.directionsRenderer = new routes.DirectionsRenderer();
-
-                if (this.routeRequest){
-                    // this.directionsRenderer.setMap(this.map);
+                    this.directionsService = new routes.DirectionsService();
+                    this.directionsRenderer = new routes.DirectionsRenderer();
                     this.loadRoute()
                 }
 
@@ -155,26 +196,11 @@
 
                 //load filtered food items 
 
-                // console.log('foodItemsFiltered', this.foodItemsFiltered)
+                console.log('foodItemsFiltered', this.foodItemsFiltered)
                 if (this.foodItemsFiltered.length > 0){
                     for(const item of this.foodItemsFiltered){
 
-                        let contentString = `<div class="card">
-                                                <img src='${ item.info.details.ImageUrls[0] }' class="card-img-top" alt="...">
-
-                                                <div class="card-body">
-                                                    <h5 class="card-title">${ item.info.details.ListingName }</h5>
-                                                    <ul>
-                                                        <li>Category: ${item.info.details.Category}</li>
-                                                        <li>Expiry Date: ${ item.info.details.ExpiryDate.toDate() }</li>
-                                                        <li>Perishable: ${ item.info.details.Perishable ? "Yes": "No" }</li>
-                                                        <li>Price: ${ item.info.details.Price }</li>
-                                                        <li>Quantity Available: ${ item.info.details.QtyAvailable }</li>
-                                                    </ul>                                
-                                                    <a href="#" class="btn btn-link">View more...</a>
-                                                </div>
-                                            </div>`
-
+                        console.log('item', item)
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
@@ -185,24 +211,13 @@
                             map: this.map,                    
                         })
 
-                        let info = new map.InfoWindow({
-                            content: contentString,
-                            anchor: newMarker,
-                            options: {
-                                maxWidth: 300,
-                                minWidth: 100,
-                                zIndex: 999
-                                 }
-                        });
-
                         newMarker.addListener("click", () => {
-                            // console.log('heard')
-                            info.open(
-                                {
-                                anchor: newMarker,
-                                map,
-                            }
-                            );
+                            console.log(this.routeRequest.origin, this.routeRequest.destination)
+                            this.selected = item    
+                            this.routeRequest.destination = { 
+                                                            lat: item.info.details.Location.latitude, 
+                                                            lng: item.info.details.Location.longitude
+                                                        }
                         });
                     }
                 }
@@ -211,11 +226,12 @@
 
             loadRoute(){
 
+                console.log('origin:', this.routeRequest.origin, 'destination:', this.routeRequest.destination)
                 if (this.directionsService != null){
 
                     var route = this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
-                        
+                            console.log('result', result)
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
 
@@ -281,10 +297,11 @@
             async loadFood(){
 
                 const data = getAllListings()
+
                 data.then(
                     listing => {
-                        console.log(listing)
-                        console.log('userLocation', this.currentUserLocation)
+                        console.log('all food loaded', listing)
+                        // console.log('userLocation', this.currentUserLocation)
                         // this.foodItems.push({
                         //     listingId: doc.id,
                         //     info: doc.data(),
@@ -302,41 +319,44 @@
                 )    
             },
 
-            loadFoodByNameAndDistance(){
-                console.log('foodItems', this.foodItems)
+            loadFoodByNameAndDistance(foodName){
+                console.log('received', `search query: ${this.searchQuery}`)
+                this.searchQuery = foodName
                 this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
-                console.log(this.foodItemsFiltered)
+                console.log('filtered by name and distance', this.foodItemsFiltered)
             },
 
             loadByDistance(){
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
-                console.log('filtered', this.foodItemsFiltered)
+                console.log('filtered by distance', this.foodItemsFiltered)
             }
         },
         watch:{
-        routeRequest:{
-            handler(){
-                this.initMap()
-                // this.createTravelButtons()
+            routeRequest:{
+                handler(){
+                    this.initMap()
+                },
+                deep: true
             },
-            deep: true
-        },
-        foodItemsFiltered:{
-            handler(){
-                this.initMap()
-                // this.createTravelButtons()
+            foodItemsFiltered:{
+                handler(){
+                    this.initMap()
+                }
             },
-            deep: true
         },
-        
-    },
 }
             
   </script>
 
 <style>
-    .text-bg-listing {
+.text-bg-listing {
     background-color: #558C03;
     color: white;
 }
+.img {
+    background-size: cover; 
+    background-position:center; 
+    max-height: 400px;
+}
+
 </style>

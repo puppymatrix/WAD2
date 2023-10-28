@@ -1,6 +1,3 @@
-<script setup>
-    // defineEmits(['search']);
-</script>
 
 <template>
     <!-- search bar -->
@@ -31,20 +28,21 @@
                 query: ""
             }
         },
-        emits: {
-            search(query) {
-                return typeof query === 'string' && query.length > 0
-            }
-        },
+        // emits: {
+        //     search(query) {
+        //         return typeof query === 'string' && query.length > 0
+        //     }
+        // },
         methods:{
             updateSearch(query) {
-            // Emit the custom event "updateSearch" with the current search location
-            // console.log('query', this.query)
+            // Emit the custom event "search"
+            console.log('emit')
             this.$emit('search', this.query);
             },
         },
 
-};</script>
+    };
+</script>
 
 <style>
     .text-bg-listing {
