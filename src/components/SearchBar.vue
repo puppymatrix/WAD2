@@ -1,7 +1,7 @@
 
 <template>
     <!-- search bar -->
-    <div class="container-fluid my-3">
+    <div class="container-fluid">
         <div class="input-group">
             <input 
                 type="search" 
