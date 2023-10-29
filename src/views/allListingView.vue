@@ -104,8 +104,9 @@ import { mapGetters } from 'vuex'
                                             <button
                                                 type="button"
                                                 class="btn btn-sm btn-outline-secondary"
+                                                @click="navigate=>{this.$router.push('/listing')}"
                                             >
-                                                <a href="/listing">View</a>
+                                                <a href="#">View</a>
                                             </button>
                                         </div>
                                     </div>

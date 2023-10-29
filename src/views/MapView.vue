@@ -19,7 +19,7 @@
             <div class="row justify-content-center">
 
             <!-- <div class="card flex justify-content-center"> -->
-                <Sidebar v-model:visible="visible" :modal="false">
+                <Sidebar v-model:visible="visible" :modal="false" style="width: 500px">
                     <h2>Listing Information</h2>
 
                     <div class="container-fluid">
@@ -28,7 +28,7 @@
                             <div id="carouselExample" class="carousel slide">
                                 <div class="carousel-inner"
                                     v-for="(url, index) in selected.info.details.ImageUrls" :key="index" 
-                                    :class="index == 0 ? 'carousel-item active' : 'carousel-item'" style="">                
+                                    :class="index == 0 ? 'carousel-item active mt-3' : 'carousel-item mt-3'" >                
                                         <img :src=url class="d-block w-100" alt="..."> 
                                 </div>
                                     
@@ -51,13 +51,32 @@
                                     <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
                                     <li>Price: {{ selected.info.details.Price }}</li>
                                     <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
-                                <a href="#" class="btn btn-link">View more...</a>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-primary mt-1"
+                                        @click.prevent="navigate=>
+                                            {
+                                                this.$router.push('/listing');
+                                                this.$emit('listingInfo', selected)
+                                            }">
+                                            <a href="#">View more...</a>
+                                            
+                                    </button>
+                            </div>
+                        </div>
+
+                        <h2 class= mt-5>Getting there</h2>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="sideBar"></div>
                             </div>
                         </div>
                     </div>
                 </Sidebar>
 
                 <div id="map" style="height:400px" class="col-10"></div>
+                
             </div>
            
             <div class="row ">
@@ -199,7 +218,7 @@
                 // const animation = await this.loader.importLibrary('marker')
 
                 // const anim = await animation.Animation.DROP
-                
+
                 if (this.routeRequest.destination){
                     console.log('adr')
                     const routes = await this.loader.importLibrary('routes')
@@ -207,15 +226,18 @@
                     this.directionsService = new routes.DirectionsService();
                     this.directionsRenderer = new routes.DirectionsRenderer();
                     this.loadRoute()
+
+                    this.directionsRenderer.setPanel(document.getElementById("sideBar"))
+
                 }
-               
+
+
                 const parser = new DOMParser()
                 const pinSvg = parser.parseFromString(
                     '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ffffff}</style><path d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z"/></svg>',
                     'image/svg+xml'
                 ).documentElement
 
-                console.log(faPerson)
                 const icon = document.createElement('div')
                 icon.innerHTML = '<svg  />'
                 const faPin = new marker.PinElement({
@@ -232,8 +254,7 @@
 
 
                 })
-                this.map=unloadedMap
-                console.log('advMarker', advMarker)
+                this.map = unloadedMap
 
                 //load filtered food items 
                 console.log('foodItemsFiltered', this.foodItemsFiltered)
@@ -259,6 +280,7 @@
                                 lat: item.info.details.Location.latitude, 
                                 lng: item.info.details.Location.longitude
                             }
+
                         });
                     }
                 }
@@ -273,9 +295,12 @@
                     var route = this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
                             console.log('result', result)
+                            
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
-
+                            
+                            
+                            //add event listeners to routeRequest origin and destination
                         }
                     })
                 }
@@ -400,5 +425,23 @@
     background-position:center; 
     max-height: 400px;
 }
+#sideBar {
+  flex-basis: 15rem;
+  flex-grow: 1;
+  padding: 1rem;
+  max-width: 30rem;
+  height: 100%;
+  max-height: 500px;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+
+/* #sideBar {
+  flex: 0 1 auto;
+  padding: 0;
+} */
+/* #sideBar > div {
+  padding: 0.5rem;
+} */
 
 </style>
