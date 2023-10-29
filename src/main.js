@@ -12,8 +12,6 @@ import "bootstrap/dist/js/bootstrap.js"
 
 const app = createApp(App)
 
-
-// import "primevue/resources/themes/lara-light-teal/theme.css";
 import "primevue/resources/themes/saga-green/theme.css";
 import "primeflex/primeflex.css";
 

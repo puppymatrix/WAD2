@@ -9,7 +9,7 @@ import { Icon } from "@iconify/vue";
                 <NavBar />
             </div>
         </header>
-        
+
         <RouterView />
 
         <Footer />
@@ -21,6 +21,7 @@ import { Icon } from "@iconify/vue";
         :style="{ width: '40vw' }"
         :position="'top'"
         :closable="true"
+        id="dialog"
     >
         <template #container="slotProps">
             <Button
@@ -38,9 +39,8 @@ import { Icon } from "@iconify/vue";
                 </div>
                 <div class="flex justify-content-center">
                     <Button @click="gotoLogin"
-                        ><Icon icon="line-md:login" />&nbsp Click to
-                        login</Button
-                    >
+                        ><Icon icon="line-md:login" />&nbsp Click to login
+                    </Button>
                 </div>
             </div>
         </template>
@@ -53,7 +53,7 @@ import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import { getUser, getUserLocation } from "./firebase/api.js";
 import axios from "axios";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
     components: {
@@ -61,7 +61,7 @@ export default {
         Footer,
     },
     computed: {
-    ...mapState(['visible']),
+        ...mapState(["visible"]),
     },
     data() {
         return {
