@@ -374,7 +374,7 @@ export default {
                 });
                 check = false;
             }
-            if (this.location.hasOwnProperty("latitude") === false) {
+            if (!this.location) {
                 this.$toast.add({
                     severity: "error",
                     summary: "Error Message",
