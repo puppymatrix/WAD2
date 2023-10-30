@@ -12,6 +12,7 @@ import routingTest from "./routingTest.vue";
 
 <template>
     <div class="row">
+        {{ currentUserLocation }}
         <div class="col-1"></div>
         <div class="container m-3 col-10">
             <Map
@@ -166,7 +167,7 @@ export default {
         listingArr: Array,
     },
     computed: {
-        ...mapGetters["userLocation"],
+        ...mapGetters["currentUserLocation"],
     },
     methods: {
         searchLocation() {
