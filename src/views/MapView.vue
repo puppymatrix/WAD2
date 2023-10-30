@@ -42,7 +42,7 @@
 
                             </div>
 
-                            <div class="card-body" >
+                            <div class="card-body">
                                 <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
                                     <li>Category: {{ selected.info.details.Category }}</li>
                                     <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
@@ -52,32 +52,58 @@
                                     <div class="row">
                                         <button
                                             type="button"
-                                            class="btn btn-sm btn-outline-primary mt-1 me-2 pt-1 pb-1 "
+                                            class="btn btn-sm btn-outline-success mt-1 me-2 pt-1 pb-1 "
                                             @click.prevent="navigate=>
                                                 {
                                                     this.$router.push('/listing');
                                                     this.$emit('listingInfo', selected)
                                                 }">
-                                                <a href="#" class="">View more...</a>
+                                                <a href="#" class="text-success">View more...</a>
                                         </button>
 
-                                        <button class="btn btn-sm btn-primary mt-1" @click.prevent="loadDirections">
+                                        <button class="btn btn-sm btn-success mt-1" @click.prevent="loadDirections" >
                                             <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" />
                                             Get Directions
                                         </button>
+                                       
                                     </div>
                             </div>
                         </div>
-                        {{ displayDirections }} {{ visible }}
 
+                        <div class="card border-none" v-if="displayDirections">
 
-                        <div class="container p-0" v-if="displayDirections">
-                            <h2 class= mt-5>Getting there</h2>
+                            <div class="card-title">
+                                <h2 class= mt-5>Getting there</h2>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                   
+                                    <div class="row">
+                                        <p class="card-title ps-0">Transport Mode:</p>
+                                    </div>
 
-                            <div class="card border-none" >
-                                <div class="card-body p-0">
-                                    <div id="sideBar" class="p-0"></div>
+                                    <div class="row ps-0">
+                                        <div id="travelGrp">
+                                            <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
+                                            aria-labelledby="basic" 
+                                            :pt="{
+                                                label: { class: 'text-xs' },
+
+                                                button: ({ context }) => ({
+                                                    class: context.active ? 'bg-green-600 border-blue-600' : undefined
+                                                })
+                                            }"
+                                            >
+                                            
+                                        </SelectButton>
+                                        </div>
                                 </div>
+                            </div>
+                        </div>
+                           
+                            <div class="card-body p-0">
+                                <div id="sideBar" class="p-0"></div>
                             </div>
                         </div>
                         
@@ -96,27 +122,9 @@
             <div class="row" >
                 <div class="container col-10 mt-3" style="background-color: #F6FBF6;">
                     <div class="container" style="padding-left: 15%; padding-right: 15%">
-                        <div class="container d-flex ps-0">
-                            <div class="col-3 d-flex align-items-center ps-0">
-                                <h5>Transport Mode:</h5>
-                            </div>
+                        
 
-                            <div class="col-6">
-                                <div id="travelGrp">
-                                    <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
-                                    aria-labelledby="basic" 
-                                    :pt="{
-                                        button: ({ context }) => ({
-                                            class: context.active ? 'rounded bg-green-600 border-green-400' : undefined
-                                        })
-                                    }"
-                                    />
-                                    
-                                </div>
-                            </div>
-                        </div>
-
-                        <SearchBar @search="loadFoodByNameAndDistance" class="m-0 ps-0"/>
+                        <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
 
                         <div class="row justify-content-left align-items-center" >
                             <div class="col-3">
@@ -128,12 +136,13 @@
                             </div>
 
                             <div class="col-3 ">
-                                <Button @click="loadByDistance"
+                                <Button @click.prevent="loadByDistance"
                                 :pt="{ 
-                                        root: { class: 'bg-green-600 border-green-400 rounded' } 
+                                        root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
                                     }"
-                                
-                                >Food Nearby</Button>
+                                >
+                                <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                            </Button>
                             </div>
                         </div>
                     </div>
@@ -151,6 +160,19 @@
   </template>
 
   <script>
+
+    document.addEventListener('click', function(event) {
+        // Check if the click event's target is not the element you're watching
+        if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
+            // Click occurred outside the element
+            console.log('Click outside the element');
+            this.displayDirections = false
+        } else {
+            // Click occurred inside the element
+            console.log('Click inside the element');
+        }
+    });
+    
     export default {
         mounted(){
             // getUserLocation(),
@@ -222,7 +244,7 @@
                 this.loader = new Loader({ 
                     apiKey: this.key,
                     version: "weekly",
-                    libraries: ["places", , "marker", "maps", "routes"]
+                    libraries: ["places", "marker", "maps", "routes"]
                 })
                 const map = await this.loader.importLibrary('maps')
 
@@ -232,18 +254,13 @@
                 const marker = await this.loader.importLibrary('marker')
 
                 // const animation = await this.loader.importLibrary('marker')
-
                 // const anim = await animation.Animation.DROP
 
                 if (this.routeRequest.destination){
-                    console.log('adr')
                     const routes = await this.loader.importLibrary('routes')
 
                     this.directionsService = new routes.DirectionsService();
                     this.directionsRenderer = new routes.DirectionsRenderer();
-                    // this.loadRoute()
-
-
                 }
 
                 const parser = new DOMParser()
@@ -273,7 +290,6 @@
                 if (this.foodItemsFiltered.length > 0){
                     for(const item of this.foodItemsFiltered){
 
-                        console.log('item', item)
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
@@ -285,9 +301,14 @@
                         })
 
                         newMarker.addListener("click", () => {
+
                             console.log(this.routeRequest.origin, this.routeRequest.destination)
                             this.selected = item    
                             this.visible = true
+
+                            if (this.displayDirections){
+                                this.displayDirections = false
+                            }
                            
                             this.routeRequest.destination = { 
                                 lat: item.info.details.Location.latitude, 
@@ -301,7 +322,6 @@
             },
 
             loadRoute(){
-
                 console.log('origin:', this.routeRequest.origin, 'destination:', this.routeRequest.destination)
                 if (this.directionsService != null){
 
@@ -312,18 +332,10 @@
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
                             this.directionsRenderer.setPanel(document.getElementById("sideBar"))
-
-                            //add event listeners to routeRequest origin and destination
                         }
                     })
                 }
 
-            },
-
-            createTravelButtons() {
-            const transitControl = document.getElementById("travelGrp"); 
-            // console.log('btns created', this.map)
-            this.map.controls[this.core.ControlPosition.TOP_CENTER].push(transitControl);
             },
 
             //other functions 
@@ -361,7 +373,6 @@
                 .then(
                     response => {
                         const data = response.data
-
                         this.userLocation = data.location
                     }   
                 )
@@ -393,16 +404,13 @@
                 )    
             },
 
-            loadFoodByNameAndDistance(foodName){
-                console.log('received', `search query: ${this.searchQuery}`)
+            loadFoodByName(foodName){
                 this.searchQuery = foodName
-                this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
-                console.log('filtered by name and distance', this.foodItemsFiltered)
+                this.foodItemsFiltered = filterByName(this.foodItems, this.searchQuery)
             },
 
             loadByDistance(){
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
-                console.log('filtered by distance', this.foodItemsFiltered)
             },
             loadDirections(){
                 if (this.visible){
