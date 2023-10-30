@@ -18,13 +18,13 @@
 
                 <form @submit.prevent="createAccount">
                     <div class="row ">
-                        <div class="col-12 col-lg-6 mb-3">
+                        <div class=" col-lg-6 mb-3">
                             <label for="firstName" class="form-label">First Name</label>
                             <span v-if="errors.lastName" class="error text-danger ps-2">{{ errors.firstName }}</span>
                             <input type="text" class="form-control" v-model="formData.firstName" id="firstName" placeholder="Enter First Name">
                         </div>
 
-                        <div class="col-12 col-lg-6 mb-3">
+                        <div class="col-lg-6 mb-3">
                             <label for="lastName" class="form-label">Last Name</label>
                             <span v-if="errors.lastName" class="error text-danger  ps-2">{{ errors.lastName }}</span>
                             <input type="text" class="form-control" v-model="formData.lastName" id="lastName" placeholder="Enter Last Name">
@@ -42,18 +42,18 @@
                     <div class="row ">
                         <div class="col mb-3">
                             <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
+                            <input type="text" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
                             <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
                             <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                         </div>
                     </div>
 
-                    <div class="row3">
+                    <div class="row">
                         <div class="col mb-3">
-                            <div class="">
+                            
                             <label for="password" class="form-label" >
-                                Password <Icon icon="mdi:information-slab-circle-outline" class="infoIcon mb-1"/>
-               : <p id="moreInfo">{{pwReq}}</p>
+                                Password <Icon icon="mdi:information-slab-circle-outline" class="infoIcon mb-1"/>: 
+                                <p id="moreInfo">{{pwReq}}</p>
                             </label>
                             <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">
                             <div id="passwordErrors" >
@@ -61,7 +61,7 @@
                             </div>   
                             <label class="mx-2"><input type="checkbox" id="toggle-password" v-bind="showPassword" @click="togglePassword()"/> 
                                 <div id="pwStatus"> &nbsp{{ pwStatus }}</div></label>
-                        </div>
+                        
                         </div>
                     </div>
                         
@@ -144,7 +144,13 @@ export default {
         },
 
     createAccount(){ 
-
+        var isValid = true
+        this.errors.firstName = ''
+        this.errors.lastName = ''
+        this.errors.email = ''  
+        this.errors.username = ''
+        this.errors.password = []
+        
         if (this.validateForm()){
             const auth = getAuth();
             createUserWithEmailAndPassword(auth, this.formData.email, this.formData.password)
@@ -205,7 +211,7 @@ export default {
             if (this.formData.email == ""){
                 this.errors.email = "Required"
                 isValid = false
-            } else if (!this.formData.email.split('@').length == 2){
+            } else if (this.formData.email.split('@').length != 2){
                 this.errors.email = "Wrong email format"
                 isValid = false
             }
@@ -223,7 +229,7 @@ export default {
                 this.errors.username = "Required"
                 isValid = false
             }
-            else if (!checkUniqueUsername(this.formData.username)){
+            else if (checkUniqueUsername(this.formData.username) == false){
                 this.errors.username = "Username is taken"
                 isValid = false
             }
@@ -273,6 +279,9 @@ export default {
         
     },
 };
+
+
+
 
 </script>
 <style>
