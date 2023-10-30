@@ -4,7 +4,6 @@ import { Icon } from "@iconify/vue";
 
 <template>
     <main>
-        <Toast />
         <form class="m-5" @submit.prevent="submitForm">
             <div class="container-fluid">
                 <div class="row">
@@ -164,7 +163,7 @@ import { Icon } from "@iconify/vue";
 
                 <div class="row">
                     <div class="col-md-6">
-                        <span class="mb-1"
+                        <p class="mb-1"
                             >Type of Listing
                             <Icon
                                 icon="mdi:information-slab-circle-outline"
@@ -174,7 +173,7 @@ import { Icon } from "@iconify/vue";
                                 Perishable items have 12h & Non-Perishable items
                                 have 48h "Chope Window"
                             </p>
-                        </span>
+                        </p>
                         <b-form-select
                             v-model="perishable"
                             class="mb-3"
