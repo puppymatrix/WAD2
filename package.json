@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@googlemaps/js-api-loader": "^1.16.2",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^7.2.0",

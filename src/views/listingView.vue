@@ -9,10 +9,7 @@
     <body class="p-5">
         
         <!-- search bar -->
-        <SearchBar />
-        <div @search="searchFood"></div>
-
-        {{ query }}
+        <SearchBar @search="searchFood"/>
 
         <!-- Button-->
         <div class="container-fluid my-3">

@@ -4,22 +4,20 @@
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
     import  SearchBar  from '../components/SearchBar.vue'
-    import { faPerson } from '@fortawesome/free-solid-svg-icons'
     import  Sidebar from 'primevue/sidebar';
     import Slider from 'primevue/slider';
     import SelectButton from 'primevue/selectbutton';
+    import Button from 'primevue/button';
+    import { Icon } from '@iconify/vue'
 
 </script>
 
 <template>
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="container m-3 col-10">
-
-            <div class="row justify-content-center">
-
-            <!-- <div class="card flex justify-content-center"> -->
-                <Sidebar v-model:visible="visible" :modal="false" style="width: 500px">
+    
+    <div class="row justify-content-center">
+        <div class='col-1' v-if="visible == true" style="width: 25%"></div>
+        <div class="container col-9" style="width: 75%">
+            <Sidebar v-model:visible="visible" :modal="false" style="width: 25%">
                     <h2>Listing Information</h2>
 
                     <div class="container-fluid">
@@ -29,7 +27,7 @@
                                 <div class="carousel-inner"
                                     v-for="(url, index) in selected.info.details.ImageUrls" :key="index" 
                                     :class="index == 0 ? 'carousel-item active mt-3' : 'carousel-item mt-3'" >                
-                                        <img :src=url class="d-block w-100" alt="..."> 
+                                        <img :src=url class="d-block w-100" alt="..." style="height: 300px; object-fit: cover"> 
                                 </div>
                                     
                                 
@@ -44,45 +42,62 @@
 
                             </div>
 
-                            <div class="card-body">
+                            <div class="card-body" >
                                 <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
                                     <li>Category: {{ selected.info.details.Category }}</li>
                                     <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
                                     <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
                                     <li>Price: {{ selected.info.details.Price }}</li>
                                     <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-outline-primary mt-1"
-                                        @click.prevent="navigate=>
-                                            {
-                                                this.$router.push('/listing');
-                                                this.$emit('listingInfo', selected)
-                                            }">
-                                            <a href="#">View more...</a>
-                                            
-                                    </button>
+                                    <div class="row">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-primary mt-1 me-2 pt-1 pb-1 "
+                                            @click.prevent="navigate=>
+                                                {
+                                                    this.$router.push('/listing');
+                                                    this.$emit('listingInfo', selected)
+                                                }">
+                                                <a href="#" class="">View more...</a>
+                                        </button>
+
+                                        <button class="btn btn-sm btn-primary mt-1" @click.prevent="loadDirections">
+                                            <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" />
+                                            Get Directions
+                                        </button>
+                                    </div>
                             </div>
                         </div>
+                        {{ displayDirections }} {{ visible }}
 
-                        <h2 class= mt-5>Getting there</h2>
 
-                        <div class="card">
-                            <div class="card-body">
-                                <div id="sideBar"></div>
+                        <div class="container p-0" v-if="displayDirections">
+                            <h2 class= mt-5>Getting there</h2>
+
+                            <div class="card border-none" >
+                                <div class="card-body p-0">
+                                    <div id="sideBar" class="p-0"></div>
+                                </div>
                             </div>
                         </div>
+                        
                     </div>
                 </Sidebar>
 
-                <div id="map" style="height:400px" class="col-10"></div>
+            <div class="row justify-content-center">
+
+            <!-- <div class="card flex justify-content-center"> -->
+
+
+                <div id="map" style="height:600px" class="col-10"></div>
                 
             </div>
            
-            <div class="row ">
-                <div class="container col-8">
-                    <div class="row">
-                            <div class="col-3 d-flex align-items-center">
+            <div class="row" >
+                <div class="container col-10 mt-3" style="background-color: #F6FBF6;">
+                    <div class="container" style="padding-left: 15%; padding-right: 15%">
+                        <div class="container d-flex ps-0">
+                            <div class="col-3 d-flex align-items-center ps-0">
                                 <h5>Transport Mode:</h5>
                             </div>
 
@@ -91,48 +106,48 @@
                                     <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
                                     aria-labelledby="basic" 
                                     :pt="{
-                                    button: ({ context }) => ({
-                                        class: context.active ? 'bg-green-600 border-green-400' : undefined
-                                    })
-    }"
+                                        button: ({ context }) => ({
+                                            class: context.active ? 'rounded bg-green-600 border-green-400' : undefined
+                                        })
+                                    }"
                                     />
                                     
                                 </div>
+                            </div>
+                        </div>
+
+                        <SearchBar @search="loadFoodByNameAndDistance" class="m-0 ps-0"/>
+
+                        <div class="row justify-content-left align-items-center" >
+                            <div class="col-3">
+                                <h6>Distance (in KM): {{ filterDistance }}</h6>
+                            </div>
+                            
+                            <div class="col-5 d-flex ">
+                                <Slider type="range" home=1 end=100 v-model="filterDistance" id="myRange" class="w-28rem"/>
+                            </div>
+
+                            <div class="col-3 ">
+                                <Button @click="loadByDistance"
+                                :pt="{ 
+                                        root: { class: 'bg-green-600 border-green-400 rounded' } 
+                                    }"
+                                
+                                >Food Nearby</Button>
+                            </div>
+                        </div>
+                    </div>
+                        
                 </div>
-
-                <SearchBar @search="loadFoodByNameAndDistance" class="m-0"/>
-
             </div>
             <!-- search bar  -->
 
-            <div class="row justify-content-left align-items-center" >
-                <div class="col-3">
-                    <h6>Distance (in KM): {{ filterDistance }}</h6>
-                </div>
-                
-                <div class="col-5 d-flex ">
-                    <Slider type="range" home=1 end=100 v-model="filterDistance" id="myRange" class="w-28rem"/>
-                </div>
-
-                <div class="col-3">
-                    <button @click="loadByDistance" class = "btn btn-secondary">Food Nearby</button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-2">
-                </div>
-                <div class="col-10"></div>
-            </div>
-                </div>
-            </div>
-           
-
-        </div>    
-        <div class="col-1" >
             
+
+           
         </div>
-    </div>
+    </div>    
+        <!-- <div class="col-1" ></div> -->
   </template>
 
   <script>
@@ -145,10 +160,11 @@
         
         data(){
             return {
-                //primevue varibales
+                //primevue variables
                 visible: false,
                 modal: false,
                 travelModeOptions: ['TRANSIT', 'DRIVING'],
+                displayDirections: false,
 
                 //food loading variables
                 filterDistance: 10,
@@ -174,7 +190,7 @@
                 routeRequest: {
                     origin: null,
                     destination: null,
-                    travelMode: 'DRIVING',
+                    travelMode: 'TRANSIT',
                     transitOptions: {  
                                     modes: ['BUS', 'TRAIN']
                     },
@@ -225,12 +241,10 @@
 
                     this.directionsService = new routes.DirectionsService();
                     this.directionsRenderer = new routes.DirectionsRenderer();
-                    this.loadRoute()
+                    // this.loadRoute()
 
-                    this.directionsRenderer.setPanel(document.getElementById("sideBar"))
 
                 }
-
 
                 const parser = new DOMParser()
                 const pinSvg = parser.parseFromString(
@@ -238,8 +252,6 @@
                     'image/svg+xml'
                 ).documentElement
 
-                const icon = document.createElement('div')
-                icon.innerHTML = '<svg  />'
                 const faPin = new marker.PinElement({
                     scale: 1.25,
                     glyph: pinSvg,
@@ -276,6 +288,7 @@
                             console.log(this.routeRequest.origin, this.routeRequest.destination)
                             this.selected = item    
                             this.visible = true
+                           
                             this.routeRequest.destination = { 
                                 lat: item.info.details.Location.latitude, 
                                 lng: item.info.details.Location.longitude
@@ -298,8 +311,8 @@
                             
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
-                            
-                            
+                            this.directionsRenderer.setPanel(document.getElementById("sideBar"))
+
                             //add event listeners to routeRequest origin and destination
                         }
                     })
@@ -390,6 +403,12 @@
             loadByDistance(){
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
                 console.log('filtered by distance', this.foodItemsFiltered)
+            },
+            loadDirections(){
+                if (this.visible){
+                    this.displayDirections = true
+                }
+                this.loadRoute()
             }
         },
         watch:{
@@ -429,7 +448,7 @@
   flex-basis: 15rem;
   flex-grow: 1;
   padding: 1rem;
-  max-width: 30rem;
+  /* max-width: 30rem; */
   height: 100%;
   max-height: 500px;
   box-sizing: border-box;
