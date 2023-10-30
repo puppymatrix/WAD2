@@ -14,6 +14,7 @@ const app = createApp(App)
 
 import "primevue/resources/themes/saga-green/theme.css";
 import "primeflex/primeflex.css";
+import 'primeicons/primeicons.css'
 
 import PrimeVue from "primevue/config";
 import AutoComplete from 'primevue/autocomplete';
