@@ -1,35 +1,51 @@
 <script setup>
     import SearchBar from "../components/SearchBar.vue";
     import { getListing, getListingsByCategory } from "@/firebase/api.js"
+    import { Icon } from "@iconify/vue";
 
 </script>
 
 <template>
+
     <body class="p-5">
-        
         <!-- search bar -->
-        <SearchBar />
-        <div @search="searchFood"></div>
-
-        {{ query }}
-
-        <!-- Button-->
-        <div class="container-fluid my-3">
+        <div class="container-fluid my-2">
             <div class="row">
-                <div class="col-10"></div>
-                <div class="col-2 d-flex justify-content-center">
-                    <button type="button" class="btn btn-outline-success d-flex align-items-center justify-content-center" @click="navigate=>{this.$router.push('/mapView')}">
-                    <img src="../components/icons/googleMaps.png" alt="" class="img-fluid me-1" style="width: 20px"/>
-                    Map View
-                    </button>
+                <div class="col-10 p-0">
+                    <!-- search bar -->
+                    <SearchBar @search="searchFood" />
+                </div>
+
+                <div
+                    class="col-2 d-flex align-items-center justify-content-center"
+                >
+
+               
+                    <router-link :to="{
+                                    name: 'mapView',
+                                    query: { Id: id },
+                                }"
+                            >
+                        <Button
+                            class="rounded"
+                            style="background-color: #f6fbf6"
+                            raised
+                            text
+                            plain
+                        >
+                        <Icon icon="material-symbols:directions" color="black" width="25"/>
+                            &nbsp Get Directions
+                        </Button>
+                    </router-link>
                 </div>
             </div>
         </div>
 
+
         <div class="container-fluid my-3">
             <div class="row">
                 <!-- carousel -->
-                <div class="col-md-6">
+                <div class="col-md-6 display-flex align-item-center justify-content-center">
                     <BCarousel controls indicators imgHeight="450px">
                         <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos" />
                     </BCarousel>
@@ -107,9 +123,10 @@
             </div>
         </div>
 
-
+        <hr>
+        <!-- More Listings -->
         <div class="container-fluid">
-            <h5>Similar food listings</h5>
+            <h3>Similar food listings</h3>
             <div class="album py-2">
                 <div class="container-fluid px-0">
                     <div class="row g-3">
@@ -151,26 +168,26 @@
 export default {
     mounted(){
         console.log('mounted')
+        this.id = this.$route.query.Id
         this.getListingInfo()
         this.loadNearListings()
     },
     data(){
         return {
             foodItems: [],
-            listingId: "TtRzfGb2w8JHvrmBdCro",
             similarListing: [], 
             listingInfo: [], 
             expiryDate: "",
             location: "",
+            id: null
         }
     },
     methods:{
-
-
         async getListingInfo(){
-            const data = getListing(this.listingId)
+            const data = getListing(this.id)
             data.then(
                 listing => {
+                    console.log(listing);
                     this.listingInfo = listing;
                     console.log(this.listingInfo)
 
