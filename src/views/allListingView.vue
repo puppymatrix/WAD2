@@ -27,13 +27,13 @@ import { Icon } from "@iconify/vue";
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"
-                            style="background-color: #f6fbf6"
+                            style="background-color: #f6fbf6;color:rgba(33, 37, 41, 0.75)"
                             raised
                             text
                             plain
                         >
                             <Icon icon="logos:google-maps" />
-                            &nbsp Map View
+                            &nbsp Food near me
                         </Button>
                     </router-link>
                 </div>
@@ -49,8 +49,8 @@ import { Icon } from "@iconify/vue";
 
         <div class="container-fluid">
             <div class="row filterBar">
-                <div class="col-1">
-                    <CascadeSelect
+                    <div class="col-3">
+                        <CascadeSelect
                         v-model="selectedFilter"
                         :options="filters"
                         optionLabel="cname"
@@ -59,9 +59,14 @@ import { Icon } from "@iconify/vue";
                         style="min-width: 14rem"
                         placeholder="Filter By"
                         id="multi-select"
-                        @change="checkFilterType"
+                        @change="filterBySelected"
                     />
-                </div>
+                    </div>
+                    <div class="col-2" v-if="selectedFilter != null">
+                        <Button severity="secondary" @click="checkQuery" class="rounded" raised><Icon icon="uil:times" width="20"/>&nbspClear Filter</Button>
+                    </div>
+                    
+                    
             </div>
 
             <div v-if="loading" class="container-fluid py-3 px-0">
@@ -256,7 +261,7 @@ export default {
     },
     data() {
         return {
-            query: false,
+            query: "",
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
@@ -291,7 +296,6 @@ export default {
                     ],
                 },
             ],
-            firstTime: true,
         };
     },
 
@@ -343,32 +347,24 @@ export default {
             }
             // this.allCategories = categories;
         },
-        searchFood(searchVal) {
-            // incomplete do something about all
-            this.query = true;
-            console.log("searchVal", searchVal);
+        async searchFood(searchVal) {
+            this.query = searchVal;
+            if (searchVal == "") {
+                this.foodItemsFiltered = this.foodItems;
+            }
+            if (this.selectedFilter) {
+                await this.filterBySelected();
+            }
             this.foodItemsFiltered = filterByName(this.foodItems, searchVal);
-
-            // for (let i = 0; i < this.foodItemsFiltered; i++) {
-            //     if (
-            //         !(
-            //             this.foodItemsFiltered[i].distance <=
-            //                 this.filterDistance &&
-            //             this.foodItemsFiltered[i].info.details.Category ==
-            //                 this.filterCategory.toLowerCase()
-            //         )
-            //     ) {
-            //         this.foodItemsFiltered.slice(i, i + 1);
-            //     }
-            // }
         },
-        checkFilterType() {
+        async filterBySelected() {
+            this.foodItemsFiltered = [];
             if (this.selectedFilter.type == "Price") {
                 const filterPrice = this.selectedFilter.cname;
-                this.filterByPrice(filterPrice, this.foodItems);
+                this.foodItemsFiltered = this.filterByPrice(filterPrice, this.foodItems);
             } else if (this.selectedFilter.type == "Category") {
-                const filterCategory = this.selectedFilter.cname.toLowerCase();
-                this.filterByCategory(filterCategory, this.foodItems);
+                const filterCategory = this.selectedFilter.cname;
+                this.foodItemsFiltered = await this.filterByCategory(filterCategory, this.foodItems);
             } else if (this.selectedFilter.type == "Distance") {
                 let filterDistance;
                 const distanceString = this.selectedFilter.cname;
@@ -383,36 +379,51 @@ export default {
                 } else if (distanceString == "Any") {
                     filterDistance = 99999;
                 }
-                this.filterByDistance(filterDistance, this.foodItems);
+                this.foodItemsFiltered = this.filterByDistance(filterDistance, this.foodItems);
+            }
+            if (this.query) {
+                this.foodItemsFiltered = filterByName(this.foodItemsFiltered, this.query);
             }
         },
         async filterByCategory(category, listings) {
-            this.foodItemsFiltered = await getListingsByCategory(
+            let res = [];
+            res = await getListingsByCategory(
                 category,
                 listings
             );
+            return res;
         },
         filterByPrice(filterPrice, listings) {
+            let res = [];
             if (filterPrice == "High to Low") {
-                this.foodItemsFiltered = listings.sort(
+                res = [...listings].sort(
                     (a, b) => b.info.details.Price - a.info.details.Price
                 );
             } else if (filterPrice == "Low to High") {
-                this.foodItemsFiltered = listings.sort(
+                res = [...listings].sort(
                     (a, b) => a.info.details.Price - b.info.details.Price
                 );
             }
+            return res;
         },
         filterByDistance(filterDistance, listings) {
+            let res = [];
             for (const listing of listings) {
                 if (
                     typeof listing.distance === "number" &&
                     listing.distance < filterDistance
                 ) {
-                    this.foodItemsFiltered.push(listing);
+                    res.push(listing);
                 }
             }
+            return res;
         },
+        checkQuery() {
+            this.selectedFilter=null
+            if (this.query !== "") {
+                this.searchFood(this.query);
+            }
+        }
     },
 };
 </script>
