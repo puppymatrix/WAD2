@@ -50,9 +50,9 @@
                             </div> -->
                             <!-- {{ errors.logIn }} -->
 
-                            <div class="col-6 mb-3">
+                            <!-- <div class="col-6 mb-3">
                                 <a href="/resetPassword">Forgot Password?</a>
-                            </div>
+                            </div> -->
                         </div>
                     
                         <!-- can insert on key down enter to log in instead of pressing the create account button -->
