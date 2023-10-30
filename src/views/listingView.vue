@@ -1,7 +1,6 @@
 <script setup>
     import SearchBar from "../components/SearchBar.vue";
     import { getListing, getListingsByCategory } from "@/firebase/api.js"
-    // import { collection, getDocs, query } from "firebase/firestore";
 
 </script>
 
@@ -119,7 +118,7 @@
                                 <img v-for="photo in listing.details.ImageUrls" :src="photo" alt="" class="card-img-top" />
                                 <div class="card-body border-top border-2">
                                     <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ listing.details.Category }}</h6>
-                                    <h5 class="card-title">{{listing.details.ListingNam}}</h5>
+                                    <h5 class="card-title">{{listing.details.ListingName}}</h5>
                                     <p class="card-text d-flex align-items-center mb-3">
                                         <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> {{ listing.details.Location.name }}
                                     </p>
