@@ -1,5 +1,8 @@
 <script setup>
-import { getUser } from "../firebase/api.js"
+import { getUser,
+getListing,
+updateUser, } from "../firebase/api.js"
+
 </script>
 
 <template>
@@ -32,13 +35,13 @@ import { getUser } from "../firebase/api.js"
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fName">First Name</label>
-                                <input type="text" class="form-control" id="fName" aria-describedby="emailHelp" placeholder="First Name" v-bind:value="fName">
+                                <input type="text" class="form-control" id="fName" aria-describedby="emailHelp" placeholder="First Name" v-model="fName">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fName">Last Name</label>
-                                <input type="text" class="form-control" id="lName" aria-describedby="emailHelp" placeholder="First Name" v-bind:value="lName">
+                                <input type="text" class="form-control" id="lName" aria-describedby="emailHelp" placeholder="Last Name" v-model="lName">
                             </div>
                         </div>
                     </div>
@@ -46,7 +49,7 @@ import { getUser } from "../firebase/api.js"
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fName">Username</label>
-                                <input type="text" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="First Name" v-bind:value="userName">
+                                <input type="text" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="User Name" v-model="userName">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -77,213 +80,90 @@ import { getUser } from "../firebase/api.js"
             </div>
             <!-- userListings div -->
             <div class="row" id="userListings">
-                <div class="col">
                     <h1>My Listings</h1>
-                    <p> insert myListing caorusel</p>
-                    <div class="album py-2">
-                            <div class="container-fluid px-0">
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                                    <div class="col">
-                                        <div class="card shadow-sm">
-                                            <img
-                                                src="https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2Farchive%2Fd852987f86aeae8b65926f9e7a260c28285ea744"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top border-2">
-                                                <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                                <h5 class="card-title">Vegetables</h5>
-                                                <p class="card-text d-flex align-items-center mb-3">
-                                                    <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                                </p>
-                                                <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                                    <IMdiuser class="me-1"/>Glenda123
-                                                </h6>
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary">
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card shadow-sm">
-                                            <img
-                                                src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top border-2">
-                                                <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                                <h5 class="card-title">Ice cream</h5>
-                                                <p class="card-text d-flex align-items-center mb-3">
-                                                    <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                                </p>
-                                                <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                                    <IMdiuser class="me-1"/>Glenda123
-                                                </h6>
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center"
-                                                >
-                                                    <div class="btn-group">
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-sm btn-outline-secondary"
-                                                        >
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card shadow-sm">
-                                            <img
-                                                src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top border-2">
-                                                <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                                <h5 class="card-title">Banana</h5>
-                                                <p class="card-text d-flex align-items-center mb-3">
-                                                    <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                                </p>
-                                                <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                                    <IMdiuser class="me-1"/>Glenda123
-                                                </h6>
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center">
-                                                    <div class="btn-group">
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-sm btn-outline-secondary">
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <!-- this is a for loop for each listing item -->
+                    <div class="col-md-4 col-sm-12" v-for="item in myListings">
+                        <div class="card shadow-sm">
+                                <img :src="item.ImageUrls[0]" alt="" class="card-img-top"/>
+                                <div class="card-body border-top border-2">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                                        Category: {{ item.Category }}
+                                    </h6>
+                                    <h5 class="card-title">
+                                        {{ item.ListingName }}
+                                    </h5>
+                                    <p class="card-text d-flex align-items-center mb-3"> 
+                                        {{ item.Location.name }}
+                                    </p>
+                                    <!-- need to getLister -->
+                                    <h6
+                                        class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <p class="card-text d-flex align-items-center mb-3">
+                                            Price:
+                                            {{ item.Price }} <br />
+                                            <!-- Distance: {{ item.distance }} -->
+                                        </p>
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <p class="me-1">
+                                            {{ item.owner }}
+                                        </p>
+                                    </h6>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                                <a href="/listing">View</a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                    
                     </div>
-                </div>
             </div>
             <!-- chopedListings div -->
             <div class="row" id="chopedListings">
-                <div class="col">
+                
                     <h1>My Chopes</h1>
                     <!-- listings -->
-                    <div class="container-fluid">
-                        <div class="album py-2">
-                            <div class="container-fluid px-0">
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                                    <div class="col">
-                                        <div class="card shadow-sm">
-                                            <img
-                                                src="https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2Farchive%2Fd852987f86aeae8b65926f9e7a260c28285ea744"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top border-2">
-                                                <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                                <h5 class="card-title">Vegetables</h5>
-                                                <p class="card-text d-flex align-items-center mb-3">
-                                                    <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                                </p>
-                                                <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                                    <IMdiuser class="me-1"/>Glenda123
-                                                </h6>
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center"
-                                                >
-                                                    <div class="btn-group">
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-sm btn-outline-secondary"
-                                                        >
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card shadow-sm">
-                                            <img
-                                                src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top border-2">
-                                                <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                                <h5 class="card-title">Ice cream</h5>
-                                                <p class="card-text d-flex align-items-center mb-3">
-                                                    <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                                </p>
-                                                <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                                    <IMdiuser class="me-1"/>Glenda123
-                                                </h6>
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center"
-                                                >
-                                                    <div class="btn-group">
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-sm btn-outline-secondary"
-                                                        >
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card shadow-sm">
-                                            <img
-                                                src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top border-2">
-                                                <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                                <h5 class="card-title">Banana</h5>
-                                                <p class="card-text d-flex align-items-center mb-3">
-                                                    <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                                </p>
-                                                <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                                    <IMdiuser class="me-1"/>Glenda123
-                                                </h6>
-                                                <div
-                                                    class="d-flex justify-content-between align-items-center"
-                                                >
-                                                    <div class="btn-group">
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-sm btn-outline-secondary"
-                                                        >
-                                                            View
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="col-md-4 col-sm-12" v-for="item in myChopes">
+                        <div class="card shadow-sm">
+                                <img :src="item.ImageUrls[0]" alt="" class="card-img-top"/>
+                                <div class="card-body border-top border-2">
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                                        Category: {{ item.Category }}
+                                    </h6>
+                                    <h5 class="card-title">
+                                        {{ item.ListingName }}
+                                    </h5>
+                                    <p class="card-text d-flex align-items-center mb-3"> 
+                                        {{ item.Location.name }}
+                                    </p>
+                                    <!-- need to getLister -->
+                                    <h6
+                                        class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <p class="card-text d-flex align-items-center mb-3">
+                                            Price:
+                                            {{ item.Price }} <br />
+                                            <!-- Distance: {{ item.distance }} -->
+                                        </p>
+                                    </h6>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
+                                        <p class="me-1">
+                                            {{ item.owner }}
+                                        </p>
+                                    </h6>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                                <a href="/listing">View</a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
 
-                </div>
+               
             </div>
             <!-- others div -->
             
@@ -366,6 +246,11 @@ export default {
             userListings: [],
             showPassword: false, //to toggle password view
             pwStatus: 'Show Password',
+            myListingIDs:[],
+            myListings:[],
+            myChopeIDs:[],
+            myChopes:[],
+            myChopeObjs:[]
             
         }
     },
@@ -386,9 +271,28 @@ export default {
             this.userPw = userData.password 
             this.userListings = userData.myListings //array of listing IDs
             this.userChoped = userData.chopes //this is an object 
+
+            //this part processes the data for listings posted by the user
+            this.myListingIDs = userData.myListings
+            for(let listingID of this.myListingIDs){
+                const listingData = await getListing(listingID)
+                this.myListings.push(listingData)
+            }
+
+            //this part processes the data for listings choped by the user
+            this.myChopeObjs = userData.chopes //this is array of objects
+            for( let num in this.myChopeObjs){
+                this.myChopeIDs.push(this.myChopeObjs[num].listingId) //adds all listing IDs into list 
+            }
+            
+            for(let chopeID of this.myChopeIDs){
+                const chopeData = await getListing(chopeID)
+                this.myChopes.push(chopeData)
+            }
         },
         updateInfo(){
             //update firebase 
+            updateUser(this.currentUser, this.fName, this.lName, this.userName, "individual")
         },
         togglePassword(){
             this.showPassword = !this.showPassword
@@ -407,3 +311,26 @@ export default {
 
 
 </script>
+
+<style scoped>
+.text-bg-listing {
+    background-color: rgb(67, 160, 70, 1);
+    color: white;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
+
+a {
+    text-decoration: none;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
+</style>
