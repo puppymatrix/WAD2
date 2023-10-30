@@ -12,6 +12,8 @@ declare module 'vue' {
     BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
     BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
+    IMdiuser: typeof import('~icons/mdi/user')['default']
+    IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
     BFormFile: typeof import('bootstrap-vue-next')['BFormFile']
     BFormOption: typeof import('bootstrap-vue-next')['BFormOption']
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
