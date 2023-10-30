@@ -118,6 +118,13 @@ import { auth } from '../firebase/index.js'
                     console.log('login successful')                    
 
                     this.$router.push('/')
+                    this.$toast.add({
+                    severity: "info",
+                    summary: "Sign In Successful",
+                    detail: "Welcome to FoodCatch!",
+                    life: 3000,
+                    
+                });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
