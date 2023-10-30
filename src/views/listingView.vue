@@ -7,9 +7,9 @@
 
 <template>
 
-    <body class="p-5">
+    <body class="px-5 py-2">
         <!-- search bar -->
-        <div class="container-fluid my-2">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-10 p-0">
                     <!-- search bar -->
@@ -28,13 +28,13 @@
                             >
                         <Button
                             class="rounded"
-                            style="background-color: #f6fbf6"
+                            style="background-color: #f6fbf6;color:rgba(33, 37, 41, 0.75)"
                             raised
                             text
                             plain
                         >
                         <Icon icon="material-symbols:directions" color="black" width="25"/>
-                            &nbsp Get Directions
+                            &nbspDirections
                         </Button>
                     </router-link>
                 </div>
@@ -42,7 +42,7 @@
         </div>
 
 
-        <div class="container-fluid my-3">
+        <div class="container-fluid my-2 filterBar">
             <div class="row">
                 <!-- carousel -->
                 <div class="col-md-6 display-flex align-item-center justify-content-center">
@@ -254,6 +254,13 @@ export default {
 
 .userInfo{
     padding: 10px;
+}
+
+.filterBar {
+    background-color: #f6fbf6;
+    padding: 10px;
+    margin: 5px 1px;
+    border-radius: 5px;
 }
 
 </style>

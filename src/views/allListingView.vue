@@ -27,7 +27,7 @@ import { Icon } from "@iconify/vue";
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"
-                            style="background-color: #f6fbf6"
+                            style="background-color: #f6fbf6;color:rgba(33, 37, 41, 0.75)"
                             raised
                             text
                             plain
