@@ -69,7 +69,21 @@ export default {
         };
     },
     created() {
-        this.getUserLocation();
+        const success = (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const userLocation = { lat, lng };
+            this.$store.commit("setLocation", userLocation);
+            this.userLocation = userLocation;
+            // Do something with the position
+        };
+
+        const error = (err) => {
+            console.log(error);
+        };
+
+        navigator.geolocation.getCurrentPosition(success, error);
+
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -88,22 +102,22 @@ export default {
     },
 
     methods: {
-        async getUserLocation() {
-            const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE`;
+        getUserLocation() {
+            // const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE`;
 
-            var loc = await axios
-                .post(url)
-                .then((response) => {
-                    const data = response.data;
-                    // Call the setUser mutation to update the state
-                    // console.log('resp', data.location)
-                    this.userLocation = data.location;
-                })
+            // var loc = await axios
+            //     .post(url)
+            //     .then((response) => {
+            //         const data = response.data;
+            //         // Call the setUser mutation to update the state
+            //         // console.log('resp', data.location)
+            //         this.userLocation = data.location;
+            //     })
 
-                .catch((error) => {
-                    console.log(error);
-                    console.log(error.response.data.error_message);
-                });
+            //     .catch((error) => {
+            //         console.log(error);
+            //         console.log(error.response.data.error_message);
+            //     });
         },
         gotoLogin() {
             this.$router.push("/logIn");
@@ -113,5 +127,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
