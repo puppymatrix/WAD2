@@ -1,6 +1,7 @@
 <script setup>
 import { getUser,
-getListing } from "../firebase/api.js"
+getListing,
+updateUser, } from "../firebase/api.js"
 
 </script>
 
@@ -34,13 +35,13 @@ getListing } from "../firebase/api.js"
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fName">First Name</label>
-                                <input type="text" class="form-control" id="fName" aria-describedby="emailHelp" placeholder="First Name" v-bind:value="fName">
+                                <input type="text" class="form-control" id="fName" aria-describedby="emailHelp" placeholder="First Name" v-model="fName">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fName">Last Name</label>
-                                <input type="text" class="form-control" id="lName" aria-describedby="emailHelp" placeholder="First Name" v-bind:value="lName">
+                                <input type="text" class="form-control" id="lName" aria-describedby="emailHelp" placeholder="Last Name" v-model="lName">
                             </div>
                         </div>
                     </div>
@@ -48,7 +49,7 @@ getListing } from "../firebase/api.js"
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fName">Username</label>
-                                <input type="text" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="First Name" v-bind:value="userName">
+                                <input type="text" class="form-control" id="userName" aria-describedby="emailHelp" placeholder="User Name" v-model="userName">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -81,7 +82,7 @@ getListing } from "../firebase/api.js"
             <div class="row" id="userListings">
                     <h1>My Listings</h1>
                     <!-- this is a for loop for each listing item -->
-                    <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in myListings">
+                    <div class="col-md-4 col-sm-12" v-for="item in myListings">
                         <div class="card shadow-sm">
                                 <img :src="item.ImageUrls[0]" alt="" class="card-img-top"/>
                                 <div class="card-body border-top border-2">
@@ -124,7 +125,7 @@ getListing } from "../firebase/api.js"
                 
                     <h1>My Chopes</h1>
                     <!-- listings -->
-                    <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in myChopes">
+                    <div class="col-md-4 col-sm-12" v-for="item in myChopes">
                         <div class="card shadow-sm">
                                 <img :src="item.ImageUrls[0]" alt="" class="card-img-top"/>
                                 <div class="card-body border-top border-2">
@@ -288,13 +289,10 @@ export default {
                 const chopeData = await getListing(chopeID)
                 this.myChopes.push(chopeData)
             }
-
-            
-
-
         },
         updateInfo(){
             //update firebase 
+            updateUser(this.currentUser, this.fName, this.lName, this.userName, "individual")
         },
         togglePassword(){
             this.showPassword = !this.showPassword
@@ -313,3 +311,26 @@ export default {
 
 
 </script>
+
+<style scoped>
+.text-bg-listing {
+    background-color: rgb(67, 160, 70, 1);
+    color: white;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
+
+a {
+    text-decoration: none;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
+</style>
