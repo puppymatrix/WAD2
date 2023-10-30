@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row secondRow">
-            <CarouselMarquee/>
+            <!-- <CarouselMarquee/> -->
         </div>
         <!-- problematic carousel row -->
         <div class="row secondRow">

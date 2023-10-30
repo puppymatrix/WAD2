@@ -73,7 +73,9 @@
             class="w-50"
         />
         <button @click="getNearbyListings(userLocation, maxDistance)">Go!</button>
-    </body>
+   
+        <button @click="log=>{console.log(userLocation)}">location</button>
+   </body>
 </template>
 
 <script>
@@ -141,7 +143,7 @@ export default {
             const longitude = position.coords.longitude;
 
             this.userLocation = { latitude, longitude };
-            // console.log(this.userLocation);
+            console.log('locate', this.userLocation);
             // Do something with the position
         };
 

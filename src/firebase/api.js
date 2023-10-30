@@ -14,6 +14,8 @@ import {
     writeBatch,
 } from "firebase/firestore";
 
+import axios from 'axios'
+
 // listing functions
 
 // default returns all listings in DB
@@ -177,6 +179,8 @@ async function getUser(userId, type = "all") {
             return docSnap.data()["myListings"];
         } else if (type == "chopes") {
             return docSnap.data()["chopes"];
+        } else if (type == "username") {
+            return docSnap.data()["username"];
         }
     } else {
         // docSnap.data() will be undefined in this case
@@ -214,6 +218,17 @@ async function getAllUsers() {
         });
 
         // console.log(doc.id, " => ", doc.data());
+    });
+    return users;
+}
+
+async function getAllUsernames() {
+    let users = {}
+    const q = query(collection(db, "userInformation"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        users[doc.id] = doc.data()["username"]
     });
     return users;
 }
@@ -397,17 +412,13 @@ function filterByName(foodArr, name){
         // console.log()
         console.log('arr', itemNameArr, 'query', query)
 
-        // if (itemNameArr.includes(query)){
-        //     console.log('true')
-        //     result.push(foodArr[i])
-        // }
         if (matchString(output, name)){
             console.log('true')
             result.push(foodArr[i])
         }
     }
 
-    console.log(result)
+    // console.log(result)
     return result
 }
 
@@ -454,8 +465,8 @@ async function getAllCategories(){
         // console.log(doc.id, " => ", doc.data());
         result.push(doc.data())
       });
-
-    return result
+      
+    return result;
 }
 
 async function getCoordinates() {
@@ -504,6 +515,9 @@ async function getUserLocation(){
 }
 
 
+
+
+
 export {
     getAllListings,
     addListingNoImage,
@@ -525,7 +539,8 @@ export {
     getAllCategories,
     getUserLocation,
     getCoordinates,
-    updateUser
+    updateUser,
+    getAllUsernames,
 
 };
 

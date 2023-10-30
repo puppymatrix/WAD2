@@ -1,23 +1,32 @@
 <script setup>
-    import axios from 'axios'
-    import { collection, getDocs, query } from "firebase/firestore";
+import {
+    getAllListings,
+    filterByDistance,
+    filterByName,
+    calculateDistance,
+} from "../firebase/api";
+import { mapGetters } from "vuex";
 
-    import { db } from '../firebase/index.js'
-
-    import { getAllListings, filterByDistance, filterByName, calculateDistance, getCoordinates, getUserLocation } from "../firebase/api"
+import routingTest from "./routingTest.vue";
 </script>
 
 <template>
     <div class="row">
         <div class="col-1"></div>
         <div class="container m-3 col-10">
-
             <Map
                 :apiKey="key"
                 :foodItemsFiltered="foodItemsFiltered"
-                :userLocation="userLocation"
-                >
+                :userLocation="currentUserLocation"
+            >
             </Map>
+            <!-- <routingTest
+                :apiKey="key"
+                :foodItemsFiltered="foodItemsFiltered"
+                :userLocation="currentUserLocation"
+            >
+
+            </routingTest> -->
             <!-- <GoogleMap 
                 api-key="AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE" 
                 style="width: 100%; 
@@ -71,7 +80,7 @@
                                 <ul>
                                     <li>Category: {{ listing.info.Category }}</li>
                                     <li>Expiry Date: {{ listing.info.ExpiryDate.toDate() }}</li>
-                                    <li>Perishable: {{ listing.info.Perishable ? "Yes": "no" }}</li>
+                                    <li>Perishable: {{ listing.info.Perishable ? "Yes" : "no" }}</li>
                                     <li>Price: {{ listing.info.Price }}</li>
                                     <li>Quantity Available: {{ listing.info.QtyAvailable }}</li>
                                 </ul>                                
@@ -81,118 +90,153 @@
                     </InfoWindow>
                 </Marker>
             </GoogleMap>            -->
-            <br> 
+            <br />
 
             <!-- search bar  -->
             <div class="input-group">
-                <input 
-                    type="search" 
-                    class="form-control bg-secondary-subtle" 
-                    placeholder="Find the food you want!" 
+                <input
+                    type="search"
+                    class="form-control bg-secondary-subtle"
+                    placeholder="Find the food you want!"
                     v-model="searchQuery"
                     @keyup.enter="loadFoodByNameAndDistance"
                 />
-                <button class="btn text-bg-listing d-flex align-items-center justify-content-center" type="button" id="button-addon2" >
-                <!-- <i class="search"></i> -->
-                    <img src="../components/icons/search.jpeg" class="img-fluid" style="width:20px; color: white;"
-                />
+                <button
+                    class="btn text-bg-listing d-flex align-items-center justify-content-center"
+                    type="button"
+                    id="button-addon2"
+                >
+                    <!-- <i class="search"></i> -->
+                    <img
+                        src="../components/icons/search.jpeg"
+                        class="img-fluid"
+                        style="width: 20px; color: white"
+                    />
                 </button>
             </div>
 
-
             <div class="row slidecontainer">
                 <h5>Distance (in KM): {{ filterDistance }}</h5>
-                <input type="range" min="1" max="100" v-model="filterDistance" class="slider" id="myRange">
+                <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    v-model="filterDistance"
+                    class="slider"
+                    id="myRange"
+                />
             </div>
 
             <div class="row">
                 <div class="col-2">
-                    <button @click="loadByDistance" class = "btn btn-secondary">Food Nearby</button>
+                    <button @click="loadByDistance" class="btn btn-secondary">
+                        Food Nearby
+                    </button>
                 </div>
                 <div class="col-10"></div>
             </div>
-
-        </div>    
-        <div class="col-1" >
-            
         </div>
+        <div class="col-1"></div>
     </div>
-  </template>
 
-  
-  
-  <script>
-    import { defineComponent } from "vue";
-import { list } from 'firebase/storage';
-    
-    export default {
-        mounted(){
-            this.getUserLocation(),
-            this.loadFood()
+    <!-- {{  currentUserLocation }} -->
+</template>
+
+<script>
+export default {
+    mounted() {
+        // getUserLocation(),
+        this.loadFood();
+    },
+    data() {
+        return {
+            filterDistance: 10,
+            searchQuery: "",
+            // userLocation: {},
+            foodItems: [],
+            foodItemsFiltered: [],
+            coord: { lat: 1.29027, lng: 103.851959 },
+            key: "AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE",
+        };
+    },
+    props: {
+        apiKey: String,
+        foodItemsFilteredArr: Array,
+        userLocationObj: Object,
+        listingArr: Array,
+    },
+    computed: {
+        ...mapGetters["userLocation"],
+    },
+    methods: {
+        searchLocation() {
+            this.getCoordinates();
         },
-        props: {
-                'apiKey': String,
-                'foodItemsFilteredArr': Array, 
-                'userLocationObj': Object,
-                'listingArr': Array
+        getUserLocation() {
+            const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`;
+            axios
+                .post(url)
+                .then((response) => {
+                    const data = response.data;
+
+                    this.userLocation = data.location;
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                });
         },
-        
-        data(){
-            return {
-                filterDistance: 10,
-                searchQuery: '',
-                userLocation: {},
-                foodItems: [],
-                foodItemsFiltered: [],
-                coord: { lat: 1.290270, lng: 103.851959 },
-                key: 'AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE',
-            }
+        async loadFood() {
+            const data = getAllListings();
+            data.then((listing) => {
+                console.log(listing);
+                console.log("userLocation", this.currentUserLocation);
+                // this.foodItems.push({
+                //     listingId: doc.id,
+                //     info: doc.data(),
+                //     distance: distanceToUser // straight line distance from user location to food location
+                // })
+                for (let i = 0; i < listing.length; i++) {
+                    let distanceToUser = Number.parseFloat(
+                        calculateDistance(
+                            this.currentUserLocation.lat,
+                            this.currentUserLocation.lng,
+                            listing[i].details.Location.latitude,
+                            listing[i].details.Location.longitude
+                        ).toFixed(3)
+                    );
+
+                    this.foodItems.push({
+                        info: listing[i],
+                        distance: distanceToUser,
+                    });
+                }
+            });
         },
-        computed :{
-            ...mapGetters['userLocation']
+
+        loadFoodByNameAndDistance() {
+            console.log("foodItems", this.foodItems);
+            this.foodItemsFiltered = filterByDistance(
+                filterByName(this.foodItems, this.searchQuery),
+                this.filterDistance
+            );
+            console.log(this.foodItemsFiltered);
         },
-        methods: {
-            
-            searchLocation(){
-                getCoordinates()
-                getUserLocation()
-            },
-            
-            async loadFood(){
 
-                const data = getAllListings()
-                data.then(
-                    listing => {
-                        console.log(listing)
-                        // this.foodItems.push({
-                        //     listingId: doc.id,
-                        //     info: doc.data(),
-                        //     distance: distanceToUser // straight line distance from user location to food location
-                        // })
-                        for (let i=0;i<listing.length;i++){
-                            let distanceToUser = Number.parseFloat(calculateDistance(this.userLocation.lat, this.userLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+        loadByDistance() {
+            this.foodItemsFiltered = filterByDistance(
+                this.foodItems,
+                this.filterDistance
+            );
+            console.log(this.foodItemsFiltered);
+        },
+    },
+}
+</script>
 
-                            this.foodItems.push({
-                                                info: listing[i],
-                                                distance: distanceToUser
-                                            })
-                        }
-                    }
-                )    
-            },
-
-            loadFoodByNameAndDistance(){
-                console.log('foodItems', this.foodItems)
-                this.foodItemsFiltered = filterByDistance(filterByName(this.foodItems, this.searchQuery), this.filterDistance)
-                console.log(this.foodItemsFiltered)
-            },
-            loadByDistance(){
-                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
-                console.log(this.foodItemsFiltered)
-            }
-        }
-            
-    };
-
-  </script>
-
+<style>
+.text-bg-listing {
+    background-color: #558c03;
+    color: white;
+}
+</style>

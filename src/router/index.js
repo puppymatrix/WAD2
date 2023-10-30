@@ -86,6 +86,19 @@ const router = createRouter({
         component: () => import('../views/testPage.vue')
 
     },
+    {
+      path: '/routingTest',
+      name: 'routingtest',
+      component: () => import('../views/routingTest.vue')
+
+  },
+  {
+    path: '/mapView2',
+    name: 'mapView2',
+    component: () => import('../views/mapView2.vue')
+
+},
+
 ]
 })
 
@@ -94,10 +107,8 @@ router.beforeEach((to, from, next) => {
       if (store.getters.isAuthenticated) {
         next();
       } else {
-        alert('You must be logged in to see this page');
-        next({
-          path: '/logIn',
-        });
+        store.commit("setVisible", true);
+        next({ path: from.path }); // Pass the current path as a parameter to next()
       }
     } else {
       next();

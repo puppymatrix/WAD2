@@ -1,8 +1,9 @@
 <script setup>
-import { RouterLink, RouterView, routerKey } from "vue-router";
+// import { RouterLink, RouterView, routerKey } from "vue-router";
 </script>
 
 <template>
+    <Toast />
     <div class="row d-flex align-items-center" id="nav">
         <!-- <div class="col-1"></div> -->
         <!-- logo -->
@@ -49,7 +50,6 @@ import { RouterLink, RouterView, routerKey } from "vue-router";
                         <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
 
-                    <!-- <div class="col-1" v-if="userLoggedIn"></div>            -->
                 </li>
             </ul>
 
@@ -74,20 +74,25 @@ export default {
     },
     methods: {
         logOut() {
-            console.log(this.currentUser);
+            // console.log(this.currentUser);
             const auth = getAuth();
             signOut(auth)
                 .then(() => {
                     // Sign-out successful.
-                    console.log("sign out successful");
+                    // console.log("sign out successful");
                     router.push('/')
-                    alert("sign out successful")
+                    this.$toast.add({
+                    severity: "info",
+                    summary: "Sign Out Successful",
+                    detail: "Thanks for visiting FoodCatch!",
+                    life: 3000,
+                    
+                });
                 })
                 .catch((error) => {
-                    console.log("An error occured");
+                    console.log(error.message);
                 });
 
-            // this.$store.commit('setUserLoggedIn', false)
         },
     },
 };
@@ -96,14 +101,14 @@ export default {
 <style scoped>
 @media (min-width: 768px) {
 
-                #pinned{
-                    position: absolute;
-                    top: 20px;
-                    right: 5px;
-            }
+        #pinned{
+            position: absolute;
+            top: 20px;
+            right: 5px;
+    }
 
 
-        }
+}
 
 
 #rightSideBtns {

@@ -16,7 +16,7 @@ const address = ref("");
 const emit = defineEmits(["location-selected"]);
 
 function callbackFunction(place) {
-    console.log(place)
+    // console.log(place)
     const latitidue = place.geometry.location.lat();
     const longitude = place.geometry.location.lng();
     const name = place.name;

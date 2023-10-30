@@ -15,7 +15,7 @@
             />
             <button class="btn text-bg-listing d-flex align-items-center justify-content-center" type="button" >
                 <img src="../components/icons/search.jpeg" class="img-fluid" style="width:20px; color: white;"
-            @click.prevent="updateSearch(query)"
+            @click="updateSearch(query)"
             />
             </button>
         </div>

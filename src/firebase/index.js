@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
-import { browserSessionPersistence, initializeAuth, browserPopupRedirectResolver } from 'firebase/auth';
+import { browserLocalPersistence, browserSessionPersistence, initializeAuth, browserPopupRedirectResolver } from 'firebase/auth';
 
 import { getStorage } from "firebase/storage";
 

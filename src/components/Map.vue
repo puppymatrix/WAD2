@@ -1,6 +1,7 @@
 <script setup>
   import { defineComponent } from "vue";
   import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
+  
 </script>
 
 <template>
@@ -34,7 +35,7 @@
             <div class="card">
                 <div id="carouselExample" class="carousel slide">
                     <div class="carousel-inner"
-                        v-for="(url, index) in listing.info.ImageUrls" :key="index" 
+                        v-for="(url, index) in listing.info.details.ImageUrls" :key="index" 
                         :class="index == 0 ? 'carousel-item active' : 'carousel-item'">                
                             <img :src=url class="d-block w-100" alt="..."> 
                     </div>
@@ -52,7 +53,7 @@
                 </div>
 
                 <div class="card-body">
-                    <h5 class="card-title">{{ listing.info.ListingName }}</h5>
+                    <h5 class="card-title">{{ listing.info.details.ListingName }}</h5>
                     <ul>
                         <li>Category: {{ listing.info.details.Category }}</li>
                         <li>Expiry Date: {{ listing.info.details.ExpiryDate.toDate() }}</li>
@@ -70,16 +71,10 @@
 
 <script>
 
-// const { marker } = await await google.maps.importLibrary("marker")
 
 export default defineComponent({
   components: { GoogleMap, Marker, InfoWindow },
-  // setup() {
-    
 
-
-  //   return { userMarkerOptions, foodMarker };
-  // },
   props: {
     apiKey: {
       type: String,
@@ -95,7 +90,6 @@ export default defineComponent({
     },
     
   },
-  loader: { '.js': 'jsx' }
   
 });
 </script>
