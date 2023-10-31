@@ -1,10 +1,12 @@
+
 <script setup>
 import { Icon } from "@iconify/vue";
 </script>
 
+
 <template>
     <!-- search bar -->
-    <div class="container-fluid my-3">
+    <div class="container-fluid">
         <div class="input-group">
             <input
                 type="search"
@@ -21,6 +23,7 @@ import { Icon } from "@iconify/vue";
 </template>
 
 <script>
+
 export default {
     emits: ['search'],
     data() {
@@ -37,3 +40,4 @@ export default {
     },
 };
 </script>
+

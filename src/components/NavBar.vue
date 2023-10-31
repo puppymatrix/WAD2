@@ -1,15 +1,13 @@
 <script setup>
-// import { RouterLink, RouterView, routerKey } from "vue-router";
+    import { getAuth, signOut } from "firebase/auth";
+    import { mapGetters } from "vuex";
+    import router from "../router/index"
 </script>
 
 <template>
     <Toast />
     <div class="row d-flex align-items-center" id="nav">
-        <!-- <div class="col-1"></div> -->
-        <!-- logo -->
-        <!-- <div class="col-2 p-3 justify-content-center">
-    
-        </div> -->
+        
         <!-- logo and links -->
         <div class="col">
             <nav class="navbar navbar-expand-md">
@@ -19,23 +17,26 @@
                 <a href="/"><img src="../components/icons/foodcatch-logo.png" style="height: 40px;" alt="" class="img-fluid" id="logo"></a>
             </a>
             <!-- toggle button???? -->
-            <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            >
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- navbar -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-0">
-                <li class="nav-item px-3 ml-5">
-                    <a class="nav-link" href="/">Home</a>
+                <li class="nav-item px-3">
+                    <a class="nav-link" @click="navigate=>{this.$router.push('/')}">Home</a>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link" href="/allListings" >Explore</a>
+                    <a class="nav-link" @click="navigate=>{this.$router.push('/allListings')}">Explore</a>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link" href="/mapView" >Map</a>
+                    <a class="nav-link" @click="navigate=>{this.$router.push('/mapView')}">Map</a>
                 </li>
+                <li><div style="background-color: #000; margin: 10px 0; border-top: 1px solid white"></div></li>            
                 <li class="nav-item px-3" id="pinned">
+
                 <!-- profile and logout buttons -->
                     <div class="justify-content-center p-0" v-if="isAuthenticated" >
                         <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
@@ -49,8 +50,8 @@
                         <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
                         <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
-
                 </li>
+
             </ul>
 
             </div>
@@ -61,13 +62,14 @@
 </template>
 
 <script>
-import { getAuth, signOut } from "firebase/auth";
-import { mapGetters } from "vuex";
-import router from "../router/index"
+
 
 export default {
+    
     data() {
-        return {};
+        return {
+            viewportWidth: window.innerWidth
+        };
     },
     computed: {
         ...mapGetters(["isAuthenticated","currentUser"]),
@@ -92,22 +94,32 @@ export default {
                 .catch((error) => {
                     console.log(error.message);
                 });
-
+        },
+        toggleNavBar(){
+            if (window.innerWidth < 768) {
+                this.narrow = true;
+            } else {
+                this.narrow = false;
+            }
+        }
+    },
+    watch: {
+        viewportWidth() {
+            this.toggleNavBar
         },
     },
-};
+}
+
 </script>
 
 <style scoped>
 @media (min-width: 768px) {
 
-        #pinned{
-            position: absolute;
-            top: 20px;
-            right: 5px;
+    #pinned{
+        position: absolute;
+        top: 20px;
+        right: 5px;
     }
-
-
 }
 
 

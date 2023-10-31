@@ -9,6 +9,9 @@
 
     <body class="px-5 py-2">
         <!-- search bar -->
+
+        <SearchBar @search="searchFood"/>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-10 p-0">
@@ -19,6 +22,7 @@
                 <div
                     class="col-2 d-flex align-items-center justify-content-center"
                 >
+
 
                
                     <router-link :to="{

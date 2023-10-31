@@ -144,8 +144,18 @@ import { Icon } from "@iconify/vue";
                                         type="button"
                                         class="btn btn-sm btn-outline-secondary"
                                     >
-                                        <a href="/listing">View</a>
-                                    </button>
+
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-outline-secondary"
+                                                @click="navigate=>{this.$router.push('/listing')}"
+                                            >
+                                                <a href="#">View</a>
+                                            </button>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             </router-link>
