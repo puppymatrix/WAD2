@@ -53,21 +53,31 @@ async function getListing(listingId) {
     }
 }
 
-async function getListingsByCategory(category) {
-    const listingsRef = collection(db, "listings");
-    const q = query(listingsRef, where("Category", "==", category));
-    const querySnapshot = await getDocs(q);
-    const listings = [];
-
-    querySnapshot.forEach((doc) => {
-        if (doc.exists()) {
-            listings.push(doc.data());
-        } else {
-            console.log("No such document!");
+async function getListingsByCategory(category, listings = null) {
+    const results = [];
+    // if no listings are passed in, query the DB
+    if (listings == null) {
+        const listingsRef = collection(db, "listings");
+        //supp to make query case insensitive
+        const q = query(listingsRef, where("Category", ">=", category.toLowerCase()), where("Category", "<=", category.toLowerCase() + "\uf8ff"));
+        const querySnapshot = await getDocs(q);
+        
+    
+        querySnapshot.forEach((doc) => {
+            if (doc.exists()) {
+                results.push(doc.data());
+            } else {
+                console.log("No such document!");
+            }
+        });
+    } else {
+        for (const listing of listings) {
+            if (listing.info.details.Category.toLowerCase() === category.toLowerCase()) {
+                results.push(listing);
+            }
         }
-    });
-
-    return listings;
+    }
+    return results;
 }
 
 async function getListingsByPrice(maxReturned, highToLow) {
@@ -190,16 +200,17 @@ async function getUser(userId, type = "all") {
 
 async function getUsersWhoChopedCollectedListing(listingId) {
     const users = await getAllUsers();
+
     const usersWhoChoped = users.filter((user) => {
         return (
             user.details.chopes &&
             user.details.chopes.some((chope) => chope.listingId === listingId)
         );
     });
-    const usersWhoCollected = users.filter((user) => {
+
+    const usersWhoCollected = usersWhoChoped.filter((user) => {
         return (
-            user.details.chopes &&
-            user.details.chopes.some((chope) => chope.collected === true)
+            user.details.chopes.some((chope) => chope.collected === true && chope.listingId === listingId)
         );
     });
 
@@ -391,29 +402,29 @@ function filterByDistance(foodArr, filterDistance){
                 return result
             }
 
-function filterByName(foodArr, name){
+function filterByName(foodArr, userInput){
     var result = []
-    var query = name.toLowerCase()
+    const query = userInput.toLowerCase()
 
-    for(var i=0;i<foodArr.length;i++) {
+    for(let i=0;i<foodArr.length;i++) {
         if (i == 0){
-            console.log(foodArr[i])
+            // console.log(foodArr[i])
         }
         let itemName = foodArr[i].info.details.ListingName
         let itemNameArr = itemName.split(" ")
 
-        var output = ""
+        var formattedItemName = ""
 
         for(let word of itemNameArr){
             word = word.toLowerCase()
-            output += word
+            formattedItemName += word
         }
 
         // console.log()
-        console.log('arr', itemNameArr, 'query', query)
+        // console.log('arr', itemNameArr, 'query', query)
 
-        if (matchString(output, name)){
-            console.log('true')
+        if (matchString(formattedItemName, query)){
+            // console.log(`formattedItemName: ${formattedItemName}, query: ${query}`);
             result.push(foodArr[i])
         }
     }
@@ -446,14 +457,14 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 }
 
-function matchString(input, pattern) {
+function matchString(formattedItemName, query) {
     // Escape special regex characters in the plain string
-    const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const escapedPattern = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     
     // Create a regex object with the escaped pattern
     const regex = new RegExp(escapedPattern);
     // Use the test() method to check if the input matches the pattern
-    return regex.test(input);
+    return regex.test(formattedItemName);
 }
 
 async function getAllCategories(){

@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@googlemaps/js-api-loader": "^1.16.2",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^7.2.0",
@@ -22,6 +24,7 @@
     "leaflet": "^1.9.4",
     "mitt": "^3.0.1",
     "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
     "primevue": "^3.37.0",
     "uuid": "^9.0.1",
     "vue": "^3.3.4",

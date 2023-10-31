@@ -1,5 +1,6 @@
 <script setup>
     import SearchBar from "../components/SearchBar.vue";
+    import { getAllListings, getUsersWhoChopedCollectedListing, getListingsByCategory, getListing} from "../firebase/api.js"
 </script>
 
 <template>
@@ -26,27 +27,19 @@
                 <!-- carousel -->
                 <div class="col-md-6">
                     <BCarousel controls indicators imgHeight="450px">
-                        <BCarouselSlide
-                            img-src="https://domf5oio6qrcr.cloudfront.net/medialibrary/5390/h1218g16207258089583.jpg"
-                        />
-                        <BCarouselSlide
-                            img-src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                        />
-                        <BCarouselSlide
-                            img-src="https://images.everydayhealth.com/images/apples-101-about-1440x810.jpg"
-                        />
+                        <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos" />
                     </BCarousel>
                 </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col">
-                            <h2>Name of Listing</h2>
+                            <h2>Listing: {{ listingInfo.ListingName }}</h2>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
-                            <h4 id="subheader">Price: <span id="price">$5</span> | Quantity Available: <span id="qty">10</span></h4>
+                            <h4 id="subheader">Price: <span id="price">${{ listingInfo.Price }}</span> | Quantity Available: <span id="qty">{{ listingInfo.QtyAvailable}}</span></h4>
                         </div>
                     </div>
 
@@ -55,11 +48,8 @@
                             <div class="card my-3" style="width: 100%">
                                 <div class="card-body">
                                     <h5 class="card-title">Food Description</h5>
-                                    <p class="card-text">
-                                        Some quick example text to build on the
-                                        card title and make up the bulk of the
-                                        card's content.
-                                    </p>
+                                    <p class="card-text" v-if="listingInfo.hasOwnProperty(Description)">{{ listingInfo.Description }}</p>
+                                    <p class="card-text" v-else> Not Applicable </p>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +59,7 @@
                         <div class="col">
                             <h6 class="d-inline">Category of Food Listing:</h6>
                             <span class="badge text-bg-listing ms-1"
-                                >Vegetable</span
+                                >{{listingInfo.Category }}</span
                             >
                         </div>
                     </div>
@@ -77,26 +67,22 @@
                     <div class="row py-1">
                         <div class="col">
                             <h6 class="d-inline">Type of Food Listing:</h6>
-                            <span class="badge text-bg-listing ms-1"
-                                >Perishable</span
-                            >
+                            <span class="badge text-bg-listing ms-1" v-if="listingInfo.Perishable">Perishable</span>
+                            <span class="badge text-bg-listing ms-1" v-else>Non-Perishable</span>
                         </div>
                     </div>
 
                     <div class="row pt-1 pb-2">
                         <div class="col">
                             <h6 class="d-inline">Listing Expiry Time:</h6>
-                            <span class="badge text-bg-listing ms-1"
-                                >11/10/23</span
-                            >
+                            <span class="badge text-bg-listing ms-1">{{ expiryDate }}</span>
                         </div>
                     </div>
 
                     <div class="row py-1">
                         <div class="col">
                             <h6 class="d-inline">Location:</h6>
-                            <span class="badge text-bg-listing ms-1"
-                                >Ang Mo Kio Avenue 3</span
+                            <span class="badge text-bg-listing ms-1">{{ location }}</span
                             >
                         </div>
                     </div>
@@ -126,19 +112,9 @@
                     </div>
 
                     <form>
-                        <div class="userInfo">
-                            <input type="checkbox" id="user123" name="user123" value="user123">
-                            <label for="user123"> User123 choped 3 orders! </label><br>
-                        </div>
-
-                        <div class="userInfo">
-                            <input type="checkbox" id="user234" name="user234" value="user234">
-                            <label for="user234"> User 234 choped 1 order!</label><br>
-                        </div>
-
-                        <div class="userInfo">
-                            <input type="checkbox" id="user345" name="user345" value="user345">
-                            <label for="user345"> User 345 choped 1 order! </label><br>
+                        <div class="userInfo" v-for="user in userNotCollect" :key="user.Id">
+                            <input type="checkbox" v-model="user.Id" @click="collectItem(user)" ref="checkboxInput">
+                            <label for="user.Id" class="strikethrough"> {{user.details.username}} choped! </label><br>
                         </div>
                     </form>
 
@@ -151,11 +127,9 @@
                     </div>
 
                     <div>
-                        <div class="userInfo">
-                            <span>User 123 collected 3 orders!</span>
-                        </div>
-                        <div class="userInfo">
-                            <span>User 234 collected 3 orders!</span>
+                        <div class="userInfo" v-for="user in userCollect" :key="user.Id">
+                            <input type="checkbox" v-model="user.Id" @click="notCollected(user)" checked disabled>
+                            <label for="user.Id" > {{user.details.username}} collected! </label><br>
                         </div>
                     </div>
                 </div>
@@ -170,144 +144,16 @@
                 <div class="container-fluid px-0">
                     <div class="row g-3">
                         <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
+                            <div class="card shadow-sm" v-for="listing in similarListing" :key="listing.Id">
+                                <img v-for="photo in listing.details.ImageUrls" :src="photo" alt="" class="card-img-top" />
                                 <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Vegetables</h5>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ listing.details.Category }}</h6>
+                                    <h5 class="card-title">{{listing.details.ListingName}}</h5>
                                     <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
+                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> {{ listing.details.Location.name }}
                                     </p>
                                     <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://chipguanheng.com/wp-content/uploads/Baileys-Original-Ice-Cream-Pints-Pack-of-2-Pints-x-500ml-scaled.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Vegetables</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Vegetables</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Vegetables</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
-                                    >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm">
-                                <img
-                                    src="https://domf5oio6qrcr.cloudfront.net/medialibrary/6372/202ebeef-6657-44ec-8fff-28352e1f5999.jpg"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category</h6>
-                                    <h5 class="card-title">Vegetables</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> SMU School of Economics
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>Glenda123
+                                        <IMdiuser class="me-1"/>{{listing.details.username}}
                                     </h6>
                                     <div
                                         class="d-flex justify-content-between align-items-center"
@@ -330,6 +176,102 @@
         </div>
     </body>
 </template>
+
+<script>
+export default {
+    mounted(){
+        console.log('mounted')
+        this.loadChopes()
+        this.getListingInfo()
+        this.loadNearListings()
+    },
+    data(){
+        return {
+            foodItems: [],
+            listingId: "BmWtUbQcxfSbWaxHW8Zf",
+            userChope: [],
+            userCollect: [], 
+            userNotCollect: [], 
+            similarListing: [], 
+            listingInfo: [], 
+            expiryDate: "",
+            location: "",
+            isChecked: false
+        }
+    },
+    methods:{
+        
+        async loadChopes(){
+            const data = getUsersWhoChopedCollectedListing(this.listingId)
+            data.then(
+                chopes => {
+                    console.log(chopes)
+                    this.userChope = chopes.usersWhoChoped;
+                    this.userCollect = chopes.usersWhoCollected;
+                    this.userNotCollect = this.userChope;
+                    let count = 0;
+                    for (let i = 0; i < this.userChope.length; i++) {
+                        for (let y = 0; this.userCollect.length; y++){
+                            // console.log(this.userChope[i].Id)
+                            // console.log(this.userCollect[y].Id)
+                            if (this.userChope[i].Id === this.userCollect[y].Id){
+                                this.userNotCollect.splice(i-count, 1);
+                                count ++;
+                            }
+                        }
+                    }
+                    console.log(count);
+                    console.log(this.userNotCollect)
+                    console.log(this.userCollect)
+                }
+            )
+        },
+
+        async getListingInfo(){
+            const data = getListing(this.listingId)
+            data.then(
+                listing => {
+                    this.listingInfo = listing;
+                    console.log(this.listingInfo)
+
+                    this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
+                    this.location = this.listingInfo.Location.name;
+                }
+            )
+        },
+
+        async loadNearListings(){
+            console.log(this.listingInfo.Category)
+            const data = getListingsByCategory(this.listingInfo.Category)
+            data.then(
+                listings => {
+                    console.log(listings)
+                    this.similarListing = listings;
+                    
+                }
+            )
+        }, 
+
+        collectItem(user){
+            console.log("collect item")
+            this.userCollect.push(user)
+
+            // if (this.isChecked){
+            //     this.$refs.checkboxInput.disabled = true;
+            // }
+        }, 
+
+        notCollected(user){
+            console.log("not collected")
+            this.userCollect.splice(userCollect.indexOf(user), 1)
+        }
+
+
+    }
+    
+}
+
+</script>
 
 <style scoped>
 
@@ -372,7 +314,8 @@
     color: white;
     border-radius: 10px;
     padding: 5px;
-    width: 50%;
+    width: auto;
+    text-align: center;
 }
 
 .userInfo{
@@ -383,6 +326,16 @@
     justify-content: center;
     display: flex;
     font-size: 20px;
+    height: auto;
 }
+
+input[type=checkbox]{
+    margin-right: 10px;
+}
+
+input[type=checkbox]:checked + label.strikethrough {
+    text-decoration: line-through;
+}
+    
 
 </style>
