@@ -54,9 +54,9 @@
                 <div class="input-group"> <!-- Use Bootstrap input group to group input and button> -->
                     <input class="form-control" type="search" placeholder="Your Email Address" aria-label="Search">
                     <div class="input-group-append"> <!-- Append the button to the input group -->
-                        <button class="btn footerBtn" type="submit">
-                            <img src=".\icons\send.png" alt="" > Submit
-                        </button>
+                        <Button class="footerBtn rounded-end" @click="display">
+                            <img src=".\icons\send.png" alt="" >&nbsp Submit
+                        </Button>
                     </div>
                 </div>
             </form>
@@ -105,3 +105,26 @@
 
     
 </style>
+
+<script>
+export default {
+    
+    data() {
+        return {};
+    },
+    computed: {
+       
+    },
+    methods: {
+        display() {
+            this.$toast.add({
+                    severity: "info",
+                    summary: "Joined mailing list successfully",
+                    detail: "Look out for exciting updates!",
+                    life: 3000,
+                    
+            });
+        }
+    },
+}
+</script>

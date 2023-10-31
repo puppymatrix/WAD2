@@ -49,6 +49,7 @@ import { Icon } from "@iconify/vue";
                                                 width="20"
                                                 height="20"
                                         /></Button>
+                                        <InlineMessage severity="warn" v-if="errors.hasOwnProperty('files')">{{ errors["files"] }}</InlineMessage>                                    
                                     </div>
                                 </div>
                             </template>
@@ -127,7 +128,7 @@ import { Icon } from "@iconify/vue";
 
                 <div class="row mt-3">
                     <div class="col">
-                        <p class="mb-1">
+                        <p class="mb-1 d-flex justify-content-between">
                             Name of Listing:
                         </p>
                         <input
@@ -142,7 +143,9 @@ import { Icon } from "@iconify/vue";
                     </div>
 
                     <div class="col">
-                        <p class="mb-1">Location:</p>
+                        <p class="mb-1 d-flex justify-content-between">
+                            Location:                        
+                        </p>
                         <places_api
                             @location-selected="updateLocation"
                             class="d-inline form-control me-2 mb-1 w-100"
@@ -154,16 +157,19 @@ import { Icon } from "@iconify/vue";
 
                 <div class="row">
                     <div class="col">
-                        <p class="mb-1">Description of Listing:</p>
+                        <p class="mb-1 d-flex justify-content-between">
+                            Description of Listing:                        
+                        </p>
                         <textarea
                             class="form-control me-2 mb-1"
                             v-model="description"
                             placeholder="Type Description of Listing"
                         ></textarea>
+                        <span class="text-danger" v-if="errors.hasOwnProperty('desc')">{{ errors["desc"] }}</span>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-md-6">
                         <p class="mb-1"
                             >Type of Listing
@@ -178,7 +184,7 @@ import { Icon } from "@iconify/vue";
                         </p>
                         <b-form-select
                             v-model="perishable"
-                            class="mb-3"
+                            class="mb-2"
                             style="width: 100%"
                             
                         >
@@ -195,7 +201,7 @@ import { Icon } from "@iconify/vue";
                         <p class="mb-1">Category of Food:</p>
                         <b-form-select
                             v-model="category"
-                            class="mb-3"
+                            class="mb-2"
                             style="width: 100%"
                             
                         >
@@ -210,9 +216,11 @@ import { Icon } from "@iconify/vue";
 
                 <div class="row">
                     <div class="col">
-                        <p class="mb-1">Expiry Date:</p>
+                        <p class="mb-1 d-flex justify-content-between">
+                            Expiry Date:                           
+                        </p>
                         <VueDatePicker
-                            v-model="expiry_date"
+                            v-model="date"
                             :min-date="new Date()"
                             :enable-time-picker="false"
                             :format="format"
@@ -220,15 +228,17 @@ import { Icon } from "@iconify/vue";
                             placeholder="Select Date"
                             
                         ></VueDatePicker>
-                        <span class="text-danger" v-if="errors.hasOwnProperty('location')">{{ errors["location"] }}</span>
+                        <span class="text-danger" v-if="errors.hasOwnProperty('date')">{{ errors["date"] }}</span>
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <p class="mb-1">Price:</p>
+                        <div class="input-wrapper">
+                            <label for="price" class="dollar-sign">$</label>
                         <input
-                            class="d-inline form-control me-2 mb-3 w-100"
+                            class="d-inline form-control me-2 mb-3 ps-4 w-100 price-input"
                             type="number"
                             id="price"
                             min="0"
@@ -237,10 +247,13 @@ import { Icon } from "@iconify/vue";
                             
                             placeholder="Input Price"
                         />
+                        </div>
                     </div>
 
                     <div class="col-md-6">
-                        <p class="mb-1">Quantity Available:</p>
+                        <p class="mb-1 d-flex justify-content-between">
+                            Quantity Available:                    
+                        </p>
                         <input
                             class="d-inline form-control me-2 mb-1 w-100"
                             type="number"
@@ -250,21 +263,21 @@ import { Icon } from "@iconify/vue";
                             
                             placeholder="Input Quantity"
                         />
-                        <span class="text-danger" v-if="errors.hasOwnProperty('location')">{{ errors["location"] }}</span>
+                        <span class="text-danger" v-if="errors.hasOwnProperty('qty')">{{ errors["qty"] }}</span>
                     </div>
                 </div>
 
-                <div class="row d-flex">
-                    <div class="col-10"></div>
-                    <div class="col justify-end">
-                        <button
-                            class="btn w-100 btn-success"
+                <div class="row mt-2">
+                    <div class="col-4"></div>
+                    <div class="col-4 d-flex justify-content-center">
+                        <Button
+                            class="rounded"
                             type="submit"
-                            :disabled="files.length > 3"
-                        >
-                            Post Listing
-                        </button>
+                            :disabled="files.length > 3">
+                        Post Listing
+                    </Button>
                     </div>
+                    <div class="col-4"></div>
                 </div>
             </div>
         </form>
@@ -303,6 +316,16 @@ import { Icon } from "@iconify/vue";
 .col-md-6 {
     padding: 0px 8px;
 }
+
+.input-wrapper {
+    position: relative;
+}
+
+.dollar-sign {
+    position: absolute;
+    left: 12px; 
+    top: 7px; 
+}
 </style>
 
 <script>
@@ -323,7 +346,7 @@ export default {
     },
     data() {
         return {
-            expiry_date: "",
+            date: null,
             location: "",
             category: "",
             perishable: true,
@@ -352,12 +375,12 @@ export default {
                 .join(", ");
         },
         format() {
-            if (this.expiry_date === "") {
+            if (this.date === "" || this.date === null) {
                 return "";
             }
-            const day = this.expiry_date.getDate();
-            const month = this.expiry_date.getMonth() + 1;
-            const year = this.expiry_date.getFullYear();
+            const day = this.date.getDate();
+            const month = this.date.getMonth() + 1;
+            const year = this.date.getFullYear();
 
             return `${day}/${month}/${year}`;
         },
@@ -368,27 +391,14 @@ export default {
             this.$router.push("/");
         },
         validateInputs() {
+            this.errors = {};
             let check = true;
-            if (!this.expiry_date) {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please enter an expiry date!",
-                    life: 3000,
-                });
+            if (!this.date) {
+                this.errors["date"] = "Please select a date";
                 check = false;
             }
             if (!this.location) {
                 this.errors["location"] = "Please select a valid location";
-                check = false;
-            }
-            if (!this.category) {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please enter a category!",
-                    life: 3000,
-                });
                 check = false;
             }
             if (!this.listing_name) {
@@ -396,31 +406,15 @@ export default {
                 check = false;
             }
             if (this.qty_available <= 0) {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please enter a valid quantity!",
-                    life: 3000,
-                });
+                this.errors["qty"] = "Please enter a quantity above 0";
                 check = false;
             }
             if (!this.description) {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please enter a description!",
-                    life: 3000,
-                });
+                this.errors["desc"] = "Please enter a brief description of your listing";
                 check = false;
             }
             if (this.files.length === 0) {
-                // alert("Please upload at least 1 image");
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please upload at least 1 image!",
-                    life: 3000,
-                });
+                this.errors["files"] = "Please upload at least 1 image";
                 check = false;
             }
 
@@ -458,7 +452,7 @@ export default {
                             // All files have been uploaded, add listing to Firestore
                             await addDoc(collection(db, "listings"), {
                                 ExpiryDate: Timestamp.fromDate(
-                                    new Date(this.expiry_date)
+                                    new Date(this.date)
                                 ),
                                 Location: this.location,
                                 Category: this.category,
