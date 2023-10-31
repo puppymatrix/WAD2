@@ -28,11 +28,17 @@
                 <li class="nav-item px-3">
                     <a class="nav-link" @click="navigate=>{this.$router.push('/')}">Home</a>
                 </li>
-                <li class="nav-item px-3">
-                    <a class="nav-link" @click="navigate=>{this.$router.push('/allListings')}">Explore</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Listings
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" @click="navigate=>{this.$router.push('/allListings')}" >All Listings</a></li>
+                        <li><a class="dropdown-item" @click="navigate=>{this.$router.push('/mapView')}">Food Near Me</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link" @click="navigate=>{this.$router.push('/mapView')}">Map</a>
+                    <a class="nav-link display-inline" @click="navigate=>{this.$router.push('/addListing')}">Add Listing</a>
                 </li>
                 <li><div style="background-color: #000; margin: 10px 0; border-top: 1px solid white"></div></li>            
                 <li class="nav-item px-3" id="pinned">
@@ -41,14 +47,14 @@
                     <div class="justify-content-center p-0" v-if="isAuthenticated" >
                         <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
                         <div class="d-flex me-3" >
-                            <button type="button" class="btn btn-success m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
+                            <button type="button" class="btn btn-standard m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
                             <button type="button" class="btn btn-secondary m-1" @click="logOut">Log Out</button>
                         </div>
                     </div>
                     <!-- login and signup buttons -->
                     <div class="me-0" v-else>
-                        <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
-                        <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+                        <button type="button" class="btn btn-outline-standard m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+                        <button type="button" class="btn btn-standard m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
                 </li>
 
@@ -113,9 +119,18 @@ export default {
 </script>
 
 <style scoped>
+.btn-outline-standard{
+    border-color: #558603;
+    color: #558603
+}
+.btn-standard{
+    background-color: #558603;
+    color: #ebf1e7;
+    border-color: #558603;
+}
 .custom-toggler {
     border-color:#0b2b26 ;
-    background-color:#4caf50;
+    background-color:#558603;
 }
 @media (min-width: 768px) {
 
@@ -165,7 +180,7 @@ export default {
 }
 
 a > li {
-    color: white;
+    color: #ebf1e7;
 }
 
 div img {
@@ -176,14 +191,20 @@ div img {
     text-decoration: none;
     color: #ebf1e7;
     font-size: 25px;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
-    color: #bee5b0;
+    color: #bee5b0
+;
 }
 
 .nav-item {
     padding-left: 2.5%;
     padding-right: 2.5%;
+}
+
+button:hover{
+    border-color:  #ebf1e7;
 }
 </style>
