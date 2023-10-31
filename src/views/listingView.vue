@@ -1,6 +1,6 @@
 <script setup>
     import SearchBar from "../components/SearchBar.vue";
-    import { getListing, getListingsByCategory } from "@/firebase/api.js"
+    import { getListing, getListingsByCategory } from "@/firebase/api.js";
     import { Icon } from "@iconify/vue";
 </script>
 
