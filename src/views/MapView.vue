@@ -1,67 +1,37 @@
 <script setup>
-import {
-    getAllListings,
-    filterByDistance,
-    filterByName,
-    calculateDistance,
-} from "../firebase/api";
-import { mapGetters } from "vuex";
 
-import routingTest from "./routingTest.vue";
+
+    import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
+    import { Loader } from '@googlemaps/js-api-loader'
+    import { mapGetters } from 'vuex'
+    import  SearchBar  from '../components/SearchBar.vue'
+    import  Sidebar from 'primevue/sidebar'
+    import Slider from 'primevue/slider'
+    import SelectButton from 'primevue/selectbutton'
+    import Button from 'primevue/button'
+    import { Icon } from '@iconify/vue'
+    import Dropdown from 'primevue/dropdown'
+
 </script>
 
 <template>
-    <div class="row">
-        {{ currentUserLocation }}
-        <div class="col-1"></div>
-        <div class="container m-3 col-10">
-            <Map
-                :apiKey="key"
-                :foodItemsFiltered="foodItemsFiltered"
-                :userLocation="currentUserLocation"
-            >
-            </Map>
-            <!-- <routingTest
-                :apiKey="key"
-                :foodItemsFiltered="foodItemsFiltered"
-                :userLocation="currentUserLocation"
-            >
+    
+    <div class="row justify-content-center">
+        <div class='col-1' v-if="visible == true" style="width: 25%"></div>
+        <div class="container col-9" style="width: 75%">
+            <Sidebar v-model:visible="visible" :modal="false" style="width: 25%">
+                    <h2>Listing Information</h2>
 
-            </routingTest> -->
-            <!-- <GoogleMap 
-                api-key="AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE" 
-                style="width: 100%; 
-                height: 500px"
-                :center="userLocation" 
-                :zoom="12"
-                >
-                <Marker :options="{ 
-                                    position: userLocation, 
-                                    icon: icon,
+                    <div class="container-fluid">
 
-                                }">
-                </Marker>
 
-                <Marker :options="{ position: {
-                                                lat: listing.info.Location.latitude, 
-                                                lng: listing.info.Location.longitude,
-                                                
-                                            },
-                                    scale: 1.5,
-                                   
-                                    }" 
-                    v-for="listing in foodItemsFiltered">
 
-                    <InfoWindow :options="{
-                                            minWidth: 100,
-                                            maxWidth: 300           
-                                            }" >
                         <div class="card">
                             <div id="carouselExample" class="carousel slide">
                                 <div class="carousel-inner"
-                                    v-for="(url, index) in listing.info.ImageUrls" :key="index" 
-                                    :class="index == 0 ? 'carousel-item active' : 'carousel-item'">                
-                                        <img :src=url class="d-block w-100" alt="..."> 
+                                    v-for="(url, index) in selected.info.details.ImageUrls" :key="index" 
+                                    :class="index == 0 ? 'carousel-item active mt-3' : 'carousel-item mt-3'" >                
+                                        <img :src=url class="d-block w-100" alt="..." style="height: 300px; object-fit: cover"> 
                                 </div>
                                     
                                 
@@ -77,167 +47,432 @@ import routingTest from "./routingTest.vue";
                             </div>
 
                             <div class="card-body">
-                                <h5 class="card-title">{{ listing.info.ListingName }}</h5>
-                                <ul>
-                                    <li>Category: {{ listing.info.Category }}</li>
-                                    <li>Expiry Date: {{ listing.info.ExpiryDate.toDate() }}</li>
-                                    <li>Perishable: {{ listing.info.Perishable ? "Yes" : "no" }}</li>
-                                    <li>Price: {{ listing.info.Price }}</li>
-                                    <li>Quantity Available: {{ listing.info.QtyAvailable }}</li>
-                                </ul>                                
-                                <a href="#" class="btn btn-link">View more...</a>
+
+                                <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
+                                    <li>Category: {{ selected.info.details.Category }}</li>
+                                    <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
+                                    <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
+                                    <li>Price: {{ selected.info.details.Price }}</li>
+                                    <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
+                                    <div class="row">
+                                        <Button label="View more..." outlined style="border-radius:4px" class="my-2"
+                                            @click.prevent="navigate=>
+                                                {
+                                                    this.$router.push('/listing');
+                                                    this.$emit('listingInfo', selected)
+                                                }"></Button>
+
+                                        
+                                        <Button :pt="{ button: 'bg-green-600 border-green-600'}"
+                                        @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
+                                            <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
+                                            Get Directions
+                                        </Button>
+                                       
+                                    </div>
                             </div>
                         </div>
-                    </InfoWindow>
-                </Marker>
-            </GoogleMap>            -->
-            <br />
+
+                        <div class="card border-none" v-if="displayDirections">
+
+                            <div class="card-title">
+                                <h2 class= mt-5>Getting there</h2>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                   
+                                    <div class="row">
+                                        <p class="card-title ps-0">Transport Mode:</p>
+                                    </div>
+
+                                    <div class="row ps-0">
+                                        <div id="travelGrp">
+                                            <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
+                                            aria-labelledby="basic" 
+                                            :pt="{
+                                                button: ({ context }) => ({
+                                                    class: context.active ? 'bg-primary' : undefined
+                                                })
+                                            }" 
+                                            @click.prevent="toggleDisplayDirection=>{this.displayDirections=false}"
+                                            />
+                                            
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                           
+                            <div class="card-body p-0">
+                                <div id="sideBar" class="p-0"></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </Sidebar>
+
+            <div class="row justify-content-center">
+
+                <div id="map" style="height:600px" class="col-10"></div>
+                
+            </div>
+           
+            <div class="row" >
+                <div class="container col-10 mt-3" style="background-color: #F6FBF6;">
+                    <div class="container" style="padding-left: 15%; padding-right: 15%">
+                       
+                        <div class="row justify-content-center align-items-center" >
+                           
+                            <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" class="md:w-20rem w-full">
+                                <template #option="slotProps">
+                                    <div class="p-d-flex p-ai-center">
+                                        <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
+                                        {{ slotProps.option.label }}
+                                    </div>
+                                </template>
+                            </Dropdown>
+
+
+                            <div class="row justify-content-center align-items-center mt-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
+                                <div class="col-4 d-flex justify-content-center ">
+                                    <h6 class="m-0">Distance (in KM): <b>{{ filterDistance }}</b></h6>
+                                </div>
+
+                                <div class="col-5">
+                                    <div class="container">
+                                        <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
+                                        :pt="{root: {class: 'bg-white'}}"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-1">
+                                    <Button @click.prevent="loadByDistance"
+                                    :pt="{ 
+                                            root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
+                                        }">
+                                        <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                                    </Button>
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-2" v-else>
+                                <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <!-- search bar  -->
-            <div class="input-group">
-                <input
-                    type="search"
-                    class="form-control bg-secondary-subtle"
-                    placeholder="Find the food you want!"
-                    v-model="searchQuery"
-                    @keyup.enter="loadFoodByNameAndDistance"
-                />
-                <button
-                    class="btn text-bg-listing d-flex align-items-center justify-content-center"
-                    type="button"
-                    id="button-addon2"
-                >
-                    <!-- <i class="search"></i> -->
-                    <img
-                        src="../components/icons/search.jpeg"
-                        class="img-fluid"
-                        style="width: 20px; color: white"
-                    />
-                </button>
-            </div>
 
-            <div class="row slidecontainer">
-                <h5>Distance (in KM): {{ filterDistance }}</h5>
-                <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    v-model="filterDistance"
-                    class="slider"
-                    id="myRange"
-                />
-            </div>
-
-            <div class="row">
-                <div class="col-2">
-                    <button @click="loadByDistance" class="btn btn-secondary">
-                        Food Nearby
-                    </button>
-                </div>
-                <div class="col-10"></div>
-            </div>
+           
         </div>
-        <div class="col-1"></div>
-    </div>
+    </div>    
+        <!-- <div class="col-1" ></div> -->
+  </template>
 
-    <!-- {{  currentUserLocation }} -->
-</template>
+  <script>
 
-<script>
-export default {
-    mounted() {
-        // getUserLocation(),
-        this.loadFood();
-    },
-    data() {
-        return {
-            filterDistance: 10,
-            searchQuery: "",
-            // userLocation: {},
-            foodItems: [],
-            foodItemsFiltered: [],
-            coord: { lat: 1.29027, lng: 103.851959 },
-            key: "AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE",
-        };
-    },
-    props: {
-        apiKey: String,
-        foodItemsFilteredArr: Array,
-        userLocationObj: Object,
-        listingArr: Array,
-    },
-    computed: {
-        ...mapGetters["currentUserLocation"],
-    },
-    methods: {
-        searchLocation() {
-            this.getCoordinates();
+    document.addEventListener('click', function(event) {
+        // Check if the click event's target is not the element you're watching
+        if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
+            this.displayDirections = false
+        } else {
+        }
+    });
+    
+    export default {
+        mounted(){
+             this.initMap()
+             this.loadFood()
         },
-        getUserLocation() {
-            const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`;
-            axios
-                .post(url)
-                .then((response) => {
-                    const data = response.data;
+        
+        data(){
+            return {
+                //primevue variables
+                visible: false,
+                modal: false,
+                travelModeOptions: ['TRANSIT', 'DRIVING'],
+                displayDirections: false,
+                filterBy: 'DISTANCE',
+                filterOptions: [
+                                {label: 'DISTANCE', value: 'DISTANCE', icon: 'mdi:food'}, 
+                                {label: 'NAME', value: 'NAME', icon: 'material-symbols:distance'}
+                            ],
 
-                    this.userLocation = data.location;
+                //food loading variables
+                filterDistance: 10,
+                searchQuery: '',
+                foodItems: [],
+                foodItemsFiltered: [],
+                key: 'AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE',
+                selected: null,
+
+                // map variables
+                mapOptions: {
+                    center: { lat: 1.3565952, lng: 103.851959 },
+                    zoom: 12,
+                    provideRouteAlternatives: true,
+                    gestureHandling: 'cooperative',
+                    mapId: '7fb5f582643b9459'
+                },
+                map: null,
+                core: null,
+                loader: null,
+                directionsService: null,
+                directionsRenderer: null,
+                routeRequest: {
+                    origin: null,
+                    destination: null,
+                    travelMode: 'TRANSIT',
+                    transitOptions: {  
+                                    modes: ['BUS', 'TRAIN']
+                    },
+                    drivingOptions: {
+                                    departureTime: new Date(Date.now()),
+                                    trafficModel: 'optimistic'
+                                    },
+                    provideRouteAlternatives: true,
+                },
+               
+
+            }
+        },
+        props: {
+                'apiKey': String,
+                'foodItemsFilteredArr': Array, 
+                'userLocationObj': Object,
+                'listingArr': Array
+        },
+        
+        computed :{
+            ...mapGetters(['currentUserLocation'])
+        },
+        methods: {
+            // map functions 
+            async initMap(){
+                this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
+
+                this.loader = new Loader({ 
+                    apiKey: this.key,
+                    version: "weekly",
+                    libraries: ["places", "marker", "maps", "routes"]
                 })
+                const map = await this.loader.importLibrary('maps')
 
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-        async loadFood() {
-            const data = getAllListings();
-            data.then((listing) => {
-                console.log(listing);
-                console.log("userLocation", this.currentUserLocation);
-                // this.foodItems.push({
-                //     listingId: doc.id,
-                //     info: doc.data(),
-                //     distance: distanceToUser // straight line distance from user location to food location
-                // })
-                for (let i = 0; i < listing.length; i++) {
-                    let distanceToUser = Number.parseFloat(
-                        calculateDistance(
-                            this.currentUserLocation.lat,
-                            this.currentUserLocation.lng,
-                            listing[i].details.Location.latitude,
-                            listing[i].details.Location.longitude
-                        ).toFixed(3)
-                    );
 
-                    this.foodItems.push({
-                        info: listing[i],
-                        distance: distanceToUser,
-                    });
+                const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
+                       
+                const marker = await this.loader.importLibrary('marker')
+
+                // const animation = await this.loader.importLibrary('marker')
+                // const anim = await animation.Animation.DROP
+
+                if (this.routeRequest.destination){
+                    const routes = await this.loader.importLibrary('routes')
+
+                    this.directionsService = new routes.DirectionsService();
+                    this.directionsRenderer = new routes.DirectionsRenderer();
                 }
-            });
-        },
 
-        loadFoodByNameAndDistance() {
-            console.log("foodItems", this.foodItems);
-            this.foodItemsFiltered = filterByDistance(
-                filterByName(this.foodItems, this.searchQuery),
-                this.filterDistance
-            );
-            console.log(this.foodItemsFiltered);
-        },
+                const parser = new DOMParser()
+                const pinSvg = parser.parseFromString(
+                    '<svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ffffff}</style><path d="M112 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm40 304V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V256.9L59.4 304.5c-9.1 15.1-28.8 20-43.9 10.9s-20-28.8-10.9-43.9l58.3-97c17.4-28.9 48.6-46.6 82.3-46.6h29.7c33.7 0 64.9 17.7 82.3 46.6l58.3 97c9.1 15.1 4.2 34.8-10.9 43.9s-34.8 4.2-43.9-10.9L232 256.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V352H152z"/></svg>',
+                    'image/svg+xml'
+                ).documentElement
 
-        loadByDistance() {
-            this.foodItemsFiltered = filterByDistance(
-                this.foodItems,
-                this.filterDistance
-            );
-            console.log(this.foodItemsFiltered);
+                const faPin = new marker.PinElement({
+                    scale: 1.25,
+                    glyph: pinSvg,
+                    background: "#0033FF",
+                    borderColor: "#0033FF",
+                })
+                var advMarker = new marker.AdvancedMarkerElement({
+                    map: unloadedMap,
+                    position: this.currentUserLocation,
+                    content: faPin.element,
+                    title: 'user location',
+
+
+                })
+                this.map = unloadedMap
+
+                //load filtered food items 
+                console.log('foodItemsFiltered', this.foodItemsFiltered)
+                if (this.foodItemsFiltered.length > 0){
+                    for(const item of this.foodItemsFiltered){
+
+                        const latitude = item.info.details.Location.latitude
+                        const longitude = item.info.details.Location.longitude
+
+                        // add routing options here 
+
+                        let newMarker = new marker.Marker({
+                            position: { lat: latitude, lng: longitude},
+                            map: this.map,                    
+                        })
+
+                        newMarker.addListener("click", () => {
+
+                            console.log(this.routeRequest.origin, this.routeRequest.destination)
+                            this.selected = item    
+                            this.visible = true
+
+                            if (this.displayDirections){
+                                this.displayDirections = false
+                            }
+                           
+                            this.routeRequest.destination = { 
+                                lat: item.info.details.Location.latitude, 
+                                lng: item.info.details.Location.longitude
+                            }
+
+                        });
+                    }
+                }
+                
+            },
+
+            loadRoute(){
+                console.log('origin:', this.routeRequest.origin, 'destination:', this.routeRequest.destination)
+                if (this.directionsService != null){
+
+                    var route = this.directionsService.route(this.routeRequest, (result, status) => {
+                        if (status == 'OK') {
+                            console.log('result', result)
+                            
+                            result.routes = [result.routes[0]]
+                            this.directionsRenderer.setMap(this.map);
+                            this.directionsRenderer.setDirections(result);
+                            this.directionsRenderer.setPanel(document.getElementById("sideBar"))
+                        }
+                    })
+                }
+
+            },
+
+            //other functions 
+            getCoordinates() {
+                // this function gets the coordinates
+                const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
+
+                console.log(url)
+
+                axios.get(url)
+                .then(
+                    response => {
+                        const data = response.data.results[0];
+                        var latitude = parseFloat(data.geometry.location.lat)
+                        var longitude = parseFloat(data.geometry.location.lng)
+
+                        this.coord = {lat: latitude, lng: longitude}
+                    })
+                .catch(
+                    error => {
+                        console.log(error)
+                        console.log(error.response.data.error_message)
+                })
+            },
+            
+            searchLocation(){
+                this.getCoordinates()
+            },
+            getUserLocation(){
+                const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
+                axios.post(url)
+                .then(
+                    response => {
+                        const data = response.data
+                        this.userLocation = data.location
+                    }   
+                )
+
+                .catch(
+                    error => {
+                        console.log(error)
+                    }
+                )
+            },
+            
+            async loadFood(){
+
+                const data = getAllListings()
+
+                data.then(
+                    listing => {
+                        console.log('all food loaded', listing)
+                    
+                        for (let i=0;i<listing.length;i++){
+                            let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
+
+                            this.foodItems.push({
+                                                info: listing[i],
+                                                distance: distanceToUser
+                                            })
+                        }
+                    }
+                )    
+            },
+
+            loadFoodByName(foodName){
+                this.searchQuery = foodName
+                this.foodItemsFiltered = filterByName(this.foodItems, this.searchQuery)
+            },
+
+            loadByDistance(){
+                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
+            },
+            loadDirections(){
+                if (this.visible){
+                    this.displayDirections = true
+                }
+                this.loadRoute()
+            }
         },
-    },
+        watch:{
+            routeRequest:{
+                handler(){
+                    this.initMap()
+                },
+                deep: true
+            },
+            foodItemsFiltered:{
+                handler(){
+                    this.initMap()
+                }
+            },
+            mapOptions:{
+                handler(){
+                    this.initMap()
+                },
+                deep: true
+            },
+        },
 }
-</script>
+            
+  </script>
 
 <style>
 .text-bg-listing {
-    background-color: #558c03;
+    background-color: #558C03;
     color: white;
 }
+.img {
+    background-size: cover; 
+    background-position:center; 
+    max-height: 400px;
+}
+#sideBar {
+  flex-basis: 15rem;
+  flex-grow: 1;
+  padding: 1rem;
+  /* max-width: 30rem; */
+  height: 100%;
+  max-height: 500px;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+
 </style>
