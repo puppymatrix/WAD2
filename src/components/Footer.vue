@@ -42,7 +42,7 @@
                     <a class="nav-link" href="/signUp">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/userProfile">User Profile</a>
+                    <a class="nav-link" href="/profile">User Profile</a>
                 </li>
             </ul>
         </div>
