@@ -1,6 +1,6 @@
 <script setup>
 
-import resolve from 'rollup-plugin-node-resolve';
+
     import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
@@ -184,11 +184,7 @@ import resolve from 'rollup-plugin-node-resolve';
     });
     
     export default {
-        plugins: [
-    // Other plugins...
 
-    resolve()
-  ],
         mounted(){
              this.initMap()
              this.loadFood()
