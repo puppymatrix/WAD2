@@ -1,105 +1,150 @@
 <script setup>
-import SearchBar from "../components/SearchBar.vue";
-import { getAllListings, filterByName, getAllCategories, calculateDistance } from "../firebase/api.js"
-import { mapGetters } from 'vuex'
-
+import {
+    getAllListings,
+    filterByName,
+    getAllCategories,
+    calculateDistance,
+    getAllUsernames,
+    getListingsByCategory,
+} from "../firebase/api.js";
+import { mapGetters } from "vuex";
+import { Icon } from "@iconify/vue";
 </script>
 
 <template>
     <body>
-
         <!-- Map View button  -->
-        <div class="container-fluid my-3">
+        <div class="container-fluid my-2">
             <div class="row">
                 <div class="col-10 p-0">
                     <!-- search bar -->
-                    <SearchBar  @search="searchFood"/>
+                    <SearchBar @search="searchFood" />
                 </div>
-                <div class="col-2 d-flex justify-content-center p-0">
-                    <div id="mapBtn" class="my-auto">
-                        <button
-                        type="button"
-                        class="btn btn-outline-success d-flex align-items-center justify-content-center"
-                        @click="navigate=>{$router.push('/mapView')}"
-                    >
-                        <img
-                            src="../components/icons/googleMaps.png"
-                            alt=""
-                            class="img-fluid me-1"
-                            style="width: 20px;"
-                        />
-                        Map View
-                    </button>
-                    </div>
 
+                <div
+                    class="col-2 d-flex align-items-center justify-content-center"
+                >
+                    <router-link to="/mapView" class="">
+                        <Button
+                            class="rounded"
+                            style="background-color: #f6fbf6;color:rgba(33, 37, 41, 0.75)"
+                            raised
+                            text
+                            plain
+                        >
+                            <Icon icon="logos:google-maps" />
+                            &nbsp Food near me
+                        </Button>
+                    </router-link>
                 </div>
             </div>
         </div>
 
-
         <!-- listings -->
-        <h3> {{ filterPrice  }}
-        {{ filterCategory }}
-        {{ filterDistance }}</h3>
-       
-        <div class="container-fluid" >
-            <h5 style="font-style: italic;">Search results for: </h5>
-            <div class="filterBar row d-flex">
-                <!-- vfor categories -->
-                <ul>
-                    <li><p class="d-inline" style="margin: 2px 5px;">Sort By: </p></li>
-                    <li>
-                        <b-dropdown text="Price" v-model="filterPrice">
-                            <b-dropdown-item href="#" @click="change=>{this.filterPrice = 'ascending'}">Low to High</b-dropdown-item>
-                            <b-dropdown-item href="#" @click="change=>{this.filterPrice = 'descending'}">High to Low</b-dropdown-item>
-                        </b-dropdown>
-                    </li>
-                    <li>
-                        <b-dropdown text="Category of Food" v-model="filterCategory">
-                        <!-- <b-dropdown text="Category of Food" v-model="filterCategory"></b-dropdown> -->
-                            <b-dropdown-item v-for="category in allCategories" :value="category" @click="change=>{this.filterCategory = category}">{{ category }}</b-dropdown-item>
+        <!-- <h3>
+            {{ filterPrice }}
+            {{ filterCategory }}
+            {{ filterDistance }}
+        </h3> -->
 
-                        </b-dropdown>
-                    </li>
-                    <li>
-                        <b-dropdown text="Location" v-model="filterDistance">
-                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '2'}">Within 2km away</b-dropdown-item>
-                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '5'}">Within 5km away</b-dropdown-item>
-                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '10'}">Within 10km away</b-dropdown-item>
-                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '20'}">Within 20km away</b-dropdown-item>
-                            <b-dropdown-item href="#" @click="change=>{this.filterDistance = '99999'}">All</b-dropdown-item>
-                        </b-dropdown>
-                    </li>
-                </ul>
+        <div class="container-fluid">
+            <div class="row filterBar">
+                    <div class="col-3">
+                        <CascadeSelect
+                        v-model="selectedFilter"
+                        :options="filters"
+                        optionLabel="cname"
+                        optionGroupLabel="name"
+                        :optionGroupChildren="['types']"
+                        style="min-width: 14rem"
+                        placeholder="Filter By"
+                        id="multi-select"
+                        @change="filterBySelected"
+                    />
+                    </div>
+                    <div class="col-2" v-if="selectedFilter != null">
+                        <Button severity="secondary" @click="checkQuery" class="rounded" raised><Icon icon="uil:times" width="20"/>&nbspClear Filter</Button>
+                    </div>
+                    
+                    
             </div>
-            <div class="album py-2">
+
+            <div v-if="loading" class="container-fluid py-3 px-0">
+                <!-- <ProgressSpinner strokeWidth="4" /> -->
+                <h5 role="status">Loading...</h5>
+                <!-- <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar> -->
+
+                <div class="row">
+                    <div
+                        class="col-lg-3 col-md-4 col-sm-12"
+                        v-for="n in 4"
+                        :key="n"
+                    >
+                        <Skeleton
+                            height="30rem"
+                            :id="'skeleton-' + n"
+                        ></Skeleton>
+                    </div>
+                </div>
+            </div>
+            <div class="album py-2" v-if="loaded">
                 <div class="container-fluid px-0">
-                    <div class="row g-3" v-if="foodItemsFiltered.length==0" >
-                        <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in foodItems">
-                            <div class="card shadow-sm">
+                    <div class="row g-3" v-if="check">
+                        <div
+                            class="col-lg-3 col-md-4 col-sm-12"
+                            v-for="item in foodItems"
+                        >
+                        <router-link
+                                :to="{
+                                    name: 'listing',
+                                    query: { Id: item.info.Id },
+                                }"
+                            >
+                            <div class="card h-100 shadow-sm">
                                 <img
                                     :src="item.info.details.ImageUrls[0]"
                                     alt=""
                                     class="card-img-top"
                                 />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ item.info.details.Category }}</h6>
-                                    <h5 class="card-title">Name: {{ item.info.details.ListingName }}</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                         SMU School of Economics
+                                <div class="card-body border-top">
+                                    <h6
+                                        class="card-subtitle mb-2 text-body-secondary"
+                                    >
+                                        Category:
+                                        {{ item.info.details.Category }}
+                                    </h6>
+                                    <h5 class="card-title">
+                                        Name:
+                                        {{ item.info.details.ListingName }}
+                                    </h5>
+                                    <p
+                                        class="card-text d-flex align-items-center mb-3"
+                                    >
+                                        {{ item.info.details.Location.name }}
                                     </p>
                                     <!-- need to getLister -->
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        Price: {{item.info.details.Price }} <br>
-                                        Distance: {{item.distance}}
-                                    </p>
-                                    
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <p class="me-1">Glenda123</p>
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
+                                    <p
+                                        class="card-text d-flex align-items-center mb-3"
                                     >
+                                        Price: {{ item.info.details.Price }}
+                                        <br />
+                                        Distance: {{ item.distance }}
+                                    </p>
+
+                                    <h6
+                                        class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
+                                    >
+                                        <p class="me-1">
+                                            {{ item.owner }}
+                                        </p>
+                                    </h6>
+                                </div>
+                                <div class="card-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                    >
+
                                         <div class="btn-group">
                                             <button
                                                 type="button"
@@ -110,46 +155,88 @@ import { mapGetters } from 'vuex'
                                             </button>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
+                            </router-link>
                         </div>
-       
                     </div>
-                    <div class="row g-3" v-else>
-                        <div class="col-lg-3 col-md-4 col-sm-12" v-for="item in foodItemsFiltered">
-                            <div class="card shadow-sm">
-                                <img
-                                    :src="item.info.details.ImageUrls[0]"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ item.info.details.Category }}</h6>
-                                    <h5 class="card-title">{{ item.info.details.ListingName }}</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                         SMU School of Economics
-                                    </p>
-                                    <!-- need to getLister -->
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <p class="card-text d-flex align-items-center mb-3">
-                                            Price: {{item.info.details.Price }} <br>
-                                            Distance: {{item.distance}}
-                                        </p>                                    
-                                    </h6>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <p class="me-1">Glenda123</p>
-                                    </h6>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                                <a href="/listing">View</a>
-                                            </button>
-                                        </div>
+                    <div
+                        class="row g-3"
+                        v-else-if="!check && foodItemsFiltered.length > 0"
+                    >
+                        <div
+                            class="col-lg-3 col-md-4 col-sm-12"
+                            v-for="item in foodItemsFiltered"
+                        >
+                            <router-link
+                                :to="{
+                                    name: 'listing',
+                                    query: { Id: item.info.Id },
+                                }"
+                            >
+                                <div class="card h-100 shadow-sm">
+                                    <img
+                                        :src="item.info.details.ImageUrls[0]"
+                                        alt=""
+                                        class="card-img-top"
+                                    />
+                                    <div class="card-body border-top">
+                                        <h6
+                                            class="card-subtitle mb-2 text-body-secondary"
+                                        >
+                                            Category:
+                                            {{ item.info.details.Category }}
+                                        </h6>
+                                        <h5 class="card-title">
+                                            Name:
+                                            {{ item.info.details.ListingName }}
+                                        </h5>
+                                        <p
+                                            class="card-text d-flex align-items-center mb-3"
+                                        >
+                                            {{
+                                                item.info.details.Location.name
+                                            }}
+                                        </p>
+                                        <!-- need to getLister -->
+                                        <p
+                                            class="card-text d-flex align-items-center mb-3"
+                                        >
+                                            Price: {{ item.info.details.Price }}
+                                            <br />
+                                            Distance: {{ item.distance }}
+                                        </p>
+
+                                        <h6
+                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
+                                        >
+                                            <p class="me-1">
+                                                {{ item.owner }}
+                                            </p>
+                                        </h6>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-secondary"
+                                        >
+                                            <a href="/listing">View</a>
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
+                            </router-link>
+                        </div>
+                    </div>
+
+                    <div
+                        class="row g-3"
+                        v-else-if="!check && foodItemsFiltered.length == 0"
+                    >
+                        <div class="col-12">
+                            <Message severity="warn" :closable="false"
+                                >No results found!</Message
+                            >
                         </div>
                     </div>
                 </div>
@@ -159,116 +246,213 @@ import { mapGetters } from 'vuex'
         <!--Add Listing Button-->
         <div>
             <router-link to="/addListing">
-            <button
-                type="button"
-                class="btn addList d-flex align-items-center justify-content-center"
-            ><span style="color: white;">+</span></button>
+                <!-- <button
+                    class="btn addList d-flex align-items-center justify-content-center"
+                > -->
+                <Button class="addList raised">
+                    <span style="color: white">+</span>
+                </Button>
+
+                <!-- </button> -->
             </router-link>
         </div>
-
     </body>
 </template>
 
 <script>
+import SearchBar from "../components/SearchBar.vue";
 export default {
-    mounted(){
-        console.log('mounted')
-        this.loadListings()
-        this.loadCategories()
+    components: {
+        SearchBar,
     },
-    data(){
+    created() {
+        this.loadListings();
+        this.loadCategories();
+    },
+    data() {
         return {
             query: "",
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
-            filterPrice: 'ascending',
-            filterDistance: 10000,
-            filterCategory: 'all',
-            allCategories:[]
-        }
+            filterPrice: "ascending",
+            filterDistance: 99999,
+            filterCategory: "all",
+            allCategories: [],
+            loading: true,
+            loaded: false,
+            numSkeletons: 4,
+            selectedFilter: null,
+            filters: [
+                {
+                    name: "Price",
+                    types: [
+                        { cname: "High to Low", type: "Price" },
+                        { cname: "Low to High", type: "Price" },
+                    ],
+                },
+                {
+                    name: "Categories",
+                    types: [],
+                },
+                {
+                    name: "Location",
+                    types: [
+                        { cname: "Within 2km away", type: "Distance" },
+                        { cname: "Within 5km away", type: "Distance" },
+                        { cname: "Within 10km away", type: "Distance" },
+                        { cname: "Within 20km away", type: "Distance" },
+                        { cname: "Any", type: "Distance" },
+                    ],
+                },
+            ],
+        };
     },
 
     computed: {
-        ...mapGetters(['currentUserLocation'])
-    },
-    methods:{
-        async loadListings(){
-            const data = getAllListings(this.maxReturn)
-            data.then(
-                listing => {
-
-                    for (let i=0;i<listing.length;i++){
-                            let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
-
-                            this.foodItems.push({
-                                                info: listing[i],
-                                                distance: distanceToUser
-                                            })
-                        }
-                    console.log(this.foodItems, 'listings loaded')
-                }
-            )
-        }, 
-
-        async loadCategories(){
-            const data = getAllCategories()
-            data.then(
-                categories => {
-                    console.log(categories)
-                    this.allCategories = categories[0].categories
-                }
-            )
-           
+        ...mapGetters(["currentUserLocation"]),
+        check() {
+            if (!this.selectedFilter && !this.query) {
+                return true;
+            } else {
+                return false;
+            }
         },
-        searchFood(searchVal){ // incomplete do something about all 
-            console.log('searchVal', searchVal)
-            this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
+    },
+    methods: {
+        async loadListings() {
+            const listings = await getAllListings();
+            const users = await getAllUsernames();
+            // console.log(listings);
 
-            for(let i=0;i<this.foodItemsFiltered;i++){
-                if (!(this.foodItemsFiltered[i].distance <= this.filterDistance && this.foodItemsFiltered[i].info.details.Category == this.filterCategory.toLowerCase())){
-                    this.foodItemsFiltered.slice(i,i+1)
+            for (const listing of listings) {
+                let distanceToUser = Number.parseFloat(
+                    calculateDistance(
+                        this.currentUserLocation.lat,
+                        this.currentUserLocation.lng,
+                        listing.details.Location.latitude,
+                        listing.details.Location.longitude
+                    ).toFixed(3)
+                );
+                const owner = users[listing.details.Owner];
+
+                this.foodItems.push({
+                    info: listing,
+                    distance: distanceToUser,
+                    owner: owner,
+                });
+            }
+            this.loading = false;
+            this.loaded = true;
+        },
+
+        async loadCategories() {
+            const data = await getAllCategories();
+            const categories = data[0]["categories"];
+            for (const category of categories) {
+                this.filters[1].types.push({
+                    cname: category,
+                    type: "Category",
+                });
+            }
+            // this.allCategories = categories;
+        },
+        async searchFood(searchVal) {
+            this.query = searchVal;
+            if (searchVal == "") {
+                this.foodItemsFiltered = this.foodItems;
+            }
+            if (this.selectedFilter) {
+                await this.filterBySelected();
+            }
+            this.foodItemsFiltered = filterByName(this.foodItems, searchVal);
+        },
+        async filterBySelected() {
+            this.foodItemsFiltered = [];
+            if (this.selectedFilter.type == "Price") {
+                const filterPrice = this.selectedFilter.cname;
+                this.foodItemsFiltered = this.filterByPrice(filterPrice, this.foodItems);
+            } else if (this.selectedFilter.type == "Category") {
+                const filterCategory = this.selectedFilter.cname;
+                this.foodItemsFiltered = await this.filterByCategory(filterCategory, this.foodItems);
+            } else if (this.selectedFilter.type == "Distance") {
+                let filterDistance;
+                const distanceString = this.selectedFilter.cname;
+                if (distanceString == "Within 2km away") {
+                    filterDistance = 2;
+                } else if (distanceString == "Within 5km away") {
+                    filterDistance = 5;
+                } else if (distanceString == "Within 10km away") {
+                    filterDistance = 10;
+                } else if (distanceString == "Within 20km away") {
+                    filterDistance = 20;
+                } else if (distanceString == "Any") {
+                    filterDistance = 99999;
+                }
+                this.foodItemsFiltered = this.filterByDistance(filterDistance, this.foodItems);
+            }
+            if (this.query) {
+                this.foodItemsFiltered = filterByName(this.foodItemsFiltered, this.query);
+            }
+        },
+        async filterByCategory(category, listings) {
+            let res = [];
+            res = await getListingsByCategory(
+                category,
+                listings
+            );
+            return res;
+        },
+        filterByPrice(filterPrice, listings) {
+            let res = [];
+            if (filterPrice == "High to Low") {
+                res = [...listings].sort(
+                    (a, b) => b.info.details.Price - a.info.details.Price
+                );
+            } else if (filterPrice == "Low to High") {
+                res = [...listings].sort(
+                    (a, b) => a.info.details.Price - b.info.details.Price
+                );
+            }
+            return res;
+        },
+        filterByDistance(filterDistance, listings) {
+            let res = [];
+            for (const listing of listings) {
+                if (
+                    typeof listing.distance === "number" &&
+                    listing.distance < filterDistance
+                ) {
+                    res.push(listing);
                 }
             }
-
-            if (this.filterPrice == 'ascending') {
-                this.foodItemsFiltered.sort((a, b) => a.info.details.Price - b.info.details.Price);
-            } else if (this.filterPrice == 'descending') {
-                this.foodItemsFiltered.sort((a, b) => b.info.details.Price - a.info.details.Price);
+            return res;
+        },
+        checkQuery() {
+            this.selectedFilter=null
+            if (this.query !== "") {
+                this.searchFood(this.query);
             }
-            console.log('filtered', this.foodItemsFiltered)
         }
-    }
-    
-}
-
+    },
+};
 </script>
 
 <style scoped>
-.text-bg-listing {
-    background-color: rgb(67, 160, 70, 1);
-    color: white;
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
 }
 
-.filterBar{
-    background-color: lightgrey;
+a {
+    text-decoration: none;
+}
+.filterBar {
+    background-color: #f6fbf6;
     padding: 10px;
     margin: 5px 1px;
     border-radius: 5px;
-}
-
-.filterBar ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.filterBar li{
-    margin: 2px 5px;
-    display: flex;
 }
 
 .card-img-top {
@@ -277,16 +461,28 @@ export default {
     object-fit: cover;
 }
 
-.addList{
-    background-color: #83A538;
-    position: fixed; 
-    bottom: 0; 
-    right: 0; 
-    margin: 20px; 
-    padding: auto; 
-    height: 50px; 
-    width: 50px; 
-    border-radius: 50%; 
+.addList {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+    height: 50px;
+    width: 50px;
     font-size: 30px;
+    border-radius: 50%;
+}
+
+@media screen and (max-width: 992px) {
+    #skeleton-4 {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #skeleton-2,
+    #skeleton-3,
+    #skeleton-4 {
+        display: none;
+    }
 }
 </style>

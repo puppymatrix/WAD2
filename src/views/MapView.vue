@@ -1,5 +1,6 @@
 <script setup>
 
+
     import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
@@ -23,6 +24,8 @@
 
                     <div class="container-fluid">
 
+
+
                         <div class="card">
                             <div id="carouselExample" class="carousel slide">
                                 <div class="carousel-inner"
@@ -44,6 +47,7 @@
                             </div>
 
                             <div class="card-body">
+
                                 <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
                                     <li>Category: {{ selected.info.details.Category }}</li>
                                     <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
@@ -151,13 +155,16 @@
                                 </div>
                             </div>
 
+
                             <div class="row mt-2" v-else>
                                 <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+
             <!-- search bar  -->
 
            

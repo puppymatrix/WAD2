@@ -1,13 +1,9 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast();
 </script>
 
 <template>
     <main>
-        <Toast />
         <form class="m-5" @submit.prevent="submitForm">
             <div class="container-fluid">
                 <div class="row">
@@ -167,7 +163,7 @@ const toast = useToast();
 
                 <div class="row">
                     <div class="col-md-6">
-                        <span class="mb-1"
+                        <p class="mb-1"
                             >Type of Listing
                             <Icon
                                 icon="mdi:information-slab-circle-outline"
@@ -177,7 +173,7 @@ const toast = useToast();
                                 Perishable items have 12h & Non-Perishable items
                                 have 48h "Chope Window"
                             </p>
-                        </span>
+                        </p>
                         <b-form-select
                             v-model="perishable"
                             class="mb-3"
@@ -377,7 +373,7 @@ export default {
                 });
                 check = false;
             }
-            if (this.location.hasOwnProperty("latitude") === false) {
+            if (!this.location) {
                 this.$toast.add({
                     severity: "error",
                     summary: "Error Message",
@@ -470,7 +466,7 @@ export default {
                                     new Date(this.expiry_date)
                                 ),
                                 Location: this.location,
-                                Category: this.category.toLowerCase(),
+                                Category: this.category,
                                 Perishable: this.perishable,
                                 ListingName: this.listing_name,
                                 QtyAvailable: this.qty_available,
