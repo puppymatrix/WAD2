@@ -26,19 +26,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-0">
                 <li class="nav-item px-3">
-                    <a class="nav-link" @click="navigate=>{this.$router.push('/')}">Home</a>
+                    <router-link to="/" class="nav-link" active-class="active-link">Home</router-link>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Listings
+                        Explore
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" @click="navigate=>{this.$router.push('/allListings')}" >All Listings</a></li>
-                        <li><a class="dropdown-item" @click="navigate=>{this.$router.push('/mapView')}">Food Near Me</a></li>
+                        <li><router-link to="/allListings" class="dropdown-item" active-class="active-link">All Listings</router-link></li>
+                        <li><router-link to="/mapView" class="dropdown-item" active-class="active-link">Food Near Me</router-link></li>
                     </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link display-inline" @click="navigate=>{this.$router.push('/addListing')}">Add Listing</a>
+                    <router-link to="/addListing" class="nav-link display-inline" active-class="active-link">Add Listing</router-link>
                 </li>
                 <li><div style="background-color: #000; margin: 10px 0; border-top: 1px solid white"></div></li>            
                 <li class="nav-item px-3" id="pinned">
@@ -190,13 +190,16 @@ div img {
 .nav-link {
     text-decoration: none;
     color: #ebf1e7;
-    font-size: 25px;
+    font-size: 20px;
     white-space: nowrap;
 }
 
+.navbar-nav .nav-link.show {
+  color: #ebf1e7;
+}
+
 .nav-link:hover {
-    color: #bee5b0
-;
+    color: #bee5b0;
 }
 
 .nav-item {
@@ -206,5 +209,15 @@ div img {
 
 button:hover{
     border-color:  #ebf1e7;
+}
+
+.active-link {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+
+.dropdown-item:active {
+    background-color: #bee5b0;
 }
 </style>
