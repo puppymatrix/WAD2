@@ -262,7 +262,6 @@
                 })
                 const map = await this.loader.importLibrary('maps')
 
-
                 const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
                        
                 const marker = await this.loader.importLibrary('marker')
