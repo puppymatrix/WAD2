@@ -9,38 +9,15 @@
     <body class="px-5 py-2">
         <!-- search bar -->
 
-        <SearchBar @search="searchFood"/>
+        <!-- <SearchBar @search="searchFood"/> -->
 
         <div class="container-fluid">
             <div class="row">
                 <div class="col-10 p-0">
                     <!-- search bar -->
-                    <SearchBar @search="searchFood" />
+                    <!-- <SearchBar /> -->
                 </div>
 
-                <div
-                    class="col-2 d-flex align-items-center justify-content-center"
-                >
-
-
-               
-                    <router-link :to="{
-                                    name: 'mapView',
-                                    query: { Id: id },
-                                }"
-                            >
-                        <Button
-                            class="rounded"
-                            style="background-color: #f6fbf6;color:rgba(33, 37, 41, 0.75)"
-                            raised
-                            text
-                            plain
-                        >
-                        <Icon icon="material-symbols:directions" color="black" width="25"/>
-                            &nbspDirections
-                        </Button>
-                    </router-link>
-                </div>
             </div>
         </div>
 
@@ -55,9 +32,32 @@
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col">
-                            <h2>Listing: <span id="name">{{ listingInfo.ListingName[0].toUpperCase() + listingInfo.ListingName.slice(1)  }}</span></h2>
+                        <div class="col-8">
+                            <h2 class="d-inline">Listing: <span id="name">{{ listingInfo.ListingName[0].toUpperCase() + listingInfo.ListingName.slice(1)  }}</span></h2>
                         </div>
+                        <div
+                    class="col d-flex align-items-center justify-content-center"
+                >
+
+
+               
+                    <router-link :to="{
+                                    name: 'mapView',
+                                    query: { Id: id },
+                                }"
+                            >
+                            <Button
+                        style="background-color: #343a40;color:white"
+                        @click="checkQuery"
+                        class="rounded"
+                        raised
+                        plain
+                        text
+                        ><Icon icon="material-symbols:directions" color="white" width="25"/>
+                            &nbspDirections</Button
+                    >
+                    </router-link>
+                </div>
                     </div>
 
                     <div class="row">
@@ -202,15 +202,6 @@
 
 <script>
 export default {
-    components: {
-        SearchBar,
-    },
-    mounted(){
-        console.log('mounted')
-        this.id = this.$route.query.Id
-        this.getListingInfo()
-        // this.loadNearbyListings()
-    },
     data(){
         return {
             similarListing: [], 
@@ -220,6 +211,12 @@ export default {
             listingCategory: "",
             id: null
         }
+    },
+    created(){
+        console.log(this.$route.query.Id);
+        this.id = this.$route.query.Id;
+        this.getListingInfo();
+        this.loadNearbyListings();
     },
     methods:{
         async getListingInfo(){
@@ -248,14 +245,14 @@ export default {
             )
         },
     },
-    watch: {
-        listingCategory:{
-            handler(){
-                this.getListingInfo();
-            }, 
-            deep: true
-        }
-    }
+    // watch: {
+    //     listingCategory:{
+    //         handler(){
+    //             this.getListingInfo();
+    //         }, 
+    //         deep: true
+    //     }
+    // }
     
 }
 
