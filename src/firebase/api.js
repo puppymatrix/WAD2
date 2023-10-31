@@ -204,7 +204,7 @@ async function getUsersWhoChopedCollectedListing(listingId) {
             user.details.chopes.some((chope) => chope.listingId === listingId)
         );
     });
-    const usersWhoCollected = users.filter((user) => {
+    const usersWhoCollected = usersWhoChoped.filter((user) => {
         return (
             user.details.chopes &&
             user.details.chopes.some((chope) => chope.collected === true)
