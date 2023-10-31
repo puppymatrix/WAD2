@@ -7,27 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    BButton: typeof import('bootstrap-vue-next')['BButton']
     BCarousel: typeof import('bootstrap-vue-next')['BCarousel']
     BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
-    BDropdown: typeof import('bootstrap-vue-next')['BDropdown']
-    BDropdownItem: typeof import('bootstrap-vue-next')['BDropdownItem']
-    BFormFile: typeof import('bootstrap-vue-next')['BFormFile']
-    BFormOption: typeof import('bootstrap-vue-next')['BFormOption']
-    BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
-    BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
-    BFormSelectOptionGroup: typeof import('bootstrap-vue-next')['BFormSelectOptionGroup']
-    CarouselMarquee: typeof import('./src/components/CarouselMarquee.vue')['default']
-    CarouselMarquee2: typeof import('./src/components/CarouselMarquee2.vue')['default']
-    Footer: typeof import('./src/components/Footer.vue')['default']
     IMdiuser: typeof import('~icons/mdi/user')['default']
     IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
-    Map: typeof import('./src/components/Map.vue')['default']
-    MarqueeCard: typeof import('./src/components/MarqueeCard.vue')['default']
-    MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
-    NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SearchBar: typeof import('./src/components/SearchBar.vue')['default']
   }
 }
