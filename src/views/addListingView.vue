@@ -466,7 +466,7 @@ export default {
                                     new Date(this.expiry_date)
                                 ),
                                 Location: this.location,
-                                Category: this.category.toLowerCase(),
+                                Category: this.category,
                                 Perishable: this.perishable,
                                 ListingName: this.listing_name,
                                 QtyAvailable: this.qty_available,

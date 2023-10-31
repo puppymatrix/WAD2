@@ -55,9 +55,11 @@ async function getListing(listingId) {
 
 async function getListingsByCategory(category, listings = null) {
     const results = [];
+    // if no listings are passed in, query the DB
     if (listings == null) {
         const listingsRef = collection(db, "listings");
-        const q = query(listingsRef, where("Category", "==", category));
+        //supp to make query case insensitive
+        const q = query(listingsRef, where("Category", ">=", category.toLowerCase()), where("Category", "<=", category.toLowerCase() + "\uf8ff"));
         const querySnapshot = await getDocs(q);
         
     
@@ -70,7 +72,7 @@ async function getListingsByCategory(category, listings = null) {
         });
     } else {
         for (const listing of listings) {
-            if (listing.info.details.Category === category) {
+            if (listing.info.details.Category.toLowerCase() === category.toLowerCase()) {
                 results.push(listing);
             }
         }
@@ -198,6 +200,7 @@ async function getUser(userId, type = "all") {
 
 async function getUsersWhoChopedCollectedListing(listingId) {
     const users = await getAllUsers();
+
     const usersWhoChoped = users.filter((user) => {
         return (
             user.details.chopes &&
@@ -206,8 +209,7 @@ async function getUsersWhoChopedCollectedListing(listingId) {
     });
     const usersWhoCollected = usersWhoChoped.filter((user) => {
         return (
-            user.details.chopes &&
-            user.details.chopes.some((chope) => chope.collected === true)
+            user.details.chopes.some((chope) => chope.collected === true && chope.listingId === listingId)
         );
     });
 
@@ -421,7 +423,7 @@ function filterByName(foodArr, userInput){
         // console.log('arr', itemNameArr, 'query', query)
 
         if (matchString(formattedItemName, query)){
-            console.log(`formattedItemName: ${formattedItemName}, query: ${query}`);
+            // console.log(`formattedItemName: ${formattedItemName}, query: ${query}`);
             result.push(foodArr[i])
         }
     }
