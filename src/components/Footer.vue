@@ -16,33 +16,33 @@
         <!-- second column -->
 
         <div class="col-lg-2 text-white p-4 text-center text-lg-start">
-            <h3>Company</h3>
+            <h3>Socials</h3>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white" aria-current="page" href="#aboutUs">About Us</a>
+                    <a class="nav-link" aria-current="page" href="https://www.instagram.com/">Instagram</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#stats">Our Success</a>
+                    <a class="nav-link " href="https://www.facebook.com/">Facebook</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#partners">Key Partners</a>
+                    <a class="nav-link " href="https://sg.linkedin.com/">LinkedIn</a>
                 </li>
             </ul>
         </div>
 
         <!-- third column -->
         <div class="col-lg-2 text-white p-4 text-center text-lg-start">
-            <h3>Account</h3>
+            <h3>Socials</h3>
 
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white" aria-current="page" href="/logIn">Login</a>
+                    <a class="nav-link " aria-current="page" href="/logIn">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/signUp">Register</a>
+                    <a class="nav-link" href="/signUp">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/userProfile">User Profile</a>
+                    <a class="nav-link" href="/userProfile">User Profile</a>
                 </li>
             </ul>
         </div>
@@ -74,6 +74,15 @@
 </template>
 
 <style>
+    .nav-link{
+        text-decoration: none;
+        color: #ebf1e7;
+
+    }
+    .nav-link:hover{
+        color: #bee5b0;
+
+    }
     .footer {
         background-color: #0b2b26;
         padding-top: 20px;
@@ -92,7 +101,11 @@
         background-color: #558C03;
         color: white;
     }
-
+    .footerBtn:hover{
+        background-color: #558C03;
+        color: #ebf1e7;
+        border-color: #ebf1e7;
+    }
     .copyright{ 
         color: white; 
         padding: 10px;
