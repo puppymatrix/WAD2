@@ -4,11 +4,12 @@
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
     import  SearchBar  from '../components/SearchBar.vue'
-    import  Sidebar from 'primevue/sidebar';
-    import Slider from 'primevue/slider';
-    import SelectButton from 'primevue/selectbutton';
-    import Button from 'primevue/button';
+    import  Sidebar from 'primevue/sidebar'
+    import Slider from 'primevue/slider'
+    import SelectButton from 'primevue/selectbutton'
+    import Button from 'primevue/button'
     import { Icon } from '@iconify/vue'
+    import Dropdown from 'primevue/dropdown'
 
 </script>
 
@@ -50,21 +51,19 @@
                                     <li>Price: {{ selected.info.details.Price }}</li>
                                     <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
                                     <div class="row">
-                                        <button
-                                            type="button"
-                                            class="btn btn-sm btn-outline-success mt-1 me-2 pt-1 pb-1 "
+                                        <Button label="View more..." outlined style="border-radius:4px" class="my-2"
                                             @click.prevent="navigate=>
                                                 {
                                                     this.$router.push('/listing');
                                                     this.$emit('listingInfo', selected)
-                                                }">
-                                                <a href="#" class="text-success">View more...</a>
-                                        </button>
+                                                }"></Button>
 
-                                        <button class="btn btn-sm btn-success mt-1" @click.prevent="loadDirections" >
-                                            <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" />
+                                        
+                                        <Button :pt="{ button: 'bg-green-600 border-green-600'}"
+                                        @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
+                                            <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
                                             Get Directions
-                                        </button>
+                                        </Button>
                                        
                                     </div>
                             </div>
@@ -88,15 +87,13 @@
                                             <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
                                             aria-labelledby="basic" 
                                             :pt="{
-                                                label: { class: 'text-xs' },
-
                                                 button: ({ context }) => ({
-                                                    class: context.active ? 'bg-green-600 border-blue-600' : undefined
+                                                    class: context.active ? 'bg-primary' : undefined
                                                 })
-                                            }"
-                                            >
+                                            }" 
+                                            @click.prevent="toggleDisplayDirection=>{this.displayDirections=false}"
+                                            />
                                             
-                                        </SelectButton>
                                         </div>
                                 </div>
                             </div>
@@ -112,9 +109,6 @@
 
             <div class="row justify-content-center">
 
-            <!-- <div class="card flex justify-content-center"> -->
-
-
                 <div id="map" style="height:600px" class="col-10"></div>
                 
             </div>
@@ -122,36 +116,49 @@
             <div class="row" >
                 <div class="container col-10 mt-3" style="background-color: #F6FBF6;">
                     <div class="container" style="padding-left: 15%; padding-right: 15%">
-                        
+                       
+                        <div class="row justify-content-center align-items-center" >
+                           
+                            <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" class="md:w-20rem w-full">
+                                <template #option="slotProps">
+                                    <div class="p-d-flex p-ai-center">
+                                        <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
+                                        {{ slotProps.option.label }}
+                                    </div>
+                                </template>
+                            </Dropdown>
 
-                        <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
 
-                        <div class="row justify-content-left align-items-center" >
-                            <div class="col-3">
-                                <h6>Distance (in KM): {{ filterDistance }}</h6>
+                            <div class="row justify-content-center align-items-center mt-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
+                                <div class="col-4 d-flex justify-content-center ">
+                                    <h6 class="m-0">Distance (in KM): <b>{{ filterDistance }}</b></h6>
+                                </div>
+
+                                <div class="col-5">
+                                    <div class="container">
+                                        <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
+                                        :pt="{root: {class: 'bg-white'}}"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-1">
+                                    <Button @click.prevent="loadByDistance"
+                                    :pt="{ 
+                                            root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
+                                        }">
+                                        <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                                    </Button>
+                                </div>
                             </div>
-                            
-                            <div class="col-5 d-flex ">
-                                <Slider type="range" home=1 end=100 v-model="filterDistance" id="myRange" class="w-28rem"/>
-                            </div>
 
-                            <div class="col-3 ">
-                                <Button @click.prevent="loadByDistance"
-                                :pt="{ 
-                                        root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
-                                    }"
-                                >
-                                <Icon icon="ic:sharp-my-location" width="20" height="20" />
-                            </Button>
+                            <div class="row mt-2" v-else>
+                                <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
                             </div>
                         </div>
                     </div>
-                        
                 </div>
             </div>
             <!-- search bar  -->
-
-            
 
            
         </div>
@@ -164,18 +171,13 @@
     document.addEventListener('click', function(event) {
         // Check if the click event's target is not the element you're watching
         if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
-            // Click occurred outside the element
-            console.log('Click outside the element');
             this.displayDirections = false
         } else {
-            // Click occurred inside the element
-            console.log('Click inside the element');
         }
     });
     
     export default {
         mounted(){
-            // getUserLocation(),
              this.initMap()
              this.loadFood()
         },
@@ -187,6 +189,11 @@
                 modal: false,
                 travelModeOptions: ['TRANSIT', 'DRIVING'],
                 displayDirections: false,
+                filterBy: 'DISTANCE',
+                filterOptions: [
+                                {label: 'DISTANCE', value: 'DISTANCE', icon: 'mdi:food'}, 
+                                {label: 'NAME', value: 'NAME', icon: 'material-symbols:distance'}
+                            ],
 
                 //food loading variables
                 filterDistance: 10,
@@ -329,6 +336,7 @@
                         if (status == 'OK') {
                             console.log('result', result)
                             
+                            result.routes = [result.routes[0]]
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
                             this.directionsRenderer.setPanel(document.getElementById("sideBar"))
@@ -348,8 +356,6 @@
                 axios.get(url)
                 .then(
                     response => {
-                        // console.log(response)
-
                         const data = response.data.results[0];
                         var latitude = parseFloat(data.geometry.location.lat)
                         var longitude = parseFloat(data.geometry.location.lng)
@@ -360,7 +366,6 @@
                     error => {
                         console.log(error)
                         console.log(error.response.data.error_message)
-
                 })
             },
             
@@ -462,13 +467,5 @@
   box-sizing: border-box;
   overflow: scroll;
 }
-
-/* #sideBar {
-  flex: 0 1 auto;
-  padding: 0;
-} */
-/* #sideBar > div {
-  padding: 0.5rem;
-} */
 
 </style>
