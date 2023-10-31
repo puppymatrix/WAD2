@@ -125,26 +125,30 @@ import { Icon } from "@iconify/vue";
                     </div>
                 </div>
 
-                <div class="row mt-4">
+                <div class="row mt-3">
                     <div class="col">
-                        <p class="mb-1">Name of Listing:</p>
+                        <p class="mb-1">
+                            Name of Listing:
+                        </p>
                         <input
                             type="text"
                             id="listing_name"
                             v-model="listing_name"
                             
-                            class="d-inline form-control me-2 mb-3 w-100"
+                            class="d-inline form-control me-2 mb-1 w-100"
                             placeholder="Type Name of Listing"
                         />
+                        <span class="text-danger" v-if="errors.hasOwnProperty('listing_name')">{{ errors["listing_name"] }}</span>
                     </div>
 
                     <div class="col">
                         <p class="mb-1">Location:</p>
                         <places_api
                             @location-selected="updateLocation"
-                            class="d-inline form-control me-2 mb-3 w-100"
+                            class="d-inline form-control me-2 mb-1 w-100"
                             
                         />
+                        <span class="text-danger" v-if="errors.hasOwnProperty('location')">{{ errors["location"] }}</span>
                     </div>
                 </div>
 
@@ -152,14 +156,12 @@ import { Icon } from "@iconify/vue";
                     <div class="col">
                         <p class="mb-1">Description of Listing:</p>
                         <textarea
-                            class="form-control me-2 mb-3"
+                            class="form-control me-2 mb-1"
                             v-model="description"
                             placeholder="Type Description of Listing"
                         ></textarea>
                     </div>
                 </div>
-
-                <div class="row"></div>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -214,14 +216,15 @@ import { Icon } from "@iconify/vue";
                             :min-date="new Date()"
                             :enable-time-picker="false"
                             :format="format"
-                            class="me-2 mb-3"
+                            class="me-2 mb-1"
                             placeholder="Select Date"
                             
                         ></VueDatePicker>
+                        <span class="text-danger" v-if="errors.hasOwnProperty('location')">{{ errors["location"] }}</span>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col-md-6">
                         <p class="mb-1">Price:</p>
                         <input
@@ -239,7 +242,7 @@ import { Icon } from "@iconify/vue";
                     <div class="col-md-6">
                         <p class="mb-1">Quantity Available:</p>
                         <input
-                            class="d-inline form-control me-2 mb-3 w-100"
+                            class="d-inline form-control me-2 mb-1 w-100"
                             type="number"
                             id="qty_available"
                             min="0"
@@ -247,6 +250,7 @@ import { Icon } from "@iconify/vue";
                             
                             placeholder="Input Quantity"
                         />
+                        <span class="text-danger" v-if="errors.hasOwnProperty('location')">{{ errors["location"] }}</span>
                     </div>
                 </div>
 
@@ -331,6 +335,7 @@ export default {
             files: [],
             minDate: new Date(),
             visible: false,
+            errors: {},
         };
     },
     computed: {
@@ -374,12 +379,7 @@ export default {
                 check = false;
             }
             if (!this.location) {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please select a valid location!",
-                    life: 3000,
-                });
+                this.errors["location"] = "Please select a valid location";
                 check = false;
             }
             if (!this.category) {
@@ -392,12 +392,7 @@ export default {
                 check = false;
             }
             if (!this.listing_name) {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Error Message",
-                    detail: "Please enter a listing name!",
-                    life: 3000,
-                });
+                this.errors["listing_name"] = "Please enter a listing name";
                 check = false;
             }
             if (this.qty_available <= 0) {
