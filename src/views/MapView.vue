@@ -11,6 +11,7 @@
     import Button from 'primevue/button'
     import { Icon } from '@iconify/vue'
     import Dropdown from 'primevue/dropdown'
+    import Badge from 'primevue/badge'
 
 </script>
 
@@ -18,13 +19,11 @@
     
     <div class="row justify-content-center">
         <div class='col-1' v-if="visible == true" style="width: 25%"></div>
-        <div class="container col-9" style="width: 75%">
+        <div class="container col col-md-9 col-sm-12" style="width: 75%">
             <Sidebar v-model:visible="visible" :modal="false" style="width: 25%">
                     <h2>Listing Information</h2>
 
                     <div class="container-fluid">
-
-
 
                         <div class="card">
                             <div id="carouselExample" class="carousel slide">
@@ -34,7 +33,6 @@
                                         <img :src=url class="d-block w-100" alt="..." style="height: 300px; object-fit: cover"> 
                                 </div>
                                     
-                                
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
@@ -89,13 +87,13 @@
                                     <div class="row ps-0">
                                         <div id="travelGrp">
                                             <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
-                                            aria-labelledby="basic" 
+                                            aria-labelledby="basic"
                                             :pt="{
                                                 button: ({ context }) => ({
                                                     class: context.active ? 'bg-primary' : undefined
                                                 })
                                             }" 
-                                            @click.prevent="toggleDisplayDirection=>{this.displayDirections=false}"
+                                            @click.prevent="loadDirections"
                                             />
                                             
                                         </div>
@@ -112,7 +110,7 @@
                 </Sidebar>
 
             <div class="row justify-content-center">
-
+                <!-- visible: {{ visible }} display: {{ displayDirections }} selected: {{ selected }} -->
                 <div id="map" style="height:600px" class="col-10"></div>
                 
             </div>
@@ -134,18 +132,18 @@
 
 
                             <div class="row justify-content-center align-items-center mt-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
-                                <div class="col-4 d-flex justify-content-center ">
-                                    <h6 class="m-0">Distance (in KM): <b>{{ filterDistance }}</b></h6>
+                                <div id='filterBar' class="col col-4 col-sm-12 d-flex justify-content-center align-items-center">
+                                    <h6 class="m-0 me-2 pe-2">Distance (in KM): </h6><Badge :value="filterDistance"></Badge>
                                 </div>
 
-                                <div class="col-5">
+                                <div class="col col-5 col-md-6">
                                     <div class="container">
                                         <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
                                         :pt="{root: {class: 'bg-white'}}"/>
                                     </div>
                                 </div>
 
-                                <div class="col-1">
+                                <div class="col col-1">
                                     <Button @click.prevent="loadByDistance"
                                     :pt="{ 
                                             root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
@@ -182,9 +180,11 @@
         } else {
         }
     });
+
     
     export default {
         mounted(){
+            console.log('mounted')
              this.initMap()
              this.loadFood()
         },
@@ -194,12 +194,12 @@
                 //primevue variables
                 visible: false,
                 modal: false,
-                travelModeOptions: ['TRANSIT', 'DRIVING'],
+                travelModeOptions: ['TRANSIT', 'DRIVING', 'WALKING'],
                 displayDirections: false,
                 filterBy: 'DISTANCE',
                 filterOptions: [
-                                {label: 'DISTANCE', value: 'DISTANCE', icon: 'mdi:food'}, 
-                                {label: 'NAME', value: 'NAME', icon: 'material-symbols:distance'}
+                                {label: 'Distance', value: 'DISTANCE', icon: 'mdi:food'}, 
+                                {label: 'Name', value: 'NAME', icon: 'material-symbols:distance'}
                             ],
 
                 //food loading variables
@@ -213,7 +213,7 @@
                 // map variables
                 mapOptions: {
                     center: { lat: 1.3565952, lng: 103.851959 },
-                    zoom: 12,
+                    zoom: 11,
                     provideRouteAlternatives: true,
                     gestureHandling: 'cooperative',
                     mapId: '7fb5f582643b9459'
@@ -234,7 +234,7 @@
                                     departureTime: new Date(Date.now()),
                                     trafficModel: 'optimistic'
                                     },
-                    provideRouteAlternatives: true,
+                    provideRouteAlternatives: false,
                 },
                
 
@@ -253,22 +253,19 @@
         methods: {
             // map functions 
             async initMap(){
+
                 this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
 
                 this.loader = new Loader({ 
                     apiKey: this.key,
-                    version: "weekly",
-                    libraries: ["places", "marker", "maps", "routes"]
+                    version: "beta",
+                    // libraries: ["places", "marker", "maps", "routes"]
                 })
                 const map = await this.loader.importLibrary('maps')
-
 
                 const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
                        
                 const marker = await this.loader.importLibrary('marker')
-
-                // const animation = await this.loader.importLibrary('marker')
-                // const anim = await animation.Animation.DROP
 
                 if (this.routeRequest.destination){
                     const routes = await this.loader.importLibrary('routes')
@@ -300,7 +297,8 @@
                 this.map = unloadedMap
 
                 //load filtered food items 
-                console.log('foodItemsFiltered', this.foodItemsFiltered)
+                // console.log('foodItemsFiltered', this.foodItemsFiltered)
+
                 if (this.foodItemsFiltered.length > 0){
                     for(const item of this.foodItemsFiltered){
 
@@ -336,73 +334,30 @@
             },
 
             loadRoute(){
-                console.log('origin:', this.routeRequest.origin, 'destination:', this.routeRequest.destination)
+                // console.log('origin:', this.routeRequest.origin, 'destination:', this.routeRequest.destination)
                 if (this.directionsService != null){
 
                     var route = this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
-                            console.log('result', result)
-                            
+                            // console.log('result', result)
+                            var sideBar = document.getElementById("sideBar")
                             result.routes = [result.routes[0]]
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
-                            this.directionsRenderer.setPanel(document.getElementById("sideBar"))
+                            sideBar.innerHTML = '';
+                            this.directionsRenderer.setPanel(sideBar)
                         }
                     })
                 }
 
             },
-
-            //other functions 
-            getCoordinates() {
-                // this function gets the coordinates
-                const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
-
-                console.log(url)
-
-                axios.get(url)
-                .then(
-                    response => {
-                        const data = response.data.results[0];
-                        var latitude = parseFloat(data.geometry.location.lat)
-                        var longitude = parseFloat(data.geometry.location.lng)
-
-                        this.coord = {lat: latitude, lng: longitude}
-                    })
-                .catch(
-                    error => {
-                        console.log(error)
-                        console.log(error.response.data.error_message)
-                })
-            },
-            
-            searchLocation(){
-                this.getCoordinates()
-            },
-            getUserLocation(){
-                const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${this.key}`
-                axios.post(url)
-                .then(
-                    response => {
-                        const data = response.data
-                        this.userLocation = data.location
-                    }   
-                )
-
-                .catch(
-                    error => {
-                        console.log(error)
-                    }
-                )
-            },
             
             async loadFood(){
 
                 const data = getAllListings()
-
                 data.then(
                     listing => {
-                        console.log('all food loaded', listing)
+                        // console.log('all food loaded', listing)
                     
                         for (let i=0;i<listing.length;i++){
                             let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
@@ -416,6 +371,15 @@
                 )    
             },
 
+            loadDirections(){
+                if (this.selected != null){
+                    this.visible = true
+                    this.displayDirections = true
+                    
+                }
+                this.loadRoute()
+            },
+
             loadFoodByName(foodName){
                 this.searchQuery = foodName
                 this.foodItemsFiltered = filterByName(this.foodItems, this.searchQuery)
@@ -424,13 +388,13 @@
             loadByDistance(){
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
             },
-            loadDirections(){
-                if (this.visible){
-                    this.displayDirections = true
-                }
-                this.loadRoute()
+            
+            reloadDirections(){
+
             }
+           
         },
+       
         watch:{
             routeRequest:{
                 handler(){
@@ -443,22 +407,17 @@
                     this.initMap()
                 }
             },
-            mapOptions:{
-                handler(){
-                    this.initMap()
-                },
-                deep: true
-            },
+            
         },
 }
             
   </script>
 
 <style>
-.text-bg-listing {
+/* .text-bg-listing {
     background-color: #558C03;
     color: white;
-}
+} */
 .img {
     background-size: cover; 
     background-position:center; 
@@ -473,6 +432,16 @@
   max-height: 500px;
   box-sizing: border-box;
   overflow: scroll;
+}
+#filterBar {
+  font-size: calc(1rem + 0.1vw);
+  padding-right:2%
+}
+
+@media (min-width: 768px) {
+  #filterBar {
+    font-size: 1.5rem;
+  }
 }
 
 </style>

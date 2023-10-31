@@ -27,3 +27,11 @@ ul.p-cascadeselect-panel.p-cascadeselect-items.p-cascadeselect-sublist {
     padding-left: 0;
     margin-bottom: 0;
 }
+
+ul#pv_id_1_list.p-dropdown-items{
+    padding-left: 0;
+}
+div.p-button.p-component{
+    padding: 3px 6px;
+    font-size: 12px
+}

@@ -392,7 +392,6 @@ function filterByDistance(foodArr, filterDistance){
                 for(var i=0;i<foodArr.length;i++) {
                     var food = foodArr[i]
                     if (food.distance <= filterDistance){
-                        // console.log('wothin range')
                         result.push(food)
                     }
                 }
