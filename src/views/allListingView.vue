@@ -16,7 +16,7 @@ import { Icon } from "@iconify/vue";
         <!-- Map View button  -->
         <div class="container-fluid my-2">
             <div class="row">
-                <div class="col-10 p-0">
+                <div class="col-10 p-0 d-flex align-items-center justify-content-center">
                     <!-- search bar -->
                     <SearchBar @search="searchFood" />
                 </div>
