@@ -1,8 +1,10 @@
 <script setup>
     import CarouselMarquee from "../components/CarouselMarquee.vue";
+    import ScrollTop from 'primevue/scrolltop'
 </script>
 
 <template>
+    <ScrollTop/>
     <div class="container-fluid bod">
         <div class="row">
             <!-- Header Design -->
