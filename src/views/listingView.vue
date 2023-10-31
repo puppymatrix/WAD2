@@ -2,7 +2,6 @@
     import SearchBar from "../components/SearchBar.vue";
     import { getListing, getListingsByCategory } from "@/firebase/api.js"
     import { Icon } from "@iconify/vue";
-
 </script>
 
 <template>
@@ -53,7 +52,7 @@
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col">
-                            <h2>Listing: {{ listingInfo.ListingName }}</h2>
+                            <h2>Listing: <span id="name">{{ listingInfo.ListingName[0].toUpperCase() + listingInfo.ListingName.slice(1)  }}</span></h2>
                         </div>
                     </div>
 
@@ -130,32 +129,65 @@
             <div class="album py-2">
                 <div class="container-fluid px-0">
                     <div class="row g-3">
-                        <div class="col-lg-3 col-md-4 col-sm-12">
-                            <div class="card shadow-sm" v-for="listing in similarListing">
-                                <img v-for="photo in listing.details.ImageUrls" :src="photo" alt="" class="card-img-top" />
-                                <div class="card-body border-top border-2">
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">Category: {{ listing.details.Category }}</h6>
-                                    <h5 class="card-title">{{listing.details.ListingName}}</h5>
-                                    <p class="card-text d-flex align-items-center mb-3">
-                                        <IStreamlinetravel-map-location-pin-navigation-map-maps-pin-gps-location class="me-1"/> {{ listing.details.Location.name }}
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary d-flex align-items-center">
-                                        <IMdiuser class="me-1"/>{{listing.details.username}}
-                                    </h6>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center"
+                        <div
+                            class="col-lg-3 col-md-4 col-sm-12"
+                            v-for="listing in similarListing"
+                        >
+                        <router-link
+                                :to="{
+                                    name: 'listing',
+                                    query: { Id: listing.Id },
+                                }"
+                            >
+                            <div class="card h-100 shadow-sm">
+                                <img
+                                    :src="listing.ImageUrls[0]"
+                                    alt=""
+                                    class="card-img-top"
+                                />
+                                <div class="card-body border-top">
+                                    <h6
+                                        class="card-subtitle mb-2 text-body-secondary"
                                     >
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                            >
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
+                                        Category:
+                                        {{ listing.Category }}
+                                    </h6>
+                                    <h5 class="card-title">
+                                        Name:
+                                        {{ listing.ListingName }}
+                                    </h5>
+                                    <p
+                                        class="card-text d-flex align-items-center mb-3"
+                                    >
+                                        {{ listing.Location.name }}
+                                    </p>
+                                    <!-- need to getLister -->
+                                    <p
+                                        class="card-text d-flex align-items-center mb-3"
+                                    >
+                                        Price: {{ listing.Price }}
+                                        <br />
+                                        Distance: {{ listing.distance }}
+                                    </p>
+
+                                    <h6
+                                        class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
+                                    >
+                                        <p class="me-1">
+                                            {{ listing.owner }}
+                                        </p>
+                                    </h6>
+                                </div>
+                                <div class="card-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                    >
+                                        <a href="/listing">View</a>
+                                    </button>
                                 </div>
                             </div>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -166,19 +198,22 @@
 
 <script>
 export default {
+    components: {
+        SearchBar,
+    },
     mounted(){
         console.log('mounted')
         this.id = this.$route.query.Id
         this.getListingInfo()
-        this.loadNearListings()
+        // this.loadNearbyListings()
     },
     data(){
         return {
-            foodItems: [],
             similarListing: [], 
             listingInfo: [], 
             expiryDate: "",
             location: "",
+            listingCategory: "",
             id: null
         }
     },
@@ -193,22 +228,29 @@ export default {
 
                     this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
                     this.location = this.listingInfo.Location.name;
+                    this.listingCategory = this.listingInfo.Category;
+                }
+            )
+            this.loadNearbyListings();
+        },
+        loadNearbyListings(){
+            console.log("load nearby listings", this.listingCategory)
+            const data = getListingsByCategory(this.listingCategory)
+            data.then(
+                listings => {
+                    this.similarListing = listings.slice(0,4);
+                    console.log("similar listing", this.similarListing);
                 }
             )
         },
-
-        async loadNearListings(){
-            const data = getListingsByCategory(this.listingInfo.Category)
-            data.then(
-                listings => {
-                    console.log(listings)
-                    this.similarListing = listings;
-                    // not working as well 
-                }
-            )
-        }, 
-
-
+    },
+    watch: {
+        listingCategory:{
+            handler(){
+                this.getListingInfo();
+            }, 
+            deep: true
+        }
     }
     
 }
@@ -221,6 +263,12 @@ export default {
 
 #subheader{
     color: grey;
+}
+
+#name{
+    font-size: 2rem;
+    color: #558C03;
+    font-weight: bold;
 }
 
 #price{
@@ -238,6 +286,7 @@ export default {
     background-color: #558C03;
     padding: 10px;
     color: white;
+    font-size: 1rem;
 }
 
 .card-img-top {
