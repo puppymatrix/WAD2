@@ -16,7 +16,7 @@ import { Icon } from "@iconify/vue";
         <!-- Map View button  -->
         <div class="container-fluid my-2">
             <div class="row">
-                <div class="col-10 p-0">
+                <div class="col-10 p-0 d-flex align-items-center justify-content-center">
                     <!-- search bar -->
                     <SearchBar @search="searchFood" />
                 </div>
@@ -27,7 +27,10 @@ import { Icon } from "@iconify/vue";
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"
-                            style="background-color: #f6fbf6;color:rgba(33, 37, 41, 0.75)"
+                            style="
+                                background-color: #f6fbf6;
+                                color: rgba(33, 37, 41, 0.75);
+                            "
                             raised
                             text
                             plain
@@ -49,8 +52,8 @@ import { Icon } from "@iconify/vue";
 
         <div class="container-fluid">
             <div class="row filterBar">
-                    <div class="col-3">
-                        <CascadeSelect
+                <div class="col-3">
+                    <CascadeSelect
                         v-model="selectedFilter"
                         :options="filters"
                         optionLabel="cname"
@@ -61,12 +64,17 @@ import { Icon } from "@iconify/vue";
                         id="multi-select"
                         @change="filterBySelected"
                     />
-                    </div>
-                    <div class="col-2" v-if="selectedFilter != null">
-                        <Button severity="secondary" @click="checkQuery" class="rounded" raised><Icon icon="uil:times" width="20"/>&nbspClear Filter</Button>
-                    </div>
-                    
-                    
+                </div>
+                <div class="col-2" v-if="selectedFilter != null">
+                    <Button
+                        severity="secondary"
+                        @click="checkQuery"
+                        class="rounded"
+                        raised
+                        ><Icon icon="uil:times" width="20" />&nbspClear
+                        Filter</Button
+                    >
+                </div>
             </div>
 
             <div v-if="loading" class="container-fluid py-3 px-0">
@@ -92,72 +100,64 @@ import { Icon } from "@iconify/vue";
                     <div class="row g-3" v-if="check">
                         <div
                             class="col-lg-3 col-md-4 col-sm-12"
-                            v-for="item in foodItems"
+                            v-for="item in paginatedItems"
                         >
-                        <router-link
+                            <router-link
                                 :to="{
                                     name: 'listing',
                                     query: { Id: item.info.Id },
                                 }"
                             >
-                            <div class="card h-100 shadow-sm">
-                                <img
-                                    :src="item.info.details.ImageUrls[0]"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top">
-                                    <h6
-                                        class="card-subtitle mb-2 text-body-secondary"
-                                    >
-                                        Category:
-                                        {{ item.info.details.Category }}
-                                    </h6>
-                                    <h5 class="card-title">
-                                        Name:
-                                        {{ item.info.details.ListingName }}
-                                    </h5>
-                                    <p
-                                        class="card-text d-flex align-items-center mb-3"
-                                    >
-                                        {{ item.info.details.Location.name }}
-                                    </p>
-                                    <!-- need to getLister -->
-                                    <p
-                                        class="card-text d-flex align-items-center mb-3"
-                                    >
-                                        Price: {{ item.info.details.Price }}
-                                        <br />
-                                        Distance: {{ item.distance }}
-                                    </p>
-
-                                    <h6
-                                        class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
-                                    >
-                                        <p class="me-1">
-                                            {{ item.owner }}
+                                <div class="card h-100 shadow-sm">
+                                    <img
+                                        :src="item.info.details.ImageUrls[0]"
+                                        alt=""
+                                        class="card-img-top"
+                                    />
+                                    <div class="card-body border-top">
+                                        <h6
+                                            class="card-subtitle mb-2 text-body-secondary"
+                                        >
+                                            Category:
+                                            {{ item.info.details.Category }}
+                                        </h6>
+                                        <h5 class="card-title">
+                                            Name:
+                                            {{ item.info.details.ListingName }}
+                                        </h5>
+                                        <p
+                                            class="card-text d-flex align-items-center mb-3"
+                                        >
+                                            {{
+                                                item.info.details.Location.name
+                                            }}
                                         </p>
-                                    </h6>
-                                </div>
-                                <div class="card-footer">
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-outline-secondary"
-                                    >
+                                        <!-- need to getLister -->
+                                        <p
+                                            class="card-text d-flex align-items-center mb-3"
+                                        >
+                                            Price: {{ item.info.details.Price }}
+                                            <br />
+                                            Distance: {{ item.distance }}
+                                        </p>
 
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary"
-                                                @click="navigate=>{this.$router.push('/listing')}"
-                                            >
-                                                <a href="#">View</a>
-                                            </button>
-                                        </div>
+                                        <h6
+                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
+                                        >
+                                            <p class="me-1">
+                                                {{ item.owner }}
+                                            </p>
+                                        </h6>
                                     </div>
-
+                                    <div class="card-footer">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-secondary"
+                                        >
+                                            <a href="/listing">View</a>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                             </router-link>
                         </div>
                     </div>
@@ -241,6 +241,13 @@ import { Icon } from "@iconify/vue";
                     </div>
                 </div>
             </div>
+            <Paginator
+                :rows="rows"
+                :totalRecords="foodItems.length"
+                @page="updatePage"
+                :first="0"
+                class="my-2"
+            ></Paginator>
         </div>
 
         <!--Add Listing Button-->
@@ -306,6 +313,8 @@ export default {
                     ],
                 },
             ],
+            page: 0,
+            rows: 8,
         };
     },
 
@@ -318,8 +327,16 @@ export default {
                 return false;
             }
         },
+        paginatedItems() {
+            const start = this.page * this.rows;
+            const end = start + this.rows;
+            return this.foodItems.slice(start, end);
+        },
     },
     methods: {
+        updatePage(event) {
+            this.page = event.page;
+        },
         async loadListings() {
             const listings = await getAllListings();
             const users = await getAllUsernames();
@@ -371,10 +388,16 @@ export default {
             this.foodItemsFiltered = [];
             if (this.selectedFilter.type == "Price") {
                 const filterPrice = this.selectedFilter.cname;
-                this.foodItemsFiltered = this.filterByPrice(filterPrice, this.foodItems);
+                this.foodItemsFiltered = this.filterByPrice(
+                    filterPrice,
+                    this.foodItems
+                );
             } else if (this.selectedFilter.type == "Category") {
                 const filterCategory = this.selectedFilter.cname;
-                this.foodItemsFiltered = await this.filterByCategory(filterCategory, this.foodItems);
+                this.foodItemsFiltered = await this.filterByCategory(
+                    filterCategory,
+                    this.foodItems
+                );
             } else if (this.selectedFilter.type == "Distance") {
                 let filterDistance;
                 const distanceString = this.selectedFilter.cname;
@@ -389,18 +412,21 @@ export default {
                 } else if (distanceString == "Any") {
                     filterDistance = 99999;
                 }
-                this.foodItemsFiltered = this.filterByDistance(filterDistance, this.foodItems);
+                this.foodItemsFiltered = this.filterByDistance(
+                    filterDistance,
+                    this.foodItems
+                );
             }
             if (this.query) {
-                this.foodItemsFiltered = filterByName(this.foodItemsFiltered, this.query);
+                this.foodItemsFiltered = filterByName(
+                    this.foodItemsFiltered,
+                    this.query
+                );
             }
         },
         async filterByCategory(category, listings) {
             let res = [];
-            res = await getListingsByCategory(
-                category,
-                listings
-            );
+            res = await getListingsByCategory(category, listings);
             return res;
         },
         filterByPrice(filterPrice, listings) {
@@ -429,11 +455,11 @@ export default {
             return res;
         },
         checkQuery() {
-            this.selectedFilter=null
+            this.selectedFilter = null;
             if (this.query !== "") {
                 this.searchFood(this.query);
             }
-        }
+        },
     },
 };
 </script>
