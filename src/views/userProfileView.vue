@@ -1,8 +1,10 @@
 <script setup>
 import { getUser } from "../firebase/api.js"
+import ScrollTop from 'primevue/scrolltop'
 </script>
 
 <template>
+    <ScrollTop/>
 <div class="container-fluid">
     <div class="row" id="top">
         <!-- LHS: sticky navbar -->
@@ -289,10 +291,10 @@ import { getUser } from "../firebase/api.js"
             
         </div>
     </div> 
-    <a id="linkTop" href="#top">
+    <!-- <a id="linkTop" href="#top"> -->
         <!-- <img src="arrow"> -->
-        Back to Top
-    </a>
+        <!-- Back to Top
+    </a> -->
 </div> 
 
 </template>
