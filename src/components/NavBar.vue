@@ -17,9 +17,9 @@
                 <a href="/"><img src="../components/icons/foodcatch-logo.png" style="height: 40px;" alt="" class="img-fluid" id="logo"></a>
             </a>
             <!-- toggle button???? -->
-            <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            <button class="navbar-toggler btn custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             >
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon custom-toggler"></span>
             </button>
 
             <!-- navbar -->
@@ -113,6 +113,10 @@ export default {
 </script>
 
 <style scoped>
+.custom-toggler {
+    border-color:#0b2b26 ;
+    background-color:#4caf50;
+}
 @media (min-width: 768px) {
 
     #pinned{
