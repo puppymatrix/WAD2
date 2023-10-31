@@ -17,6 +17,7 @@ declare module 'vue' {
     BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
     BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
     BFormSelectOptionGroup: typeof import('bootstrap-vue-next')['BFormSelectOptionGroup']
+    BPagination: typeof import('bootstrap-vue-next')['BPagination']
     CarouselMarquee: typeof import('./src/components/CarouselMarquee.vue')['default']
     CarouselMarquee2: typeof import('./src/components/CarouselMarquee2.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
