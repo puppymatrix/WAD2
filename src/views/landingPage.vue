@@ -14,8 +14,8 @@
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-bind="searchInput">
-                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-model="searchInput">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @click="navigate">Let's Go!</button>
                     </div>
                 </div>
             </div>
@@ -360,7 +360,6 @@ h1{
 
 <script >
     
-    
 
 // import { db } from "@/firebase";
 // import { db } from "@/firebase";
@@ -401,6 +400,9 @@ export default {
     //     Vue3Marquee
     // },
   methods:{
+    navigate(){
+    this.$router.push(`/allListings?search=${this.searchInput}`)
+    },
     typeText(){
         if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
             if (!this.typeStatus){

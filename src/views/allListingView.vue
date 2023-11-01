@@ -105,7 +105,7 @@ import { Icon } from "@iconify/vue";
                                     query: { Id: item.info.Id },
                                 }"
                             >
-                                <div class="card h-100 shadow-sm">
+                                <div class="card h-100">
                                     <img
                                         :src="item.info.details.ImageUrls[0]"
                                         alt=""
@@ -259,6 +259,8 @@ export default {
     created() {
         this.loadListings();
         this.loadCategories();
+        console.log(this.loadFromLandingPage(this.$route.query.search)) //this returns undefined 
+        console.log(this.$route.query.search)
     },
     data() {
         return {
@@ -356,6 +358,7 @@ export default {
             }
             this.loading = false;
             this.loaded = true;
+            console.log("loaded all listings")
         },
 
         async loadCategories() {
@@ -368,6 +371,10 @@ export default {
                 });
             }
             // this.allCategories = categories;
+        },
+
+        loadFromLandingPage(searchVal){
+             this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
         },
         async searchFood(searchVal) {
             this.query = searchVal;
@@ -464,6 +471,11 @@ export default {
 </script>
 
 <style scoped>
+.card:hover{
+    box-shadow: 5px 5px 5px lightgray;
+    transform: scale(1.02);
+    transition: all 0.3s ease-in-out;
+}
 .card-img-top {
     width: 100%;
     height: 25vw;
