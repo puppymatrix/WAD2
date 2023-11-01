@@ -10,7 +10,6 @@
             <!-- Header Design -->
             <div class="col px-0 firstRow">
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
-
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
@@ -21,18 +20,19 @@
             </div>
         </div>
         <div class="row secondRow">
+            <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Food Near You</h2>
             <!-- <CarouselMarquee/> -->
             <CarouselMarquee/>
         </div>
         <!-- problematic carousel row -->
-        <div class="row secondRow">
+        <!-- <div class="row secondRow">
           <div class="col">
             <div class="container text-center my-4">
             <h2 class="font-weight-light">Featured: Food Near You</h2>
             <div class="row mx-auto my-auto justify-content-center">
                 <div id="reccoCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" role="listbox">
-                    <!-- <div class="carousel-inner" role="listbox" v-html="carousel"> -->
+                    <div class="carousel-inner" role="listbox" v-html="carousel">
                         <div class="carousel-item active">
                             <div class="col-md-3">
                                 <div class="card">
@@ -94,10 +94,10 @@
                                     <div class="card-img-overlay">Slide 6</div>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
                     </div>
-                    <!-- buttons -->
+                    
                     <a class="carousel-control-prev bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </a>
@@ -108,7 +108,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- About the Company -->
         <div id="aboutUs" class="row thirdRow">
@@ -278,6 +278,11 @@ h1{
 
 .secondRow{
     background-color: #fffdd0;
+}
+
+.carouselHeader{
+    color:  #0b2b26;
+    text-align: center;
 }
 
 
