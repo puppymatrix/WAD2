@@ -59,7 +59,7 @@ async function getListingsByCategory(category, listings = null) {
     if (listings == null) {
         const listingsRef = collection(db, "listings");
         //supp to make query case insensitive
-        const q = query(listingsRef, where("Category", ">=", category.toLowerCase()), where("Category", "<=", category.toLowerCase() + "\uf8ff"));
+        const q = query(listingsRef, where("Category", "==", category));
         const querySnapshot = await getDocs(q);
         
     
