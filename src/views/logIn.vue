@@ -9,7 +9,7 @@
             <div class="col-md-6 px-5">
                 <!-- filler -->
                 <div class="container" style="padding-top:20%">
-                    <h1 class = "m-4 ms-0">Log In</h1>
+                    <h1>Log In</h1>
 
                     <form @submit.prevent="checkCredentials">
                         <div class="row">
@@ -18,21 +18,15 @@
                                 <input type="email" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
                             </div>
                         </div>
-  
-
 
                         <div class="row">
-                            <!-- <div class="mb-3 pe-0"> -->
                                 <div class="col mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" class="form-control" v-model="formData.password" id="password" placeholder="Enter Password">    
                                     <label class="mx-2"><input type="checkbox" id="toggle-password" v-bind="showPassword" @click="togglePassword()"/> 
                                 <div id="pwStatus"> &nbsp{{ pwStatus }}</div></label>               
                                     <br>
-                                   
                                 </div>
-                                
-                            <!-- </div> -->
                         </div>
                         
                         <div class="row">
