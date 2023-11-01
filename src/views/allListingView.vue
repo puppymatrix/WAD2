@@ -16,7 +16,9 @@ import { Icon } from "@iconify/vue";
         <!-- Map View button  -->
         <div class="container-fluid my-2">
             <div class="row">
-                <div class="col-10 p-0 d-flex align-items-center justify-content-center">
+                <div
+                    class="col-10 p-0 d-flex align-items-center justify-content-center"
+                >
                     <!-- search bar -->
                     <SearchBar @search="searchFood" />
                 </div>
@@ -149,14 +151,7 @@ import { Icon } from "@iconify/vue";
                                             </p>
                                         </h6>
                                     </div>
-                                    <div class="card-footer">
-                                        <button
-                                            type="button"
-                                            class="btn btn-sm btn-outline-secondary"
-                                        >
-                                            <a href="/listing">View</a>
-                                        </button>
-                                    </div>
+                                    
                                 </div>
                             </router-link>
                         </div>
@@ -167,7 +162,7 @@ import { Icon } from "@iconify/vue";
                     >
                         <div
                             class="col-lg-3 col-md-4 col-sm-12"
-                            v-for="item in foodItemsFiltered"
+                            v-for="item in paginatedItems"
                         >
                             <router-link
                                 :to="{
@@ -216,14 +211,7 @@ import { Icon } from "@iconify/vue";
                                             </p>
                                         </h6>
                                     </div>
-                                    <div class="card-footer">
-                                        <button
-                                            type="button"
-                                            class="btn btn-sm btn-outline-secondary"
-                                        >
-                                            <a href="/listing">View</a>
-                                        </button>
-                                    </div>
+                                    
                                 </div>
                             </router-link>
                         </div>
@@ -241,12 +229,13 @@ import { Icon } from "@iconify/vue";
                     </div>
                 </div>
             </div>
-            <Paginator
+            <Paginator v-if="!(!check && foodItemsFiltered.length == 0)"
                 :rows="rows"
-                :totalRecords="foodItems.length"
+                :totalRecords="listLength"
                 @page="updatePage"
                 :first="0"
                 class="my-2"
+                :key="paginatorKey"
             ></Paginator>
         </div>
 
@@ -315,6 +304,8 @@ export default {
             ],
             page: 0,
             rows: 8,
+            listLength: 0,
+            paginatorKey: 0,
         };
     },
 
@@ -328,9 +319,18 @@ export default {
             }
         },
         paginatedItems() {
+            let list;
+            if (this.check) {
+                list = this.foodItems;
+                this.listLength = this.foodItems.length;
+                
+            } else if (!this.check && this.foodItemsFiltered.length > 0) {
+                list = this.foodItemsFiltered;
+                this.listLength = this.foodItemsFiltered.length;
+            } 
             const start = this.page * this.rows;
             const end = start + this.rows;
-            return this.foodItems.slice(start, end);
+            return list.slice(start, end);
         },
     },
     methods: {
@@ -386,6 +386,8 @@ export default {
         },
         async filterBySelected() {
             this.foodItemsFiltered = [];
+            this.page = 0;
+            this.paginatorKey++;
             if (this.selectedFilter.type == "Price") {
                 const filterPrice = this.selectedFilter.cname;
                 this.foodItemsFiltered = this.filterByPrice(
@@ -456,6 +458,8 @@ export default {
         },
         checkQuery() {
             this.selectedFilter = null;
+            this.page = 0;
+            this.paginatorKey++;
             if (this.query !== "") {
                 this.searchFood(this.query);
             }
