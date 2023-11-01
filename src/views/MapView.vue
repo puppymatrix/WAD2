@@ -96,7 +96,7 @@
                     </div>
                 </Sidebar>
 
-            visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }}
+            <!-- visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }} -->
             <div class="row justify-content-center">
                 <div id="map" style="height:600px" class="col-10"></div>
             </div>
