@@ -257,14 +257,25 @@ export default {
         SearchBar,
     },
     created() {
-        this.loadListings();
-        this.loadCategories();
-        console.log(this.loadFromLandingPage(this.$route.query.search)) //this returns undefined 
-        console.log(this.$route.query.search)
-    },
+
+            this.loadListings();
+            this.loadCategories();
+            this.query = this.$route.query.search
+            console.log(this.query)
+            if(this.query != undefined){ //if a value is passed across
+                this.searchFood(this.query).then(result => {
+                    console.log("searched")
+                    console.log(this.foodItemsFiltered)
+                })
+            }
+        },
+                
+        
+
+    
     data() {
         return {
-            query: "",
+            query: undefined,
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
