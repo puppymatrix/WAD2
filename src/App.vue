@@ -15,7 +15,7 @@ import { Icon } from "@iconify/vue";
         <Footer />
     </div>
     <Dialog
-        v-model:visible="visible"
+        v-model:visible="visibleBottom"
         modal
         header="Header"
         :style="{ width: '40vw' }"
@@ -93,7 +93,7 @@ export default {
                 // console.log(uid);
 
                 // if (this.userLocation != "")
-                this.$store.commit("setLocation", this.userLocation); // Call the setUser mutation to update the state
+                // this.$store.commit("setLocation", this.userLocation); // Call the setUser mutation to update the state
             } else {
                 // User is signed out
                 this.$store.commit("setUser", null); // Call the setUser mutation to update the state
