@@ -1,34 +1,22 @@
 <script setup>
-    import SearchBar from "../components/SearchBar.vue";
-    import { getListing, getListingsByCategory } from "@/firebase/api.js";
+    import { getListing, getListingsByCategory, getUsersWhoChopedCollectedListing, getUser, chopeListing, getAllUsernames, calculateDistance } from "@/firebase/api.js";
     import { Icon } from "@iconify/vue";
 </script>
 
 <template>
 
     <body class="px-5 py-2">
-        <!-- search bar -->
-
-        <!-- <SearchBar @search="searchFood"/> -->
-
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-10 p-0">
-                    <!-- search bar -->
-                    <!-- <SearchBar /> -->
-                </div>
-
-            </div>
-        </div>
-
 
         <div class="container-fluid my-2 filterBar">
             <div class="row">
                 <!-- carousel -->
-                <div class="col-md-6 display-flex align-item-center justify-content-center">
-                    <BCarousel controls indicators imgHeight="450px">
-                        <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos" />
+                <div class="col-md-6 display-flex align-item-center justify-content-center m-0" v-if="listingInfo.ImageUrls.length > 1">
+                    <BCarousel controls indicators>
+                        <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos"  style="width: 100%; height: 100%; object-fit: cover;"/>
                     </BCarousel>
+                </div>
+                <div class="col-md-6 display-flex align-item-center justify-content-center" v-else>
+                    <img :src="listingInfo.ImageUrls[0]" alt="" class="card-img" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <div class="col-md-6">
                     <div class="row">
@@ -36,7 +24,7 @@
                             <h2 class="d-inline">Listing: <span id="name">{{ listingInfo.ListingName[0].toUpperCase() + listingInfo.ListingName.slice(1)  }}</span></h2>
                         </div>
                         <div
-                    class="col d-flex align-items-center justify-content-center"
+                    class="col d-flex align-items-center justify-content-start"
                 >
 
 
@@ -47,7 +35,7 @@
                                 }"
                             >
                             <Button
-                        style="background-color: #343a40;color:white"
+                        style="background-color: #343a40;color:white;"
                         @click="checkQuery"
                         class="rounded"
                         raised
@@ -114,8 +102,8 @@
                         <div class="col">
                             <div class="d-grid">
                                 <button
-                                    class="btn btn-success text-bg-listing"
-                                    type="button"
+                                    class="btn btn-success text-bg-listing btn-lg"
+                                    type="button" @click="chopeThisListing()"
                                 >
                                     Chope!
                                 </button>
@@ -126,9 +114,44 @@
             </div>
         </div>
 
-        <hr>
+        <!-- Chope Info -->
+        <div class="container-fluid my-3" v-if="owner == currentUserInfo">
+            <hr>
+            <div class="row d-flex justify-content-center">
+                <div class="chopedInfo col-md-5 bg-secondary rounded-3">
+                    <div class="chopedHeader">
+                        <h4>Users who choped</h4>
+                    </div>
+
+                    <form>
+                        <div class="userInfo" v-for="user in userNotCollect" :key="user.Id">
+                            <input type="checkbox" v-model="user.Id" @click="collectItem(user)" id="user.Id">
+                            <label for="user.Id" class="strikethrough"> {{user.details.username}} choped! </label><br>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="col-md-1"></div>
+                <div class="chopedInfo col-md-5 bg-secondary rounded-3">
+                    <div class="chopedHeader">
+                        <h4>Users who collected</h4>
+                    </div>
+
+                    <div>
+                        <div class="userInfo" v-for="user in userCollect" :key="user.Id">
+                            <input type="checkbox" v-model="user.Id" @click="notCollected(user)" checked>
+                            <label for="user.Id" > {{user.details.username}} collected! </label><br>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <hr> 
+        </div>
+
         <!-- More Listings -->
-        <div class="container-fluid">
+        <div class="container-fluid" v-else>
+            <hr>
             <h3>Similar food listings</h3>
             <div class="album py-2">
                 <div class="container-fluid px-0">
@@ -145,7 +168,7 @@
                             >
                             <div class="card h-100 shadow-sm">
                                 <img
-                                    :src="listing.ImageUrls[0]"
+                                    :src="listing.info.details.ImageUrls[0]"
                                     alt=""
                                     class="card-img-top"
                                 />
@@ -154,22 +177,22 @@
                                         class="card-subtitle mb-2 text-body-secondary"
                                     >
                                         Category:
-                                        {{ listing.Category }}
+                                        {{ listing.info.details.Category }}
                                     </h6>
                                     <h5 class="card-title">
                                         Name:
-                                        {{ listing.ListingName }}
+                                        {{ listing.info.details.ListingName }}
                                     </h5>
                                     <p
                                         class="card-text d-flex align-items-center mb-3"
                                     >
-                                        {{ listing.Location.name }}
+                                        {{ listing.info.details.Location.name }}
                                     </p>
                                     <!-- need to getLister -->
                                     <p
                                         class="card-text d-flex align-items-center mb-3"
                                     >
-                                        Price: {{ listing.Price }}
+                                        Price: {{ listing.info.details.Price }}
                                         <br />
                                         Distance: {{ listing.distance }}
                                     </p>
@@ -182,14 +205,6 @@
                                         </p>
                                     </h6>
                                 </div>
-                                <div class="card-footer">
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-outline-secondary"
-                                    >
-                                        <a href="/listing">View</a>
-                                    </button>
-                                </div>
                             </div>
                             </router-link>
                         </div>
@@ -201,6 +216,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
     data(){
         return {
@@ -209,16 +225,29 @@ export default {
             expiryDate: "",
             location: "",
             listingCategory: "",
-            id: null
+            id: null,
+            owner: "",
+            userChope: [],
+            userCollect: [],
+            userNotCollect: [],
+            currentUserInfo:"",
         }
     },
     created(){
-        console.log(this.$route.query.Id);
+        // console.log(this.$route.query.Id);
         this.id = this.$route.query.Id;
         this.getListingInfo();
         this.loadNearbyListings();
+        this.loadChopes();
+        this.chopeThisListing();
+    },
+    computed: {
+        ...mapGetters(["isAuthenticated","currentUser", "currentUserLocation"]),
     },
     methods:{
+        getUserInfo(){
+            this.currentUserInfo = this.currentUser;
+        },
         async getListingInfo(){
             const data = getListing(this.id)
             data.then(
@@ -230,29 +259,101 @@ export default {
                     this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
                     this.location = this.listingInfo.Location.name;
                     this.listingCategory = this.listingInfo.Category;
+                    this.owner = this.listingInfo.Owner;
                 }
             )
             this.loadNearbyListings();
+
+            if (this.isAuthenticated){
+                this.getUserInfo();
+                this.loadChopes();
+            }
         },
         loadNearbyListings(){
             console.log("load nearby listings", this.listingCategory)
             const data = getListingsByCategory(this.listingCategory)
             data.then(
                 listings => {
-                    this.similarListing = listings.slice(0,4);
+                    console.log("raw similar listings", listings)
+                    const users = getAllUsernames();
+                    console.log(users);
+
+                    for (const listing of listings.slice(0, 4)) {
+                        let distanceToUser = Number.parseFloat(
+                            calculateDistance(
+                                this.currentUserLocation.lat,
+                                this.currentUserLocation.lng,
+                                listing.details.Location.latitude,
+                                listing.details.Location.longitude
+                            ).toFixed(3)
+                        );
+                        const owner = users[listing.details.Owner];
+
+                        this.similarListing.push({
+                            info: listing,
+                            distance: distanceToUser,
+                            owner: owner,
+                        });
+                    }
+
                     console.log("similar listing", this.similarListing);
                 }
             )
         },
+        loadChopes(){
+            const data = getUsersWhoChopedCollectedListing(this.id)
+            data.then(
+                chopes => {
+                    console.log(chopes)
+                    this.userChope = chopes.usersWhoChoped;
+                    this.userCollect = chopes.usersWhoCollected;
+                    this.userNotCollect = this.userChope;
+                    let count = 0;
+                    for (let i = 0; i < this.userChope.length; i++) {
+                        for (let y = 0; this.userCollect.length; y++){
+                            console.log(this.userChope[i].Id)
+                            console.log(this.userCollect[y].Id)
+                            if (this.userChope[i].Id === this.userCollect[y].Id){
+                                this.userNotCollect.splice(i-count, 1);
+                                count ++;
+                            }
+                        }
+                    }
+                    console.log(count);
+                    console.log(this.userNotCollect)
+                    console.log(this.userCollect)
+                }
+            )
+        },
+        collectItem(user){
+            console.log(user);
+            this.userCollect.push(user);
+            let checkbox = document.getElementById("user.Id");
+            if (checkbox.checked){
+                console.log("checked")
+                checkbox.disabled = true;
+                console.log("help", checkbox.disabled)
+            }
+            console.log(this.userCollect);
+            console.log(this.userNotCollect);
+        },
+        notCollected(user){
+            console.log(user);
+            this.userCollect.splice(this.userCollect.indexOf(user), 1);
+            let checkbox = document.getElementById("user.Id");
+            if (checkbox.checked){
+                console.log("checked")
+                checkbox.checked = false;
+                checkbox.disabled = false;
+                console.log("help", checkbox.disabled)
+            }
+        },
+        chopeThisListing(){
+            chopeListing(this.id, this.currentUser);
+            console.log("chope success");
+        },
     },
-    // watch: {
-    //     listingCategory:{
-    //         handler(){
-    //             this.getListingInfo();
-    //         }, 
-    //         deep: true
-    //     }
-    // }
+
     
 }
 
@@ -311,6 +412,45 @@ export default {
     padding: 10px;
     margin: 5px 1px;
     border-radius: 5px;
+}
+
+.chopedInfo{
+    height: auto;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+
+.chopedHeader{
+    background-color: #83A638;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: auto;
+    text-align: center;
+}
+
+.userInfo{
+    background-color: lightgrey;
+    padding: 3px;
+    border-radius: 5px;
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+    font-size: 20px;
+    height: auto;
+}
+
+input[type=checkbox]{
+    margin-right: 10px;
+}
+
+input[type=checkbox]:checked + label.strikethrough {
+    text-decoration: line-through;
+}
+
+input[type=checkbox]:not(:checked) + label.strikethrough {
+    text-decoration: none;
 }
 
 </style>
