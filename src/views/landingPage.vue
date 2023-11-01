@@ -151,17 +151,17 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
                 <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
                 <p class="statsDesc">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
                 <p class="statsDesc">This causes global warming and climate change!</p>
             </div>
