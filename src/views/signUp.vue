@@ -10,7 +10,7 @@
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
-        <div class="col-md-6 px-0">
+        <div class="col-sm-6 px-0">
             <img src="../components/images/landingPage/groceries.webp" alt=""  style="object-fit: cover; height:100%;width:100%">
         </div>
         
