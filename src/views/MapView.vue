@@ -18,56 +18,45 @@
 <template>
     
     <div class="row justify-content-center">
-        <div class='col-1' v-if="visible == true" style="width: 25%"></div>
-        <div class="container col col-md-9 col-sm-12" style="width: 75%">
-            <Sidebar v-model:visible="visible" :modal="false" style="width: 25%">
+        <div class='col-1' v-if="visible == true && sideBarPosition == 'left'" style="width: 25%"></div>
+        <div class="col-9">
+            <div class="container" >
+            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition">
                     <h2>Listing Information</h2>
 
                     <div class="container-fluid">
 
                         <div class="card">
-                            <div id="carouselExample" class="carousel slide">
-                                <div class="carousel-inner"
-                                    v-for="(url, index) in selected.info.details.ImageUrls" :key="index" 
-                                    :class="index == 0 ? 'carousel-item active mt-3' : 'carousel-item mt-3'" >                
-                                        <img :src=url class="d-block w-100" alt="..." style="height: 300px; object-fit: cover"> 
-                                </div>
-                                    
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-
-                            </div>
+                           
+                            <BCarousel controls indicators imgHeight="300px">
+                                <BCarouselSlide v-for="photos in selected.info.details.ImageUrls" :img-src="photos" />
+                            </BCarousel>
 
                             <div class="card-body">
 
                                 <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
-                                    <li>Category: {{ selected.info.details.Category }}</li>
-                                    <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
-                                    <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
-                                    <li>Price: {{ selected.info.details.Price }}</li>
-                                    <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
-                                    <div class="row">
-                                        <Button label="View more..." outlined style="border-radius:4px" class="my-2"
-                                            @click.prevent="navigate=>
-                                                {
-                                                    this.$router.push('/listing');
-                                                    this.$emit('listingInfo', selected)
-                                                }"></Button>
 
-                                        
-                                        <Button :pt="{ button: 'bg-green-600 border-green-600'}"
-                                        @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
-                                            <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
-                                            Get Directions
-                                        </Button>
-                                       
-                                    </div>
+                                <li>Category: {{ selected.info.details.Category }}</li>
+                                <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
+                                <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
+                                <li>Price: {{ selected.info.details.Price }}</li>
+                                <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
+                                <div class="row">
+                                    <Button label="View more..." outlined style="border-radius:4px" class="my-2"
+                                        @click.prevent="navigate=>
+                                            {
+                                                this.$router.push('/listing');
+                                                this.$emit('listingInfo', selected)
+                                            }"></Button>
+
+                                    
+                                    <Button :pt="{ button: 'bg-green-600 border-green-600'}"
+                                    @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
+                                        <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
+                                        Get Directions
+                                    </Button>
+                                    
+                                </div>
                             </div>
                         </div>
 
@@ -95,7 +84,6 @@
                                             }" 
                                             @click.prevent="loadDirections"
                                             />
-                                            
                                         </div>
                                 </div>
                             </div>
@@ -110,7 +98,6 @@
                 </Sidebar>
 
             <div class="row justify-content-center">
-                <!-- visible: {{ visible }} display: {{ displayDirections }} selected: {{ selected }} -->
                 <div id="map" style="height:600px" class="col-10"></div>
                 
             </div>
@@ -133,7 +120,7 @@
 
                             <div class="row justify-content-center align-items-center mt-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
                                 <div id='filterBar' class="col col-4 col-sm-12 d-flex justify-content-center align-items-center">
-                                    <h6 class="m-0 me-2 pe-2">Distance (in KM): </h6><Badge :value="filterDistance"></Badge>
+                                    <h6 class="m-0 me-2 pe-2">Distance (in KM): </h6><span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
                                 </div>
 
                                 <div class="col col-5 col-md-6">
@@ -159,16 +146,12 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
-            <!-- search bar  -->
-
-           
         </div>
+        </div>
+       
     </div>    
-        <!-- <div class="col-1" ></div> -->
   </template>
 
   <script>
@@ -236,8 +219,6 @@
                                     },
                     provideRouteAlternatives: false,
                 },
-               
-
             }
         },
         props: {
@@ -248,7 +229,10 @@
         },
         
         computed :{
-            ...mapGetters(['currentUserLocation'])
+            ...mapGetters(['currentUserLocation']),
+            sideBarPosition() {
+                return window.innerWidth < 768 ? 'bottom' : 'left';
+            },
         },
         methods: {
             // map functions 
@@ -296,9 +280,6 @@
                 })
                 this.map = unloadedMap
 
-                //load filtered food items 
-                // console.log('foodItemsFiltered', this.foodItemsFiltered)
-
                 if (this.foodItemsFiltered.length > 0){
                     for(const item of this.foodItemsFiltered){
 
@@ -326,22 +307,18 @@
                                 lat: item.info.details.Location.latitude, 
                                 lng: item.info.details.Location.longitude
                             }
-
                         });
                     }
                 }
-                
             },
 
             loadRoute(){
-                // console.log('origin:', this.routeRequest.origin, 'destination:', this.routeRequest.destination)
                 if (this.directionsService != null){
 
                     var route = this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
-                            // console.log('result', result)
                             var sideBar = document.getElementById("sideBar")
-                            result.routes = [result.routes[0]]
+                            // result.routes = [result.routes[0]]
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
                             sideBar.innerHTML = '';
@@ -349,7 +326,6 @@
                         }
                     })
                 }
-
             },
             
             async loadFood(){
@@ -379,6 +355,8 @@
                 }
                 this.loadRoute()
             },
+
+
 
             loadFoodByName(foodName){
                 this.searchQuery = foodName
@@ -423,25 +401,35 @@
     background-position:center; 
     max-height: 400px;
 }
-#sideBar {
+/* #sideBar {
   flex-basis: 15rem;
   flex-grow: 1;
   padding: 1rem;
-  /* max-width: 30rem; */
   height: 100%;
   max-height: 500px;
   box-sizing: border-box;
   overflow: scroll;
-}
+} */
 #filterBar {
   font-size: calc(1rem + 0.1vw);
   padding-right:2%
+}
+
+.Sidebar {
+    width: 25%
 }
 
 @media (min-width: 768px) {
   #filterBar {
     font-size: 1.5rem;
   }
+
+  .Sidebar {
+    width: 100%;
+    height: 200%
+  }
 }
+
+
 
 </style>

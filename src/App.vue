@@ -15,7 +15,7 @@ import { Icon } from "@iconify/vue";
         <Footer />
     </div>
     <Dialog
-        v-model:visible="visible"
+        v-model:visible="visibleBottom"
         modal
         header="Header"
         :style="{ width: '40vw' }"
