@@ -25,7 +25,7 @@ import { Icon } from "@iconify/vue";
     >
         <template #container="slotProps">
             <Button
-                @click="this.$store.commit('setVisible', false)"
+                @click="close"
                 plain
                 text
                 class="absolute top-0 right-0 m-4"
@@ -123,6 +123,9 @@ export default {
             this.$router.push("/logIn");
             this.$store.commit("setVisible", false);
         },
+        close() {
+            this.$store.commit('setVisible', false);
+        }
     },
 };
 </script>
