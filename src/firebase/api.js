@@ -65,7 +65,10 @@ async function getListingsByCategory(category, listings = null) {
     
         querySnapshot.forEach((doc) => {
             if (doc.exists()) {
-                results.push(doc.data());
+                results.push({
+                    Id: doc.id,
+                    details: doc.data(),
+                });
             } else {
                 console.log("No such document!");
             }
