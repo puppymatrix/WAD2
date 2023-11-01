@@ -296,6 +296,11 @@ h1{
     opacity: 80%;
 }
 
+.stats:hover{
+    opacity: 100%;
+}
+
+
 .statsHeader{
     color:  #0b2b26;
     text-align: center;
