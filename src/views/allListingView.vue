@@ -303,7 +303,7 @@ export default {
                 },
             ],
             page: 0,
-            rows: 8,
+            rows: 12,
             listLength: 0,
             paginatorKey: 0,
         };
