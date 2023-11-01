@@ -11,7 +11,6 @@
     import Button from 'primevue/button'
     import { Icon } from '@iconify/vue'
     import Dropdown from 'primevue/dropdown'
-    import Badge from 'primevue/badge'
 
 </script>
 
@@ -42,12 +41,15 @@
                                 <li>Price: {{ selected.info.details.Price }}</li>
                                 <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
                                 <div class="row">
-                                    <Button label="View more..." outlined style="border-radius:4px" class="my-2"
-                                        @click.prevent="navigate=>
-                                            {
-                                                this.$router.push('/listing');
-                                                this.$emit('listingInfo', selected)
-                                            }"></Button>
+                                    <router-link
+                                            :to="{
+                                                name: 'listing',
+                                                query: { Id: selected.info.Id },
+                                            }"
+                                            style="padding: 0px"
+                                        >
+                                    <Button label="View more..." outlined style="border-radius:4px; width: 100%" class="my-2"></Button>
+                                    </router-link>
 
                                     <Button :pt="{ button: 'bg-green-600 border-green-600'}"
                                     @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
@@ -96,7 +98,7 @@
                     </div>
                 </Sidebar>
 
-            visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }}
+            <!-- visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }} -->
             <div class="row justify-content-center">
                 <div id="map" style="height:600px" class="col-10"></div>
             </div>
@@ -437,6 +439,10 @@
     width: 100%;
     height: 200%
   }
+}
+
+router-link {
+
 }
 
 
