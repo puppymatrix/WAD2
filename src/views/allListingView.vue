@@ -13,19 +13,14 @@ import { Icon } from "@iconify/vue";
 
 <template>
     <body>
-        <!-- Map View button  -->
-        <div class="container-fluid my-2">
-            <div class="row">
-                <div
-                    class="col-10 p-0 d-flex align-items-center justify-content-center"
-                >
-                    <!-- search bar -->
-                    <SearchBar @search="searchFood" />
+        <div class="container-fluid py-3">
+            <div class="row justify-content-center">
+                <!-- search bar -->
+                <div class="col-10 col-md-6  align-items-center justify-content-center py-1">
+                    <SearchBar @search="searchFood"/>
                 </div>
-
-                <div
-                    class="col-2 d-flex align-items-center justify-content-center"
-                >
+                <!-- map view -->
+                <div class="col-2 col-md-6  align-items-center justify-content-center py-1 ">
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"

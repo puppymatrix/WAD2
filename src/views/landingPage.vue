@@ -171,22 +171,22 @@
         <!--Key Partner-->
         <div id="partners" class="row sponsors">
             <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
-            <div class="col-3 partnerCol">
+            <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
+            <div class=" col-sm-3  partnerCol p-4">
                 <a href="https://www.breadtalk.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol px-0">
+            <div class="col-sm-3  partnerCol p-4 px-0">
                 <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol px-4">
+            <div class="col-sm-3 partnerCol  p-4 px-4">
                 <a href="https://giant.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
