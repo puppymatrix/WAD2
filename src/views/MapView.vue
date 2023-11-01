@@ -1,7 +1,7 @@
 <script setup>
 
 
-    import { getAllListings, filterByDistance, filterByName, calculateDistance } from "../firebase/api"
+    import { getAllListings, filterByDistance, filterByName, calculateDistance, getListing } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
     import  SearchBar  from '../components/SearchBar.vue'
@@ -49,7 +49,6 @@
                                                 this.$emit('listingInfo', selected)
                                             }"></Button>
 
-                                    
                                     <Button :pt="{ button: 'bg-green-600 border-green-600'}"
                                     @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
                                         <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
@@ -97,9 +96,9 @@
                     </div>
                 </Sidebar>
 
+            visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }}
             <div class="row justify-content-center">
                 <div id="map" style="height:600px" class="col-10"></div>
-                
             </div>
            
             <div class="row" >
@@ -166,12 +165,22 @@
 
     
     export default {
-        mounted(){
+
+        async created(){
+
             console.log('mounted')
-             this.initMap()
-             this.loadFood()
+            await this.initMap()
+            await this.loadFood()
+            
+
         },
-        
+
+        mounted(){
+            if (this.$route.query.Id){
+                this.loadSingleListing()
+            }
+        },
+                    
         data(){
             return {
                 //primevue variables
@@ -243,7 +252,6 @@
                 this.loader = new Loader({ 
                     apiKey: this.key,
                     version: "beta",
-                    // libraries: ["places", "marker", "maps", "routes"]
                 })
                 const map = await this.loader.importLibrary('maps')
 
@@ -251,12 +259,12 @@
                        
                 const marker = await this.loader.importLibrary('marker')
 
-                if (this.routeRequest.destination){
+                // if (this.routeRequest.destination){
                     const routes = await this.loader.importLibrary('routes')
 
                     this.directionsService = new routes.DirectionsService();
                     this.directionsRenderer = new routes.DirectionsRenderer();
-                }
+                // }
 
                 const parser = new DOMParser()
                 const pinSvg = parser.parseFromString(
@@ -270,13 +278,14 @@
                     background: "#0033FF",
                     borderColor: "#0033FF",
                 })
+
+                
+
                 var advMarker = new marker.AdvancedMarkerElement({
                     map: unloadedMap,
                     position: this.currentUserLocation,
                     content: faPin.element,
                     title: 'user location',
-
-
                 })
                 this.map = unloadedMap
 
@@ -286,8 +295,6 @@
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        // add routing options here 
-
                         let newMarker = new marker.Marker({
                             position: { lat: latitude, lng: longitude},
                             map: this.map,                    
@@ -295,7 +302,6 @@
 
                         newMarker.addListener("click", () => {
 
-                            console.log(this.routeRequest.origin, this.routeRequest.destination)
                             this.selected = item    
                             this.visible = true
 
@@ -313,19 +319,28 @@
             },
 
             loadRoute(){
-                if (this.directionsService != null){
 
-                    var route = this.directionsService.route(this.routeRequest, (result, status) => {
+                if (this.directionsService != null){
+                    this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
                             var sideBar = document.getElementById("sideBar")
-                            // result.routes = [result.routes[0]]
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
                             sideBar.innerHTML = '';
                             this.directionsRenderer.setPanel(sideBar)
+                        } else {
+                            console.log(status)
                         }
                     })
                 }
+            },
+
+            loadDirections(){
+                if (this.selected != null){
+                    this.visible = true
+                    this.displayDirections = true
+                }
+                this.loadRoute()
             },
             
             async loadFood(){
@@ -333,30 +348,18 @@
                 const data = getAllListings()
                 data.then(
                     listing => {
-                        // console.log('all food loaded', listing)
                     
                         for (let i=0;i<listing.length;i++){
                             let distanceToUser = Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, listing[i].details.Location.latitude, listing[i].details.Location.longitude).toFixed(3))
 
                             this.foodItems.push({
-                                                info: listing[i],
-                                                distance: distanceToUser
-                                            })
+                                info: listing[i],
+                                distance: distanceToUser
+                            })
                         }
                     }
                 )    
             },
-
-            loadDirections(){
-                if (this.selected != null){
-                    this.visible = true
-                    this.displayDirections = true
-                    
-                }
-                this.loadRoute()
-            },
-
-
 
             loadFoodByName(foodName){
                 this.searchQuery = foodName
@@ -367,10 +370,28 @@
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
             },
             
-            reloadDirections(){
+            async loadSingleListing(){
+                let item = await getListing(this.$route.query.Id)
+                
+                let listing = {
+                    distance: Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, item.Location.latitude, item.Location.longitude).toFixed(3)),
+                    info: {
+                            Id: this.$route.query.Id,
+                            details: item
+                        }
+                    }
+                console.log('listing', item)
 
+                this.selected = listing
+                this.foodItemsFiltered.push(listing)
+
+                this.routeRequest.destination = { 
+                    lat: item.Location.latitude, 
+                    lng: item.Location.longitude
+                }
+
+                this.loadDirections()
             }
-           
         },
        
         watch:{
@@ -385,31 +406,19 @@
                     this.initMap()
                 }
             },
-            
         },
 }
             
   </script>
 
 <style>
-/* .text-bg-listing {
-    background-color: #558C03;
-    color: white;
-} */
+
 .img {
     background-size: cover; 
     background-position:center; 
     max-height: 400px;
 }
-/* #sideBar {
-  flex-basis: 15rem;
-  flex-grow: 1;
-  padding: 1rem;
-  height: 100%;
-  max-height: 500px;
-  box-sizing: border-box;
-  overflow: scroll;
-} */
+
 #filterBar {
   font-size: calc(1rem + 0.1vw);
   padding-right:2%
