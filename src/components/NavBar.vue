@@ -17,22 +17,28 @@
                 <a href="/"><img src="../components/icons/foodcatch-logo.png" style="height: 40px;" alt="" class="img-fluid" id="logo"></a>
             </a>
             <!-- toggle button???? -->
-            <button class="navbar-toggler btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+            <button class="navbar-toggler btn custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             >
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon custom-toggler"></span>
             </button>
 
             <!-- navbar -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-0">
                 <li class="nav-item px-3">
-                    <a class="nav-link" @click="navigate=>{this.$router.push('/')}">Home</a>
+                    <router-link to="/" class="nav-link" active-class="active-link">Home</router-link>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Explore
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><router-link to="/allListings" class="dropdown-item" active-class="active-link">All Listings</router-link></li>
+                        <li><router-link to="/mapView" class="dropdown-item" active-class="active-link">Food Near Me</router-link></li>
+                    </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <a class="nav-link" @click="navigate=>{this.$router.push('/allListings')}">Explore</a>
-                </li>
-                <li class="nav-item px-3">
-                    <a class="nav-link" @click="navigate=>{this.$router.push('/mapView')}">Map</a>
+                    <router-link to="/addListing" class="nav-link display-inline" active-class="active-link">Add Listing</router-link>
                 </li>
                 <li><div style="background-color: #000; margin: 10px 0; border-top: 1px solid white"></div></li>            
                 <li class="nav-item px-3" id="pinned">
@@ -41,14 +47,14 @@
                     <div class="justify-content-center p-0" v-if="isAuthenticated" >
                         <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
                         <div class="d-flex me-3" >
-                            <button type="button" class="btn btn-success m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
+                            <button type="button" class="btn btn-standard m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
                             <button type="button" class="btn btn-secondary m-1" @click="logOut">Log Out</button>
                         </div>
                     </div>
                     <!-- login and signup buttons -->
                     <div class="me-0" v-else>
-                        <button type="button" class="btn btn-outline-success m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
-                        <button type="button" class="btn btn-success m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
+                        <button type="button" class="btn btn-outline-standard m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
+                        <button type="button" class="btn btn-standard m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
                 </li>
 
@@ -113,6 +119,19 @@ export default {
 </script>
 
 <style scoped>
+.btn-outline-standard{
+    border-color: #558603;
+    color: #558603
+}
+.btn-standard{
+    background-color: #558603;
+    color: #ebf1e7;
+    border-color: #558603;
+}
+.custom-toggler {
+    border-color:#0b2b26 ;
+    background-color:#558603;
+}
 @media (min-width: 768px) {
 
     #pinned{
@@ -161,7 +180,7 @@ export default {
 }
 
 a > li {
-    color: white;
+    color: #ebf1e7;
 }
 
 div img {
@@ -171,7 +190,12 @@ div img {
 .nav-link {
     text-decoration: none;
     color: #ebf1e7;
-    font-size: 25px;
+    font-size: 20px;
+    white-space: nowrap;
+}
+
+.navbar-nav .nav-link.show {
+  color: #ebf1e7;
 }
 
 .nav-link:hover {
@@ -181,5 +205,19 @@ div img {
 .nav-item {
     padding-left: 2.5%;
     padding-right: 2.5%;
+}
+
+button:hover{
+    border-color:  #ebf1e7;
+}
+
+.active-link {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+
+.dropdown-item:active {
+    background-color: #bee5b0;
 }
 </style>

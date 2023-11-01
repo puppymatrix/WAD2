@@ -15,7 +15,7 @@ import { Icon } from "@iconify/vue";
         <Footer />
     </div>
     <Dialog
-        v-model:visible="visible"
+        v-model:visible="visibleBottom"
         modal
         header="Header"
         :style="{ width: '40vw' }"
@@ -25,7 +25,7 @@ import { Icon } from "@iconify/vue";
     >
         <template #container="slotProps">
             <Button
-                @click="this.$store.commit('setVisible', false)"
+                @click="close"
                 plain
                 text
                 class="absolute top-0 right-0 m-4"
@@ -93,7 +93,7 @@ export default {
                 // console.log(uid);
 
                 // if (this.userLocation != "")
-                this.$store.commit("setLocation", this.userLocation); // Call the setUser mutation to update the state
+                // this.$store.commit("setLocation", this.userLocation); // Call the setUser mutation to update the state
             } else {
                 // User is signed out
                 this.$store.commit("setUser", null); // Call the setUser mutation to update the state
@@ -123,6 +123,9 @@ export default {
             this.$router.push("/logIn");
             this.$store.commit("setVisible", false);
         },
+        close() {
+            this.$store.commit('setVisible', false);
+        }
     },
 };
 </script>

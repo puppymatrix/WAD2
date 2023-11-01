@@ -9,6 +9,7 @@ import IconsResolve from 'unplugin-icons/resolver'
 import {BootstrapVueNextResolver} from 'unplugin-vue-components/resolvers'
 
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -22,6 +23,7 @@ export default defineConfig({
     compiler: 'vue3',
     autoInstall: true,
     }),
+  
   ],
   resolve: {
     alias: {
