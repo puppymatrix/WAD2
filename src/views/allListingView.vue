@@ -17,7 +17,8 @@ import { Icon } from "@iconify/vue";
             <div class="row justify-content-center">
                 <!-- search bar -->
                 <div class="col-10 col-md-6  align-items-center justify-content-center py-1">
-                    <SearchBar @search="searchFood"/>
+                    <SearchBar v-if="query" @search="searchFood" :initialQuery="query"/>
+                    <SearchBar v-else @search="searchFood" />
                 </div>
                 <!-- map view -->
                 <div class="col-2 col-md-6  align-items-center justify-content-center py-1 ">
@@ -256,13 +257,19 @@ export default {
     components: {
         SearchBar,
     },
-    created() {
-        this.loadListings();
-        this.loadCategories();
+    async created() {
+
+            await this.loadCategories();
+            await this.loadListings();
+            this.query = this.$route.query.search
+            // console.log(this.query)
+            if(this.query != undefined){ //if a value is passed across
+                await this.searchFood(this.query);
+            }
     },
     data() {
         return {
-            query: "",
+            query: undefined,
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
@@ -303,7 +310,6 @@ export default {
             paginatorKey: 0,
         };
     },
-
     computed: {
         ...mapGetters(["currentUserLocation"]),
         check() {
@@ -356,6 +362,7 @@ export default {
             }
             this.loading = false;
             this.loaded = true;
+            // console.log("loaded all listings")
         },
 
         async loadCategories() {
