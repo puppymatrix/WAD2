@@ -1,5 +1,5 @@
 <script setup>
-    import CarouselMarquee from "../components/CarouselMarquee.vue";
+    import CarouselMarquee from "@/components/CarouselMarquee.vue";
     import ScrollTop from 'primevue/scrolltop'
 </script>
 
@@ -22,6 +22,7 @@
         </div>
         <div class="row secondRow">
             <!-- <CarouselMarquee/> -->
+            <CarouselMarquee/>
         </div>
         <!-- problematic carousel row -->
         <div class="row secondRow">
