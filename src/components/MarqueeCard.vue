@@ -1,25 +1,31 @@
 <template>
-    <!-- <router-link
-      :to="`/universityInfo/` + universityName"
+    <router-link
+    :to="{
+          name: 'listing',
+          query: { Id: listingId},
+        }"
       @mouseover="(hover = true), $emit('switch')"
       @mouseout="(hover = false), $emit('switchOn')"
-    > -->
+    >
+    <div class="card">
       <img
         :class="{ unfade: hover, faded: !hover }"
-        class="marquee-listing-image"
+        class="position-absolute card-img  marquee-listing-image"
         :src="listingImage"
-        height= "25vw"
-        object-fit = "cover"    
+        height="180"
+        width=""    
       />
       <h6 class="marquee-listing-name text-center">{{ listingName }}</h6>
-    <!-- </router-link> -->
+    </div>
+
+    </router-link>
   </template>
   
   <script>
   export default {
     name: "MarqueeCard",
     emits: ["switch", "switchOn"],
-    props: ["listingName", "listingImage"],
+    props: ["listingName", "listingImage", "listingId"],
     data() {
       return {
         hover: false,
@@ -38,14 +44,17 @@
     transition: all 0.4s;
     position: absolute;
     object-fit: cover;
-    height: 100%;
+    height: 200px;
+    max-width: 300px;
     padding: 10px;
+    text-wrap: wrap;
   }
   
   .marquee-listing-name {
     position: relative;
     color: white;
     font-size: x-large;
+    text-decoration: none;
   }
   
   .unfade {
@@ -54,6 +63,19 @@
   
   .faded {
     filter: grayscale(80%);
+  }
+
+  .card {
+    height: 100%;
+    width: 200px;
+    border: 0px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: transparent;
+    position: relative;
   }
   </style>
   
