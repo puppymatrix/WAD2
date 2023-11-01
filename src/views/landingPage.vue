@@ -14,7 +14,7 @@
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-model="searchInput">
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-model="searchInput" @keyup.enter="navigate">
                         <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @click="navigate">Let's Go!</button>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="row secondRow">
             <!-- <CarouselMarquee/> -->
-            <CarouselMarquee/>
+            <!-- <CarouselMarquee/> -->
         </div>
         <!-- problematic carousel row -->
         <div class="row secondRow">

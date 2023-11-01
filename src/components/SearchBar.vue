@@ -25,11 +25,12 @@ import { Icon } from "@iconify/vue";
 <script>
 
 export default {
+    props: ['initialQuery'],
     emits: ['search'],
     data() {
         return {
-            query: "",
-        };
+            query: this.initialQuery || "",
+        }
     },
     methods: {
         updateSearch() {

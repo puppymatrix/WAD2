@@ -17,7 +17,8 @@ import { Icon } from "@iconify/vue";
             <div class="row justify-content-center">
                 <!-- search bar -->
                 <div class="col-10 col-md-6  align-items-center justify-content-center py-1">
-                    <SearchBar @search="searchFood"/>
+                    <SearchBar v-if="query" @search="searchFood" :initialQuery="query"/>
+                    <SearchBar v-else @search="searchFood" />
                 </div>
                 <!-- map view -->
                 <div class="col-2 col-md-6  align-items-center justify-content-center py-1 ">
@@ -256,23 +257,16 @@ export default {
     components: {
         SearchBar,
     },
-    created() {
+    async created() {
 
-            this.loadListings();
-            this.loadCategories();
+            await this.loadCategories();
+            await this.loadListings();
             this.query = this.$route.query.search
-            console.log(this.query)
+            // console.log(this.query)
             if(this.query != undefined){ //if a value is passed across
-                this.searchFood(this.query).then(result => {
-                    console.log("searched")
-                    console.log(this.foodItemsFiltered)
-                })
+                await this.searchFood(this.query);
             }
-        },
-                
-        
-
-    
+    },
     data() {
         return {
             query: undefined,
@@ -316,7 +310,6 @@ export default {
             paginatorKey: 0,
         };
     },
-
     computed: {
         ...mapGetters(["currentUserLocation"]),
         check() {
@@ -369,7 +362,7 @@ export default {
             }
             this.loading = false;
             this.loaded = true;
-            console.log("loaded all listings")
+            // console.log("loaded all listings")
         },
 
         async loadCategories() {
@@ -382,10 +375,6 @@ export default {
                 });
             }
             // this.allCategories = categories;
-        },
-
-        loadFromLandingPage(searchVal){
-             this.foodItemsFiltered = filterByName(this.foodItems, searchVal)
         },
         async searchFood(searchVal) {
             this.query = searchVal;
