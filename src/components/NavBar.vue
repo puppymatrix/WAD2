@@ -28,7 +28,7 @@
                 <li class="nav-item px-3">
                     <router-link to="/" class="nav-link" active-class="active-link">Home</router-link>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown px-3">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Explore
                     </a>

@@ -1,5 +1,5 @@
 <script setup>
-    import CarouselMarquee from "../components/CarouselMarquee.vue";
+    import CarouselMarquee from "@/components/CarouselMarquee.vue";
     import ScrollTop from 'primevue/scrolltop'
 </script>
 
@@ -22,6 +22,7 @@
         </div>
         <div class="row secondRow">
             <!-- <CarouselMarquee/> -->
+            <CarouselMarquee/>
         </div>
         <!-- problematic carousel row -->
         <div class="row secondRow">
@@ -151,17 +152,17 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
                 <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
                 <p class="statsDesc">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
                 <p class="statsDesc">This causes global warming and climate change!</p>
             </div>
@@ -170,22 +171,22 @@
         <!--Key Partner-->
         <div id="partners" class="row sponsors">
             <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
-            <div class="col-3 partnerCol">
+            <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
+            <div class=" col-sm-3  partnerCol p-4">
                 <a href="https://www.breadtalk.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol px-0">
+            <div class="col-sm-3  partnerCol p-4 px-0">
                 <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol px-4">
+            <div class="col-sm-3 partnerCol  p-4 px-4">
                 <a href="https://giant.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
@@ -295,6 +296,11 @@ h1{
     background-color: rgba(255, 255, 255, 0.971);
     opacity: 80%;
 }
+
+.stats:hover{
+    opacity: 100%;
+}
+
 
 .statsHeader{
     color:  #0b2b26;
