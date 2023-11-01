@@ -268,8 +268,7 @@ import { Icon } from "@iconify/vue";
                 </div>
 
                 <div class="row mt-2">
-                    <div class="col-4"></div>
-                    <div class="col-4 d-flex justify-content-center">
+                    <div class="col d-flex justify-content-end">
                         <Button
                             class="rounded"
                             type="submit"
@@ -277,7 +276,6 @@ import { Icon } from "@iconify/vue";
                         Post Listing
                     </Button>
                     </div>
-                    <div class="col-4"></div>
                 </div>
             </div>
         </form>
@@ -331,7 +329,7 @@ import { Icon } from "@iconify/vue";
 <script>
 import { v4 as uuidv4 } from "uuid";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, collection, setDoc, Timestamp, doc, arrayUnion } from "firebase/firestore";
 import { storage, db } from "@/firebase";
 import * as api from "../firebase/api";
 import places_api from "../Backend/places_autocomplete.vue";
@@ -450,7 +448,7 @@ export default {
 
                         if (fileUrls.length === this.files.length) {
                             // All files have been uploaded, add listing to Firestore
-                            await addDoc(collection(db, "listings"), {
+                            const docRef = await addDoc(collection(db, "listings"), {
                                 ExpiryDate: Timestamp.fromDate(
                                     new Date(this.date)
                                 ),
@@ -464,6 +462,15 @@ export default {
                                 Owner: this.currentUser,
                                 Description: this.description,
                             });
+
+                            const newListingId = docRef.id;
+
+                            await setDoc(doc(db, "userInformation", this.currentUser),
+                                {
+                                    myListings: arrayUnion(newListingId)
+                                },
+                                { merge: true }
+                            );
 
                             // this.$router.push("/");
                         }

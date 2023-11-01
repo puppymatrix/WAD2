@@ -65,7 +65,10 @@ async function getListingsByCategory(category, listings = null) {
     
         querySnapshot.forEach((doc) => {
             if (doc.exists()) {
-                results.push(doc.data());
+                results.push({
+                    Id: doc.id,
+                    details: doc.data(),
+                });
             } else {
                 console.log("No such document!");
             }
@@ -372,19 +375,44 @@ async function deleteExpiredChopes() {
     }
 }
 
-
-function checkUniqueUsername(username){
+async function checkUniqueUsername(username){
 
     // returns true if username is unique and false if otherwise
     const usernameRef = collection(db, "userInformation")
 
     const q = query(usernameRef, where("username", "==", username));
     
-    const querySnapshot = getDocs(q);
-   
-    // console.log('length', querySnapshot.length)
-    return (querySnapshot.length == 0)
+    const querySnapshot = await getDocs(q);
+
+    // querySnapshot.forEach((doc) => {
+    //     if (doc.data().exists()){
+    //         console.log('exists')
+    //         return false
+    //     }
+    // })\
+    console.log('size', querySnapshot.size)
+    if (querySnapshot.size > 0){
+        console.log('username exists')
+        return Promise.resolve(false);
+    }else{
+        console.log('username does not exist')
+        return Promise.resolve(true);
+    }
+    
 }
+
+// async function checkUniqueUsername(username) {
+
+//     const q = query(collection(db, "userInformation"), where("capital", "==", true));
+
+//     const querySnapshot = await getDocs(q);
+
+//     querySnapshot.forEach((doc) => {
+//     // doc.data() is never undefined for query doc snapshots
+//     console.log(doc.id, " => ", doc.data());
+//     });
+
+// }
 
 function filterByDistance(foodArr, filterDistance){
                 var result = []

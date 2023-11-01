@@ -152,25 +152,26 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
-                <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
+                <p class="statsDesc num1">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
-                <p class="statsDesc">This includes 3.1 million children!</p>
+                <p class="statsDesc num2">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
-                <p class="statsDesc">This causes global warming and climate change!</p>
+                <p class="statsDesc num3">This causes global warming and climate change!</p>
             </div>
         </div>
 
         <!--Key Partner-->
         <div id="partners" class="row sponsors">
-            <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
+            <h3 class="text-center m-0 " style="color: #0b2b26;">Our Partners</h3>
+            <!-- <div style="border-top: 1px solid #0b2b26;"></div> -->
             <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
@@ -286,6 +287,7 @@ h1{
     background-size: cover;
     opacity: 80%;
     padding: 20px;
+    transition: 0.5s;
 }
 
 
@@ -295,7 +297,11 @@ h1{
     margin: 10px;
     background-color: rgba(255, 255, 255, 0.971);
     opacity: 80%;
+    
 }
+
+
+
 
 .statsHeader{
     color:  #0b2b26;
@@ -306,6 +312,27 @@ h1{
     font-style: bold;
     font-size: 18px;
     text-align: center;
+
+  animation: fadeInOut 7s infinite;
+
+}
+
+.num1 {
+  animation-delay: 0s;
+}
+
+ .num2{
+  animation-delay: 2s;
+}
+
+ .num3{
+  animation-delay: 4s;
+}
+
+
+.stats:hover .statsDesc{
+    color:#0b2b26;
+    opacity:1;
 }
 
 .sponsors{
@@ -354,6 +381,20 @@ h1{
 .carousel-inner .carousel-item-start { 
   transform: translateX(0);
 }
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 </style>
 
 
