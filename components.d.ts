@@ -9,7 +9,18 @@ declare module 'vue' {
   export interface GlobalComponents {
     BCarousel: typeof import('bootstrap-vue-next')['BCarousel']
     BCarouselSlide: typeof import('bootstrap-vue-next')['BCarouselSlide']
+    BFormSelect: typeof import('bootstrap-vue-next')['BFormSelect']
+    BFormSelectOption: typeof import('bootstrap-vue-next')['BFormSelectOption']
+    CarouselMarquee: typeof import('./src/components/CarouselMarquee.vue')['default']
+    Footer: typeof import('./src/components/Footer.vue')['default']
+    IMdiuser: typeof import('~icons/mdi/user')['default']
+    IStreamlinetravelMapLocationPinNavigationMapMapsPinGpsLocation: typeof import('~icons/streamline/travel-map-location-pin-navigation-map-maps-pin-gps-location')['default']
+    Map: typeof import('./src/components/Map.vue')['default']
+    MarqueeCard: typeof import('./src/components/MarqueeCard.vue')['default']
+    MaterialInput: typeof import('./src/components/MaterialInput.vue')['default']
+    NavBar: typeof import('./src/components/NavBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBar: typeof import('./src/components/SearchBar.vue')['default']
   }
 }

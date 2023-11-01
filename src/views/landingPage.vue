@@ -13,8 +13,8 @@
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-bind="searchInput">
-                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-model="searchInput" @keyup.enter="navigate">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @click="navigate">Let's Go!</button>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         <div class="row secondRow">
             <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Food Near You</h2>
             <!-- <CarouselMarquee/> -->
-            <CarouselMarquee/>
+            <!-- <CarouselMarquee/> -->
         </div>
         <!-- problematic carousel row -->
         <!-- <div class="row secondRow">
@@ -152,41 +152,42 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
-                <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
+                <p class="statsDesc num1">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
-                <p class="statsDesc">This includes 3.1 million children!</p>
+                <p class="statsDesc num2">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
-                <p class="statsDesc">This causes global warming and climate change!</p>
+                <p class="statsDesc num3">This causes global warming and climate change!</p>
             </div>
         </div>
 
         <!--Key Partner-->
         <div id="partners" class="row sponsors">
-            <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
-            <div class="col-3 partnerCol">
+            <h3 class="text-center m-0 " style="color: #0b2b26;">Our Partners</h3>
+            <!-- <div style="border-top: 1px solid #0b2b26;"></div> -->
+            <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol">
+            <div class=" col-sm-3  partnerCol p-4">
                 <a href="https://www.breadtalk.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol px-0">
+            <div class="col-sm-3  partnerCol p-4 px-0">
                 <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
-            <div class="col-3 partnerCol px-4">
+            <div class="col-sm-3 partnerCol  p-4 px-4">
                 <a href="https://giant.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
@@ -291,6 +292,7 @@ h1{
     background-size: cover;
     opacity: 80%;
     padding: 20px;
+    transition: 0.5s;
 }
 
 
@@ -300,7 +302,11 @@ h1{
     margin: 10px;
     background-color: rgba(255, 255, 255, 0.971);
     opacity: 80%;
+    
 }
+
+
+
 
 .statsHeader{
     color:  #0b2b26;
@@ -311,6 +317,27 @@ h1{
     font-style: bold;
     font-size: 18px;
     text-align: center;
+
+  animation: fadeInOut 7s infinite;
+
+}
+
+.num1 {
+  animation-delay: 0s;
+}
+
+ .num2{
+  animation-delay: 2s;
+}
+
+ .num3{
+  animation-delay: 4s;
+}
+
+
+.stats:hover .statsDesc{
+    color:#0b2b26;
+    opacity:1;
 }
 
 .sponsors{
@@ -359,12 +386,25 @@ h1{
 .carousel-inner .carousel-item-start { 
   transform: translateX(0);
 }
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 </style>
 
 
 
 <script >
-    
     
 
 // import { db } from "@/firebase";
@@ -406,6 +446,9 @@ export default {
     //     Vue3Marquee
     // },
   methods:{
+    navigate(){
+    this.$router.push(`/allListings?search=${this.searchInput}`)
+    },
     typeText(){
         if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
             if (!this.typeStatus){

@@ -13,19 +13,15 @@ import { Icon } from "@iconify/vue";
 
 <template>
     <body>
-        <!-- Map View button  -->
-        <div class="container-fluid my-2">
-            <div class="row">
-                <div
-                    class="col-10 p-0 d-flex align-items-center justify-content-center"
-                >
-                    <!-- search bar -->
-                    <SearchBar @search="searchFood" />
+        <div class="container-fluid py-3">
+            <div class="row justify-content-center">
+                <!-- search bar -->
+                <div class="col-10 col-md-6  align-items-center justify-content-center py-1">
+                    <SearchBar v-if="query" @search="searchFood" :initialQuery="query"/>
+                    <SearchBar v-else @search="searchFood" />
                 </div>
-
-                <div
-                    class="col-2 d-flex align-items-center justify-content-center"
-                >
+                <!-- map view -->
+                <div class="col-2 col-md-6  align-items-center justify-content-center py-1 ">
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"
@@ -110,7 +106,7 @@ import { Icon } from "@iconify/vue";
                                     query: { Id: item.info.Id },
                                 }"
                             >
-                                <div class="card h-100 shadow-sm">
+                                <div class="card h-100">
                                     <img
                                         :src="item.info.details.ImageUrls[0]"
                                         alt=""
@@ -261,13 +257,19 @@ export default {
     components: {
         SearchBar,
     },
-    created() {
-        this.loadListings();
-        this.loadCategories();
+    async created() {
+
+            await this.loadCategories();
+            await this.loadListings();
+            this.query = this.$route.query.search
+            // console.log(this.query)
+            if(this.query != undefined){ //if a value is passed across
+                await this.searchFood(this.query);
+            }
     },
     data() {
         return {
-            query: "",
+            query: undefined,
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
@@ -303,12 +305,11 @@ export default {
                 },
             ],
             page: 0,
-            rows: 8,
+            rows: 12,
             listLength: 0,
             paginatorKey: 0,
         };
     },
-
     computed: {
         ...mapGetters(["currentUserLocation"]),
         check() {
@@ -361,6 +362,7 @@ export default {
             }
             this.loading = false;
             this.loaded = true;
+            // console.log("loaded all listings")
         },
 
         async loadCategories() {
@@ -469,6 +471,11 @@ export default {
 </script>
 
 <style scoped>
+.card:hover{
+    box-shadow: 5px 5px 5px lightgray;
+    transform: scale(1.02);
+    transition: all 0.3s ease-in-out;
+}
 .card-img-top {
     width: 100%;
     height: 25vw;
