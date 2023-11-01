@@ -9,7 +9,7 @@
             <div class="col-md-6 px-5">
                 <!-- filler -->
                 <div class="container" style="padding-top:20%">
-                    <h1 class = "m-4 ms-0">Log In</h1>
+                    <h1>Log In</h1>
 
                     <form @submit.prevent="checkCredentials">
                         <div class="row">
