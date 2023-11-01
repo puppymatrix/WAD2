@@ -10,8 +10,8 @@
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
-        <div class="col-sm-6 px-0">
-            <img src="../components/images/landingPage/groceries.webp" alt="" style="object-fit: cover; height:100%;width:100%">
+        <div class="col-md-6 px-0">
+            <img src="../components/images/landingPage/groceries.webp" alt=""  style="object-fit: cover; height:100%;width:100%">
         </div>
         
         <!-- sign in -->
@@ -193,7 +193,11 @@ export default {
             //     const errorCode = error.code;
             //     const errorMessage = error.message;
             //     console.log('Firebase Authentication Error:', errorCode, errorMessage)
-            });
+            })
+            .catch((error) =>{
+                console.log(error)
+                this.errors.email = "Email is already in use"
+            })
         } else{
             //display errors
             
