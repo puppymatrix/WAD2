@@ -124,48 +124,35 @@ import ScrollTop from "primevue/scrolltop";
                 <div class="row" id="userListings">
                     <h1>My Listings</h1>
                     <!-- this is a for loop for each listing item -->
-                    <div class="col-md-6 col-sm-12" v-for="item in paginatedListingItems">
+                    <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedListingItems">
                         <router-link
                                 :to="{
                                     name: 'listing',
                                     query: { Id: item.Id },
                                 }"
                             >
-                                <div class="card h-100 shadow-sm">
+                            <div class="card h-100">
                                     <img
                                         :src="item.ImageUrls[0]"
                                         alt=""
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
+                                        <h5 class="card-title">
+                                            Listing Name: <br/>
+                                            <span class="listingName">{{ item.ListingName }}</span>
+                                        </h5>
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary"
                                         >
                                             Category:
-                                            {{ item.Category }}
-                                        </h6>
-                                        <h5 class="card-title">
-                                            Name:
-                                            {{ item.ListingName }}
-                                        </h5>
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
-                                            {{
-                                                item.Location.name
-                                            }}
-                                        </p>
-                                        <!-- need to getLister -->
-
-                                        <h6
-                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
-                                        >
-                                            <p class="me-1">
-                                                {{ item.owner }}
-                                            </p>
+                                            {{ item.Category }} 
+                                            <br/>
+                                            Lister: {{ item.owner }}
+                                            <br/>
+                                            Location: {{item.Location.name}}
                                         </h6>
                                     </div>
-                                    
                                 </div>
                             </router-link>
                     </div>
@@ -181,48 +168,35 @@ import ScrollTop from "primevue/scrolltop";
                 <div class="row mt-3" id="chopedListings">
                     <h1>My Chopes</h1>
                     <!-- listings -->
-                    <div class="col-md-6 col-sm-12" v-for="item in paginatedChopeItems">
+                    <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedChopeItems">
                         <router-link
                                 :to="{
                                     name: 'listing',
                                     query: { Id: item.Id },
                                 }"
                             >
-                                <div class="card h-100 shadow-sm">
+                            <div class="card h-100">
                                     <img
                                         :src="item.ImageUrls[0]"
                                         alt=""
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
+                                        <h5 class="card-title">
+                                            Listing Name: <br/>
+                                            <span class="listingName">{{ item.ListingName }}</span>
+                                        </h5>
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary"
                                         >
                                             Category:
-                                            {{ item.Category }}
-                                        </h6>
-                                        <h5 class="card-title">
-                                            Name:
-                                            {{ item.ListingName }}
-                                        </h5>
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
-                                            {{
-                                                item.Location.name
-                                            }}
-                                        </p>
-                                        <!-- need to getLister -->
-
-                                        <h6
-                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
-                                        >
-                                            <p class="me-1">
-                                                {{ item.owner }}
-                                            </p>
+                                            {{ item.Category }} 
+                                            <br/>
+                                            Lister: {{ item.owner }}
+                                            <br/>
+                                            Location: {{item.Location.name}}
                                         </h6>
                                     </div>
-                                    
                                 </div>
                             </router-link>
                     </div>
@@ -284,6 +258,21 @@ import ScrollTop from "primevue/scrolltop";
     background-color: green;
     color: white;
 }
+
+.listingName{
+    color: #558C03;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.card-title{
+    height: 45px;
+    margin-bottom: 20px;
+}
+
+.card-subtitle{
+    height: 45px;
+}
 </style>
 
 <script>
@@ -341,9 +330,9 @@ export default {
             this.chopePage = event.page;
         },
         async getUserInfo() {
-            console.log(this.currentUser);
+            // console.log(this.currentUser);
             const userData = await getUser(this.currentUser);
-            console.log(userData);
+            // console.log(userData);
             this.fName = userData.firstName;
             this.lName = userData.lastName;
             this.userName = userData.username;
@@ -364,7 +353,7 @@ export default {
                 this.myListings.push(listingData);
             }
             this.listingListLength = this.myListings.length;
-            console.log(this.myListings)
+            // console.log(this.myListings)
             
 
             //this part processes the data for listings choped by the user
@@ -430,6 +419,4 @@ a {
     height: 25vw;
     object-fit: cover;
 }
-
-
 </style>

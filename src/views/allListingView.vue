@@ -115,39 +115,29 @@ import { Icon } from "@iconify/vue";
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
+                                        <h5 class="card-title">
+                                            Listing Name: <br/>
+                                            <span class="listingName">{{ item.info.details.ListingName }}</span>
+                                        </h5>
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary"
                                         >
                                             Category:
-                                            {{ item.info.details.Category }}
+                                            {{ item.info.details.Category }} 
+                                            <br/>
+                                            Lister: {{ item.owner }}
                                         </h6>
-                                        <h5 class="card-title">
-                                            Name:
-                                            {{ item.info.details.ListingName }}
-                                        </h5>
                                         <p
                                             class="card-text d-flex align-items-center mb-3"
-                                        >
+                                        > Location: 
                                             {{
                                                 item.info.details.Location.name
                                             }}
-                                        </p>
-                                        <!-- need to getLister -->
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
+                                            <br/>
                                             Price: {{ item.info.details.Price }}
                                             <br />
                                             Distance: {{ item.distance }}
                                         </p>
-
-                                        <h6
-                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
-                                        >
-                                            <p class="me-1">
-                                                {{ item.owner }}
-                                            </p>
-                                        </h6>
                                     </div>
                                     
                                 </div>
@@ -158,7 +148,7 @@ import { Icon } from "@iconify/vue";
                         class="row g-3"
                         v-else-if="!check && foodItemsFiltered.length > 0"
                     >
-                        <div
+                    <div
                             class="col-lg-3 col-md-4 col-sm-12"
                             v-for="item in paginatedItems"
                         >
@@ -168,46 +158,36 @@ import { Icon } from "@iconify/vue";
                                     query: { Id: item.info.Id },
                                 }"
                             >
-                                <div class="card h-100 shadow-sm">
+                                <div class="card h-100">
                                     <img
                                         :src="item.info.details.ImageUrls[0]"
                                         alt=""
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
+                                        <h5 class="card-title">
+                                            Listing Name: <br/>
+                                            <span class="listingName">{{ item.info.details.ListingName }}</span>
+                                        </h5>
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary"
                                         >
                                             Category:
-                                            {{ item.info.details.Category }}
+                                            {{ item.info.details.Category }} 
+                                            <br/>
+                                            Lister: {{ item.owner }}
                                         </h6>
-                                        <h5 class="card-title">
-                                            Name:
-                                            {{ item.info.details.ListingName }}
-                                        </h5>
                                         <p
                                             class="card-text d-flex align-items-center mb-3"
-                                        >
+                                        > Location: 
                                             {{
                                                 item.info.details.Location.name
                                             }}
-                                        </p>
-                                        <!-- need to getLister -->
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
+                                            <br/>
                                             Price: {{ item.info.details.Price }}
                                             <br />
                                             Distance: {{ item.distance }}
                                         </p>
-
-                                        <h6
-                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
-                                        >
-                                            <p class="me-1">
-                                                Lister: {{ item.owner }}
-                                            </p>
-                                        </h6>
                                     </div>
                                     
                                 </div>
@@ -509,6 +489,28 @@ a {
     width: 50px;
     font-size: 30px;
     border-radius: 50%;
+}
+
+.listingName{
+    color: #558C03;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.card-title{
+    height: 45px;
+    margin-bottom: 20px;
+}
+
+.card-subtitle{
+    height: 45px;
+}
+
+.card-text{
+    background-color: lightgray;
+    padding: 10px;
+    height: 50%;
+    border-radius: 8px;
 }
 
 @media screen and (max-width: 992px) {

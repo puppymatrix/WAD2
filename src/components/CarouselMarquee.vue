@@ -68,7 +68,7 @@
         async getListingObj() {
             const listings = await getAllListings();
             this.allListings = listings;
-            console.log(this.allListings);
+            // console.log(this.allListings);
         },
   
       hideBtn() {
