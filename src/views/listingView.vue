@@ -1,53 +1,96 @@
 <script setup>
-    import { getListing, getListingsByCategory, getUsersWhoChopedCollectedListing, getUser, chopeListing, getAllUsernames, calculateDistance } from "@/firebase/api.js";
-    import { Icon } from "@iconify/vue";
-    import { handleError } from "vue";
+import {
+    getListing,
+    getListingsByCategory,
+    getUsersWhoChopedCollectedListing,
+    getUser,
+    chopeListing,
+    getAllUsernames,
+    calculateDistance,
+    collectListing,
+} from "@/firebase/api.js";
+import { Icon } from "@iconify/vue";
+import { handleError } from "vue";
 </script>
 
 <template>
-    <body class="px-5 py-2">
-
+    <body class="px-5 py-2" v-if="listingInfo">
         <div class="container-fluid my-2 filterBar">
             <div class="row">
                 <!-- carousel -->
-                <div class="col-md-6 display-flex align-item-center justify-content-center m-0" v-if="listingInfo.ImageUrls.length > 1">
+                <div
+                    class="col-md-6 display-flex align-item-center justify-content-center m-0"
+                    v-if="listingInfo.ImageUrls.length > 1"
+                >
                     <BCarousel controls indicators>
-                        <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos"  style="width: 100%; height: 100%; object-fit: cover;"/>
+                        <BCarouselSlide
+                            v-for="photos in listingInfo.ImageUrls"
+                            :img-src="photos"
+                            style="width: 100%; height: 100%; object-fit: cover"
+                        />
                     </BCarousel>
                 </div>
-                <div class="col-md-6 display-flex align-item-center justify-content-center" v-else>
-                    <img :src="listingInfo.ImageUrls[0]" alt="" class="card-img" style="width: 100%; height: 100%; object-fit: cover;" />
+                <div
+                    class="col-md-6 display-flex align-item-center justify-content-center"
+                    v-else
+                >
+                    <img
+                        :src="listingInfo.ImageUrls[0]"
+                        alt=""
+                        class="card-img"
+                        style="width: 100%; height: 100%; object-fit: cover"
+                    />
                 </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-8">
-                            <h2 class="d-inline">Listing: <span id="name">{{ listingInfo.ListingName[0].toUpperCase() + listingInfo.ListingName.slice(1)  }}</span></h2>
+                            <h2 class="d-inline">
+                                Listing:
+                                <span id="name">{{
+                                    listingInfo.ListingName[0].toUpperCase() +
+                                    listingInfo.ListingName.slice(1)
+                                }}</span>
+                            </h2>
                         </div>
                         <div
-                    class="col d-flex align-items-center justify-content-end px-3"
-                >
-                    <router-link :to="{
+                            class="col-4 d-flex align-items-center justify-content-end px-3"
+                        >
+                            <router-link
+                                :to="{
                                     name: 'mapView',
-                                    query: { Id: id },
+                                    query: { Id: listingId },
                                 }"
                             >
-                            <Button
-                        style="background-color: #343a40;color:white;"
-                        @click="checkQuery"
-                        class="rounded"
-                        raised
-                        plain
-                        text
-                        ><Icon icon="material-symbols:directions" color="white" width="25"/>
-                            &nbspDirections</Button
-                    >
-                    </router-link>
-                </div>
+                                <Button
+                                    style="
+                                        background-color: #343a40;
+                                        color: white;
+                                    "
+                                    class="rounded"
+                                    raised
+                                    plain
+                                    text
+                                    ><Icon
+                                        icon="material-symbols:directions"
+                                        color="white"
+                                        width="18"
+                                    />
+                                    &nbspDirections</Button
+                                >
+                            </router-link>
+                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
-                            <h4 id="subheader">Price: <span id="price">${{ listingInfo.Price }}</span> | Quantity Available: <span id="qty">{{ listingInfo.QtyAvailable}}</span></h4>
+                            <h4 id="subheader">
+                                Price:
+                                <span id="price">${{ listingInfo.Price }}</span>
+                                | Quantity Available:
+                                <span id="qty">{{
+                                    listingInfo.QtyAvailable
+                                }}</span>
+                            </h4>
                         </div>
                     </div>
 
@@ -56,8 +99,19 @@
                             <div class="card my-3" style="width: 100%">
                                 <div class="card-body">
                                     <h5 class="card-title">Food Description</h5>
-                                    <p class="card-text" v-if="listingInfo.hasOwnProperty(Description)">{{ listingInfo.Description }}</p>
-                                    <p class="card-text" v-else> Not Applicable </p>
+                                    <p
+                                        class="card-text"
+                                        v-if="
+                                            listingInfo.hasOwnProperty(
+                                                'Description'
+                                            )
+                                        "
+                                    >
+                                        {{ listingInfo.Description }}
+                                    </p>
+                                    <p class="card-text" v-else>
+                                        Not Applicable
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -66,41 +120,51 @@
                     <div class="row py-1">
                         <div class="col">
                             <h6 class="d-inline">Category of Food Listing:</h6>
-                            <span class="badge text-bg-listing ms-1"
-                                >{{listingInfo.Category }}</span
-                            >
+                            <span class="badge text-bg-listing ms-1">{{
+                                listingInfo.Category
+                            }}</span>
                         </div>
                     </div>
 
                     <div class="row py-1">
                         <div class="col">
                             <h6 class="d-inline">Type of Food Listing:</h6>
-                            <span class="badge text-bg-listing ms-1" v-if="listingInfo.Perishable">Perishable</span>
-                            <span class="badge text-bg-listing ms-1" v-else>Non-Perishable</span>
+                            <span
+                                class="badge text-bg-listing ms-1"
+                                v-if="listingInfo.Perishable"
+                                >Perishable</span
+                            >
+                            <span class="badge text-bg-listing ms-1" v-else
+                                >Non-Perishable</span
+                            >
                         </div>
                     </div>
 
                     <div class="row pt-1 pb-2">
                         <div class="col">
                             <h6 class="d-inline">Listing Expiry Time:</h6>
-                            <span class="badge text-bg-listing ms-1">{{ expiryDate }}</span>
+                            <span class="badge text-bg-listing ms-1">{{
+                                expiryDate
+                            }}</span>
                         </div>
                     </div>
 
                     <div class="row py-1">
                         <div class="col">
                             <h6 class="d-inline">Location:</h6>
-                            <span class="badge text-bg-listing ms-1">{{ location }}</span
-                            >
+                            <span class="badge text-bg-listing ms-1">{{
+                                location
+                            }}</span>
                         </div>
                     </div>
 
-                    <div class="row pt-2">
+                    <div class="row pt-2" v-if="!(owner == currentUserInfo)">
                         <div class="col">
                             <div class="d-grid">
                                 <button
                                     class="btn btn-success text-bg-listing btn-lg"
-                                    type="button" @click="chopeThisListing()"
+                                    type="button"
+                                    @click="chopeThisListing()"
                                 >
                                     Chope!
                                 </button>
@@ -113,42 +177,59 @@
 
         <!-- Chope Info -->
         <div class="container-fluid my-3" v-if="owner == currentUserInfo">
-            <hr>
+            <hr />
             <div class="row d-flex justify-content-center">
                 <div class="chopedInfo col-md-5 bg-secondary rounded-3">
                     <div class="chopedHeader">
-                        <h4>Users who choped</h4>
+                        <h4 class="m-0 p-0">Users who choped</h4>
                     </div>
-
-                    <form>
-                        <div class="userInfo" v-for="user in userNotCollect" :key="user.Id">
-                            <input type="checkbox" v-model="user.Id" @click="collectItem(user)" id="user.Id">
-                            <label for="user.Id" class="strikethrough"> {{user.details.username}} choped! </label><br>
-                        </div>
-                    </form>
-
+                    <div
+                        v-for="user in usersWhoChoped"
+                        :key="user.Id"
+                        class="userInfo d-flex justify-content-between align-items-center p-3"
+                    >
+                        {{ user.details.firstName }}
+                        {{ user.details.lastName }}
+                        <Button
+                            @click="moveToCollected(user)"
+                            style="background-color: #558c03"
+                            class="rounded"
+                            >Collected?<Icon
+                                icon="iconamoon:arrow-right-2-fill"
+                                width="30"
+                        /></Button>
+                    </div>
                 </div>
 
                 <div class="col-md-1"></div>
                 <div class="chopedInfo col-md-5 bg-secondary rounded-3">
                     <div class="chopedHeader">
-                        <h4>Users who collected</h4>
+                        <h4 class="m-0 p-0">Users who collected</h4>
                     </div>
 
-                    <div>
-                        <div class="userInfo" v-for="user in userCollect" :key="user.Id">
-                            <input type="checkbox" v-model="user.Id" @click="notCollected(user)" checked>
-                            <label for="user.Id" > {{user.details.username}} collected! </label><br>
-                        </div>
+                    <div
+                        v-for="user in usersWhoCollected"
+                        :key="user.Id"
+                        class="userInfo d-flex justify-content-between align-items-center p-3"
+                        style="height: 82px"
+                    >
+                        {{ user.details.firstName }}
+                        {{ user.details.lastName }}
+                        <Button
+                            @click="moveToChoped(user)"
+                            severity="danger"
+                            class="rounded"
+                            ><Icon icon="akar-icons:cross"
+                        /></Button>
                     </div>
                 </div>
-            </div> 
-            <hr> 
+            </div>
+            <hr />
         </div>
 
         <!-- More Listings -->
-        <div class="container-fluid" v-else>
-            <hr>
+        <div class="container-fluid">
+            <hr />
             <h3>Similar food listings</h3>
             <div class="album py-2">
                 <div class="container-fluid px-0">
@@ -157,53 +238,105 @@
                             class="col-lg-3 col-md-4 col-sm-12"
                             v-for="listing in similarListing"
                         >
-                        <router-link style="text-decoration: none"
+                            <router-link
+                                style="text-decoration: none"
                                 :to="{
                                     name: 'listing',
-                                    query: { Id: listing.Id },
+                                    query: { Id: listing.info.Id },
                                 }"
                             >
-                            <div class="card h-100 shadow-sm">
-                                <img
-                                    :src="listing.info.details.ImageUrls[0]"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top">
-                                    <h6 
-                                        class="card-subtitle mb-2 text-body-secondary"
-                                    >
-                                        Category:
-                                        {{ listing.info.details.Category }}
-                                    </h6>
-                                    <h5 class="card-title">
-                                        Name:
-                                        {{ listing.info.details.ListingName }}
-                                    </h5>
-                                    <p
-                                        class="card-text d-flex align-items-center mb-3"
-                                    >
-                                        {{ listing.info.details.Location.name }}
-                                    </p>
-                                    <!-- need to getLister -->
-                                    <p
-                                        class="card-text d-flex align-items-center mb-3"
-                                    >
-                                        Price: {{ listing.info.details.Price }}
-                                        <br />
-                                        Distance: {{ listing.distance }}
-                                    </p>
-
-                                    <h6
-                                        class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
-                                    >
-                                        <p class="me-1">
-                                            {{ listing.owner }}
+                                <div class="card h-100">
+                                    <img
+                                        :src="listing.info.details.ImageUrls[0]"
+                                        alt=""
+                                        class="card-img-top"
+                                    />
+                                    <div class="card-body border-top">
+                                        <h5 class="card-title">
+                                            Listing Name: <br />
+                                            <span class="listingName">{{
+                                                listing.info.details.ListingName
+                                            }}</span>
+                                        </h5>
+                                        <h6
+                                            class="card-subtitle mb-2 text-body-secondary"
+                                        >
+                                            Category:
+                                            {{ listing.info.details.Category }}
+                                            <br />
+                                            Lister: {{ listing.owner }}
+                                        </h6>
+                                        <p
+                                            class="card-text moreInfo d-flex align-items-center mb-3"
+                                        >
+                                            Location:
+                                            {{
+                                                listing.info.details.Location
+                                                    .name
+                                            }}
+                                            <br />
+                                            Price:
+                                            {{ listing.info.details.Price }}
+                                            <br />
+                                            Distance: {{ listing.distance }}
                                         </p>
-                                    </h6>
+                                    </div>
                                 </div>
-                            </div>
                             </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <body class="px-5 py-2" v-else>
+        <div class="container-fluid my-2 filterBar px-5">
+            <div class="row">
+                <!-- carousel -->
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="35rem"></Skeleton>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="10rem" class="mb-3"></Skeleton>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-7">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
                         </div>
                     </div>
                 </div>
@@ -215,150 +348,100 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-    data(){
+    data() {
         return {
-            similarListing: [], 
-            listingInfo: [], 
+            similarListing: [],
+            listingInfo: null,
             expiryDate: "",
             location: "",
             listingCategory: null,
-            id: null,
+            listingId: null,
             owner: "",
-            userChope: [],
-            userCollect: [],
+            usersWhoChoped: [],
+            usersWhoCollected: [],
             userNotCollect: [],
-            currentUserInfo:"",
-        }
+            currentUserInfo: "",
+        };
     },
-    created(){
-        // console.log(this.$route.query.Id);
-        this.id = this.$route.query.Id;
-        this.getListingInfo()
-        this.loadNearbyListings()
-        
-        this.loadChopes();
+    async created() {
+        this.listingId = this.$route.query.Id;
+        await this.getListingInfo();
+        await this.loadNearbyListings();
+        if (this.isAuthenticated) {
+            this.getUserInfo();
+        }
+        await this.loadChopes();
     },
     computed: {
-        ...mapGetters(["isAuthenticated","currentUser", "currentUserLocation"]),
+        ...mapGetters([
+            "isAuthenticated",
+            "currentUser",
+            "currentUserLocation",
+        ]),
     },
-    methods:{
-
-        getUserInfo(){
+    methods: {
+        async moveToCollected(user) {
+            this.usersWhoCollected.push(user);
+            this.usersWhoChoped = this.usersWhoChoped.filter(
+                (chopedUser) => chopedUser.Id !== user.Id
+            );
+            console.log(user);
+            await collectListing(user.Id, this.listingId);
+        },
+        async moveToChoped(user) {
+            this.usersWhoChoped.push(user);
+            this.usersWhoCollected = this.usersWhoCollected.filter(
+                (collectedUser) => collectedUser.Id !== user.Id
+            );
+            console.log(user);
+            await collectListing(user.Id, this.listingId);
+        },
+        getUserInfo() {
             this.currentUserInfo = this.currentUser;
         },
-
-        async getListingInfo(){
+        async getListingInfo() {
             // console.log('id', this.id)
-            const data = getListing(this.id)
-            data.then(
-                listing => {
-                    // console.log(listing);
-                    this.listingInfo = listing;
-                    console.log('listingInfo', this.listingInfo)
+            const listing = await getListing(this.listingId);
+            this.listingInfo = listing;
+            // console.log("listingInfo", this.listingInfo);
 
-                    this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
-                    this.location = this.listingInfo.Location.name;
-                    this.listingCategory = this.listingInfo.Category;
-                    // console.log(this.listingCategory);
-                    this.owner = this.listingInfo.Owner;
+            this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
+            this.location = this.listingInfo.Location.name;
+            this.listingCategory = this.listingInfo.Category;
+            // console.log(this.listingCategory);
+            this.owner = this.listingInfo.Owner;
+        },
 
-                    this.loadNearbyListings();
+        async loadNearbyListings() {
+            // console.log("load nearby listings", this.listingCategory);
+            const listings = await getListingsByCategory(this.listingCategory);
+            const users = await getAllUsernames();
+            const listingSlice = listings.slice(0, 4);
+            for (const listing of listingSlice) {
+                const owner = users[listing.details.Owner];
 
-                }
-            )
-            
-            if (this.isAuthenticated){
-                this.getUserInfo()
+                this.similarListing.push({
+                    info: listing,
+                    owner: owner,
+                });
             }
+            // console.log("final similar listing", this.similarListing);
         },
+        async loadChopes() {
+            const data = await getUsersWhoChopedCollectedListing(
+                this.listingId
+            );
 
-        loadNearbyListings(){
-            console.log("load nearby listings", this.listingCategory)
-            getListingsByCategory(this.listingCategory)
-            .then(
-                listings => {
-                    console.log("raw similar listings", listings)
-                    const users = getAllUsernames();
-                    users.then(
-                        users => {
-                            for (const listing of listings.slice(0, 4)) {
-                                let distanceToUser = Number.parseFloat(
-                                    calculateDistance(
-                                        this.currentUserLocation.lat,
-                                        this.currentUserLocation.lng,
-                                        listing.details.Location.latitude,
-                                        listing.details.Location.longitude
-                                    ).toFixed(3)
-                                );
-                                console.log("distance", distanceToUser)
-
-                                const owner = users[listing.details.Owner];
-
-                                this.similarListing.push({
-                                    info: listing,
-                                    distance: distanceToUser,
-                                    owner: owner,
-                                });
-                            }
-                        }
-                    )
-                    
-                    // console.log("similar listing", this.similarListing);
-
-                }
-            )
+            this.usersWhoCollected = data.usersWhoCollected;
+            this.usersWhoChoped = data.usersWhoChoped.filter((item) => {
+                // Check if the item's Id is not in the smaller array
+                return !this.usersWhoCollected.some(
+                    (smallerItem) => smallerItem.Id === item.Id
+                );
+            });
         },
-            
-        loadChopes(){
-            const data = getUsersWhoChopedCollectedListing(this.id)
-            data.then(
-                chopes => {
-                    // console.log(chopes)
-                    this.userChope = chopes.usersWhoChoped;
-                    this.userCollect = chopes.usersWhoCollected;
-                    this.userNotCollect = this.userChope;
-                    let count = 0;
-                    for (let i = 0; i < this.userChope.length; i++) {
-                        for (let y = 0; this.userCollect.length; y++){
-                            console.log(this.userChope[i].Id)
-                            console.log(this.userCollect[y].Id)
-                            if (this.userChope[i].Id === this.userCollect[y].Id){
-                                this.userNotCollect.splice(i-count, 1);
-                                count ++;
-                            }
-                        }
-                    }
-                    console.log('count', count);
-                    console.log(this.userNotCollect)
-                    console.log(this.userCollect)
-                }
-            )
-        },
-        collectItem(user){
-            console.log(user);
-            this.userCollect.push(user);
-            let checkbox = document.getElementById("user.Id");
-            if (checkbox.checked){
-                console.log("checked")
-                checkbox.disabled = true;
-                console.log("help", checkbox.disabled)
-            }
-            console.log(this.userCollect);
-            console.log(this.userNotCollect);
-        },
-        notCollected(user){
-            console.log(user);
-            this.userCollect.splice(this.userCollect.indexOf(user), 1);
-            let checkbox = document.getElementById("user.Id");
-            if (checkbox.checked){
-                console.log("checked")
-                checkbox.checked = false;
-                checkbox.disabled = false;
-                console.log("help", checkbox.disabled)
-            }
-        },
-        chopeThisListing(){
-            if (this.isAuthenticated){
+        chopeThisListing() {
+            if (this.isAuthenticated) {
                 chopeListing(this.id, this.currentUser);
                 console.log("chope success");
                 this.$toast.add({
@@ -367,8 +450,7 @@ export default {
                     detail: "You have successfully chope this listing!",
                     life: 3000,
                 });
-            }
-            else{
+            } else {
                 this.$toast.add({
                     severity: "error",
                     summary: "Not Logged In",
@@ -377,47 +459,34 @@ export default {
                 });
             }
         },
-      
-        watch:{
-            loadNearbyListings:{
-                handler() {
-                    this.getListingInfo();
-                },
-                deep: true,
-
-            }
-        },
-    }
-}
+    },
+};
 </script>
 
-
-
 <style scoped>
-
-#subheader{
+#subheader {
     color: grey;
 }
 
-#name{
+#name {
     font-size: 2rem;
-    color: #558C03;
+    color: #558c03;
     font-weight: bold;
 }
 
-#price{
+#price {
     font-size: 1.5rem;
-    color: #558C03;
+    color: #558c03;
     font-weight: bold;
 }
 
-#qty{
+#qty {
     font-size: 1.5rem;
-    color: #558C03;
+    color: #558c03;
     font-weight: bold;
 }
 .text-bg-listing {
-    background-color: #558C03;
+    background-color: #558c03;
     padding: 10px;
     color: white;
     font-size: 1rem;
@@ -429,13 +498,35 @@ export default {
     object-fit: cover;
 }
 
-.username{
-    font-size: 1.5rem;
+.listingName {
+    color: #558c03;
     font-weight: bold;
-    color: #558C03;
+    font-size: 22px;
 }
 
-.userInfo{
+.card-title {
+    height: 45px;
+    margin-bottom: 20px;
+}
+
+.card-subtitle {
+    height: 45px;
+}
+
+.moreInfo {
+    background-color: lightgray;
+    padding: 10px;
+    height: 50%;
+    border-radius: 8px;
+}
+
+.username {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #558c03;
+}
+
+.userInfo {
     padding: 10px;
 }
 
@@ -446,23 +537,26 @@ export default {
     border-radius: 5px;
 }
 
-.chopedInfo{
+.chopedInfo {
     height: auto;
     padding: 10px;
     margin-top: 10px;
 }
 
-
-.chopedHeader{
-    background-color: #83A638;
+.chopedHeader {
+    background-color: #83a638;
     color: white;
     border-radius: 10px;
     padding: 5px;
     width: auto;
     text-align: center;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.userInfo{
+.userInfo {
     background-color: lightgrey;
     padding: 3px;
     border-radius: 5px;
@@ -473,16 +567,15 @@ export default {
     height: auto;
 }
 
-input[type=checkbox]{
+input[type="checkbox"] {
     margin-right: 10px;
 }
 
-input[type=checkbox]:checked + label.strikethrough {
+input[type="checkbox"]:checked + label.strikethrough {
     text-decoration: line-through;
 }
 
-input[type=checkbox]:not(:checked) + label.strikethrough {
+input[type="checkbox"]:not(:checked) + label.strikethrough {
     text-decoration: none;
 }
-
 </style>
