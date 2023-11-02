@@ -18,16 +18,11 @@ import { handleError } from "vue";
         <div class="container-fluid my-2 filterBar">
             <div class="row">
                 <!-- carousel -->
-                <div
-                    class="col-md-6 display-flex align-item-center justify-content-center m-0"
-                    v-if="listingInfo.ImageUrls.length > 1"
-                >
+
+                <div class="col-md-6 display-flex align-item-center justify-content-center m-0" v-if="listingInfo.ImageUrls.length > 1">
                     <BCarousel controls indicators imgHeight="600px">
-                        <BCarouselSlide
-                            v-for="photos in listingInfo.ImageUrls"
-                            :img-src="photos"
-                            style="width: 100%; height: 100%; object-fit: cover"
-                        />
+                        <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos"  style="width: 100%; height: 100%; object-fit: cover;"/>
+
                     </BCarousel>
                 </div>
                 <div
@@ -398,31 +393,100 @@ export default {
         getUserInfo() {
             this.currentUserInfo = this.currentUser;
         },
-        async getListingInfo() {
+
+        async getListingInfo(){
             // console.log('id', this.id)
-            const listing = await getListing(this.listingId);
-            this.listingInfo = listing;
-            // console.log("listingInfo", this.listingInfo);
+            const data = getListing(this.id)
+            data.then(
+                listing => {
+                    // console.log(listing);
+                    this.listingInfo = listing;
+                    console.log('listingInfo', this.listingInfo)
 
-            this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
-            this.location = this.listingInfo.Location.name;
-            this.listingCategory = this.listingInfo.Category;
-            // console.log(this.listingCategory);
-            this.owner = this.listingInfo.Owner;
+                    this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
+                    this.location = this.listingInfo.Location.name;
+                    this.listingCategory = this.listingInfo.Category;
+                    // console.log(this.listingCategory);
+                    this.owner = this.listingInfo.Owner;
+
+                    this.loadNearbyListings();
+                }
+            )
+            
+            if (this.isAuthenticated){
+                this.getUserInfo()
+            }
         },
+        loadNearbyListings(){
+            console.log("load nearby listings", this.listingCategory)
+            getListingsByCategory(this.listingCategory)
+            .then(
+                listings => {
+                    console.log("raw similar listings", listings)
+                    const users = getAllUsernames();
+                    users.then(
+                        users => {
+                            for (const listing of listings.slice(0, 4)) {
+                                let distanceToUser = Number.parseFloat(
+                                    calculateDistance(
+                                        this.currentUserLocation.lat,
+                                        this.currentUserLocation.lng,
+                                        listing.details.Location.latitude,
+                                        listing.details.Location.longitude
+                                    ).toFixed(3)
+                                );
+                                console.log("distance", distanceToUser)
 
-        async loadNearbyListings() {
-            // console.log("load nearby listings", this.listingCategory);
-            const listings = await getListingsByCategory(this.listingCategory);
-            const users = await getAllUsernames();
-            const listingSlice = listings.slice(0, 4);
-            for (const listing of listingSlice) {
-                const owner = users[listing.details.Owner];
+                                const owner = users[listing.details.Owner];
 
-                this.similarListing.push({
-                    info: listing,
-                    owner: owner,
-                });
+                                this.similarListing.push({
+                                    info: listing,
+                                    distance: distanceToUser,
+                                    owner: owner,
+                                });
+                            }
+                        }
+                    )
+                    
+                    // console.log("similar listing", this.similarListing);
+
+                }
+            )
+        },
+        loadChopes(){
+            const data = getUsersWhoChopedCollectedListing(this.id)
+            data.then(
+                chopes => {
+                    // console.log(chopes)
+                    this.userChope = chopes.usersWhoChoped;
+                    this.userCollect = chopes.usersWhoCollected;
+                    this.userNotCollect = this.userChope;
+                    let count = 0;
+                    for (let i = 0; i < this.userChope.length; i++) {
+                        for (let y = 0; this.userCollect.length; y++){
+                            console.log(this.userChope[i].Id)
+                            console.log(this.userCollect[y].Id)
+                            if (this.userChope[i].Id === this.userCollect[y].Id){
+                                this.userNotCollect.splice(i-count, 1);
+                                count ++;
+                            }
+                        }
+                    }
+                    console.log('count', count);
+                    console.log(this.userNotCollect)
+                    console.log(this.userCollect)
+                }
+            )
+        },
+        collectItem(user){
+            console.log(user);
+            this.userCollect.push(user);
+            let checkbox = document.getElementById("user.Id");
+            if (checkbox.checked){
+                console.log("checked")
+                checkbox.disabled = true;
+                console.log("help", checkbox.disabled)
+
             }
             // console.log("final similar listing", this.similarListing);
         },
@@ -458,8 +522,7 @@ export default {
                 });
             }
         },
-    },
-};
+
 </script>
 
 <style scoped>
