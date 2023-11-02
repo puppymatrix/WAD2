@@ -1,6 +1,4 @@
 <script setup>
-
-
     import { getAllListings, filterByDistance, filterByName, calculateDistance, getListing } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
@@ -104,13 +102,11 @@
                 <div id="map" style="height:600px" class="col-10"></div>
             </div>
            
-            <div class="row justify-content-center" style="padding-left: 15%; padding-right: 15%">
+            <div class="row justify-content-center">
                 <div class="col-10 mt-3" style="background-color: #F6FBF6;">
-                    <!-- <div class="container" style="padding-left: 15%; padding-right: 15%"> -->
-                        <!-- <div class="row justify-content-center align-items-center"> -->
                             <div class="row justify-content-center align-items-center">
-                                <div class="col-3 pb-0">
-                                    <h5 class = "text-right" style="color: #212529">Filter by: </h5>
+                                <div class="col-2">
+                                    <h6 class = "text-right" style="color: #212529">Filter by: </h6>
                                 </div>
                                 <div class="col-6">
                                     <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
@@ -122,19 +118,19 @@
                                         </template>
                                     </Dropdown>
                                 </div>
-                                <!-- <div class="col-3"></div> -->
                             </div>
                             <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
-                                <div id='filterBar' class="col-12 col-sm-4 d-flex justify-content-center align-items-center">
-                                    <h6 class="m-0 me-2 pe-2">Distance (in KM): </h6><span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
+                                <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
+                                    <h6 class="m-3">Distance (in KM): </h6>
+                                    <span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
                                 </div>
-                                <div class="col-5 col-sm-6">
+                                <div class="col-md-5 my-2">
                                     <div class="container">
                                         <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
                                         :pt="{root: {class: 'bg-white'}}"/>
                                     </div>
                                 </div>
-                                <div class="col-1 col-sm-3">
+                                <div class="col-md-2 my-1 d-flex justify-content-center">
                                     <Button @click.prevent="loadByDistance"
                                     :pt="{ 
                                             root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
@@ -150,7 +146,6 @@
                     <!-- </div> -->
                 </div>
             </div>
-        <!-- </div> -->
         </div>
     </div>   
 </div> 
