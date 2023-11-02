@@ -292,18 +292,27 @@ async function collectListing(userId, listingId) {
                 (chope) => chope.listingId == listingId
             );
             if (index != -1) {
-                user.chopes[index].collected = true;
                 const userRef = doc(db, "userInformation", userId);
-                await setDoc(userRef, user);
-                console.log("Collected successfully");
+                if (user.chopes[index].hasOwnProperty("collected")) {
+                    if (user.chopes[index].collected) {
+                        user.chopes[index].collected = false;
+                        await setDoc(userRef, user, {merge: true});
+                        console.log("Uncollected successfully");
+                    } 
+                } else {
+                    user.chopes[index].collected = true;
+                    await setDoc(userRef, user, {merge: true});
+                    console.log("Collected successfully");
+                }
+                
             } else {
-                console.log("No such document!");
+                console.log("No listingId found in chopes");
             }
         } else {
-            console.log("No such document!");
+            console.log("No chopes");
         }
     } else {
-        console.log("No such document!");
+        console.log("No such user!");
     }
 }
 
