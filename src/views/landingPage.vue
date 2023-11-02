@@ -10,106 +10,20 @@
             <!-- Header Design -->
             <div class="col px-0 firstRow">
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
-
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-bind="searchInput">
-                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-model="searchInput" @keyup.enter="navigate">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @click="navigate">Let's Go!</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row secondRow">
-            <!-- <CarouselMarquee/> -->
+            <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Good Deals Available!</h2>
             <CarouselMarquee/>
         </div>
-        <!-- problematic carousel row -->
-        <div class="row secondRow">
-          <div class="col">
-            <div class="container text-center my-4">
-            <h2 class="font-weight-light">Featured: Food Near You</h2>
-            <div class="row mx-auto my-auto justify-content-center">
-                <div id="reccoCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
-                    <!-- <div class="carousel-inner" role="listbox" v-html="carousel"> -->
-                        <div class="carousel-item active">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/31f?text=1" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 1</div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/e66?text=2" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 2</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/7d2?text=3" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 3</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400?text=4" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 4</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/aba?text=5" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 5</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/fc0?text=6" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 6</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- buttons -->
-                    <a class="carousel-control-prev bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </a>
-                    <a class="carousel-control-next bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        
         <!-- About the Company -->
         <div id="aboutUs" class="row thirdRow">
             <div class="container-fluid p-4">
@@ -135,7 +49,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 aboutUs">
                         <h1 class="text-left" style="color: #97BF04;">About Us</h1>
                         <div class="typingWords">
                             <h2>
@@ -210,7 +124,6 @@
     top: 20%
 }
 
-
 h1{
     font-size: 6vw;
     color: black
@@ -237,6 +150,19 @@ h1{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.aboutUs{
+    opacity: 0;
+    transition: all 3s;
+    transform: translateX(-100%);
+    filter: blur(5px);
+}
+
+.show{
+    opacity: 1;
+    transform: translateX(0px);
+    filter: blur(0px);
 }
 
 .typed-text{
@@ -281,6 +207,12 @@ h1{
     background-color: #fffdd0;
 }
 
+.carouselHeader{
+    color:  #0b2b26;
+    text-align: center;
+    font-weight: bold;
+}
+
 
 #stats{
     background-image: url("../components/images/landingPage/stats-background.jpg");
@@ -299,9 +231,6 @@ h1{
     opacity: 80%;
     
 }
-
-
-
 
 .statsHeader{
     color:  #0b2b26;
@@ -401,7 +330,6 @@ h1{
 
 <script >
     
-    
 
 // import { db } from "@/firebase";
 // import { db } from "@/firebase";
@@ -438,10 +366,16 @@ export default {
       charIndex: 0
     }
   },
+  mounted(){
+    this.scrollWords()
+    },
     // components: {
     //     Vue3Marquee
     // },
   methods:{
+    navigate(){
+    this.$router.push(`/allListings?search=${this.searchInput}`)
+    },
     typeText(){
         if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
             if (!this.typeStatus){
@@ -485,6 +419,24 @@ export default {
     },
     makeCarousel(){
       
+    },
+
+    async scrollWords(){
+        // animation
+        const observer = new IntersectionObserver((entries)=>{
+            entries.forEach((entry) => {
+                if (entry.isIntersecting){
+                    entry.target.classList.add('show')
+                }else{
+                    entry.target.classList.remove('show')
+                }
+            })
+        })
+        const aboutUs = document.querySelectorAll('.aboutUs');
+        aboutUs.forEach((el) => {
+            observer.observe(el)
+        });
+
     },
     // makeCarousel(){
     //   //make carousel 
@@ -545,6 +497,7 @@ items.forEach((el) => {
         next = next.nextElementSibling
     }
 })
+
 
 </script>
 

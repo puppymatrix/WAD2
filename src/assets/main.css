@@ -41,3 +41,8 @@ div.p-button.p-component{
         height: 40%
     }
 }
+
+.p-sidebar-left .p-sidebar #buffer {
+    width: 20vw;
+    height: 100%;
+}

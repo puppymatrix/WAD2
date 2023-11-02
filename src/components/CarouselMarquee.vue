@@ -11,11 +11,13 @@
       <Vue3Marquee class="carousel" :pauseOnHover="true" :duration="200">
         <div class="" v-for="listing in allListings" :key="listing">
           <MarqueeCard
-            class="card"
+            class="marquee-card"
             v-on:switch="hideBtn"
             v-on:switchOn="showBtn"
             :listingName="listing.details.ListingName"
             :listingImage="listing.details.ImageUrls[0]"
+            :listingId = "listing.Id"
+            :listingPrice = "listing.details.Price"
           ></MarqueeCard>
         </div>
       </Vue3Marquee>
@@ -81,7 +83,7 @@
   
   <style scoped>
   .marquee {
-    height: 200px;
+    height: 380px;
     padding: 10px;
   }
   
@@ -97,18 +99,16 @@
     height: 100%;
   }
 
-  .card {
-    height: 100%;
-    border: 0px;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: transparent;
-    position: relative;
+  .marquee-card:hover{
+    cursor: pointer;
   }
   
+  .marquee-card{
+    height: 100%;
+    width: 100%;
+    margin: 10px;
+  }
+
   /* .marquee-seeAllUni {
     margin-top: 15px;
     font-size: 1rem;
@@ -130,7 +130,7 @@
     color: #40a9ff;
   } */
   
-  .marquee-btn {
+  /* .marquee-btn {
     transition: all 0.2s;
     background-color: black;
     border: 1px solid white;
@@ -148,6 +148,6 @@
     background-color: #40a9ff;
     border-color: #40a9ff;
     color: white;
-  }
+  } */
   </style>
   

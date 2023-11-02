@@ -2,6 +2,7 @@
     import { getAuth, signOut } from "firebase/auth";
     import { mapGetters } from "vuex";
     import router from "../router/index"
+import { doc } from "firebase/firestore";
 </script>
 
 <template>
@@ -26,33 +27,33 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-0">
                 <li class="nav-item px-3">
-                    <router-link to="/" class="nav-link" active-class="active-link">Home</router-link>
+                    <router-link to="/" @click="closeNav" class="nav-link" active-class="active-link">Home</router-link>
                 </li>
                 <li class="nav-item dropdown px-3">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Explore
                     </a>
                     <ul class="dropdown-menu">
-                        <li><router-link to="/allListings" class="dropdown-item" active-class="active-link">All Listings</router-link></li>
-                        <li><router-link to="/mapView" class="dropdown-item" active-class="active-link">Food Near Me</router-link></li>
+                        <li><router-link to="/allListings" class="dropdown-item" active-class="active-link" @click="closeNav">All Listings</router-link></li>
+                        <li><router-link to="/mapView" class="dropdown-item" active-class="active-link" @click="closeNav">Food Near Me</router-link></li>
                     </ul>
                 </li>
                 <li class="nav-item px-3">
-                    <router-link to="/addListing" class="nav-link display-inline" active-class="active-link">Add Listing</router-link>
+                    <router-link to="/addListing" @click="closeNav" class="nav-link display-inline" active-class="active-link" >Add Listing</router-link>
                 </li>
                 <li><div style="background-color: #000; margin: 10px 0; border-top: 1px solid white"></div></li>            
                 <li class="nav-item px-3" id="pinned">
 
                 <!-- profile and logout buttons -->
-                    <div class="justify-content-center p-0" v-if="isAuthenticated" >
+                    <div class="justify-content-center p-0" @click="closeNav" v-if="isAuthenticated" >
                         <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
-                        <div class="d-flex me-3" >
+                        <div class="d-flex me-3">
                             <button type="button" class="btn btn-standard m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
                             <button type="button" class="btn btn-secondary m-1" @click="logOut">Log Out</button>
                         </div>
                     </div>
                     <!-- login and signup buttons -->
-                    <div class="me-0" v-else>
+                    <div class="me-0" @click="closeNav" v-else>
                         <button type="button" class="btn btn-outline-standard m-1" @click.prevent="navigate=>{$router.push('/logIn')}" v-if="$route.path != '/logIn'">Log In</button>
                         <button type="button" class="btn btn-standard m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
@@ -71,16 +72,25 @@
 
 
 export default {
-    
+
     data() {
         return {
-            viewportWidth: window.innerWidth
+            viewportWidth: window.innerWidth,
         };
     },
     computed: {
         ...mapGetters(["isAuthenticated","currentUser"]),
     },
     methods: {
+        closeNav(){
+            const navBar = document.getElementsByClassName("navbar-toggler")[0];
+            const coll = document.getElementsByClassName("navbar-collapse")[0];
+            if(!navBar.classList.contains("collapsed")){
+                navBar.classList.add("collapsed");
+                navBar.setAttribute('aria-expanded', 'false')
+                coll.classList.remove("show")
+            }
+        },
         logOut() {
             // console.log(this.currentUser);
             const auth = getAuth();

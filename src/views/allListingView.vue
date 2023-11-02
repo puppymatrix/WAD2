@@ -16,11 +16,13 @@ import { Icon } from "@iconify/vue";
         <div class="container-fluid py-3">
             <div class="row justify-content-center">
                 <!-- search bar -->
-                <div class="col-10 col-md-6  align-items-center justify-content-center py-1">
+
+                <div class="col-10 col-md-6 d-flex align-items-center justify-content-center py-1">
                     <SearchBar @search="searchFood"/>
+
                 </div>
                 <!-- map view -->
-                <div class="col-2 col-md-6  align-items-center justify-content-center py-1 ">
+                <div class="col-2 col-md-6 d-flex align-items-center justify-content-center py-1 ">
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"
@@ -32,8 +34,9 @@ import { Icon } from "@iconify/vue";
                             text
                             plain
                         >
-                            <Icon icon="logos:google-maps" />
-                            &nbsp Food near me
+                            <Icon icon="logos:google-maps" width="15" height="15" class="img-fluid"/>
+                            <span class="ms-1" id="mapViewButton">Food near me</span>
+                            
                         </Button>
                     </router-link>
                 </div>
@@ -202,7 +205,7 @@ import { Icon } from "@iconify/vue";
                                             class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
                                         >
                                             <p class="me-1">
-                                                {{ item.owner }}
+                                                Lister: {{ item.owner }}
                                             </p>
                                         </h6>
                                     </div>
@@ -256,13 +259,19 @@ export default {
     components: {
         SearchBar,
     },
-    created() {
-        this.loadListings();
-        this.loadCategories();
+    async created() {
+
+            await this.loadCategories();
+            await this.loadListings();
+            this.query = this.$route.query.search
+            // console.log(this.query)
+            if(this.query != undefined){ //if a value is passed across
+                await this.searchFood(this.query);
+            }
     },
     data() {
         return {
-            query: "",
+            query: undefined,
             foodItems: [],
             foodItemsFiltered: [],
             maxReturn: -1,
@@ -303,7 +312,6 @@ export default {
             paginatorKey: 0,
         };
     },
-
     computed: {
         ...mapGetters(["currentUserLocation"]),
         check() {
@@ -356,6 +364,7 @@ export default {
             }
             this.loading = false;
             this.loaded = true;
+            // console.log("loaded all listings")
         },
 
         async loadCategories() {
@@ -513,6 +522,10 @@ a {
     #skeleton-3,
     #skeleton-4 {
         display: none;
+    }
+
+    #mapViewButton {
+        display: none
     }
 }
 </style>

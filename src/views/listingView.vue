@@ -10,6 +10,7 @@ import {
     collectListing,
 } from "@/firebase/api.js";
 import { Icon } from "@iconify/vue";
+    import { handleError } from "vue";
 </script>
 
 <template>
@@ -52,10 +53,9 @@ import { Icon } from "@iconify/vue";
                             </h2>
                         </div>
                         <div
-                            class="col d-flex align-items-center justify-content-start"
-                        >
-                            <router-link
-                                :to="{
+                    class="col d-flex align-items-center justify-content-end px-3"
+                >
+                    <router-link :to="{
                                     name: 'mapView',
                                     query: { Id: id },
                                 }"
@@ -230,48 +230,42 @@ import { Icon } from "@iconify/vue";
                             class="col-lg-3 col-md-4 col-sm-12"
                             v-for="listing in similarListing"
                         >
-                            <router-link
+                        <router-link style="text-decoration: none"
                                 :to="{
                                     name: 'listing',
                                     query: { Id: listing.Id },
                                 }"
                             >
-                                <div class="card h-100 shadow-sm">
-                                    <img
-                                        :src="listing.info.details.ImageUrls[0]"
-                                        alt=""
-                                        class="card-img-top"
-                                    />
-                                    <div class="card-body border-top">
-                                        <h6
-                                            class="card-subtitle mb-2 text-body-secondary"
-                                        >
-                                            Category:
-                                            {{ listing.info.details.Category }}
-                                        </h6>
-                                        <h5 class="card-title">
-                                            Name:
-                                            {{
-                                                listing.info.details.ListingName
-                                            }}
-                                        </h5>
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
-                                            {{
-                                                listing.info.details.Location
-                                                    .name
-                                            }}
-                                        </p>
-                                        <!-- need to getLister -->
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
-                                            Price:
-                                            {{ listing.info.details.Price }}
-                                            <br />
-                                            Distance: {{ listing.distance }}
-                                        </p>
+                            <div class="card h-100 shadow-sm">
+                                <img
+                                    :src="listing.info.details.ImageUrls[0]"
+                                    alt=""
+                                    class="card-img-top"
+                                />
+                                <div class="card-body border-top">
+                                    <h6 
+                                        class="card-subtitle mb-2 text-body-secondary"
+                                    >
+                                        Category:
+                                        {{ listing.info.details.Category }}
+                                    </h6>
+                                    <h5 class="card-title">
+                                        Name:
+                                        {{ listing.info.details.ListingName }}
+                                    </h5>
+                                    <p
+                                        class="card-text d-flex align-items-center mb-3"
+                                    >
+                                        {{ listing.info.details.Location.name }}
+                                    </p>
+                                    <!-- need to getLister -->
+                                    <p
+                                        class="card-text d-flex align-items-center mb-3"
+                                    >
+                                        Price: {{ listing.info.details.Price }}
+                                        <br />
+                                        Distance: {{ listing.distance }}
+                                    </p>
 
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
@@ -300,7 +294,7 @@ export default {
             listingInfo: [],
             expiryDate: "",
             location: "",
-            listingCategory: "",
+            listingCategory: null,
             listingId: null,
             owner: "",
             usersWhoChoped: [],
@@ -315,7 +309,6 @@ export default {
         this.getListingInfo();
         this.loadNearbyListings();
         this.loadChopes();
-        this.chopeThisListing();
     },
     computed: {
         ...mapGetters([
@@ -351,46 +344,64 @@ export default {
                 this.listingInfo = listing;
                 console.log(this.listingInfo);
 
-                this.expiryDate =
-                    this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
-                this.location = this.listingInfo.Location.name;
-                this.listingCategory = this.listingInfo.Category;
-                this.owner = this.listingInfo.Owner;
-            });
-            this.loadNearbyListings();
+        async getListingInfo(){
+            // console.log('id', this.id)
+            const data = getListing(this.id)
+            data.then(
+                listing => {
+                    // console.log(listing);
+                    this.listingInfo = listing;
+                    console.log('listingInfo', this.listingInfo)
 
-            if (this.isAuthenticated) {
-                this.getUserInfo();
-                this.loadChopes();
+                    this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
+                    this.location = this.listingInfo.Location.name;
+                    this.listingCategory = this.listingInfo.Category;
+                    // console.log(this.listingCategory);
+                    this.owner = this.listingInfo.Owner;
+
+                    this.loadNearbyListings();
+
+                }
+            )
+            
+            if (this.isAuthenticated){
+                this.getUserInfo()
             }
         },
-        loadNearbyListings() {
-            console.log("load nearby listings", this.listingCategory);
-            const data = getListingsByCategory(this.listingCategory);
-            data.then((listings) => {
-                console.log("raw similar listings", listings);
-                const users = getAllUsernames();
-                console.log(users);
 
-                for (const listing of listings.slice(0, 4)) {
-                    let distanceToUser = Number.parseFloat(
-                        calculateDistance(
-                            this.currentUserLocation.lat,
-                            this.currentUserLocation.lng,
-                            listing.details.Location.latitude,
-                            listing.details.Location.longitude
-                        ).toFixed(3)
-                    );
-                    const owner = users[listing.details.Owner];
+        loadNearbyListings(){
+            console.log("load nearby listings", this.listingCategory)
+            getListingsByCategory(this.listingCategory)
+            .then(
+                listings => {
+                    console.log("raw similar listings", listings)
+                    const users = getAllUsernames();
+                    users.then(
+                        users => {
+                            for (const listing of listings.slice(0, 4)) {
+                                let distanceToUser = Number.parseFloat(
+                                    calculateDistance(
+                                        this.currentUserLocation.lat,
+                                        this.currentUserLocation.lng,
+                                        listing.details.Location.latitude,
+                                        listing.details.Location.longitude
+                                    ).toFixed(3)
+                                );
+                                console.log("distance", distanceToUser)
 
-                    this.similarListing.push({
-                        info: listing,
-                        distance: distanceToUser,
-                        owner: owner,
-                    });
-                }
+                                const owner = users[listing.details.Owner];
 
-                console.log("similar listing", this.similarListing);
+                            this.similarListing.push({
+                                info: listing,
+                                distance: distanceToUser,
+                                owner: owner,
+                            });
+                        }
+                        }
+                    )
+                    
+                // console.log("similar listing", this.similarListing);
+
             });
         },
         async loadChopes() {
@@ -406,12 +417,38 @@ export default {
                 );
             });
         },
-        chopeThisListing() {
-            chopeListing(this.id, this.currentUser);
-            console.log("chope success");
+        chopeThisListing(){
+            if (this.isAuthenticated){
+                chopeListing(this.id, this.currentUser);
+                console.log("chope success");
+                this.$toast.add({
+                    severity: "info",
+                    summary: "Chope Successful",
+                    detail: "You have successfully chope this listing!",
+                    life: 3000,
+                });
+            }
+            else{
+                this.$toast.add({
+                    severity: "error",
+                    summary: "Not Logged In",
+                    detail: "Please log in to chope this listing",
+                    life: 3000,
+                });
+            }
         },
-    },
-};
+      
+        watch:{
+            loadNearbyListings:{
+                handler() {
+                    this.getListingInfo();
+                },
+                deep: true,
+
+            }
+        },
+    }
+}
 </script>
 
 <style scoped>

@@ -1,25 +1,36 @@
 <template>
-    <!-- <router-link
-      :to="`/universityInfo/` + universityName"
+    <router-link style="text-decoration: none"
+    :to="{
+          name: 'listing',
+          query: { Id: listingId},
+        }"
       @mouseover="(hover = true), $emit('switch')"
       @mouseout="(hover = false), $emit('switchOn')"
-    > -->
-      <img
-        :class="{ unfade: hover, faded: !hover }"
-        class="marquee-listing-image"
-        :src="listingImage"
-        height= "25vw"
-        object-fit = "cover"    
-      />
-      <h6 class="marquee-listing-name text-center">{{ listingName }}</h6>
-    <!-- </router-link> -->
+    >
+      <div class="card">
+        <img
+          :class="{ unfade: hover, faded: !hover }"
+          class="card-img-top marquee-listing-image position-absolute "
+          :src="listingImage"
+          height="180"
+          width=""    
+        />
+        <div class="card-body border-top">
+          <h6 class="card-title text-center marquee-listing-name">
+            {{ listingName }}
+          </h6>
+          <!-- <p class="card-subtitle text-center marquee-listing-price">${{ listingPrice }}</p> -->
+        </div>
+      </div>
+
+    </router-link>
   </template>
   
   <script>
   export default {
     name: "MarqueeCard",
     emits: ["switch", "switchOn"],
-    props: ["listingName", "listingImage"],
+    props: ["listingName", "listingImage", "listingId", "listingPrice"],
     data() {
       return {
         hover: false,
@@ -34,26 +45,67 @@
     font-weight: 400;
   }
   
+  .card:hover {
+    transform: scale(1.1);
+  }
   .marquee-listing-image {
     transition: all 0.4s;
     position: absolute;
     object-fit: cover;
-    height: 100%;
+    height: 270px;
+    max-width: 300px;
     padding: 10px;
+    text-wrap: wrap;
   }
   
   .marquee-listing-name {
     position: relative;
-    color: white;
+    color: black;
     font-size: x-large;
+    text-decoration: none;
+    font-weight: bold;
   }
+
+  .card-body {
+    background-color: #f5f5f5;
+    z-index: 1;
+    width: 80%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+  }
+
+
+  /* .marquee-listing-price{
+    position: relative;
+    color: black;
+    font-size: large;
+    text-decoration: none;
+    background-color: rgb(245, 245, 245);
+    padding: 10px;
+  } */
   
-  .unfade {
+  /* .unfade {
     filter: grayscale(0%);
   }
   
   .faded {
     filter: grayscale(80%);
+  } */
+
+  .card {
+    height: 100%;
+    width: 200px;
+    border: 0px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: transparent;
+    position: relative;
   }
   </style>
   
