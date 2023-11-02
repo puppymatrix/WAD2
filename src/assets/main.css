@@ -38,19 +38,11 @@ div.p-button.p-component{
 
 @media (max-width: 768px){
     div.p-sidebar{
-        width: 100%;
-        height: 60%
+        height: 40%
     }
 }
 
-.p-sidebar {
-    width: 30%;
+.p-sidebar-left .p-sidebar #buffer {
+    width: 20vw;
     height: 100%;
-}
-
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    padding: 20px;
-    background-size: 80%;
-    background-color: black;
-    border-radius: 50%
 }

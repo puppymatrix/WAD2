@@ -3,8 +3,12 @@
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
     import  SearchBar  from '../components/SearchBar.vue'
-
+    import  Sidebar from 'primevue/sidebar'
+    import Slider from 'primevue/slider'
+    import SelectButton from 'primevue/selectbutton'
+    import Button from 'primevue/button'
     import { Icon } from '@iconify/vue'
+    import Dropdown from 'primevue/dropdown'
 
 </script>
 
@@ -15,7 +19,7 @@
         <div class="col-9">
             <!-- <div class="container"> -->
                 <!-- sidebar for more info  -->
-            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition" >
+            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition" style="width: 30%">
                     <h2 style="color: #212529">Listing Information</h2>
 
                     <div class="container-fluid">
@@ -99,8 +103,8 @@
             </div>
            
             <div class="row justify-content-center">
-                <div class="col-10 mt-3">
-                            <div class="row justify-content-center align-items-center" style="background-color: #F6FBF6;">
+                <div class="col-10 mt-3" style="background-color: #F6FBF6;">
+                            <div class="row justify-content-center align-items-center">
                                 <div class="col-2">
                                     <h6 class = "text-right" style="color: #212529">Filter by: </h6>
                                 </div>
@@ -120,7 +124,7 @@
                                     <h6 class="m-3">Distance (in KM): </h6>
                                     <span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
                                 </div>
-                                <div class="col-md-5 col-sm-12 my-2">
+                                <div class="col-md-5 my-2">
                                     <div class="container">
                                         <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
                                         :pt="{root: {class: 'bg-white'}}"/>
@@ -132,7 +136,6 @@
                                             root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
                                         }">
                                         <Icon icon="ic:sharp-my-location" width="20" height="20" />
-                                        <span class="ms-2" id="searchButtonText">Go!</span>
                                     </Button>
                                 </div>
                             </div>
@@ -407,25 +410,23 @@
   </script>
 
 <style>
-/* 
+
 .img {
     background-size: cover; 
     background-position:center; 
     max-height: 400px;
-} */
+}
 
 #filterBar {
   font-size: calc(1rem + 0.1vw);
   padding-right:2%
 }
 
-/* .Sidebar{
-    width: 40%
-} */
+.Sidebar {
+    width: 25%
+}
 
-
-
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
   #filterBar {
     font-size: 1.5rem;
   }
@@ -436,10 +437,8 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-    #searchButtonText {
-    display: none
-  }
-}
+
+
+
 
 </style>
