@@ -438,41 +438,6 @@ export default {
         });
 
     },
-    // makeCarousel(){
-    //   //make carousel 
-    //   let counter = 0
-    //   //add html code to carousel 
-    //   for(listingKey in this.dataObj){
-    //     for(listingObj in this.dataObj[listingKey]){
-    //       //decide 'active' tag
-    //       if(counter == 0){
-    //         //need to edit card stuff
-    //         this.carousel += `<div class="carousel-item active">
-    //                         <div class="col-md-3">
-    //                             <div class="card">
-    //                                 <div class="card-img">
-    //                                     <img src="{{ listingObj.image[0] }}" class="img-fluid">
-    //                                 </div>
-    //                                 <div class="card-img-overlay">Slide 1</div>
-    //                             </div>
-    //                         </div>
-    //                     </div>`
-    //         counter += 1
-    //     }else{
-    //       this.carousel += `<div class="carousel-item">
-    //           <div class="col-md-3">
-    //               <div class="card">
-    //                   <div class="card-img">
-    //                     <img src="{{ listingObj.image[0] }}" class="img-fluid">
-    //                   </div>
-    //                   <div class="card-img-overlay">Slide 2</div>
-    //               </div>
-    //           </div>
-    //       </div>`
-    //     }
-    //     }
-    //   }
-    // }
   },
   
   created(){
