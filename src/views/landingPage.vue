@@ -57,7 +57,7 @@
                                 <span class="typed-cursor" :class="{'typing': typeStatus}">&nbsp;</span>
                             </h2>
                         </div>
-                        <p class="text-left" style="color: white;">FoodCatch is a platform that aims to reduce food waste by connecting consumers to food establishments and fellow Singaporeans with excess food. This is in alignment with SDG12 - Responsible Consumption </p>
+                        <p class="text-left" style="color: white;">FoodCatch is a platform that aims to reduce food waste by connecting consumers to food establishments and fellow Singaporeans with excess food. This is in alignment with SDG12 - Ensuring Sustainable Consumption </p>
                     </div>
                 </div>     
             </div>
