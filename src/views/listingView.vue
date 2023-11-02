@@ -237,14 +237,14 @@ import { handleError } from "vue";
                             class="col-lg-3 col-md-4 col-sm-12"
                             v-for="listing in similarListing"
                         >
-                            <!-- <router-link
+                            <router-link
                                 style="text-decoration: none"
                                 :to="{
                                     name: 'listing',
                                     query: { Id: listing.info.Id },
                                 }"
-                            > -->
-                                <div class="card h-100" @click.prevent="navigate=>{$router.push(`/listing?Id=${this.listingId}`)}">
+                            >
+                                <div class="card h-100">
                                     <img
                                         :src="listing.info.details.ImageUrls[0]"
                                         alt=""
@@ -277,10 +277,11 @@ import { handleError } from "vue";
                                             Price:
                                             {{ listing.info.details.Price }}
                                             <br />
+                                            Distance: {{ listing.distance }}
                                         </p>
                                     </div>
                                 </div>
-                            <!-- </router-link> -->
+                            </router-link>
                         </div>
                     </div>
                 </div>
