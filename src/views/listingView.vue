@@ -1,7 +1,7 @@
 <script setup>
     import { getListing, getListingsByCategory, getUsersWhoChopedCollectedListing, getUser, chopeListing, getAllUsernames, calculateDistance } from "@/firebase/api.js";
     import { Icon } from "@iconify/vue";
-import { handleError } from "vue";
+    import { handleError } from "vue";
 </script>
 
 <template>
@@ -221,7 +221,7 @@ export default {
             listingInfo: [], 
             expiryDate: "",
             location: "",
-            listingCategory: "",
+            listingCategory: null,
             id: null,
             owner: "",
             userChope: [],
@@ -233,18 +233,20 @@ export default {
     created(){
         // console.log(this.$route.query.Id);
         this.id = this.$route.query.Id;
-        this.getListingInfo();
-        this.loadNearbyListings();
+        this.getListingInfo().then(
+            this.loadNearbyListings()
+        );
         this.loadChopes();
     },
     computed: {
         ...mapGetters(["isAuthenticated","currentUser", "currentUserLocation"]),
     },
     methods:{
+
         getUserInfo(){
             this.currentUserInfo = this.currentUser;
         },
-        
+
         async getListingInfo(){
             // console.log('id', this.id)
             const data = getListing(this.id)
@@ -263,12 +265,12 @@ export default {
                     this.loadNearbyListings();
                 }
             )
-
+            
             if (this.isAuthenticated){
-                this.getUserInfo();
-                this.loadChopes();
+                this.getUserInfo()
             }
         },
+
         loadNearbyListings(){
             console.log("load nearby listings", this.listingCategory)
             getListingsByCategory(this.listingCategory)
@@ -301,8 +303,11 @@ export default {
                     )
                     
                     // console.log("similar listing", this.similarListing);
+
                 }
             )
+        }
+            
         },
         loadChopes(){
             const data = getUsersWhoChopedCollectedListing(this.id)
@@ -353,19 +358,35 @@ export default {
             }
         },
         chopeThisListing(){
-            chopeListing(this.id, this.currentUser);
-            console.log("chope success");
+            if (this.isAuthenticated){
+                chopeListing(this.id, this.currentUser);
+                console.log("chope success");
+                this.$toast.add({
+                    severity: "info",
+                    summary: "Chope Successful",
+                    detail: "You have successfully chope this listing!",
+                    life: 3000,
+                });
+            }
+            else{
+                this.$toast.add({
+                    severity: "error",
+                    summary: "Not Logged In",
+                    detail: "Please log in to chope this listing",
+                    life: 3000,
+                });
+            }
         },
     },  
-    watch:{
-        loadNearbyListings:{
-            handler() {
-                this.getListingInfo();
-            },
-            deep: true,
+    // watch:{
+    //     loadNearbyListings:{
+    //         handler() {
+    //             this.getListingInfo();
+    //         },
+    //         deep: true,
 
-        }
-    },
+    //     }
+    // },
 }
 
 </script>
