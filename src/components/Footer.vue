@@ -39,10 +39,10 @@
                     <a class="nav-link " aria-current="page" @click.prevent="navigate=>{$router.push('/logIn')}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/signUp">Sign Up</a>
+                    <a class="nav-link" @click.prevent="navigate=>{$router.push('/signUp')}">Sign Up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">User Profile</a>
+                    <a class="nav-link" @click.prevent="navigate=>{$router.push('/profile')}">User Profile</a>
                 </li>
             </ul>
         </div>
