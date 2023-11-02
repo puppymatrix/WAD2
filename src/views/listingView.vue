@@ -8,6 +8,7 @@ import {
     getAllUsernames,
     calculateDistance,
     collectListing,
+    canUserChope,
 } from "@/firebase/api.js";
 import { Icon } from "@iconify/vue";
 import { handleError } from "vue";
@@ -88,7 +89,7 @@ import { handleError } from "vue";
                                 <span id="price">${{ listingInfo.Price }}</span>
                                 | Quantity Available:
                                 <span id="qty">{{
-                                    listingInfo.QtyAvailable
+                                    qty
                                 }}</span>
                             </h4>
                         </div>
@@ -162,9 +163,18 @@ import { handleError } from "vue";
                         <div class="col">
                             <div class="d-grid">
                                 <button
+                                    v-if="choped"
                                     class="btn btn-success text-bg-listing btn-lg"
                                     type="button"
                                     @click="chopeThisListing()"
+                                >
+                                    Chope!
+                                </button>
+                                <button
+                                    v-else
+                                    class="btn btn-success text-bg-listing btn-lg"
+                                    type="button"
+                                    disabled
                                 >
                                     Chope!
                                 </button>
@@ -351,6 +361,7 @@ export default {
         return {
             similarListing: [],
             listingInfo: null,
+            qty: null,
             expiryDate: "",
             location: "",
             listingCategory: null,
@@ -360,6 +371,7 @@ export default {
             usersWhoCollected: [],
             userNotCollect: [],
             currentUserInfo: "",
+            choped: true,
         };
     },
     async created() {
@@ -368,6 +380,7 @@ export default {
         await this.loadNearbyListings();
         if (this.isAuthenticated) {
             this.getUserInfo();
+            this.choped = await canUserChope(this.currentUser, this.listingId);
         }
         await this.loadChopes();
     },
@@ -402,6 +415,7 @@ export default {
             // console.log('id', this.id)
             const listing = await getListing(this.listingId);
             this.listingInfo = listing;
+            this.qty = this.listingInfo.QtyAvailable;
             // console.log("listingInfo", this.listingInfo);
 
             this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
@@ -415,7 +429,8 @@ export default {
             // console.log("load nearby listings", this.listingCategory);
             const listings = await getListingsByCategory(this.listingCategory);
             const users = await getAllUsernames();
-            const listingSlice = listings.slice(0, 4);
+            const randomIndex = Math.floor(Math.random() * listings.length);
+            const listingSlice = listings.slice(randomIndex, randomIndex+ 4);
             for (const listing of listingSlice) {
                 const owner = users[listing.details.Owner];
 
@@ -439,16 +454,27 @@ export default {
                 );
             });
         },
-        chopeThisListing() {
+        async chopeThisListing() {
             if (this.isAuthenticated) {
-                chopeListing(this.id, this.currentUser);
-                console.log("chope success");
-                this.$toast.add({
+                // console.log(this.listingId,this.currentUser);
+                const status = await chopeListing(this.currentUser, this.listingId);
+                if (status) {
+                    this.$toast.add({
                     severity: "info",
                     summary: "Chope Successful",
-                    detail: "You have successfully chope this listing!",
+                    detail: "You have successfully choped this listing!",
                     life: 3000,
                 });
+                this.choped = await canUserChope(this.currentUser, this.listingId);
+                this.qty--;
+                } else {
+                    this.$toast.add({
+                    severity: "error",
+                    summary: "Chope Unsuccessful",
+                    life: 3000,
+                });
+                }
+                
             } else {
                 this.$toast.add({
                     severity: "error",
