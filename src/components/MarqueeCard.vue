@@ -1,5 +1,5 @@
 <template>
-    <router-link
+    <router-link style="text-decoration: none"
     :to="{
           name: 'listing',
           query: { Id: listingId},
@@ -7,21 +7,21 @@
       @mouseover="(hover = true), $emit('switch')"
       @mouseout="(hover = false), $emit('switchOn')"
     >
-    <div class="card">
-      <img
-        :class="{ unfade: hover, faded: !hover }"
-        class="card-img-top  marquee-listing-image position-absolute "
-        :src="listingImage"
-        height="180"
-        width=""    
-      />
-      <div class="card-body border-top">
-        <h6 class="card-title text-center marquee-listing-name">
-          {{ listingName }}
-        </h6>
-        <!-- <p class="card-subtitle text-center marquee-listing-price">${{ listingPrice }}</p> -->
+      <div class="card">
+        <img
+          :class="{ unfade: hover, faded: !hover }"
+          class="card-img-top marquee-listing-image position-absolute "
+          :src="listingImage"
+          height="180"
+          width=""    
+        />
+        <div class="card-body border-top">
+          <h6 class="card-title text-center marquee-listing-name">
+            {{ listingName }}
+          </h6>
+          <!-- <p class="card-subtitle text-center marquee-listing-price">${{ listingPrice }}</p> -->
+        </div>
       </div>
-    </div>
 
     </router-link>
   </template>
