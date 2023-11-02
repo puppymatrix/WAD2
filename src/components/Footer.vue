@@ -1,5 +1,7 @@
-<script setup></script>
+<script setup>
+import { mapGetters } from "vuex";
 
+</script>
 <template>
     <!--Footer-->
 
@@ -36,13 +38,13 @@
 
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " aria-current="page" @click.prevent="navigate=>{$router.push('/logIn')}">Login</a>
+                    <a class="nav-link " aria-current="page" @click="checkLogIn">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" @click.prevent="navigate=>{$router.push('/signUp')}">Sign Up</a>
+                    <a class="nav-link" @click="checkSignUp">Sign Up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" @click.prevent="navigate=>{$router.push('/profile')}">User Profile</a>
+                    <a class="nav-link" @click="cannotProfile">User Profile</a>
                 </li>
             </ul>
         </div>
@@ -126,9 +128,43 @@ export default {
         return {};
     },
     computed: {
-       
+        ...mapGetters(["isAuthenticated","currentUser"]),
     },
     methods: {
+        checkLogIn(){
+            if(!this.isAuthenticated){
+                this.$router.push('/logIn')
+        }else{
+            this.$toast.add({
+                severity: "info",
+                summary:"You are already logged in",
+                life: 3000
+            })
+        }}, 
+        checkSignUp(){
+            if(!this.isAuthenticated){
+                this.$router.push('/signUp')
+            }else{
+                this.$toast.add({
+                    severity: "info",
+                summary:"You are already logged in",
+                life: 3000
+                })
+            }
+        },
+        cannotProfile(){
+            if(this.isAuthenticated){
+                this.$router.push('/profile')
+            }else{
+                this.$toast.add({
+                    severity: "info",
+                summary:"You need to be logged in",
+                detail: "Sign up for an account if you don't have one",
+                life: 3000
+                })
+            }
+        },
+    
         display() {
             this.$toast.add({
                     severity: "info",
