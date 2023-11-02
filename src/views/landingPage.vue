@@ -20,9 +20,8 @@
             </div>
         </div>
         <div class="row secondRow">
-            <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Food Near You</h2>
-            <!-- <CarouselMarquee/> -->
-            <!-- <CarouselMarquee/> -->
+            <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Good Deals Available!</h2>
+            <CarouselMarquee/>
         </div>
         <!-- problematic carousel row -->
         <!-- <div class="row secondRow">
@@ -135,7 +134,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 aboutUs">
                         <h1 class="text-left" style="color: #97BF04;">About Us</h1>
                         <div class="typingWords">
                             <h2>
@@ -239,6 +238,37 @@ h1{
     align-items: center;
 }
 
+/* #aboutUs{
+    position: relative;
+    animation: movingAboutUs;
+    animation-duration: 8s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes movingAboutUs{
+    0%{
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0px);
+    }
+} */
+
+.aboutUs{
+    opacity: 0;
+    transition: all 3s;
+    transform: translateX(-100%);
+    filter: blur(5px);
+}
+
+.show{
+    opacity: 1;
+    transform: translateX(0px);
+    filter: blur(0px);
+}
+
 .typed-text{
     color: #A1BF73;
     font-size: 4vw;
@@ -284,6 +314,7 @@ h1{
 .carouselHeader{
     color:  #0b2b26;
     text-align: center;
+    font-weight: bold;
 }
 
 
@@ -304,9 +335,6 @@ h1{
     opacity: 80%;
     
 }
-
-
-
 
 .statsHeader{
     color:  #0b2b26;
@@ -442,6 +470,9 @@ export default {
       charIndex: 0
     }
   },
+  mounted(){
+    this.scrollWords()
+    },
     // components: {
     //     Vue3Marquee
     // },
@@ -492,6 +523,24 @@ export default {
     },
     makeCarousel(){
       
+    },
+
+    async scrollWords(){
+        // animation
+        const observer = new IntersectionObserver((entries)=>{
+            entries.forEach((entry) => {
+                if (entry.isIntersecting){
+                    entry.target.classList.add('show')
+                }else{
+                    entry.target.classList.remove('show')
+                }
+            })
+        })
+        const aboutUs = document.querySelectorAll('.aboutUs');
+        aboutUs.forEach((el) => {
+            observer.observe(el)
+        });
+
     },
     // makeCarousel(){
     //   //make carousel 
@@ -552,6 +601,7 @@ items.forEach((el) => {
         next = next.nextElementSibling
     }
 })
+
 
 </script>
 
