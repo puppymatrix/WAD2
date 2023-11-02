@@ -49,7 +49,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 aboutUs">
+                    <div class="col-md-6">
                         <h1 class="text-left" style="color: #97BF04;">About Us</h1>
                         <div class="typingWords">
                             <h2>
@@ -66,17 +66,17 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-12 stats p-4">
+            <div class="col-12 stats p-4 stats1">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
                 <p class="statsDesc num1">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-12 stats p-4">
+            <div class="col-12 stats p-4 stats1">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
                 <p class="statsDesc num2">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-12 stats p-4">
+            <div class="col-12 stats p-4 stats1">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
                 <p class="statsDesc num3">This causes global warming and climate change!</p>
             </div>
@@ -152,19 +152,6 @@ h1{
     align-items: center;
 }
 
-.aboutUs{
-    opacity: 0;
-    transition: all 3s;
-    transform: translateX(-100%);
-    filter: blur(5px);
-}
-
-.show{
-    opacity: 1;
-    transform: translateX(0px);
-    filter: blur(0px);
-}
-
 .typed-text{
     color: #A1BF73;
     font-size: 4vw;
@@ -227,9 +214,20 @@ h1{
     position: relative;
     border: border solid 1px;
     margin: 10px;
-    background-color: rgba(255, 255, 255, 0.971);
-    opacity: 80%;
-    
+    background-color: rgba(255, 255, 255, 0.971);  
+}
+
+.stats1{
+    opacity: 0;
+    transition: all 3s;
+    transform: translateX(-100%);
+    filter: blur(5px);
+}
+
+.show{
+    opacity: 0.8;
+    transform: translateX(0px);
+    filter: blur(0px);
 }
 
 .statsHeader{
@@ -242,27 +240,8 @@ h1{
     font-size: 18px;
     text-align: center;
 
-  animation: fadeInOut 7s infinite;
-
 }
 
-.num1 {
-  animation-delay: 0s;
-}
-
- .num2{
-  animation-delay: 2s;
-}
-
- .num3{
-  animation-delay: 4s;
-}
-
-
-.stats:hover .statsDesc{
-    color:#0b2b26;
-    opacity:1;
-}
 
 .sponsors{
     background-color: #fffdd0;
@@ -277,75 +256,12 @@ h1{
     max-width: 70%;
 }
 
-@media (max-width: 767px) {
-    .carousel-inner .carousel-item > div {
-        display: none;
-    }
-    .carousel-inner .carousel-item > div:first-child {
-        display: block;
-    }
-}
-
-.carousel-inner .carousel-item.active,
-.carousel-inner .carousel-item-next,
-.carousel-inner .carousel-item-prev {
-    display: flex; 
-}
-
-/* medium and up screens */
-@media (min-width: 768px) {
-    
-    .carousel-inner .carousel-item-end.active,
-    .carousel-inner .carousel-item-next {
-      transform: translateX(25%);
-    }
-    
-    .carousel-inner .carousel-item-start.active, 
-    .carousel-inner .carousel-item-prev {
-      transform: translateX(-25%);
-    }
-}
-
-.carousel-inner .carousel-item-end,
-.carousel-inner .carousel-item-start { 
-  transform: translateX(0);
-}
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 
 </style>
 
 
 
 <script >
-    
-
-// import { db } from "@/firebase";
-// import { db } from "@/firebase";
-// import { collection, doc, setDoc, getDocs } from "firebase/firestore";
-
-// async function getAllListings() {
-//     const querySnapshot = await getDocs(collection(db, "listings"));
-//     querySnapshot.forEach((doc) => {
-//         // doc.data() is never undefined for query doc snapshots
-//         // console.log(doc.id, " => ", doc.data());
-//         console.log(doc.data().Image[0])
-//     });
-    
-// }
-
-// getAllListings();
 
 // vue part
 export default {
@@ -369,9 +285,6 @@ export default {
   mounted(){
     this.scrollWords()
     },
-    // components: {
-    //     Vue3Marquee
-    // },
   methods:{
     navigate(){
     this.$router.push(`/allListings?search=${this.searchInput}`)
@@ -409,17 +322,6 @@ export default {
             setTimeout(this.typeText, this.typingSpeed + 1000);
         }
     },
-    searchDatabase(){
-      //take searchInput and pass into database 
-      
-    }, 
-    findListings(){
-      //search for top 10 listings near user and return as dataObj, used to put this into makecarousel later on
-
-    },
-    makeCarousel(){
-      
-    },
 
     async scrollWords(){
         // animation
@@ -432,7 +334,7 @@ export default {
                 }
             })
         })
-        const aboutUs = document.querySelectorAll('.aboutUs');
+        const aboutUs = document.querySelectorAll('.stats1');
         aboutUs.forEach((el) => {
             observer.observe(el)
         });

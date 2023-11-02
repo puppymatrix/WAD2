@@ -67,7 +67,7 @@
 
     <div class="row lastRow">
         <div class="col-12 text-center copyright">
-            Copyright © 2020 FoodCatch Pte Ltd. <br>
+            Copyright © 2023 FoodCatch Pte Ltd. <br>
             All rights reserved
         </div>
     </div>
