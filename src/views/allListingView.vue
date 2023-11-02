@@ -203,7 +203,7 @@ import { Icon } from "@iconify/vue";
                                             class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
                                         >
                                             <p class="me-1">
-                                                {{ item.owner }}
+                                                Lister: {{ item.owner }}
                                             </p>
                                         </h6>
                                     </div>
