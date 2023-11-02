@@ -23,92 +23,7 @@
             <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Good Deals Available!</h2>
             <CarouselMarquee/>
         </div>
-        <!-- problematic carousel row -->
-        <!-- <div class="row secondRow">
-          <div class="col">
-            <div class="container text-center my-4">
-            <h2 class="font-weight-light">Featured: Food Near You</h2>
-            <div class="row mx-auto my-auto justify-content-center">
-                <div id="reccoCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner" role="listbox">
-                    <div class="carousel-inner" role="listbox" v-html="carousel">
-                        <div class="carousel-item active">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/31f?text=1" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 1</div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/e66?text=2" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 2</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/7d2?text=3" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 3</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400?text=4" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 4</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/aba?text=5" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 5</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-img">
-                                        <img src="//via.placeholder.com/500x400/fc0?text=6" class="img-fluid">
-                                    </div>
-                                    <div class="card-img-overlay">Slide 6</div>
-                                </div>
-                            </div>
-                        </div> 
-
-                    </div>
-                    
-                    <a class="carousel-control-prev bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </a>
-                    <a class="carousel-control-next bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
+        
         <!-- About the Company -->
         <div id="aboutUs" class="row thirdRow">
             <div class="container-fluid p-4">
@@ -209,7 +124,6 @@
     top: 20%
 }
 
-
 h1{
     font-size: 6vw;
     color: black
@@ -237,24 +151,6 @@ h1{
     flex-direction: column;
     align-items: center;
 }
-
-/* #aboutUs{
-    position: relative;
-    animation: movingAboutUs;
-    animation-duration: 8s;
-    animation-fill-mode: forwards;
-}
-
-@keyframes movingAboutUs{
-    0%{
-        opacity: 0;
-        transform: translateX(-100px);
-    }
-    100%{
-        opacity: 1;
-        transform: translateX(0px);
-    }
-} */
 
 .aboutUs{
     opacity: 0;
