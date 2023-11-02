@@ -36,10 +36,10 @@
 
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link " aria-current="page" href="/logIn">Login</a>
+                    <a class="nav-link " aria-current="page" @click.prevent="navigate=>{$router.push('/logIn')}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/signUp">Register</a>
+                    <a class="nav-link" href="/signUp">Sign Up</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">User Profile</a>
