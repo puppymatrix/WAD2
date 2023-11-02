@@ -42,7 +42,7 @@ div.p-button.p-component{
     }
 }
 
-.p-sidebar-left .p-sidebar #buffer {
-    width: 20vw;
+.p-sidebar-left .p-sidebar  {
+    width: 30%;
     height: 100%;
 }

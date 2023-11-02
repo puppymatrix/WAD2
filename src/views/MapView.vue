@@ -3,23 +3,19 @@
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
     import  SearchBar  from '../components/SearchBar.vue'
-    import  Sidebar from 'primevue/sidebar'
-    import Slider from 'primevue/slider'
-    import SelectButton from 'primevue/selectbutton'
-    import Button from 'primevue/button'
+
     import { Icon } from '@iconify/vue'
     import Dropdown from 'primevue/dropdown'
 
 </script>
 
-<template>
+<template >
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
         <div class="col-9">
-            <!-- <div class="container"> -->
                 <!-- sidebar for more info  -->
-            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition" style="width: 30%">
+            <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" >
                     <h2 style="color: #212529">Listing Information</h2>
 
                     <div class="container-fluid">
@@ -100,6 +96,7 @@
             <!-- visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }} -->
             <div class="row justify-content-center">
                 <div id="map" style="height:600px" class="col-10"></div>
+                <!-- {{ sideBarPosition }}  -->
             </div>
            
             <div class="row justify-content-center">
@@ -142,8 +139,6 @@
                             <div class="row mt-2" v-else>
                                 <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
                             </div>
-                        <!-- </div> -->
-                    <!-- </div> -->
                 </div>
             </div>
         </div>
@@ -157,30 +152,32 @@
         // Check if the click event's target is not the element you're watching
         if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
             this.displayDirections = false
-        } else {
-        }
+        } 
     });
 
-    
     export default {
 
         async created(){
-
-            console.log('mounted')
             await this.initMap()
             await this.loadFood()
-            
-
         },
 
         mounted(){
             if (this.$route.query.Id){
                 this.loadSingleListing()
             }
+
+            window.addEventListener('resize', () => {
+                    this.viewportWidth = window.innerWidth;
+                    });
+
         },
                     
         data(){
             return {
+                viewportWidth: window.innerWidth,
+                sideBarPosition: 'left',
+
                 //primevue variables
                 visible: false,
                 modal: false,
@@ -237,14 +234,11 @@
         
         computed :{
             ...mapGetters(['currentUserLocation']),
-            sideBarPosition() {
-                return window.innerWidth < 768 ? 'bottom' : 'left';
-            },
+
         },
         methods: {
             // map functions 
             async initMap(){
-
                 this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
 
                 this.loader = new Loader({ 
@@ -257,12 +251,10 @@
                        
                 const marker = await this.loader.importLibrary('marker')
 
-                // if (this.routeRequest.destination){
-                    const routes = await this.loader.importLibrary('routes')
+                const routes = await this.loader.importLibrary('routes')
 
-                    this.directionsService = new routes.DirectionsService();
-                    this.directionsRenderer = new routes.DirectionsRenderer();
-                // }
+                this.directionsService = new routes.DirectionsService();
+                this.directionsRenderer = new routes.DirectionsRenderer();
 
                 const parser = new DOMParser()
                 const pinSvg = parser.parseFromString(
@@ -276,8 +268,6 @@
                     background: "#0033FF",
                     borderColor: "#0033FF",
                 })
-
-                
 
                 var advMarker = new marker.AdvancedMarkerElement({
                     map: unloadedMap,
@@ -378,7 +368,6 @@
                             details: item
                         }
                     }
-                console.log('listing', item)
 
                 this.selected = listing
                 this.foodItemsFiltered.push(listing)
@@ -389,7 +378,8 @@
                 }
 
                 this.loadDirections()
-            }
+            },
+            
         },
        
         watch:{
@@ -404,8 +394,18 @@
                     this.initMap()
                 }
             },
-        },
-}
+            viewportWidth:{
+                handler(){
+                    if (this.viewportWidth < 768){
+                        this.sideBarPosition = 'bottom'
+                    } else {
+                        this.sideBarPosition = 'left'
+                    }
+                }
+            }
+        }
+    }
+
             
   </script>
 
@@ -436,6 +436,8 @@
     height: 200%
   }
 }
+
+
 
 
 
