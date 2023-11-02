@@ -11,18 +11,17 @@
     import Button from 'primevue/button'
     import { Icon } from '@iconify/vue'
     import Dropdown from 'primevue/dropdown'
-    import Badge from 'primevue/badge'
 
 </script>
 
 <template>
     
     <div class="row justify-content-center">
-        <div class='col-1' v-if="visible == true && sideBarPosition == 'left'" style="width: 25%"></div>
+        <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
         <div class="col-9">
             <div class="container" >
-            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition">
-                    <h2>Listing Information</h2>
+            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition" style="width: 30%">
+                    <h2 style="color: #212529">Listing Information</h2>
 
                     <div class="container-fluid">
 
@@ -42,12 +41,15 @@
                                 <li>Price: {{ selected.info.details.Price }}</li>
                                 <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
                                 <div class="row">
-                                    <Button label="View more..." outlined style="border-radius:4px" class="my-2"
-                                        @click.prevent="navigate=>
-                                            {
-                                                this.$router.push('/listing');
-                                                this.$emit('listingInfo', selected)
-                                            }"></Button>
+                                    <router-link
+                                            :to="{
+                                                name: 'listing',
+                                                query: { Id: selected.info.Id },
+                                            }"
+                                            style="padding: 0px"
+                                        >
+                                    <Button label="View more..." outlined style="border-radius:4px; width: 100%" class="my-2"></Button>
+                                    </router-link>
 
                                     <Button :pt="{ button: 'bg-green-600 border-green-600'}"
                                     @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
@@ -62,13 +64,13 @@
                         <div class="card border-none" v-if="displayDirections">
 
                             <div class="card-title">
-                                <h2 class= mt-5>Getting there</h2>
+                                <h2 class="mt-5 mb-0">Getting there</h2>
                             </div>
                             
-                            <div class="card-body">
+                            <div class="card-body py-0">
                                 <div class="row align-items-center">
                                    
-                                    <div class="row">
+                                    <div class="row ">
                                         <p class="card-title ps-0">Transport Mode:</p>
                                     </div>
 
@@ -105,31 +107,38 @@
                 <div class="container col-10 mt-3" style="background-color: #F6FBF6;">
                     <div class="container" style="padding-left: 15%; padding-right: 15%">
                        
-                        <div class="row justify-content-center align-items-center" >
-                           
-                            <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" class="md:w-20rem w-full">
-                                <template #option="slotProps">
-                                    <div class="p-d-flex p-ai-center">
-                                        <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
-                                        {{ slotProps.option.label }}
-                                    </div>
-                                </template>
-                            </Dropdown>
+                        <div class="row justify-content-center align-items-center">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-3 pb-0">
+                                    <h5 class = "text-right" style="color: #212529">Filter by: </h5>
+                                </div>
 
-
-                            <div class="row justify-content-center align-items-center mt-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
-                                <div id='filterBar' class="col col-4 col-sm-12 d-flex justify-content-center align-items-center">
+                                <div class="col-6">
+                                    <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" class="md:w-20rem w-full">
+                                        <template #option="slotProps">
+                                            <div class="p-d-flex p-ai-center">
+                                                <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
+                                                {{ slotProps.option.label }}
+                                            </div>
+                                        </template>
+                                    </Dropdown>
+                                </div>
+                                <div class="col-3"></div>
+                            </div>
+                            
+                            <div class="row justify-content-center align-items-center mb-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
+                                <div id='filterBar' class="col-4 col-sm-12 d-flex justify-content-center align-items-center">
                                     <h6 class="m-0 me-2 pe-2">Distance (in KM): </h6><span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
                                 </div>
 
-                                <div class="col col-5 col-md-6">
+                                <div class="col-5 col-sm-6">
                                     <div class="container">
                                         <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
                                         :pt="{root: {class: 'bg-white'}}"/>
                                     </div>
                                 </div>
 
-                                <div class="col col-1">
+                                <div class="col-1 col-sm-3">
                                     <Button @click.prevent="loadByDistance"
                                     :pt="{ 
                                             root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
@@ -190,8 +199,8 @@
                 displayDirections: false,
                 filterBy: 'DISTANCE',
                 filterOptions: [
-                                {label: 'Distance', value: 'DISTANCE', icon: 'mdi:food'}, 
-                                {label: 'Name', value: 'NAME', icon: 'material-symbols:distance'}
+                                {label: 'Distance', value: 'DISTANCE', icon: 'material-symbols:distance'}, 
+                                {label: 'Name', value: 'NAME',icon: 'mdi:food'}
                             ],
 
                 //food loading variables
@@ -438,6 +447,8 @@
     height: 200%
   }
 }
+
+
 
 
 

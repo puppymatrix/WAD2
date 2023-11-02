@@ -16,12 +16,13 @@ import { Icon } from "@iconify/vue";
         <div class="container-fluid py-3">
             <div class="row justify-content-center">
                 <!-- search bar -->
-                <div class="col-10 col-md-6  align-items-center justify-content-center py-1">
-                    <SearchBar v-if="query" @search="searchFood" :initialQuery="query"/>
-                    <SearchBar v-else @search="searchFood" />
+
+                <div class="col-10 col-md-6 d-flex align-items-center justify-content-center py-1">
+                    <SearchBar @search="searchFood"/>
+
                 </div>
                 <!-- map view -->
-                <div class="col-2 col-md-6  align-items-center justify-content-center py-1 ">
+                <div class="col-2 col-md-6 d-flex align-items-center justify-content-center py-1 ">
                     <router-link to="/mapView" class="">
                         <Button
                             class="rounded"
@@ -33,8 +34,9 @@ import { Icon } from "@iconify/vue";
                             text
                             plain
                         >
-                            <Icon icon="logos:google-maps" />
-                            &nbsp Food near me
+                            <Icon icon="logos:google-maps" width="15" height="15" class="img-fluid"/>
+                            <span class="ms-1" id="mapViewButton">Food near me</span>
+                            
                         </Button>
                     </router-link>
                 </div>
@@ -520,6 +522,10 @@ a {
     #skeleton-3,
     #skeleton-4 {
         display: none;
+    }
+
+    #mapViewButton {
+        display: none
     }
 }
 </style>
