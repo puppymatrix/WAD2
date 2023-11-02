@@ -10,7 +10,7 @@ import { Icon } from "@iconify/vue";
             </div>
         </header>
 
-        <RouterView />
+        <RouterView :key="$route.fullPath"/>
 
         <Footer />
     </div>
