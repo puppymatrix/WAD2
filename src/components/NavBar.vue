@@ -219,5 +219,10 @@ button:hover{
 
 .dropdown-item:active {
     background-color: #bee5b0;
+    color: #212529;
+}
+
+.dropdown-item:hover {
+    background-color: #bee5b0;
 }
 </style>

@@ -10,29 +10,29 @@
             <!-- Header Design -->
             <div class="col px-0 firstRow">
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
-
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
                     <div class="input-group mb-3 px-5">
-                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-bind="searchInput">
-                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @keyup.enter="searchDatabase()">Let's Go!</button>
+                        <input type="text" class="form-control" placeholder="Input the food you want to search for..." v-model="searchInput" @keyup.enter="navigate">
+                        <button class="btn btn-outline-secondary" type="button" style="color: white; background-color: #97BF04; border: none;" @click="navigate">Let's Go!</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row secondRow">
+            <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Food Near You</h2>
             <!-- <CarouselMarquee/> -->
-            <CarouselMarquee/>
+            <!-- <CarouselMarquee/> -->
         </div>
         <!-- problematic carousel row -->
-        <div class="row secondRow">
+        <!-- <div class="row secondRow">
           <div class="col">
             <div class="container text-center my-4">
             <h2 class="font-weight-light">Featured: Food Near You</h2>
             <div class="row mx-auto my-auto justify-content-center">
                 <div id="reccoCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" role="listbox">
-                    <!-- <div class="carousel-inner" role="listbox" v-html="carousel"> -->
+                    <div class="carousel-inner" role="listbox" v-html="carousel">
                         <div class="carousel-item active">
                             <div class="col-md-3">
                                 <div class="card">
@@ -94,10 +94,10 @@
                                     <div class="card-img-overlay">Slide 6</div>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
                     </div>
-                    <!-- buttons -->
+                    
                     <a class="carousel-control-prev bg-transparent w-aut" href="#reccoCarousel" role="button" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </a>
@@ -108,7 +108,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- About the Company -->
         <div id="aboutUs" class="row thirdRow">
@@ -152,25 +152,26 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
-                <p class="statsDesc">That's equivalent to 2 million kilograms!</p>
+                <p class="statsDesc num1">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
-                <p class="statsDesc">This includes 3.1 million children!</p>
+                <p class="statsDesc num2">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-md-3 stats">
+            <div class="col-12 stats p-4">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
-                <p class="statsDesc">This causes global warming and climate change!</p>
+                <p class="statsDesc num3">This causes global warming and climate change!</p>
             </div>
         </div>
 
         <!--Key Partner-->
         <div id="partners" class="row sponsors">
-            <h3 class="text-center" style="color: #0b2b26;">Our Partners</h3>
+            <h3 class="text-center m-0 " style="color: #0b2b26;">Our Partners</h3>
+            <!-- <div style="border-top: 1px solid #0b2b26;"></div> -->
             <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/fairpriceIcon.png">
@@ -280,12 +281,18 @@ h1{
     background-color: #fffdd0;
 }
 
+.carouselHeader{
+    color:  #0b2b26;
+    text-align: center;
+}
+
 
 #stats{
     background-image: url("../components/images/landingPage/stats-background.jpg");
     background-size: cover;
     opacity: 80%;
     padding: 20px;
+    transition: 0.5s;
 }
 
 
@@ -295,7 +302,11 @@ h1{
     margin: 10px;
     background-color: rgba(255, 255, 255, 0.971);
     opacity: 80%;
+    
 }
+
+
+
 
 .statsHeader{
     color:  #0b2b26;
@@ -306,6 +317,27 @@ h1{
     font-style: bold;
     font-size: 18px;
     text-align: center;
+
+  animation: fadeInOut 7s infinite;
+
+}
+
+.num1 {
+  animation-delay: 0s;
+}
+
+ .num2{
+  animation-delay: 2s;
+}
+
+ .num3{
+  animation-delay: 4s;
+}
+
+
+.stats:hover .statsDesc{
+    color:#0b2b26;
+    opacity:1;
 }
 
 .sponsors{
@@ -354,12 +386,25 @@ h1{
 .carousel-inner .carousel-item-start { 
   transform: translateX(0);
 }
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 </style>
 
 
 
 <script >
-    
     
 
 // import { db } from "@/firebase";
@@ -401,6 +446,9 @@ export default {
     //     Vue3Marquee
     // },
   methods:{
+    navigate(){
+    this.$router.push(`/allListings?search=${this.searchInput}`)
+    },
     typeText(){
         if(this.charIndex < this.typeArray[this.typeArrayIndex].length){
             if (!this.typeStatus){

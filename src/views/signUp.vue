@@ -1,12 +1,17 @@
 <script setup>
   import { Icon } from '@iconify/vue';
+
+  import { db } from "../firebase/index.js";
+    import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+    import { setDoc, doc } from 'firebase/firestore'
+    import { checkUniqueUsername } from "../firebase/api";
 </script>
 
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
         <div class="col-sm-6 px-0">
-            <img src="../components/images/landingPage/groceries.webp" alt="" style="object-fit: cover; height:100%;width:100%">
+            <img src="../components/images/landingPage/groceries.webp" alt=""  style="object-fit: cover; height:100%;width:100%">
         </div>
         
         <!-- sign in -->
@@ -14,12 +19,12 @@
         <div class="col-md-6 px-5">
             <!-- filler -->
             <div class="container" style="padding-top:15%">
-                <h1 class = "m-4 ms-0">Sign up</h1>
+                <h1>Sign up</h1>
 
                 <form @submit.prevent="createAccount">
                     <div class="row ">
-                        <div class=" col-lg-6 mb-3">
-                            <label for="firstName" class="form-label">First Name</label>
+                        <div class=" col-lg-6 mb-3 px-2">
+                            <label for="firstName" class="form-label">First Name    </label>
                             <span v-if="errors.lastName" class="error text-danger ps-2">{{ errors.firstName }}</span>
                             <input type="text" class="form-control" v-model="formData.firstName" id="firstName" placeholder="Enter First Name">
                         </div>
@@ -39,8 +44,8 @@
                         </div>
                     </div>
 
-                    <div class="row ">
-                        <div class="col mb-3">
+                    <div class="row mb-3">
+                        <div class="col ">
                             <label for="email" class="form-label">Email address</label>
                             <input type="text" class="form-control" v-model="formData.email" id="email" placeholder="Enter Email">
                             <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
@@ -101,10 +106,7 @@
 </template>
 
 <script>
-import { db } from "../firebase/index.js";
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { collection, addDoc } from 'firebase/firestore'
-import { checkUniqueUsername } from "../firebase/api";
+
 
 export default {
 
@@ -143,7 +145,7 @@ export default {
             }
         },
 
-    createAccount(){ 
+    async createAccount(){ 
         var isValid = true
         this.errors.firstName = ''
         this.errors.lastName = ''
@@ -170,21 +172,35 @@ export default {
                     email: this.formData.email,
                 };
 
-                console.log(this.formData.accountType)
 
-                const docRef = setDoc(doc(db, "userInformation", uid), userData);
-                this.$router.push('/logIn')
-                if (docRef){
-                    console.log("Document inserted successfully");
+                setDoc(doc(db, "userInformation", user.uid), userData);
+                try {
+                    this.$router.push('/logIn')
+                    console.log("Document inserted successfully")
+                
                 }
+
+                catch (error){
+                    console.log(error)
+                }
+                // .then(
+                   
+                // .catch((error) => {
+                //     console.log(error.message)
+                // });
+            // })
+            // .catch((error) => {
+            //     const errorCode = error.code;
+            //     const errorMessage = error.message;
+            //     console.log('Firebase Authentication Error:', errorCode, errorMessage)
             })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log('Firebase Authentication Error:', errorCode, errorMessage)
-            });
+            .catch((error) =>{
+                console.log(error)
+                this.errors.email = "Email is already in use"
+            })
         } else{
             //display errors
+            
         }
    }, 
 
@@ -193,10 +209,8 @@ export default {
         var isValid = true
 
             // form validation 
-            console.log(this.formData.email[0].split('@').length)
 
             var msg = ''
-            console.log(this.formData.email.split())
 
             if (this.formData.firstName == ""){
                 this.errors.firstName = "Required"
@@ -229,10 +243,25 @@ export default {
                 this.errors.username = "Required"
                 isValid = false
             }
-            else if (checkUniqueUsername(this.formData.username) == false){
-                this.errors.username = "Username is taken"
-                isValid = false
-            }
+            checkUniqueUsername(this.formData.username).then(isUnique => {
+                if(!isUnique){
+                    this.errors.username = "Username is taken";
+                    isValid = false;
+                    
+                } else {
+                    // Handle the case where the username is unique
+                    // For example, clear the username error
+                    
+                }
+            });
+            
+            // {
+            //     console.log('checkusername')
+            //     this.errors.username = "Username is taken"
+            //     isValid = false
+            // }
+
+            console.log(this.errors.username)
 
             if (!this.hasSpecialCharacters(this.formData.password)){
 

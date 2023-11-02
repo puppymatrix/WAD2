@@ -1,10 +1,10 @@
 <script setup>
     import { getListing, getListingsByCategory, getUsersWhoChopedCollectedListing, getUser, chopeListing, getAllUsernames, calculateDistance } from "@/firebase/api.js";
     import { Icon } from "@iconify/vue";
+import { handleError } from "vue";
 </script>
 
 <template>
-
     <body class="px-5 py-2">
 
         <div class="container-fluid my-2 filterBar">
@@ -24,11 +24,8 @@
                             <h2 class="d-inline">Listing: <span id="name">{{ listingInfo.ListingName[0].toUpperCase() + listingInfo.ListingName.slice(1)  }}</span></h2>
                         </div>
                         <div
-                    class="col d-flex align-items-center justify-content-start"
+                    class="col d-flex align-items-center justify-content-end px-3"
                 >
-
-
-               
                     <router-link :to="{
                                     name: 'mapView',
                                     query: { Id: id },
@@ -239,7 +236,6 @@ export default {
         this.getListingInfo();
         this.loadNearbyListings();
         this.loadChopes();
-        this.chopeThisListing();
     },
     computed: {
         ...mapGetters(["isAuthenticated","currentUser", "currentUserLocation"]),
@@ -259,6 +255,7 @@ export default {
                     this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
                     this.location = this.listingInfo.Location.name;
                     this.listingCategory = this.listingInfo.Category;
+                    console.log(this.listingCategory);
                     this.owner = this.listingInfo.Owner;
                 }
             )
@@ -276,8 +273,11 @@ export default {
                 listings => {
                     console.log("raw similar listings", listings)
                     const users = getAllUsernames();
-                    console.log(users);
-
+                    users.then(
+                        users => {
+                            console.log("users", users)
+                        }
+                    )
                     for (const listing of listings.slice(0, 4)) {
                         let distanceToUser = Number.parseFloat(
                             calculateDistance(
@@ -295,7 +295,6 @@ export default {
                             owner: owner,
                         });
                     }
-
                     console.log("similar listing", this.similarListing);
                 }
             )
@@ -352,9 +351,16 @@ export default {
             chopeListing(this.id, this.currentUser);
             console.log("chope success");
         },
-    },
+    },  
+    watch:{
+        loadNearbyListings:{
+            handler() {
+                this.getListingInfo();
+            },
+            deep: true,
 
-    
+        }
+    },
 }
 
 </script>
