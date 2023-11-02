@@ -354,7 +354,7 @@ export default {
             expiryDate: "",
             location: "",
             listingCategory: null,
-            listingId: this.$route.query.Id,
+            listingId: "",
             owner: "",
             usersWhoChoped: [],
             usersWhoCollected: [],
@@ -363,7 +363,7 @@ export default {
         };
     },
     async created() {
-        this.fetchData();
+        this.listingId = this.$route.query.Id;
         await this.getListingInfo();
         await this.loadNearbyListings();
         if (this.isAuthenticated) {
@@ -458,14 +458,7 @@ export default {
                 });
             }
         },
-        fetchData() {
-        this.listingId = this.$route.query.Id;
-        // Call other methods to fetch data based on the new listingId
-    }
     },
-    watch: {
-    '$route.query': 'fetchData'
-  },
 };
 </script>
 
