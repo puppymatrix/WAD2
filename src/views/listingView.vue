@@ -10,11 +10,11 @@ import {
     collectListing,
 } from "@/firebase/api.js";
 import { Icon } from "@iconify/vue";
-    import { handleError } from "vue";
+import { handleError } from "vue";
 </script>
 
 <template>
-    <body class="px-5 py-2">
+    <body class="px-5 py-2" v-if="listingInfo">
         <div class="container-fluid my-2 filterBar">
             <div class="row">
                 <!-- carousel -->
@@ -53,11 +53,12 @@ import { Icon } from "@iconify/vue";
                             </h2>
                         </div>
                         <div
-                    class="col d-flex align-items-center justify-content-end px-3"
-                >
-                    <router-link :to="{
+                            class="col-4 d-flex align-items-center justify-content-end px-3"
+                        >
+                            <router-link
+                                :to="{
                                     name: 'mapView',
-                                    query: { Id: id },
+                                    query: { Id: listingId },
                                 }"
                             >
                                 <Button
@@ -65,7 +66,6 @@ import { Icon } from "@iconify/vue";
                                         background-color: #343a40;
                                         color: white;
                                     "
-                                    @click="checkQuery"
                                     class="rounded"
                                     raised
                                     plain
@@ -73,7 +73,7 @@ import { Icon } from "@iconify/vue";
                                     ><Icon
                                         icon="material-symbols:directions"
                                         color="white"
-                                        width="25"
+                                        width="18"
                                     />
                                     &nbspDirections</Button
                                 >
@@ -103,7 +103,7 @@ import { Icon } from "@iconify/vue";
                                         class="card-text"
                                         v-if="
                                             listingInfo.hasOwnProperty(
-                                                Description
+                                                'Description'
                                             )
                                         "
                                     >
@@ -180,21 +180,25 @@ import { Icon } from "@iconify/vue";
             <hr />
             <div class="row d-flex justify-content-center">
                 <div class="chopedInfo col-md-5 bg-secondary rounded-3">
-                    <div
-                        class="chopedHeader"
-                    >
+                    <div class="chopedHeader">
                         <h4 class="m-0 p-0">Users who choped</h4>
                     </div>
-                        <div
+                    <div
                         v-for="user in usersWhoChoped"
                         :key="user.Id"
                         class="userInfo d-flex justify-content-between align-items-center p-3"
-                        >
-                            {{ user.details.firstName }}
-                            {{ user.details.lastName }}
-                            <Button @click="moveToCollected(user)" style="background-color: #558C03" class="rounded">Collected?<Icon icon="iconamoon:arrow-right-2-fill" width="30" /></Button>
-
-                        </div>
+                    >
+                        {{ user.details.firstName }}
+                        {{ user.details.lastName }}
+                        <Button
+                            @click="moveToCollected(user)"
+                            style="background-color: #558c03"
+                            class="rounded"
+                            >Collected?<Icon
+                                icon="iconamoon:arrow-right-2-fill"
+                                width="30"
+                        /></Button>
+                    </div>
                 </div>
 
                 <div class="col-md-1"></div>
@@ -207,20 +211,24 @@ import { Icon } from "@iconify/vue";
                         v-for="user in usersWhoCollected"
                         :key="user.Id"
                         class="userInfo d-flex justify-content-between align-items-center p-3"
-                        style="height: 82px;"
-                        >
-                            {{ user.details.firstName }}
-                            {{ user.details.lastName }}
-                            <Button @click="moveToChoped(user)" severity="danger" class="rounded"><Icon icon="akar-icons:cross" /></Button>
-
-                        </div>
+                        style="height: 82px"
+                    >
+                        {{ user.details.firstName }}
+                        {{ user.details.lastName }}
+                        <Button
+                            @click="moveToChoped(user)"
+                            severity="danger"
+                            class="rounded"
+                            ><Icon icon="akar-icons:cross"
+                        /></Button>
+                    </div>
                 </div>
             </div>
             <hr />
         </div>
 
         <!-- More Listings -->
-        <div class="container-fluid" v-else>
+        <div class="container-fluid">
             <hr />
             <h3>Similar food listings</h3>
             <div class="album py-2">
@@ -230,53 +238,105 @@ import { Icon } from "@iconify/vue";
                             class="col-lg-3 col-md-4 col-sm-12"
                             v-for="listing in similarListing"
                         >
-                        <router-link style="text-decoration: none"
+                            <router-link
+                                style="text-decoration: none"
                                 :to="{
                                     name: 'listing',
-                                    query: { Id: listing.Id },
+                                    query: { Id: listing.info.Id },
                                 }"
                             >
-                            <div class="card h-100 shadow-sm">
-                                <img
-                                    :src="listing.info.details.ImageUrls[0]"
-                                    alt=""
-                                    class="card-img-top"
-                                />
-                                <div class="card-body border-top">
-                                    <h6 
-                                        class="card-subtitle mb-2 text-body-secondary"
-                                    >
-                                        Category:
-                                        {{ listing.info.details.Category }}
-                                    </h6>
-                                    <h5 class="card-title">
-                                        Name:
-                                        {{ listing.info.details.ListingName }}
-                                    </h5>
-                                    <p
-                                        class="card-text d-flex align-items-center mb-3"
-                                    >
-                                        {{ listing.info.details.Location.name }}
-                                    </p>
-                                    <!-- need to getLister -->
-                                    <p
-                                        class="card-text d-flex align-items-center mb-3"
-                                    >
-                                        Price: {{ listing.info.details.Price }}
-                                        <br />
-                                        Distance: {{ listing.distance }}
-                                    </p>
-
+                                <div class="card h-100">
+                                    <img
+                                        :src="listing.info.details.ImageUrls[0]"
+                                        alt=""
+                                        class="card-img-top"
+                                    />
+                                    <div class="card-body border-top">
+                                        <h5 class="card-title">
+                                            Listing Name: <br />
+                                            <span class="listingName">{{
+                                                listing.info.details.ListingName
+                                            }}</span>
+                                        </h5>
                                         <h6
-                                            class="card-subtitle mb-2 text-body-secondary d-flex align-items-center"
+                                            class="card-subtitle mb-2 text-body-secondary"
                                         >
-                                            <p class="me-1">
-                                                {{ listing.owner }}
-                                            </p>
+                                            Category:
+                                            {{ listing.info.details.Category }}
+                                            <br />
+                                            Lister: {{ listing.owner }}
                                         </h6>
+                                        <p
+                                            class="card-text moreInfo d-flex align-items-center mb-3"
+                                        >
+                                            Location:
+                                            {{
+                                                listing.info.details.Location
+                                                    .name
+                                            }}
+                                            <br />
+                                            Price:
+                                            {{ listing.info.details.Price }}
+                                            <br />
+                                            Distance: {{ listing.distance }}
+                                        </p>
                                     </div>
                                 </div>
                             </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <body class="px-5 py-2" v-else>
+        <div class="container-fluid my-2 filterBar px-5">
+            <div class="row">
+                <!-- carousel -->
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="35rem"></Skeleton>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="10rem" class="mb-3"></Skeleton>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-7">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <Skeleton height="3rem" class="mb-3"></Skeleton>
                         </div>
                     </div>
                 </div>
@@ -291,7 +351,7 @@ export default {
     data() {
         return {
             similarListing: [],
-            listingInfo: [],
+            listingInfo: null,
             expiryDate: "",
             location: "",
             listingCategory: null,
@@ -303,12 +363,14 @@ export default {
             currentUserInfo: "",
         };
     },
-    created() {
-        // console.log(this.$route.query.Id);
+    async created() {
         this.listingId = this.$route.query.Id;
-        this.getListingInfo();
-        this.loadNearbyListings();
-        this.loadChopes();
+        await this.getListingInfo();
+        await this.loadNearbyListings();
+        if (this.isAuthenticated) {
+            this.getUserInfo();
+        }
+        await this.loadChopes();
     },
     computed: {
         ...mapGetters([
@@ -332,77 +394,38 @@ export default {
                 (collectedUser) => collectedUser.Id !== user.Id
             );
             console.log(user);
-            await collectListing(user.Id,this.listingId);
+            await collectListing(user.Id, this.listingId);
         },
         getUserInfo() {
             this.currentUserInfo = this.currentUser;
         },
         async getListingInfo() {
-            const data = getListing(this.listingId);
-            data.then((listing) => {
-                console.log(listing);
-                this.listingInfo = listing;
-                console.log(this.listingInfo);
-
-        async getListingInfo(){
             // console.log('id', this.id)
-            const data = getListing(this.id)
-            data.then(
-                listing => {
-                    // console.log(listing);
-                    this.listingInfo = listing;
-                    console.log('listingInfo', this.listingInfo)
+            const listing = await getListing(this.listingId);
+            this.listingInfo = listing;
+            // console.log("listingInfo", this.listingInfo);
 
-                    this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
-                    this.location = this.listingInfo.Location.name;
-                    this.listingCategory = this.listingInfo.Category;
-                    // console.log(this.listingCategory);
-                    this.owner = this.listingInfo.Owner;
-
-                    this.loadNearbyListings();
-
-                }
-            )
-            
-            if (this.isAuthenticated){
-                this.getUserInfo()
-            }
+            this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
+            this.location = this.listingInfo.Location.name;
+            this.listingCategory = this.listingInfo.Category;
+            // console.log(this.listingCategory);
+            this.owner = this.listingInfo.Owner;
         },
 
-        loadNearbyListings(){
-            console.log("load nearby listings", this.listingCategory)
-            getListingsByCategory(this.listingCategory)
-            .then(
-                listings => {
-                    console.log("raw similar listings", listings)
-                    const users = getAllUsernames();
-                    users.then(
-                        users => {
-                            for (const listing of listings.slice(0, 4)) {
-                                let distanceToUser = Number.parseFloat(
-                                    calculateDistance(
-                                        this.currentUserLocation.lat,
-                                        this.currentUserLocation.lng,
-                                        listing.details.Location.latitude,
-                                        listing.details.Location.longitude
-                                    ).toFixed(3)
-                                );
-                                console.log("distance", distanceToUser)
+        async loadNearbyListings() {
+            // console.log("load nearby listings", this.listingCategory);
+            const listings = await getListingsByCategory(this.listingCategory);
+            const users = await getAllUsernames();
+            const listingSlice = listings.slice(0, 4);
+            for (const listing of listingSlice) {
+                const owner = users[listing.details.Owner];
 
-                                const owner = users[listing.details.Owner];
-
-                            this.similarListing.push({
-                                info: listing,
-                                distance: distanceToUser,
-                                owner: owner,
-                            });
-                        }
-                        }
-                    )
-                    
-                // console.log("similar listing", this.similarListing);
-
-            });
+                this.similarListing.push({
+                    info: listing,
+                    owner: owner,
+                });
+            }
+            // console.log("final similar listing", this.similarListing);
         },
         async loadChopes() {
             const data = await getUsersWhoChopedCollectedListing(
@@ -417,8 +440,8 @@ export default {
                 );
             });
         },
-        chopeThisListing(){
-            if (this.isAuthenticated){
+        chopeThisListing() {
+            if (this.isAuthenticated) {
                 chopeListing(this.id, this.currentUser);
                 console.log("chope success");
                 this.$toast.add({
@@ -427,8 +450,7 @@ export default {
                     detail: "You have successfully chope this listing!",
                     life: 3000,
                 });
-            }
-            else{
+            } else {
                 this.$toast.add({
                     severity: "error",
                     summary: "Not Logged In",
@@ -437,18 +459,8 @@ export default {
                 });
             }
         },
-      
-        watch:{
-            loadNearbyListings:{
-                handler() {
-                    this.getListingInfo();
-                },
-                deep: true,
-
-            }
-        },
-    }
-}
+    },
+};
 </script>
 
 <style scoped>
@@ -486,6 +498,28 @@ export default {
     object-fit: cover;
 }
 
+.listingName {
+    color: #558c03;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.card-title {
+    height: 45px;
+    margin-bottom: 20px;
+}
+
+.card-subtitle {
+    height: 45px;
+}
+
+.moreInfo {
+    background-color: lightgray;
+    padding: 10px;
+    height: 50%;
+    border-radius: 8px;
+}
+
 .username {
     font-size: 1.5rem;
     font-weight: bold;
@@ -510,7 +544,7 @@ export default {
 }
 
 .chopedHeader {
-    background-color: #558c03;
+    background-color: #83a638;
     color: white;
     border-radius: 10px;
     padding: 5px;

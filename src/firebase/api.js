@@ -296,12 +296,16 @@ async function collectListing(userId, listingId) {
                     if (user.chopes[index].collected) {
                         user.chopes[index].collected = false;
                         await setDoc(userRef, user, {merge: true});
-                        console.log("Uncollected successfully");
-                    } 
+                        // console.log("Uncollected successfully");
+                    } else {
+                        user.chopes[index].collected = true;
+                        await setDoc(userRef, user, {merge: true});
+                        // console.log("Collected successfully");
+                    }
                 } else {
                     user.chopes[index].collected = true;
                     await setDoc(userRef, user, {merge: true});
-                    console.log("Collected successfully");
+                    // console.log("Collected successfully");
                 }
                 
             } else {
