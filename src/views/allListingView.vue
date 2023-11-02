@@ -43,6 +43,13 @@ import { Icon } from "@iconify/vue";
             </div>
         </div>
 
+        <!-- listings -->
+        <!-- <h3>
+            {{ filterPrice }}
+            {{ filterCategory }}
+            {{ filterDistance }}
+        </h3> -->
+
         <div class="container-fluid">
             <div class="row filterBar">
                 <div class="col-3">
