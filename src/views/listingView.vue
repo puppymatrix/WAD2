@@ -261,7 +261,6 @@ export default {
                     this.owner = this.listingInfo.Owner;
 
                     this.loadNearbyListings();
-
                 }
             )
 

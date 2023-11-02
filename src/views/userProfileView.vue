@@ -30,10 +30,7 @@ import ScrollTop from "primevue/scrolltop";
                     <a href="#chopedListings" class="btn">My Chopes</a>
                 </div>
             </div>
-            <!-- spacer -->
-            <!-- <div class="col-sm-1">
-            
-        </div> -->
+           
             <!-- RHS actual info -->
             <div
                 class="col ms-sm-5"
@@ -46,8 +43,13 @@ import ScrollTop from "primevue/scrolltop";
             >
                 <!--   userInfo div -->
                 <div class="row" id="userInfo">
+                    <div class="row">
+
+                    </div>
                     <div class="col">
                         <h1>Profile Information</h1>
+                        <div class="mb-4" style="border-top: 1px solid black"></div>
+                    
                         <form @submit.prevent="submitForm">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -57,7 +59,6 @@ import ScrollTop from "primevue/scrolltop";
                                             type="text"
                                             class="form-control"
                                             id="fName"
-                                            aria-describedby="emailHelp"
                                             placeholder="First Name"
                                             v-model="fName"
                                         />
@@ -70,7 +71,6 @@ import ScrollTop from "primevue/scrolltop";
                                             type="text"
                                             class="form-control"
                                             id="lName"
-                                            aria-describedby="emailHelp"
                                             placeholder="Last Name"
                                             v-model="lName"
                                         />
@@ -83,7 +83,6 @@ import ScrollTop from "primevue/scrolltop";
                                             type="text"
                                             class="form-control"
                                             id="userName"
-                                            aria-describedby="emailHelp"
                                             placeholder="User Name"
                                             v-model="userName"
                                         />
@@ -91,13 +90,13 @@ import ScrollTop from "primevue/scrolltop";
                                 </div>
                             </div>
                             
-                            <div class="row mb-2">
-                                <div class="col">
+                            <div class="row mt-2 mb-2">
+                                <!-- <div class="col"> -->
                                     <div class="form-group">
                                         <label for="userEmail">Email</label>
                                         <input
                                             type="text"
-                                            class="form-control"
+                                            class="form-control border-none"
                                             id="email"
                                             aria-describedby="email"
                                             placeholder="Email"
@@ -105,14 +104,14 @@ import ScrollTop from "primevue/scrolltop";
                                             disabled
                                         />
                                     </div>
-                                </div>
+                                <!-- </div> -->
                             </div>
                             <div class="row">
                                 <div class="col d-flex justify-content-end">
                                     <Button
                                         style="float: right"
                                         type="submit"
-                                        class="rounded"
+                                        class="rounded me-1"
                                         @click.enter="updateInfo"
                                         >Update</Button
                                     >
@@ -170,7 +169,7 @@ import ScrollTop from "primevue/scrolltop";
                                 </div>
                             </router-link>
                     </div>
-                    <Paginator
+                    <Paginator id="paginator"
                         :rows="listingRows"
                         :totalRecords="listingListLength"
                         @page="updateListingPage"
@@ -179,7 +178,7 @@ import ScrollTop from "primevue/scrolltop";
                     ></Paginator>
                 </div>
                 <!-- chopedListings div -->
-                <div class="row" id="chopedListings">
+                <div class="row mt-3" id="chopedListings">
                     <h1>My Chopes</h1>
                     <!-- listings -->
                     <div class="col-md-6 col-sm-12" v-for="item in paginatedChopeItems">
@@ -227,7 +226,7 @@ import ScrollTop from "primevue/scrolltop";
                                 </div>
                             </router-link>
                     </div>
-                    <Paginator
+                    <Paginator id="paginator"
                         :rows="listingRows"
                         :totalRecords="chopeListLength"
                         @page="updateChopePage"
@@ -410,6 +409,7 @@ export default {
 </script>
 
 <style scoped>
+
 .text-bg-listing {
     background-color: rgb(67, 160, 70, 1);
     color: white;
@@ -430,4 +430,6 @@ a {
     height: 25vw;
     object-fit: cover;
 }
+
+
 </style>
