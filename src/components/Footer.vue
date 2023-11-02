@@ -32,7 +32,7 @@
 
         <!-- third column -->
         <div class="col-lg-2 text-white p-4 text-center text-lg-start">
-            <h3>Socials</h3>
+            <h3>Website</h3>
 
             <ul class="nav flex-column">
                 <li class="nav-item">
