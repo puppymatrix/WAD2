@@ -233,9 +233,9 @@ export default {
     created(){
         // console.log(this.$route.query.Id);
         this.id = this.$route.query.Id;
-        this.getListingInfo().then(
-            this.loadNearbyListings()
-        );
+        this.getListingInfo()
+        this.loadNearbyListings()
+        
         this.loadChopes();
     },
     computed: {
@@ -307,9 +307,8 @@ export default {
 
                 }
             )
-        }
-            
         },
+            
         loadChopes(){
             const data = getUsersWhoChopedCollectedListing(this.id)
             data.then(
@@ -378,18 +377,18 @@ export default {
                 });
             }
         },
-    },  
-    // watch:{
-    //     loadNearbyListings:{
-    //         handler() {
-    //             this.getListingInfo();
-    //         },
-    //         deep: true,
+      
+        watch:{
+            loadNearbyListings:{
+                handler() {
+                    this.getListingInfo();
+                },
+                deep: true,
 
-    //     }
-    // },
+            }
+        },
+    }
 }
-
 </script>
 
 
