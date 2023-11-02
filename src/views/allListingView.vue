@@ -18,8 +18,8 @@ import { Icon } from "@iconify/vue";
                 <!-- search bar -->
 
                 <div class="col-10 col-md-6 d-flex align-items-center justify-content-center py-1">
-                    <SearchBar @search="searchFood"/>
-
+                    <SearchBar @search="searchFood" :initial-query="query" v-if="query"/>
+                    <SearchBar @search="searchFood" v-else />
                 </div>
                 <!-- map view -->
                 <div class="col-2 col-md-6 d-flex align-items-center justify-content-center py-1 ">
