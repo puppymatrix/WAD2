@@ -277,7 +277,6 @@ import { handleError } from "vue";
                                             Price:
                                             {{ listing.info.details.Price }}
                                             <br />
-                                            Distance: {{ listing.distance }}
                                         </p>
                                     </div>
                                 </div>
