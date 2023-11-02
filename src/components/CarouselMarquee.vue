@@ -83,7 +83,7 @@
   
   <style scoped>
   .marquee {
-    height: 300px;
+    height: 380px;
     padding: 10px;
   }
   
@@ -106,7 +106,7 @@
   .marquee-card{
     height: 100%;
     width: 100%;
-    margin: 20px;
+    margin: 10px;
   }
 
   /* .marquee-seeAllUni {
