@@ -61,7 +61,6 @@ async function getListingsByCategory(category, listings = null) {
         //supp to make query case insensitive
         const q = query(listingsRef, where("Category", "==", category));
         const querySnapshot = await getDocs(q);
-        
     
         querySnapshot.forEach((doc) => {
             if (doc.exists()) {
