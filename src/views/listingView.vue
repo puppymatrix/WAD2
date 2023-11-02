@@ -157,7 +157,7 @@
                             class="col-lg-3 col-md-4 col-sm-12"
                             v-for="listing in similarListing"
                         >
-                        <router-link
+                        <router-link style="text-decoration: none"
                                 :to="{
                                     name: 'listing',
                                     query: { Id: listing.Id },
@@ -170,7 +170,7 @@
                                     class="card-img-top"
                                 />
                                 <div class="card-body border-top">
-                                    <h6
+                                    <h6 
                                         class="card-subtitle mb-2 text-body-secondary"
                                     >
                                         Category:
@@ -242,19 +242,28 @@ export default {
         ...mapGetters(["isAuthenticated","currentUser", "currentUserLocation"]),
     },
     methods:{
+
+        getUserInfo(){
+            this.currentUserInfo = this.currentUser;
+        },
+
         async getListingInfo(){
+            // console.log('id', this.id)
             const data = getListing(this.id)
             data.then(
                 listing => {
-                    console.log(listing);
+                    // console.log(listing);
                     this.listingInfo = listing;
-                    console.log(this.listingInfo)
+                    console.log('listingInfo', this.listingInfo)
 
                     this.expiryDate = this.listingInfo.ExpiryDate.toDate().toLocaleDateString();
                     this.location = this.listingInfo.Location.name;
                     this.listingCategory = this.listingInfo.Category;
-                    console.log(this.listingCategory);
+                    // console.log(this.listingCategory);
                     this.owner = this.listingInfo.Owner;
+
+                    this.loadNearbyListings();
+
                 }
             )
             
@@ -262,40 +271,40 @@ export default {
                 this.getUserInfo()
             }
         },
-        getUserInfo(){
-            this.currentUserInfo = this.currentUser;
-        },
-        async loadNearbyListings(){
-            if(this.listingCategory){
-                console.log("load nearby listings", this.listingCategory)
-                const data = getListingsByCategory(this.listingCategory)
-                data.then(
-                    listings => {
-                        console.log("raw similar listings", listings)
-                        const users = getAllUsernames();
-                        users.then(
-                            users => {
-                                console.log("users", users)
-                            }
-                        )
-                        for (const listing of listings.slice(0, 4)) {
-                            let distanceToUser = Number.parseFloat(
-                                calculateDistance(
-                                    this.currentUserLocation.lat,
-                                    this.currentUserLocation.lng,
-                                    listing.details.Location.latitude,
-                                    listing.details.Location.longitude
-                                ).toFixed(3)
-                            );
-                            const owner = users[listing.details.Owner];
 
-                            this.similarListing.push({
-                                info: listing,
-                                distance: distanceToUser,
-                                owner: owner,
-                            });
-                    }
-                    console.log("similar listing", this.similarListing);
+        loadNearbyListings(){
+            console.log("load nearby listings", this.listingCategory)
+            getListingsByCategory(this.listingCategory)
+            .then(
+                listings => {
+                    console.log("raw similar listings", listings)
+                    const users = getAllUsernames();
+                    users.then(
+                        users => {
+                            for (const listing of listings.slice(0, 4)) {
+                                let distanceToUser = Number.parseFloat(
+                                    calculateDistance(
+                                        this.currentUserLocation.lat,
+                                        this.currentUserLocation.lng,
+                                        listing.details.Location.latitude,
+                                        listing.details.Location.longitude
+                                    ).toFixed(3)
+                                );
+                                console.log("distance", distanceToUser)
+
+                                const owner = users[listing.details.Owner];
+
+                                this.similarListing.push({
+                                    info: listing,
+                                    distance: distanceToUser,
+                                    owner: owner,
+                                });
+                            }
+                        }
+                    )
+                    
+                    // console.log("similar listing", this.similarListing);
+
                 }
             )
         }
@@ -305,7 +314,7 @@ export default {
             const data = getUsersWhoChopedCollectedListing(this.id)
             data.then(
                 chopes => {
-                    console.log(chopes)
+                    // console.log(chopes)
                     this.userChope = chopes.usersWhoChoped;
                     this.userCollect = chopes.usersWhoCollected;
                     this.userNotCollect = this.userChope;
@@ -320,7 +329,7 @@ export default {
                             }
                         }
                     }
-                    console.log(count);
+                    console.log('count', count);
                     console.log(this.userNotCollect)
                     console.log(this.userCollect)
                 }
