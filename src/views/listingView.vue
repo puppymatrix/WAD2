@@ -22,7 +22,7 @@ import { handleError } from "vue";
                     class="col-md-6 display-flex align-item-center justify-content-center m-0"
                     v-if="listingInfo.ImageUrls.length > 1"
                 >
-                    <BCarousel controls indicators>
+                    <BCarousel controls indicators imgHeight="600px">
                         <BCarouselSlide
                             v-for="photos in listingInfo.ImageUrls"
                             :img-src="photos"
@@ -224,7 +224,6 @@ import { handleError } from "vue";
                     </div>
                 </div>
             </div>
-            <hr />
         </div>
 
         <!-- More Listings -->
@@ -355,7 +354,7 @@ export default {
             expiryDate: "",
             location: "",
             listingCategory: null,
-            listingId: null,
+            listingId: this.$route.query.Id,
             owner: "",
             usersWhoChoped: [],
             usersWhoCollected: [],
@@ -364,7 +363,7 @@ export default {
         };
     },
     async created() {
-        this.listingId = this.$route.query.Id;
+        this.fetchData();
         await this.getListingInfo();
         await this.loadNearbyListings();
         if (this.isAuthenticated) {
@@ -459,7 +458,14 @@ export default {
                 });
             }
         },
+        fetchData() {
+        this.listingId = this.$route.query.Id;
+        // Call other methods to fetch data based on the new listingId
+    }
     },
+    watch: {
+    '$route.query': 'fetchData'
+  },
 };
 </script>
 
@@ -510,7 +516,7 @@ export default {
 }
 
 .card-subtitle {
-    height: 45px;
+    height: 55px;
 }
 
 .moreInfo {
