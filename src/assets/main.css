@@ -47,3 +47,10 @@ div.p-button.p-component{
     width: 30%;
     height: 100%;
 }
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    padding: 20px;
+    background-size: 80%;
+    background-color: black;
+    border-radius: 50%
+}

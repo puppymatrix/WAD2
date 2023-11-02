@@ -11,7 +11,7 @@
             <div class="row">
                 <!-- carousel -->
                 <div class="col-md-6 display-flex align-item-center justify-content-center m-0" v-if="listingInfo.ImageUrls.length > 1">
-                    <BCarousel controls indicators>
+                    <BCarousel controls indicators imgHeight="600px">
                         <BCarouselSlide v-for="photos in listingInfo.ImageUrls" :img-src="photos"  style="width: 100%; height: 100%; object-fit: cover;"/>
                     </BCarousel>
                 </div>
@@ -246,7 +246,6 @@ export default {
         getUserInfo(){
             this.currentUserInfo = this.currentUser;
         },
-
         async getListingInfo(){
             // console.log('id', this.id)
             const data = getListing(this.id)
@@ -270,7 +269,6 @@ export default {
                 this.getUserInfo()
             }
         },
-
         loadNearbyListings(){
             console.log("load nearby listings", this.listingCategory)
             getListingsByCategory(this.listingCategory)
@@ -306,8 +304,6 @@ export default {
 
                 }
             )
-        }
-            
         },
         loadChopes(){
             const data = getUsersWhoChopedCollectedListing(this.id)
@@ -379,7 +375,7 @@ export default {
         },
     },  
     // watch:{
-    //     loadNearbyListings:{
+    //     listingInfo:{
     //         handler() {
     //             this.getListingInfo();
     //         },

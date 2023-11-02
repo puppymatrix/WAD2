@@ -3,12 +3,8 @@
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
     import  SearchBar  from '../components/SearchBar.vue'
-    import  Sidebar from 'primevue/sidebar'
-    import Slider from 'primevue/slider'
-    import SelectButton from 'primevue/selectbutton'
-    import Button from 'primevue/button'
+
     import { Icon } from '@iconify/vue'
-    import Dropdown from 'primevue/dropdown'
 
 </script>
 

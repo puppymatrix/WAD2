@@ -468,7 +468,7 @@ export default {
                 this.searchFood(this.query);
             }
         },
-    },
+    }
 };
 </script>
 
