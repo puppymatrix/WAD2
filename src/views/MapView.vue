@@ -15,11 +15,12 @@
 </script>
 
 <template>
-    
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
         <div class="col-9">
-            <div class="container" >
+            <!-- <div class="container"> -->
+                <!-- sidebar for more info  -->
             <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition" style="width: 30%">
                     <h2 style="color: #212529">Listing Information</h2>
 
@@ -103,18 +104,16 @@
                 <div id="map" style="height:600px" class="col-10"></div>
             </div>
            
-            <div class="row" >
-                <div class="container col-10 mt-3" style="background-color: #F6FBF6;">
-                    <div class="container" style="padding-left: 15%; padding-right: 15%">
-                       
-                        <div class="row justify-content-center align-items-center">
+            <div class="row justify-content-center" style="padding-left: 15%; padding-right: 15%">
+                <div class="col-10 mt-3" style="background-color: #F6FBF6;">
+                    <!-- <div class="container" style="padding-left: 15%; padding-right: 15%"> -->
+                        <!-- <div class="row justify-content-center align-items-center"> -->
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-3 pb-0">
                                     <h5 class = "text-right" style="color: #212529">Filter by: </h5>
                                 </div>
-
                                 <div class="col-6">
-                                    <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" class="md:w-20rem w-full">
+                                    <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
                                         <template #option="slotProps">
                                             <div class="p-d-flex p-ai-center">
                                                 <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
@@ -123,21 +122,18 @@
                                         </template>
                                     </Dropdown>
                                 </div>
-                                <div class="col-3"></div>
+                                <!-- <div class="col-3"></div> -->
                             </div>
-                            
-                            <div class="row justify-content-center align-items-center mb-2 ps-0" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
-                                <div id='filterBar' class="col-4 col-sm-12 d-flex justify-content-center align-items-center">
+                            <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
+                                <div id='filterBar' class="col-12 col-sm-4 d-flex justify-content-center align-items-center">
                                     <h6 class="m-0 me-2 pe-2">Distance (in KM): </h6><span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
                                 </div>
-
                                 <div class="col-5 col-sm-6">
                                     <div class="container">
                                         <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
                                         :pt="{root: {class: 'bg-white'}}"/>
                                     </div>
                                 </div>
-
                                 <div class="col-1 col-sm-3">
                                     <Button @click.prevent="loadByDistance"
                                     :pt="{ 
@@ -147,20 +143,18 @@
                                     </Button>
                                 </div>
                             </div>
-
-
                             <div class="row mt-2" v-else>
                                 <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
                             </div>
-                        </div>
-                    </div>
+                        <!-- </div> -->
+                    <!-- </div> -->
                 </div>
             </div>
+        <!-- </div> -->
         </div>
-        </div>
-       
-    </div>    
-  </template>
+    </div>   
+</div> 
+</template>
 
   <script>
 
