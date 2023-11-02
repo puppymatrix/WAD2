@@ -342,9 +342,9 @@ export default {
             this.chopePage = event.page;
         },
         async getUserInfo() {
-            console.log(this.currentUser);
+            // console.log(this.currentUser);
             const userData = await getUser(this.currentUser);
-            console.log(userData);
+            // console.log(userData);
             this.fName = userData.firstName;
             this.lName = userData.lastName;
             this.userName = userData.username;
@@ -365,7 +365,7 @@ export default {
                 this.myListings.push(listingData);
             }
             this.listingListLength = this.myListings.length;
-            console.log(this.myListings)
+            // console.log(this.myListings)
             
 
             //this part processes the data for listings choped by the user
