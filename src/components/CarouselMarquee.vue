@@ -17,6 +17,7 @@
             :listingName="listing.details.ListingName"
             :listingImage="listing.details.ImageUrls[0]"
             :listingId = "listing.Id"
+            :listingPrice = "listing.details.Price"
           ></MarqueeCard>
         </div>
       </Vue3Marquee>
