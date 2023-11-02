@@ -135,7 +135,7 @@
                                     :pt="{ 
                                             root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
                                         }">
-                                        <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                                        <Icon icon="ic:sharp-my-location" width="20" height="20" /> GO!
                                     </Button>
                                 </div>
                             </div>
