@@ -123,8 +123,8 @@ export default {
     border-color:#0b2b26 ;
     background-color:#558603;
 }
-@media (min-width: 992px) {
 
+@media (min-width: 992px) {
     #pinned{
         position: absolute;
         top: 20px;
@@ -148,10 +148,10 @@ export default {
     margin: 0;
 }
 
-.base {
+/* .base {
     color: white;
     background-color: #43a046;
-}
+} */
 
 /* .footer {
     background-color: #263238;

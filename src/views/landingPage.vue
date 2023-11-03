@@ -228,11 +228,11 @@ h1{
     filter: blur(5px);
 }
 
-.show{
+/* .show{
     opacity: 0.8;
     transform: translateX(0px);
     filter: blur(0px);
-}
+} */
 
 .statsHeader{
     color:  #0b2b26;
@@ -246,7 +246,6 @@ h1{
 
 }
 
-
 .sponsors{
     background-color: #b08430;
     padding: 20px;
@@ -259,14 +258,11 @@ h1{
 .partnerIcon{
     max-width: 70%;
 }
-
-
 </style>
 
 
 
 <script >
-
 // vue part
 export default {
   data() {
@@ -274,7 +270,6 @@ export default {
       searchInput: '',
       dataObj: {}, //this is data returned from database
       
-
       // typing effect
       typeValue: '',
       typeStatus: false,
@@ -352,7 +347,7 @@ export default {
 }
 
 
-
+//carousel part
 let items = document.querySelectorAll('.carousel .carousel-item')
 
 items.forEach((el) => {
@@ -368,8 +363,6 @@ items.forEach((el) => {
         next = next.nextElementSibling
     }
 })
-
-
 </script>
 
 
