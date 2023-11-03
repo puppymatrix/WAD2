@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="row secondRow">
-            <h2 class="carouselHeader font-weight-light text-center pt-5">Featured: Good Deals Available!</h2>
+            <h3 class="carouselHeader font-weight-light text-center p-4 text-light mb-0">- Featured: Good Deals Available! -</h3>
             <CarouselMarquee/>
         </div>
         
@@ -191,7 +191,7 @@ h1{
 
 
 .secondRow{
-    background-color: #fffdd0;
+    background-color: #b08430;
 }
 
 .carouselHeader{
