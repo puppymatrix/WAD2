@@ -448,7 +448,7 @@ export default {
             this.selectedFilter = null;
             this.page = 0;
             this.paginatorKey++;
-            if (this.query !== "") {
+            if (this.query !== undefined) {
                 this.searchFood(this.query);
             }
         },
