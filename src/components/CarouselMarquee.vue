@@ -60,7 +60,7 @@
   
   <style scoped>
   .marquee {
-    height: 380px;
+    height: 300px;
     padding: 10px;
   }
   
@@ -75,7 +75,7 @@
   .marquee-card{
     height: 100%;
     width: 100%;
-    margin: 10px;
+    margin: 0px;
   }
 
 

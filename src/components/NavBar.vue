@@ -11,7 +11,7 @@ import { doc } from "firebase/firestore";
         
         <!-- logo and links -->
         <div class="col">
-            <nav class="navbar navbar-expand-md">
+            <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
             <!-- brand image -->
             <a class="navbar-brand" href="#">
