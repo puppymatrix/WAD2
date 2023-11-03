@@ -73,11 +73,6 @@ import { doc } from "firebase/firestore";
 
 export default {
 
-    data() {
-        return {
-            viewportWidth: window.innerWidth,
-        };
-    },
     computed: {
         ...mapGetters(["isAuthenticated","currentUser"]),
     },
@@ -111,13 +106,7 @@ export default {
                     console.log(error.message);
                 });
         },
-        toggleNavBar(){
-            if (window.innerWidth < 768) {
-                this.narrow = true;
-            } else {
-                this.narrow = false;
-            }
-        }
+
     },
     watch: {
         viewportWidth() {
