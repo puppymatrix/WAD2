@@ -60,7 +60,7 @@
   
   <style scoped>
   .marquee {
-    height: 300px;
+    height: 320px;
     padding: 10px;
   }
   
