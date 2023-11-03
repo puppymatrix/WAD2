@@ -71,7 +71,8 @@
                                        
                                         <div class="row ps-0">
                                             <div id="travelGrp" class="p-0">
-                                                <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
+                                                <!-- <SelectButton 
+                                                v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
                                                 aria-labelledby="basic"
                                                 :pt="{
                                                     button: ({ context }) => ({
@@ -79,7 +80,17 @@
                                                     })
                                                 }" 
                                                 @click.prevent="loadDirections"
-                                                />
+                                                /> -->
+                                                <select 
+                                                    id="transportMode"
+                                                    @change="loadDirections" 
+                                                    v-model="routeRequest.travelMode" 
+                                                    class = "btn btn-outline-success w-100 text-center text-white" 
+                                                    >
+                                                    <!-- inline object literal -->
+                                                    <option :value="mode" v-for="mode in travelModeOptions"
+                                                    >{{ mode }}</option>
+                                                </select>
                                             </div>
                                     <!-- </div> -->
                                 </div>
@@ -210,6 +221,7 @@
                     gestureHandling: 'cooperative',
                     mapId: '7fb5f582643b9459',
                 },
+                // travelMode: 'TRANSIT',
                 map: null,
                 core: null,
                 loader: null,
@@ -318,7 +330,6 @@
                     this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
                             var sideBar = document.getElementById("sideBar")
-                            this.directionsRenderer.setMap(null)
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
                             sideBar.innerHTML = '';
@@ -464,6 +475,14 @@
         max-height: 200px
     }
 }
+
+#transportMode {
+    background-color: #4CAF50; 
+    border-radius: 4px; 
+    border: none
+}
+
+
 
 
 
