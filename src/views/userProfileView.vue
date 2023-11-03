@@ -152,11 +152,14 @@ import ScrollTop from "primevue/scrolltop";
                                                     {{ item.Category }} 
                                                     <br/>
                                                     Lister: {{ item.owner }}
-                                                    <br/>
+                                                </h6>
+                                                <p
+                                                    class="card-text d-flex align-items-center mb-3"
+                                                > 
                                                     Quantity Available: {{ item.QtyAvailable }}
                                                     <br/>
                                                     Location: {{item.Location.name}}
-                                                </h6>
+                                                </p>
                                             </div>
                                         </div>
                                     </router-link>
@@ -205,11 +208,14 @@ import ScrollTop from "primevue/scrolltop";
                                                     {{ item.Category }} 
                                                     <br/>
                                                     Lister: {{ item.owner }}
-                                                    <br/>
+                                                </h6>
+                                                <p
+                                                    class="card-text d-flex align-items-center mb-3"
+                                                > 
                                                     Quantity Available: {{ item.QtyAvailable }}
                                                     <br/>
                                                     Location: {{item.Location.name}}
-                                                </h6>
+                                                </p>
                                             </div>
                                         </div>
                                     </router-link>
@@ -283,10 +289,13 @@ import ScrollTop from "primevue/scrolltop";
     margin-bottom: 20px;
 }
 
-.card-subtitle{
+.card-text{
     background-color: lightgrey;
-    padding: 5px;
     border-radius: 5px;
+    padding: 10px;
+    height: 100px;
+    display: flex;
+    align-items: center;
 }
 
 .email{

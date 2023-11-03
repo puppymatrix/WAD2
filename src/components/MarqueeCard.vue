@@ -61,9 +61,10 @@
   .marquee-listing-name {
     position: relative;
     color: black;
-    font-size: x-large;
+    font-size: large;
     text-decoration: none;
     font-weight: bold;
+    vertical-align: middle;
   }
 
   .card-body {
@@ -77,23 +78,6 @@
     opacity: 0.8;
   }
 
-
-  /* .marquee-listing-price{
-    position: relative;
-    color: black;
-    font-size: large;
-    text-decoration: none;
-    background-color: rgb(245, 245, 245);
-    padding: 10px;
-  } */
-  
-  /* .unfade {
-    filter: grayscale(0%);
-  }
-  
-  .faded {
-    filter: grayscale(80%);
-  } */
 
   .card {
     height: 100%;
