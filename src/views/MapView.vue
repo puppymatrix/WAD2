@@ -135,6 +135,7 @@
                                         root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
                                     }">
                                     <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                                    <span class="ms-2" id="searchTextButton">Go!</span>
                                 </Button>
                             </div>
                         </div>
@@ -435,6 +436,11 @@
   }
 }
 
+@media (max-width: 768px) {
+    #searchTextButton {
+    display: none
+  }
+}
 
 
 
