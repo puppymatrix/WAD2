@@ -213,6 +213,9 @@ import { handleError } from "vue";
                                 width="30"
                         /></Button>
                     </div>
+                    <div v-if="usersWhoChoped.length == 0" class="userInfo d-flex justify-content-center align-items-center">
+                        <p class="mb-0" style="font-size:18px">No users who choped and yet to collect!</p>
+                    </div>
                 </div>
 
                 <div class="col-md-1"></div>
@@ -235,6 +238,9 @@ import { handleError } from "vue";
                             class="rounded"
                             ><Icon icon="akar-icons:cross"
                         /></Button>
+                    </div>
+                    <div v-if="usersWhoCollected.length == 0" class="userInfo d-flex justify-content-center align-items-center">
+                        <p class="mb-0" style="font-size:18px">No users have collected yet!</p>
                     </div>
                 </div>
             </div>
@@ -359,7 +365,7 @@ import { handleError } from "vue";
 <script>
 import { mapGetters } from "vuex";
 export default {
-    updated() {
+    mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
                 window.scrollTo(0, 0);
@@ -588,9 +594,7 @@ export default {
     color: #558c03;
 }
 
-.userInfo {
-    padding: 10px;
-}
+
 
 .filterBar {
     background-color: #f6fbf6;
@@ -626,7 +630,7 @@ export default {
     justify-content: center;
     display: flex;
     font-size: 20px;
-    height: auto;
+    height: 80px;
 }
 
 input[type="checkbox"] {
