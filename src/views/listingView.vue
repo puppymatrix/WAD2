@@ -431,8 +431,8 @@ export default {
             // console.log("load nearby listings", this.listingCategory);
             const listings = await getListingsByCategory(this.listingCategory);
             const users = await getAllUsernames();
-            const randomIndex = Math.floor(Math.random() * listings.length);
-            const listingSlice = listings.slice(randomIndex, randomIndex+ 4);
+            const randomIndex = Math.floor(Math.random() * (listings.length-4));
+            const listingSlice = listings.slice(randomIndex, randomIndex + 4);
             for (const listing of listingSlice) {
                 const owner = users[listing.details.Owner];
 
