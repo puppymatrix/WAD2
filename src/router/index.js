@@ -103,7 +103,7 @@ router.beforeEach((to, from, next) => {
         next();
       } else {
         store.commit("setVisible", true);
-        next({ path: from.path }); // Pass the current path as a parameter to next()
+        next({ path: from.path, query: from.query }); // Pass the current path as a parameter to next()
       }
     } else {
       next();

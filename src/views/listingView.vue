@@ -377,6 +377,7 @@ export default {
         };
     },
     async created() {
+        window.scrollTo(0, 0);
         this.listingId = this.$route.query.Id;
         await this.getListingInfo();
         await this.loadNearbyListings();
@@ -478,12 +479,13 @@ export default {
                 }
                 
             } else {
-                this.$toast.add({
-                    severity: "error",
-                    summary: "Not Logged In",
-                    detail: "Please log in to chope this listing",
-                    life: 3000,
-                });
+                this.$router.push("/addListing");
+                // this.$toast.add({
+                //     severity: "error",
+                //     summary: "Not Logged In",
+                //     detail: "Please log in to chope this listing",
+                //     life: 3000,
+                // });
             }
         },
     },

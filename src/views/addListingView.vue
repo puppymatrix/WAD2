@@ -289,9 +289,6 @@ import { Icon } from "@iconify/vue";
         >
             <p class="fs-5">Listing successfully added.</p>
             <template #footer>
-                <Button @click="goAddListing" class="mx-4"
-                    ><Icon icon="ic:baseline-plus" />&nbsp Add another listing</Button
-                >
                 <Button @click="goBack" 
                     ><Icon icon="ic:round-home" />&nbsp Back to Home</Button
                 >
@@ -390,10 +387,7 @@ export default {
         goBack() {
             this.visible = false;
             this.$router.push("/");
-        },
-        goAddListing() {
-            this.visible = false;
-            this.$router.go(0);
+            window.scrollTo(0, 0);
         },
         validateInputs() {
             this.errors = {};
