@@ -227,11 +227,11 @@ h1{
     filter: blur(5px);
 }
 
-/* .show{
+.show{
     opacity: 0.8;
     transform: translateX(0px);
     filter: blur(0px);
-} */
+}
 
 .statsHeader{
     color:  #0b2b26;
