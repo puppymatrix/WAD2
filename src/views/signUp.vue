@@ -93,7 +93,7 @@
                     <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
 
                     <p class="mt-1">
-                        Already have an account? Log in <a @click.prevent="navigate=>{$router.push('/logIn')}" style="display:inline">here</a>
+                        Already have an account? Log in <a @click.prevent="navigate=>{$router.push('/logIn')}" style="display:inline; color: blue; text-decoration: underline; cursor: pointer;">here</a>
                     </p>
                        
                 </form>
