@@ -19,8 +19,8 @@
                 </div>
             </div>
         </div>
-        <div class="row secondRow">
-            <h3 class="carouselHeader font-weight-light text-center p-4 text-light mb-0">- Featured: Good Deals Available! -</h3>
+        <div class="row secondRow py-5">
+            <h2 class="carouselHeader font-weight-light text-center pt-3 mb-0" style="color:#ebf1e7"> Featured: Good Deals Available! </h2>
             <CarouselMarquee/>
         </div>
         
@@ -66,25 +66,25 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-12 stats p-4 stats1">
+            <div class="col-12 stats p-5 stats1">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
                 <p class="statsDesc num1">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-12 stats p-4 stats1">
+            <div class="col-12 stats p-5 stats1">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
                 <p class="statsDesc num2">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-12 stats p-4 stats1">
+            <div class="col-12 stats p-5 stats1">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
                 <p class="statsDesc num3">This causes global warming and climate change!</p>
             </div>
         </div>
 
         <!--Key Partner-->
-        <div id="partners" class="row sponsors">
-            <h3 class="text-center m-0 " style="color: #0b2b26;">Our Partners</h3>
+        <div id="partners" class="row sponsors" >
+            <h3 class="text-center m-0 " style="color:#ebf1e7">Our Partners</h3>
             <!-- <div style="border-top: 1px solid #0b2b26;"></div> -->
             <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
@@ -96,12 +96,12 @@
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/breadtalk.png">
                 </a>
             </div>
-            <div class="col-sm-3  partnerCol p-4 px-0">
+            <div class="col-sm-3  partnerCol p-4">
                 <a href="https://shengsiong.com.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/shengsiong.png">
                 </a>
             </div>
-            <div class="col-sm-3 partnerCol  p-4 px-4">
+            <div class="col-sm-3 partnerCol  p-4">
                 <a href="https://giant.sg/">
                     <img class="partnerIcon" src="../components/images/landingPage/partnerIcons/giant.png">
                 </a>
@@ -134,6 +134,7 @@ h1{
     display: flex;
     justify-content: center;
     align-items: center;  
+    
 }
 
 #homeImage{
@@ -192,6 +193,8 @@ h1{
 
 .secondRow{
     background-color: #b08430;
+    /* height: 500px */
+    
 }
 
 .carouselHeader{
@@ -244,7 +247,7 @@ h1{
 
 
 .sponsors{
-    background-color: #fffdd0;
+    background-color: #b08430;
     padding: 20px;
 
 }
