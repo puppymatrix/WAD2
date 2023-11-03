@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="row secondRow py-5">
-            <h2 class="carouselHeader font-weight-light text-center pt-3 mb-0" style="color:#ebf1e7"> Featured: Good Deals Available! </h2>
+            <h2 class="carouselHeader font-weight-light text-center pt-3 mb-0"> Featured: Good Deals Available! </h2>
             <CarouselMarquee/>
         </div>
         
@@ -84,7 +84,7 @@
 
         <!--Key Partner-->
         <div id="partners" class="row sponsors" >
-            <h3 class="text-center m-0 " style="color:#ebf1e7">Our Partners</h3>
+            <h3 class="text-center m-0 ">Our Partners</h3>
             <!-- <div style="border-top: 1px solid #0b2b26;"></div> -->
             <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
@@ -192,9 +192,8 @@ h1{
 
 
 .secondRow{
-    background-color: #b08430;
+    background-color: #fffdd0;
     /* height: 500px */
-    
 }
 
 .carouselHeader{
@@ -247,7 +246,7 @@ h1{
 }
 
 .sponsors{
-    background-color: #b08430;
+    background-color: #fffdd0;
     padding: 20px;
 
 }
