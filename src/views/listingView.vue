@@ -359,6 +359,13 @@ import { handleError } from "vue";
 <script>
 import { mapGetters } from "vuex";
 export default {
+    updated() {
+        this.$nextTick(() => {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 150);
+        });
+    },
     data() {
         return {
             similarListing: [],
@@ -377,7 +384,6 @@ export default {
         };
     },
     async created() {
-        window.scrollTo(0, 0);
         this.listingId = this.$route.query.Id;
         await this.getListingInfo();
         await this.loadNearbyListings();

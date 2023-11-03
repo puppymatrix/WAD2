@@ -13,7 +13,7 @@
             <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
             <div class="col col-sm-9">
                     <!-- sidebar for more info  -->
-                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" :dismissable="false">
+                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" :dismissable="false" :blockScroll="true">
                         <h2 style="color: #212529">Listing Information</h2>
 
                         <div class="container-fluid">
@@ -59,7 +59,7 @@
                                         </router-link>
 
                                         <Button
-                                        @click.prevent="loadDirections" class="d-flex justify-content-center w-100" style="border-radius:4px">
+                                        @click="loadDirections" class="d-flex justify-content-center w-100" style="border-radius:4px">
                                             <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
                                             Get Directions
                                         </Button>
@@ -158,7 +158,7 @@
                                 </div>
                             </div>
                             <div class="col-md-2 my-1 d-flex justify-content-center">
-                                <Button @click.prevent="loadByDistance"
+                                <Button @click="loadByDistance"
                                 :pt="{ 
                                         root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
                                     }">
@@ -386,10 +386,12 @@
             loadFoodByName(foodName){
                 this.searchQuery = foodName
                 this.foodItemsFiltered = filterByName(this.foodItems, this.searchQuery)
+                window.scrollTo(0, 0);
             },
 
             loadByDistance(){
-                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance)
+                this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance);
+                window.scrollTo(0, 0);
             },
             
             async loadSingleListing(){
