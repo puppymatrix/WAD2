@@ -202,7 +202,7 @@
                     zoom: 11,
                     provideRouteAlternatives: true,
                     gestureHandling: 'cooperative',
-                    mapId: '7fb5f582643b9459'
+                    mapId: '7fb5f582643b9459',
                 },
                 map: null,
                 core: null,
@@ -238,19 +238,18 @@
         methods: {
             // map functions 
             async initMap(){
+                const DELAY = 20
+
                 this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
 
                 this.loader = new Loader({ 
                     apiKey: this.key,
                     version: "beta",
-                    // libraries: ["places", "geometry", "marker", "maps", "routes"],
+                    libraries: ["places", "geometry", "marker", "maps", "routes"],
                 })
                 const map = await this.loader.importLibrary('maps')
-
                 const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
-                        
                 const marker = await google.maps.importLibrary('marker')
-
                 const routes = await google.maps.importLibrary('routes')
 
                 this.directionsService = new routes.DirectionsService();
@@ -278,30 +277,35 @@
                 this.map = unloadedMap
 
                 if (this.foodItemsFiltered.length > 0){
-                    for(const item of this.foodItemsFiltered){
+                    for(let i=0;i<this.foodItemsFiltered.length; i++){
+
+                        let item = this.foodItemsFiltered[i]
 
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        let newMarker = new marker.Marker({
-                            position: { lat: latitude, lng: longitude},
-                            map: this.map,                    
-                        })
+                        window.setTimeout(() => {
+                            let newMarker = new marker.Marker({
+                                position: { lat: latitude, lng: longitude},
+                                map: this.map,     
+                                animation: google.maps.Animation.DROP               
+                            })
 
-                        newMarker.addListener("click", () => {
+                            newMarker.addListener("click", () => {
 
-                            this.selected = item    
-                            this.visible = true
+                                this.selected = item    
+                                this.visible = true
 
-                            if (this.displayDirections){
-                                this.displayDirections = false
-                            }
-                            
-                            this.routeRequest.destination = { 
-                                lat: item.info.details.Location.latitude, 
-                                lng: item.info.details.Location.longitude
-                            }
-                        });
+                                if (this.displayDirections){
+                                    this.displayDirections = false
+                                }
+                                
+                                this.routeRequest.destination = { 
+                                    lat: item.info.details.Location.latitude, 
+                                    lng: item.info.details.Location.longitude
+                                }
+                            });
+                        }, i*DELAY)
                     }
                 }
             },

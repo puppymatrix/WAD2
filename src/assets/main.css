@@ -28,7 +28,7 @@ ul.p-cascadeselect-panel.p-cascadeselect-items.p-cascadeselect-sublist {
     margin-bottom: 0;
 }
 
-ul#pv_id_1_list.p-dropdown-items{
+ul#pv_id_2_list.p-dropdown-items{
     padding-left: 0;
 }
 div.p-button.p-component{
@@ -45,4 +45,11 @@ div.p-button.p-component{
 .p-sidebar-left .p-sidebar  {
     width: 30%;
     height: 100%;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon{
+    background-color: #000000;
+    background-size: 80%; /* increase the size */
+    border-radius: 50%;
+    padding: 20px; /* add padding */
 }
