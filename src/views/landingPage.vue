@@ -19,8 +19,19 @@
                 </div>
             </div>
         </div>
-        <div class="row secondRow py-5">
-            <h2 class="carouselHeader font-weight-light text-center pt-3 mb-0" style="color:#ebf1e7"> Featured: Good Deals Available! </h2>
+        <div class="row secondRow py-5 align-items-center">
+            <div class="col  ms-4">
+                <div class="row line"></div>
+                <div class="row"></div>
+            </div>
+            <div class="col-6">
+                <h2 class="carouselHeader font-weight-light text-center  px-auto mb-0" style="color:#ebf1e7"> Featured: Good Deals Available! </h2>
+            </div>
+            <div class="col me-4">
+                <div class="row line"></div>
+                <div class="row"></div>
+            </div>
+
             <CarouselMarquee/>
         </div>
         
@@ -246,7 +257,6 @@ h1{
 
 }
 
-
 .sponsors{
     background-color: #b08430;
     padding: 20px;
@@ -258,6 +268,10 @@ h1{
 }
 .partnerIcon{
     max-width: 70%;
+}
+
+.line {
+    border-bottom: 2px solid white
 }
 
 

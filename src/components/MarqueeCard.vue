@@ -7,6 +7,7 @@
       @mouseover="(hover = true), $emit('switch')"
       @mouseout="(hover = false), $emit('switchOn')"
     >
+      
       <div class="card">
         <img
           :class="{ unfade: hover, faded: !hover }"
@@ -19,9 +20,12 @@
           <h6 class="card-title text-center marquee-listing-name">
             {{ listingName }}
           </h6>
-          <!-- <p class="card-subtitle text-center marquee-listing-price">${{ listingPrice }}</p> -->
         </div>
       </div>
+
+      <!-- <div >
+        sux
+      </div> -->
 
     </router-link>
   </template>
@@ -30,13 +34,15 @@
   export default {
     name: "MarqueeCard",
     emits: ["switch", "switchOn"],
-    props: ["listingName", "listingImage", "listingId", "listingPrice"],
+    props: ["listingName", "listingImage", "listingId", "listingPrice", "loading"],
     data() {
       return {
         hover: false,
       };
     },
-    mounted() {},
+    mounted() {
+      
+    },
   };
   </script>
   
