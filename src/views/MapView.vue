@@ -2,185 +2,183 @@
     import { getAllListings, filterByDistance, filterByName, calculateDistance, getListing } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
-    import  SearchBar  from '../components/SearchBar.vue'
-    import  Sidebar from 'primevue/sidebar'
-    import Slider from 'primevue/slider'
-    import SelectButton from 'primevue/selectbutton'
-    import Button from 'primevue/button'
+
     import { Icon } from '@iconify/vue'
     import Dropdown from 'primevue/dropdown'
 
+    import Searchbar from '../components/SearchBar.vue'
 </script>
 
-<template>
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
-        <div class="col-9">
-            <!-- <div class="container"> -->
-                <!-- sidebar for more info  -->
-            <Sidebar v-model:visible="visible" :modal="false" :position="sideBarPosition" style="width: 30%">
-                    <h2 style="color: #212529">Listing Information</h2>
+<template >
+    <div class="container-fluid d-flex justify-content-center">
+        <!-- <div class="row "> -->
+            <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
+            <div class="col col-sm-9">
+                    <!-- sidebar for more info  -->
+                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" >
+                        <h2 style="color: #212529">Listing Information</h2>
 
-                    <div class="container-fluid">
+                        <div class="container-fluid">
 
-                        <div class="card">
-                           
-                            <BCarousel controls indicators imgHeight="300px">
-                                <BCarouselSlide v-for="photos in selected.info.details.ImageUrls" :img-src="photos" />
-                            </BCarousel>
+                            <div class="card">
+                            
+                                <BCarousel controls indicators imgHeight="300px">
+                                    <BCarouselSlide v-for="photos in selected.info.details.ImageUrls" :img-src="photos" />
+                                </BCarousel>
 
-                            <div class="card-body">
+                                <div class="card-body">
 
-                                <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
+                                    <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
 
-                                <li>Category: {{ selected.info.details.Category }}</li>
-                                <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
-                                <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
-                                <li>Price: {{ selected.info.details.Price }}</li>
-                                <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
-                                <div class="row">
-                                    <router-link
-                                            :to="{
-                                                name: 'listing',
-                                                query: { Id: selected.info.Id },
-                                            }"
-                                            style="padding: 0px"
-                                        >
-                                    <Button label="View more..." outlined style="border-radius:4px; width: 100%" class="my-2"></Button>
-                                    </router-link>
+                                    <li>Category: {{ selected.info.details.Category }}</li>
+                                    <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
+                                    <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
+                                    <li>Price: {{ selected.info.details.Price }}</li>
+                                    <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
+                                    <div class="row">
+                                        <router-link
+                                                :to="{
+                                                    name: 'listing',
+                                                    query: { Id: selected.info.Id },
+                                                }"
+                                                style="padding: 0px"
+                                            >
+                                        <Button label="View more..." outlined style="border-radius:4px; width: 100%" class="my-2"></Button>
+                                        </router-link>
 
-                                    <Button :pt="{ button: 'bg-green-600 border-green-600'}"
-                                    @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
-                                        <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
-                                        Get Directions
-                                    </Button>
-                                    
+                                        <Button :pt="{ button: 'bg-green-600 border-green-600'}"
+                                        @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
+                                            <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
+                                            Get Directions
+                                        </Button>
+                                        
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="card border-none" v-if="displayDirections">
+                            <div class="card border-none" v-if="displayDirections">
 
-                            <div class="card-title">
-                                <h2 class="mt-5 mb-0">Getting there</h2>
+                                <div class="card-title">
+                                    <h2 class="mt-5 mb-0">Getting there</h2>
+                                </div>
+                                
+                                <div class="card-body py-0">
+                                    <div class="row align-items-center">
+                                    
+                                        <div class="row ">
+                                            <p class="card-title ps-0">Transport Mode:</p>
+                                        </div>
+
+                                        <div class="row ps-0">
+                                            <div id="travelGrp">
+                                                <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
+                                                aria-labelledby="basic"
+                                                :pt="{
+                                                    button: ({ context }) => ({
+                                                        class: context.active ? 'bg-primary' : undefined
+                                                    })
+                                                }" 
+                                                @click.prevent="loadDirections"
+                                                />
+                                            </div>
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div class="card-body py-0">
-                                <div class="row align-items-center">
-                                   
-                                    <div class="row ">
-                                        <p class="card-title ps-0">Transport Mode:</p>
-                                    </div>
+                                <div class="card-body p-0">
+                                    <div id="sideBar" class="p-0"></div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </Sidebar>
 
-                                    <div class="row ps-0">
-                                        <div id="travelGrp">
-                                            <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
-                                            aria-labelledby="basic"
-                                            :pt="{
-                                                button: ({ context }) => ({
-                                                    class: context.active ? 'bg-primary' : undefined
-                                                })
-                                            }" 
-                                            @click.prevent="loadDirections"
-                                            />
+                <!-- visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }} -->
+                <div class="row justify-content-center">
+                    <div id="map" style="height:600px" class="col-10"></div>
+                    <!-- {{ sideBarPosition }}  -->
+                </div>
+            
+                <div class="row justify-content-center">
+                    <div class="col-10 mt-3">
+                                <div class="row justify-content-center align-items-center" style="background-color: #F6FBF6;">
+                                    <div class="col-2">
+                                        <h6 class = "text-right" style="color: #212529">Filter by: </h6>
+                                    </div>
+                                    <div class="col-6">
+                                        <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
+                                            <template #option="slotProps">
+                                                <div class="p-d-flex p-ai-center">
+                                                    <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
+                                                    {{ slotProps.option.label }}
+                                                </div>
+                                            </template>
+                                        </Dropdown>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
+                                    <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
+                                        <h6 class="m-3">Distance (in KM): </h6>
+                                        <span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
+                                    </div>
+                                    <div class="col-md-5 my-2">
+                                        <div class="container">
+                                            <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
+                                            :pt="{root: {class: 'bg-white'}}"/>
                                         </div>
-                                </div>
-                            </div>
-                        </div>
-                           
-                            <div class="card-body p-0">
-                                <div id="sideBar" class="p-0"></div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </Sidebar>
-
-            <!-- visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }} -->
-            <div class="row justify-content-center">
-                <div id="map" style="height:600px" class="col-10"></div>
-            </div>
-           
-            <div class="row justify-content-center">
-                <div class="col-10 mt-3" style="background-color: #F6FBF6;">
-                            <div class="row justify-content-center align-items-center">
-                                <div class="col-2">
-                                    <h6 class = "text-right" style="color: #212529">Filter by: </h6>
-                                </div>
-                                <div class="col-6">
-                                    <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
-                                        <template #option="slotProps">
-                                            <div class="p-d-flex p-ai-center">
-                                                <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
-                                                {{ slotProps.option.label }}
-                                            </div>
-                                        </template>
-                                    </Dropdown>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
-                                <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
-                                    <h6 class="m-3">Distance (in KM): </h6>
-                                    <span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
-                                </div>
-                                <div class="col-md-5 my-2">
-                                    <div class="container">
-                                        <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
-                                        :pt="{root: {class: 'bg-white'}}"/>
                                     </div>
+                                    <div class="col-md-2 my-1 d-flex justify-content-center">
+                                        <Button @click.prevent="loadByDistance"
+                                        :pt="{ 
+                                                root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
+                                            }">
+                                            <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                                        </Button>
+                                    </div>
+
                                 </div>
-                                <div class="col-md-2 my-1 d-flex justify-content-center">
-                                    <Button @click.prevent="loadByDistance"
-                                    :pt="{ 
-                                            root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
-                                        }">
-                                        <Icon icon="ic:sharp-my-location" width="20" height="20" /> GO!
-                                    </Button>
+                                <div class="row mt-2" v-else>
+                                    <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
                                 </div>
-                            </div>
-                            <div class="row mt-2" v-else>
-                                <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
-                            </div>
-                        <!-- </div> -->
-                    <!-- </div> -->
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>   
-</div> 
+       
+    </div> 
 </template>
 
-  <script>
-
+<script>
     document.addEventListener('click', function(event) {
         // Check if the click event's target is not the element you're watching
         if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
             this.displayDirections = false
-        } else {
-        }
+        } 
     });
 
-    
     export default {
 
         async created(){
-
-            console.log('mounted')
             await this.initMap()
             await this.loadFood()
-            
-
         },
 
         mounted(){
             if (this.$route.query.Id){
                 this.loadSingleListing()
             }
+
+            window.addEventListener('resize', () => {
+                this.viewportWidth = window.innerWidth;
+            });
+
         },
                     
         data(){
             return {
+                viewportWidth: window.innerWidth,
+                sideBarPosition: 'left',
+
                 //primevue variables
                 visible: false,
                 modal: false,
@@ -206,7 +204,7 @@
                     zoom: 11,
                     provideRouteAlternatives: true,
                     gestureHandling: 'cooperative',
-                    mapId: '7fb5f582643b9459'
+                    mapId: '7fb5f582643b9459',
                 },
                 map: null,
                 core: null,
@@ -237,32 +235,27 @@
         
         computed :{
             ...mapGetters(['currentUserLocation']),
-            sideBarPosition() {
-                return window.innerWidth < 768 ? 'bottom' : 'left';
-            },
+
         },
         methods: {
             // map functions 
             async initMap(){
+                const DELAY = 20
 
                 this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
 
                 this.loader = new Loader({ 
                     apiKey: this.key,
                     version: "beta",
+                    libraries: ["places", "geometry", "marker", "maps", "routes"],
                 })
                 const map = await this.loader.importLibrary('maps')
-
                 const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
-                       
-                const marker = await this.loader.importLibrary('marker')
+                const marker = await google.maps.importLibrary('marker')
+                const routes = await google.maps.importLibrary('routes')
 
-                // if (this.routeRequest.destination){
-                    const routes = await this.loader.importLibrary('routes')
-
-                    this.directionsService = new routes.DirectionsService();
-                    this.directionsRenderer = new routes.DirectionsRenderer();
-                // }
+                this.directionsService = new routes.DirectionsService();
+                this.directionsRenderer = new routes.DirectionsRenderer();
 
                 const parser = new DOMParser()
                 const pinSvg = parser.parseFromString(
@@ -277,8 +270,6 @@
                     borderColor: "#0033FF",
                 })
 
-                
-
                 var advMarker = new marker.AdvancedMarkerElement({
                     map: unloadedMap,
                     position: this.currentUserLocation,
@@ -288,30 +279,35 @@
                 this.map = unloadedMap
 
                 if (this.foodItemsFiltered.length > 0){
-                    for(const item of this.foodItemsFiltered){
+                    for(let i=0;i<this.foodItemsFiltered.length; i++){
+
+                        let item = this.foodItemsFiltered[i]
 
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        let newMarker = new marker.Marker({
-                            position: { lat: latitude, lng: longitude},
-                            map: this.map,                    
-                        })
+                        window.setTimeout(() => {
+                            let newMarker = new marker.Marker({
+                                position: { lat: latitude, lng: longitude},
+                                map: this.map,     
+                                animation: google.maps.Animation.DROP               
+                            })
 
-                        newMarker.addListener("click", () => {
+                            newMarker.addListener("click", () => {
 
-                            this.selected = item    
-                            this.visible = true
+                                this.selected = item    
+                                this.visible = true
 
-                            if (this.displayDirections){
-                                this.displayDirections = false
-                            }
-                           
-                            this.routeRequest.destination = { 
-                                lat: item.info.details.Location.latitude, 
-                                lng: item.info.details.Location.longitude
-                            }
-                        });
+                                if (this.displayDirections){
+                                    this.displayDirections = false
+                                }
+                                
+                                this.routeRequest.destination = { 
+                                    lat: item.info.details.Location.latitude, 
+                                    lng: item.info.details.Location.longitude
+                                }
+                            });
+                        }, i*DELAY)
                     }
                 }
             },
@@ -378,7 +374,6 @@
                             details: item
                         }
                     }
-                console.log('listing', item)
 
                 this.selected = listing
                 this.foodItemsFiltered.push(listing)
@@ -389,9 +384,10 @@
                 }
 
                 this.loadDirections()
-            }
+            },
+            
         },
-       
+        
         watch:{
             routeRequest:{
                 handler(){
@@ -404,10 +400,20 @@
                     this.initMap()
                 }
             },
-        },
-}
-            
-  </script>
+            viewportWidth:{
+                handler(){
+                    if (this.viewportWidth < 768){
+                        this.sideBarPosition = 'bottom'
+                    } else {
+                        this.sideBarPosition = 'left'
+                    }
+                }
+            }
+        }
+    }
+
+        
+</script>
 
 <style>
 
@@ -436,6 +442,8 @@
     height: 200%
   }
 }
+
+
 
 
 

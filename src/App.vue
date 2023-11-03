@@ -90,10 +90,6 @@ export default {
                 // User is signed in, get the UID
                 const uid = user.uid;
                 this.$store.commit("setUser", uid); // Call the setUser mutation to update the state
-                // console.log(uid);
-
-                // if (this.userLocation != "")
-                // this.$store.commit("setLocation", this.userLocation); // Call the setUser mutation to update the state
             } else {
                 // User is signed out
                 this.$store.commit("setUser", null); // Call the setUser mutation to update the state
@@ -102,23 +98,7 @@ export default {
     },
 
     methods: {
-        getUserLocation() {
-            // const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA3mmqNXwwQ_RrLB9mKbzTba1q-SK5tkFE`;
 
-            // var loc = await axios
-            //     .post(url)
-            //     .then((response) => {
-            //         const data = response.data;
-            //         // Call the setUser mutation to update the state
-            //         // console.log('resp', data.location)
-            //         this.userLocation = data.location;
-            //     })
-
-            //     .catch((error) => {
-            //         console.log(error);
-            //         console.log(error.response.data.error_message);
-            //     });
-        },
         gotoLogin() {
             this.$router.push("/logIn");
             this.$store.commit("setVisible", false);

@@ -48,7 +48,7 @@ import { doc } from "firebase/firestore";
                     <div class="justify-content-center p-0" @click="closeNav" v-if="isAuthenticated" >
                         <!-- <img src="../components/images/user.png" alt="" class="img-fluid" @mouseover="displayDropDown"> -->
                         <div class="d-flex me-3">
-                            <button type="button" class="btn btn-standard m-1" @click="navigate=>{this.$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
+                            <button type="button" class="btn btn-standard m-1" @click="navigate=>{$router.push('/profile')}" v-if="$route.path!='/profile'">My Profile</button>
                             <button type="button" class="btn btn-secondary m-1" @click="logOut">Log Out</button>
                         </div>
                     </div>
@@ -73,11 +73,6 @@ import { doc } from "firebase/firestore";
 
 export default {
 
-    data() {
-        return {
-            viewportWidth: window.innerWidth,
-        };
-    },
     computed: {
         ...mapGetters(["isAuthenticated","currentUser"]),
     },
@@ -111,13 +106,7 @@ export default {
                     console.log(error.message);
                 });
         },
-        toggleNavBar(){
-            if (window.innerWidth < 768) {
-                this.narrow = true;
-            } else {
-                this.narrow = false;
-            }
-        }
+
     },
     watch: {
         viewportWidth() {

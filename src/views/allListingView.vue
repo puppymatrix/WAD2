@@ -136,6 +136,8 @@ import { Icon } from "@iconify/vue";
                                             <br/>
                                             Price: {{ item.info.details.Price }}
                                             <br />
+                                            Quantity Available: {{ item.info.details.QtyAvailable }}
+                                            <br/>
                                             Distance: {{ item.distance }}
                                         </p>
                                     </div>
@@ -186,6 +188,8 @@ import { Icon } from "@iconify/vue";
                                             <br/>
                                             Price: {{ item.info.details.Price }}
                                             <br />
+                                            Quantity Available: {{ item.info.details.QtyAvailable }}
+                                            <br/>
                                             Distance: {{ item.distance }}
                                         </p>
                                     </div>
