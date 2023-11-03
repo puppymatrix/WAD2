@@ -120,16 +120,15 @@ import { Icon } from "@iconify/vue";
                                         </h6>
                                         <p
                                             class="card-text d-flex align-items-center mb-3"
-                                        > Location: 
-                                            {{
-                                                item.info.details.Location.name
-                                            }}
+                                        > 
+                                            Location: 
+                                            {{item.info.details.Location.name}}
                                             <br/>
                                             Price: ${{ item.info.details.Price }}
                                             <br />
                                             Quantity Available: {{ item.info.details.QtyAvailable }}
                                             <br/>
-                                            Distance: {{ item.distance }}
+                                            Distance: {{ item.distance.toFixed(2) }}km
                                         </p>
                                     </div>
                                     
@@ -173,15 +172,13 @@ import { Icon } from "@iconify/vue";
                                         <p
                                             class="card-text d-flex align-items-center mb-3"
                                         > Location: 
-                                            {{
-                                                item.info.details.Location.name
-                                            }}
+                                            {{item.info.details.Location.name}}
                                             <br/>
                                             Price: ${{ item.info.details.Price }}
                                             <br />
                                             Quantity Available: {{ item.info.details.QtyAvailable }}
                                             <br/>
-                                            Distance: {{ item.distance }}
+                                            Distance: {{ item.distance.toFixed(2) }}km
                                         </p>
                                     </div>
                                     
@@ -505,7 +502,7 @@ a {
 .card-text{
     background-color: lightgray;
     padding: 10px;
-    height: 50%;
+    height: 55%;
     border-radius: 8px;
 }
 
