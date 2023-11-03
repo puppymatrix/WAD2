@@ -53,3 +53,20 @@ div.p-button.p-component{
     border-radius: 50%;
     padding: 20px; /* add padding */
 }
+
+.adp-directions, .adp-summary{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    
+}
+
+.adp-directions{
+    margin-bottom: 20px;
+}
+
+.adp-summary{
+    border-bottom: 0;
+    padding: 0;
+}
