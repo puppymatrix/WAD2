@@ -287,9 +287,12 @@ import { Icon } from "@iconify/vue";
             :draggable="false"
             :closable="false"
         >
-            <p>Listing successfully added. Click button to go back.</p>
+            <p class="fs-5">Listing successfully added.</p>
             <template #footer>
-                <Button @click="goBack"
+                <Button @click="goAddListing" class="mx-4"
+                    ><Icon icon="ic:baseline-plus" />&nbsp Add another listing</Button
+                >
+                <Button @click="goBack" 
                     ><Icon icon="ic:round-home" />&nbsp Back to Home</Button
                 >
             </template>
@@ -361,7 +364,7 @@ export default {
     },
     computed: {
         // ...mapState(["userLoggedIn"]), // Map the userLoggedIn state from the store
-        ...mapGetters(["isAuthenticated", "currentUser"]),
+        ...mapGetters(["isAuthenticated", "currentUser", "add"]),
 
         fileNames() {
             // console.log(this.files);
@@ -387,6 +390,10 @@ export default {
         goBack() {
             this.visible = false;
             this.$router.push("/");
+        },
+        goAddListing() {
+            this.visible = false;
+            this.$router.go(0);
         },
         validateInputs() {
             this.errors = {};
