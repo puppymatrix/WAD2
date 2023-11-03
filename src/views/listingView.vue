@@ -179,8 +179,8 @@ import { handleError } from "vue";
                                     >
                                         Chope!
                                     </button>
-                                    <p class="msg" v-if="this.qty == 0">There are no available product for this listing</p>
-                                    <p  class="msg" v-else>You have already chope this listing!</p>
+                                    <p class="msg" v-if="this.qty == 0">All products are currently choped, check back again later!</p>
+                                    <p  class="msg" v-else>You have already choped this listing!</p>
                                 </div>
                             </div>
                         </div>
@@ -289,9 +289,7 @@ import { handleError } from "vue";
                                             }}
                                             <br />
                                             Price:
-                                            {{ listing.info.details.Price }}
-                                            <br />
-                                            Distance: {{ listing.distance }}
+                                            {{ listing.info.details.Price }}                                    
                                         </p>
                                     </div>
                                 </div>
