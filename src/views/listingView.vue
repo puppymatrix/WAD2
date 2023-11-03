@@ -101,7 +101,7 @@ import { handleError } from "vue";
                                 <div class="card-body">
                                     <h5 class="card-title">Food Description</h5>
                                     <p
-                                        class="card-text"
+                                        style="font-size: 16px;"
                                         v-if="
                                             listingInfo.hasOwnProperty(
                                                 'Description'
@@ -110,7 +110,7 @@ import { handleError } from "vue";
                                     >
                                         {{ listingInfo.Description }}
                                     </p>
-                                    <p class="card-text" v-else>
+                                    <p  v-else>
                                         Not Applicable
                                     </p>
                                 </div>
