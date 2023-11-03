@@ -8,7 +8,6 @@ import { doc } from "firebase/firestore";
 <template>
     <Toast />
     <div class="row d-flex align-items-center" id="nav">
-        
         <!-- logo and links -->
         <div class="col">
             <nav class="navbar navbar-expand-lg">
@@ -58,9 +57,7 @@ import { doc } from "firebase/firestore";
                         <button type="button" class="btn btn-standard m-1" @click.prevent="navigate=>{$router.push('/signUp')}"  v-if="$route.path != '/signUp'">Sign Up</button>
                     </div>
                 </li>
-
             </ul>
-
             </div>
             </div>
             </nav>
@@ -69,10 +66,7 @@ import { doc } from "firebase/firestore";
 </template>
 
 <script>
-
-
 export default {
-
     computed: {
         ...mapGetters(["isAuthenticated","currentUser"]),
     },
@@ -106,7 +100,6 @@ export default {
                     console.log(error.message);
                 });
         },
-
     },
     watch: {
         viewportWidth() {
@@ -114,7 +107,6 @@ export default {
         },
     },
 }
-
 </script>
 
 <style scoped>
@@ -140,19 +132,12 @@ export default {
     }
 }
 
-
 #rightSideBtns {
     position: absolute;
     right: 0px;
     top: 10px;
 }
 
-
-/* .navbar-toggler{
-    position: absolute;
-    left: 10px;
-    top: 10px;
-} */
 #logo {
     height: 40px;
 }
@@ -168,15 +153,15 @@ export default {
     background-color: #43a046;
 }
 
-.footer {
+/* .footer {
     background-color: #263238;
     padding-top: 80px;
     padding-bottom: 100px;
-}
+} */
 
-.img_small {
+/* .img_small {
     height: 50%;
-}
+} */
 
 a > li {
     color: #ebf1e7;
@@ -210,11 +195,10 @@ button:hover{
     border-color:  #ebf1e7;
 }
 
-.active-link {
+/* .active-link {
     text-decoration: underline;
     text-underline-offset: 5px;
-}
-
+} */
 
 .dropdown-item:active {
     background-color: #bee5b0;
