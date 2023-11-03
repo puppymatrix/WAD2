@@ -13,29 +13,41 @@
             <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
             <div class="col col-sm-9">
                     <!-- sidebar for more info  -->
-                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" >
+                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" :dismissable="false">
                         <h2 style="color: #212529">Listing Information</h2>
 
                         <div class="container-fluid">
 
-                            <div class="card">
-                                
-                                <img id="carousel" :src="selected.info.details.ImageUrls[0]" alt="" v-if="selected.info.details.ImageUrls.length == 1" style="height: 300px">
-
-                                <BCarousel id="carousel" controls indicators imgHeight="300px" v-else>
-                                    <BCarouselSlide v-for="photos in selected.info.details.ImageUrls" :img-src="photos" />
-                                </BCarousel>
-                               
-                                <div class="card-body">
-
-                                    <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
-
-                                    <li>Category: {{ selected.info.details.Category }}</li>
-                                    <li>Expiry Date: {{ selected.info.details.ExpiryDate.toDate() }}</li>
-                                    <li>Perishable: {{ selected.info.details.Perishable ? "Yes": "No" }}</li>
-                                    <li>Price: {{ selected.info.details.Price }}</li>
-                                    <li>Quantity Available: {{ selected.info.details.QtyAvailable }}</li>
-                                    <div class="row">
+                            <div class="card h-100">
+                                    <img
+                                        :src="selected.info.details.ImageUrls[0]"
+                                        alt=""
+                                        class="card-img-top"
+                                    />
+                                    <div class="card-body border-top">
+                                        <h5 class="card-title overflow-text">
+                                            <span style="color:#212529">Listing Name:</span> <br/>
+                                            <span class="listingName pb-2">{{ selected.info.details.ListingName }}</span>
+                                        </h5>
+                                        <h6
+                                            class="card-subtitle mb-2 text-body-secondary overflow-text"
+                                        >
+                                            Category:
+                                            {{ selected.info.details.Category }} 
+                                            <br/>
+                                            Lister: {{ selected.owner }}
+                                        </h6>
+                                        <p
+                                            class="card-text d-flex align-items-center mb-3"
+                                        > Location: 
+                                            {{selected.info.details.Location.name}}
+                                            <br/>
+                                            Price: ${{ selected.info.details.Price }}
+                                            <br />
+                                            Quantity Available: {{ selected.info.details.QtyAvailable }}
+                                            <br/>
+                                            Distance: {{ selected.distance.toFixed(2) }}km
+                                        </p>
                                         <router-link
                                                 :to="{
                                                     name: 'listing',
@@ -46,27 +58,26 @@
                                         <Button label="View more..." outlined style="border-radius:4px; width: 100%" class="my-2"></Button>
                                         </router-link>
 
-                                        <Button :pt="{ button: 'bg-green-600 border-green-600'}"
-                                        @click.prevent="loadDirections" class="d-flex justify-content-center" style="border-radius:4px">
+                                        <Button
+                                        @click.prevent="loadDirections" class="d-flex justify-content-center w-100" style="border-radius:4px">
                                             <Icon icon="material-symbols:directions" color="#ffffff"  width="19.5" height="19.5" class="me-1"/>
                                             Get Directions
                                         </Button>
                                         
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card border-none" v-if="displayDirections">
-
-                                <div class="card-title">
-                                    <h2 class="mt-5 mb-0">Getting there</h2>
+                            <div class="card border-none mt-5" v-if="displayDirections">
+                                <hr class="mt-0 mb-3"/>
+                                <div>
+                                    <h2 class="mb-0" ref="gettingThere">Getting there</h2>
                                 </div>
                                 
                                 <div class="card-body py-0">
                                     <!-- <div class="row align-items-center"> -->
                                     
                                         <div class="row ">
-                                            <p class="card-title ps-0">Transport Mode:</p>
+                                            <p class="card-title ps-0 mb-0">Transport Mode:</p>
                                         </div>
                                        
                                         <div class="row ps-0">
@@ -85,7 +96,7 @@
                                                     id="transportMode"
                                                     @change="loadDirections" 
                                                     v-model="routeRequest.travelMode" 
-                                                    class = "btn btn-outline-success w-100 text-center text-white" 
+                                                    class="form-select form-select-sm"
                                                     >
                                                     <!-- inline object literal -->
                                                     <option :value="mode" v-for="mode in travelModeOptions"
@@ -346,7 +357,12 @@
                     this.visible = true
                     this.displayDirections = true
                 }
-                this.loadRoute()
+                this.loadRoute();
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.$refs.gettingThere.scrollIntoView({ behavior: 'smooth',  block: 'start' });
+                    }, 300);
+                });
             },
             
             async loadFood(){
@@ -427,7 +443,7 @@
         
 </script>
 
-<style>
+<style scoped>
 
 .img {
     background-size: cover; 
@@ -477,16 +493,38 @@
 }
 
 #transportMode {
-    background-color: #4CAF50; 
+    background-color: #EEEEEE; 
     border-radius: 4px; 
-    border: none
+    border: none;
 }
 
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
 
+.card-title{
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
 
+.card-subtitle{
+    margin-bottom: 5px;
+}
 
+.card-text{
+    background-color: #F5F5F5;
+    padding: 10px;
+    height: 55%;
+    border-radius: 8px;
+}
 
-
-
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
+}
 
 </style>
