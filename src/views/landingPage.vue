@@ -66,17 +66,17 @@
         <!--Statistics-->
 
         <div id="stats" class="row d-flex justify-content-center align-items-center">
-            <div class="col-12 stats p-5 stats1">
+            <div class="row stats py-5 stats1">
                 <h3 class="statsHeader">Singaporeans throw away more than 2,000 tonnes of food daily</h3>
                 <p class="statsDesc num1">That's equivalent to 2 million kilograms!</p>
             </div>
 
-            <div class="col-12 stats p-5 stats1">
+            <div class="row stats py-5 stats1">
                 <h3 class="statsHeader">9 million people are reported to die from hunger each year</h3>
                 <p class="statsDesc num2">This includes 3.1 million children!</p>
             </div>
 
-            <div class="col-12 stats p-5 stats1">
+            <div class="row stats py-5 stats1">
                 <h3 class="statsHeader">Food waste produces a lot of greenhouse gases</h3>
                 <p class="statsDesc num3">This causes global warming and climate change!</p>
             </div>
@@ -207,6 +207,7 @@ h1{
 #stats{
     background-image: url("../components/images/landingPage/stats-background.jpg");
     background-size: cover;
+    height: 750px;
     opacity: 80%;
     padding: 20px;
     transition: 0.5s;
