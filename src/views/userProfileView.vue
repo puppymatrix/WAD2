@@ -125,7 +125,22 @@ import ScrollTop from "primevue/scrolltop";
                 <div class="row" id="userListings">
                     <h1>My Listings</h1>
                     <!-- this is a for loop for each listing item -->
-                    <div class="col" v-if="paginatedListingItems.length > 0">
+                    <div class="col" v-if="loading">
+                        <div class="row">
+                            <div class="col">
+                                <Skeleton height="35rem"></Skeleton>
+                            </div>
+                            <div class="col">
+                                <Skeleton height="35rem"></Skeleton>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <Skeleton height="3rem"></Skeleton>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" v-if="paginatedListingItems.length > 0 && !loading">
                         <div class="row">
                             <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedListingItems">
                                 <router-link
@@ -173,7 +188,7 @@ import ScrollTop from "primevue/scrolltop";
                             ></Paginator>
                         </div>
                     </div>
-                    <div class="col" v-else>
+                    <div class="col" v-else-if="!loading && paginatedListingItems.length == 0">
                         <h3>You have not posted any listings yet!</h3>
                     </div>
                 </div>
@@ -181,7 +196,22 @@ import ScrollTop from "primevue/scrolltop";
                 <div class="row" id="chopedListings">
                     <h1>My Chopes</h1>
                     <!-- listings -->
-                    <div class="col" v-if="paginatedChopeItems.length > 0">
+                    <div class="col" v-if="loading">
+                        <div class="row">
+                            <div class="col">
+                                <Skeleton height="35rem"></Skeleton>
+                            </div>
+                            <div class="col">
+                                <Skeleton height="35rem"></Skeleton>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <Skeleton height="3rem"></Skeleton>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" v-if="paginatedChopeItems.length > 0 && !loading">
                         <div class="row">
                             <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedChopeItems">
                                 <router-link
@@ -229,7 +259,7 @@ import ScrollTop from "primevue/scrolltop";
                             ></Paginator>
                         </div>
                     </div>
-                    <div class="col" v-else>
+                    <div class="col" v-else-if="!loading && paginatedChopeItems.length == 0">
                         <h3>You have not choped any listings yet!</h3>
                     </div>
                 </div>
@@ -333,6 +363,7 @@ export default {
             listingListLength: 0,
             chopePage: 0,
             chopeListLength: 0,
+            loading: true,
         };
     },
 
@@ -374,6 +405,9 @@ export default {
             this.myListingIDs = userData.myListings;
             for (let listingID of this.myListingIDs) {
                 const listingData = await getListing(listingID);
+                if (!listingData) {
+                    continue;
+                }
                 const owner = users[listingData.Owner];
                 listingData["Id"] = listingID;
                 listingData["owner"] = owner;
@@ -391,12 +425,17 @@ export default {
 
             for (let chopeID of this.myChopeIDs) {
                 const chopeData = await getListing(chopeID);
+                if (!chopeData) {
+                    continue;
+                }
                 const owner = users[chopeData.Owner];
                 chopeData["Id"] = chopeID;
                 chopeData["owner"] = owner;
                 this.myChopes.push(chopeData);
             }
             this.chopeListLength = this.myChopes.length;
+            this.loading = false;
+            
         },
         updateInfo() {
             //update firebase

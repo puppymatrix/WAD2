@@ -324,7 +324,7 @@
                             sideBar.innerHTML = '';
                             this.directionsRenderer.setPanel(sideBar)
                         } else {
-                            console.log(status)
+                            // console.log(status)
                         }
                     })
                 }
