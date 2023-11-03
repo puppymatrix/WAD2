@@ -131,7 +131,7 @@ export default {
     border-color:#0b2b26 ;
     background-color:#558603;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
 
     #pinned{
         position: absolute;
