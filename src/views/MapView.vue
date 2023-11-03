@@ -116,6 +116,7 @@
                                         </Dropdown>
                                     </div>
                                 </div>
+
                                 <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
                                     <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
                                         <h6 class="m-3">Distance (in KM): </h6>
@@ -135,6 +136,7 @@
                                             <Icon icon="ic:sharp-my-location" width="20" height="20" />
                                         </Button>
                                     </div>
+
                                 </div>
                                 <div class="row mt-2" v-else>
                                     <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
@@ -142,7 +144,7 @@
                     </div>
                 </div>
             </div>
-        <!-- </div>    -->
+       
     </div> 
 </template>
 

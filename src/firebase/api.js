@@ -259,13 +259,20 @@ async function updateUser(uid, firstName, lastName, username, accountType) {
 
 async function chopeListing(userId, listingId) {
     const user = await getUser(userId);
+    const listing = await getListing(listingId);
+
+    const qty = listing.QtyAvailable;
+
     if (user != null) {
         if (user.hasOwnProperty("chopes")) {
-            user.chopes.push({
-                listingId: listingId,
-                collected: false,
-                timestamp: Timestamp.now(),
-            });
+            const unique = checkChopeArray(user.chopes, listingId);
+            if (unique) {
+                user.chopes.push({
+                    listingId: listingId,
+                    collected: false,
+                    timestamp: Timestamp.now(),
+                });
+            }
         } else {
             user.chopes = [
                 {
@@ -276,11 +283,44 @@ async function chopeListing(userId, listingId) {
             ];
         }
         const userRef = doc(db, "userInformation", userId);
-        await setDoc(userRef, user);
-        console.log("Choped listing successfully");
+        await setDoc(userRef, user, {merge: true});
+
+        if (qty > 0) {
+            listing.QtyAvailable = qty - 1;
+            const listingRef = doc(db, "listings", listingId);
+            await setDoc(listingRef, listing, {merge: true});
+        }
+
+        return true;
     } else {
-        console.log("No such document!");
+        return false;
     }
+}
+
+async function canUserChope(userId, listingId) {
+    const user = await getUser(userId);
+    const listing = await getListing(listingId);
+    const qty = listing.QtyAvailable;
+    
+    if (qty <= 0) {
+        return false;
+    }
+
+    if (user != null) {
+        if (user.hasOwnProperty("chopes")) {
+            const unique = checkChopeArray(user.chopes, listingId);
+            return unique
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+    
+}
+
+function checkChopeArray(array, listingId) {
+    return !array.some(item => item.listingId === listingId);
 }
 
 async function collectListing(userId, listingId) {
@@ -590,6 +630,7 @@ export {
     getCoordinates,
     updateUser,
     getAllUsernames,
+    canUserChope,
 
 };
 

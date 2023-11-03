@@ -14,7 +14,7 @@ import ScrollTop from "primevue/scrolltop";
                         id="profilePic"
                         src="../components/icons/programmer.png"
                         class="rounded-circle mb-3"
-                        style="height: 150px; border: 1px solid #f2f2f2"
+                        style="height: 100px; border: 1px solid #f2f2f2"
                         alt="Avatar"
                     />
                     <h5 class="mb-2" style="">
@@ -151,6 +151,8 @@ import ScrollTop from "primevue/scrolltop";
                                             <br/>
                                             Lister: {{ item.owner }}
                                             <br/>
+                                            Quantity Available: {{ item.QtyAvailable }}
+                                            <br/>
                                             Location: {{item.Location.name}}
                                         </h6>
                                     </div>
@@ -195,6 +197,8 @@ import ScrollTop from "primevue/scrolltop";
                                             <br/>
                                             Lister: {{ item.owner }}
                                             <br/>
+                                            Quantity Available: {{ item.QtyAvailable }}
+                                            <br/>
                                             Location: {{item.Location.name}}
                                         </h6>
                                     </div>
@@ -224,17 +228,11 @@ import ScrollTop from "primevue/scrolltop";
     display: inline;
 }
 .sideNav {
-    /* position: fixed; */
     background-color: #a1bf73;
     padding: 5%;
-    /* margin-top: 5%; */
     border-radius: 5%;
-
-    /* margin-left: 5%; */
-    /* margin-left: 5%; */
     margin-top: 22%;
     text-align: center;
-    /* display: block; */
 }
 .sideNav a {
     display: block;
@@ -272,8 +270,11 @@ import ScrollTop from "primevue/scrolltop";
 }
 
 .card-subtitle{
-    height: 45px;
+    background-color: lightgrey;
+    padding: 5px;
+    border-radius: 5px;
 }
+
 </style>
 
 <script>
@@ -281,8 +282,6 @@ import { mapGetters } from "vuex";
 
 export default {
     mounted() {
-        // console.log("mounted")
-        // console.log(this.currentUser)
         this.getUserInfo();
     },
     data() {

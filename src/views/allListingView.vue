@@ -18,8 +18,8 @@ import { Icon } from "@iconify/vue";
                 <!-- search bar -->
 
                 <div class="col-10 col-md-6 d-flex align-items-center justify-content-center py-1">
-                    <SearchBar @search="searchFood"/>
-
+                    <SearchBar @search="searchFood" :initial-query="query" v-if="query"/>
+                    <SearchBar @search="searchFood" v-else />
                 </div>
                 <!-- map view -->
                 <div class="col-2 col-md-6 d-flex align-items-center justify-content-center py-1 ">
@@ -52,7 +52,7 @@ import { Icon } from "@iconify/vue";
 
         <div class="container-fluid">
             <div class="row filterBar">
-                <div class="col-3">
+                <div class="col-md-10 my-2 d-flex align-items-center justify-content-start">
                     <CascadeSelect
                         v-model="selectedFilter"
                         :options="filters"
@@ -65,7 +65,7 @@ import { Icon } from "@iconify/vue";
                         @change="filterBySelected"
                     />
                 </div>
-                <div class="col-2" v-if="selectedFilter != null">
+                <div class="col-md-2 my-2 d-flex  align-items-center" v-if="selectedFilter != null">
                     <Button
                         severity="secondary"
                         @click="checkQuery"
@@ -136,6 +136,8 @@ import { Icon } from "@iconify/vue";
                                             <br/>
                                             Price: {{ item.info.details.Price }}
                                             <br />
+                                            Quantity Available: {{ item.info.details.QtyAvailable }}
+                                            <br/>
                                             Distance: {{ item.distance }}
                                         </p>
                                     </div>
@@ -186,6 +188,8 @@ import { Icon } from "@iconify/vue";
                                             <br/>
                                             Price: {{ item.info.details.Price }}
                                             <br />
+                                            Quantity Available: {{ item.info.details.QtyAvailable }}
+                                            <br/>
                                             Distance: {{ item.distance }}
                                         </p>
                                     </div>

@@ -10,7 +10,7 @@
 <template>
     <div class="container-fluid"  style = "height: 100%">
         <div class="row">
-        <div class="col-sm-6 px-0">
+        <div class="col-md-6 px-0">
             <img src="../components/images/landingPage/groceries.webp" alt=""  style="object-fit: cover; height:100%;width:100%">
         </div>
         
@@ -93,7 +93,7 @@
                     <hr class="bg-secondary border-2 border-top border-secondary mt-5" />
 
                     <p class="mt-1">
-                        Already have an account? Log in <a href="/logIn" style="display:inline">here</a>
+                        Already have an account? Log in <a @click.prevent="navigate=>{$router.push('/logIn')}" style="display:inline">here</a>
                     </p>
                        
                 </form>
