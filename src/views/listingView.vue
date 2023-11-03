@@ -20,7 +20,7 @@ import { handleError } from "vue";
             <div class="row">
                 <!-- carousel -->
                 <div
-                    class="col-md-6 display-flex align-item-center justify-content-center m-0"
+                    class="col-lg-6 display-flex align-item-center justify-content-center m-0"
                     v-if="listingInfo.ImageUrls.length > 1"
                 >
                     <BCarousel controls indicators imgHeight="600px">
@@ -32,7 +32,7 @@ import { handleError } from "vue";
                     </BCarousel>
                 </div>
                 <div
-                    class="col-md-6 display-flex align-item-center justify-content-center"
+                    class="col-lg-6 display-flex align-item-center justify-content-center"
                     v-else
                 >
                     <img
@@ -42,7 +42,7 @@ import { handleError } from "vue";
                         style="width: 100%; height: 100%; object-fit: cover"
                     />
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <div class="row">
                         <div class="col-8">
                             <h2 class="d-inline">
@@ -289,7 +289,7 @@ import { handleError } from "vue";
                                             }}
                                             <br />
                                             Price:
-                                            {{ listing.info.details.Price }}                                    
+                                            ${{ listing.info.details.Price }}                                    
                                         </p>
                                     </div>
                                 </div>
@@ -532,7 +532,7 @@ export default {
 }
 
 .card-title {
-    height: 45px;
+    height: 60px;
     margin-bottom: 20px;
 }
 
@@ -550,8 +550,8 @@ export default {
 .moreInfo {
     background-color: lightgray;
     padding: 10px;
-    height: 50%;
     border-radius: 8px;
+    height: 100px;
 }
 
 .username {
