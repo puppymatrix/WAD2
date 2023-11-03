@@ -108,8 +108,8 @@ import { auth } from '../firebase/index.js'
                 signInWithEmailAndPassword(auth, this.formData.email, this.formData.password)                
                 .then((userCredential) => {
                     // Handle successful login (e.g., redirect to user profile)
-                    console.log(userCredential)
-                    console.log('login successful')                    
+                    // console.log(userCredential)
+                    // console.log('login successful')                    
 
                     this.$router.push('/')
                     this.$toast.add({
@@ -123,7 +123,7 @@ import { auth } from '../firebase/index.js'
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;    
-                    console.log(errorCode, errorMessage)
+                    // console.log(errorCode, errorMessage)
                     this.errors.logIn = 'Wrong email/password'            
                 });
             },

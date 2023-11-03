@@ -49,7 +49,7 @@ async function getListing(listingId) {
         return docSnap.data();
     } else {
         // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+        // console.log("No such document!");
     }
 }
 
@@ -69,7 +69,7 @@ async function getListingsByCategory(category, listings = null) {
                     details: doc.data(),
                 });
             } else {
-                console.log("No such document!");
+                // console.log("No such document!");
             }
         });
     } else {
@@ -97,7 +97,7 @@ async function getListingsByPrice(maxReturned, highToLow) {
         if (doc.exists()) {
             listings.push(doc.data());
         } else {
-            console.log("No such document!");
+            // console.log("No such document!");
         }
     });
 
@@ -159,7 +159,7 @@ async function addListingNoImage(
         QtyAvailable: qty_available,
         Price: price,
     });
-    console.log("Document written with ID: ", docRef.id);
+    // console.log("Document written with ID: ", docRef.id);
 }
 
 async function deleteListings(category) {
@@ -175,7 +175,7 @@ async function deleteListings(category) {
         return deleteDoc(doc.ref);
     });
     await Promise.all(deletePromises);
-    console.log(counter + " documents deleted");
+    // console.log(counter + " documents deleted");
 }
 
 // User functions
@@ -196,7 +196,7 @@ async function getUser(userId, type = "all") {
         }
     } else {
         // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+        // console.log("No such document!");
     }
 }
 
@@ -349,13 +349,13 @@ async function collectListing(userId, listingId) {
                 }
                 
             } else {
-                console.log("No listingId found in chopes");
+                // console.log("No listingId found in chopes");
             }
         } else {
-            console.log("No chopes");
+            // console.log("No chopes");
         }
     } else {
-        console.log("No such user!");
+        // console.log("No such user!");
     }
 }
 
@@ -398,7 +398,7 @@ async function deleteExpiredChopes() {
                         ) {
                             // Add chopes that should be removed to the chopesToUpdate array
                             chopesToUpdate.push(i);
-                            console.log(chope.listingId + " expired");
+                            // console.log(chope.listingId + " expired");
                         }
                     }
                 }
@@ -410,7 +410,7 @@ async function deleteExpiredChopes() {
                     });
                     batch.update(userRef, user);
                     hasChanges = true;
-                    console.log("Expired chopes removed from user with ID: " + userRef.id);
+                    // console.log("Expired chopes removed from user with ID: " + userRef.id);
                 }
             }
         };
@@ -418,9 +418,9 @@ async function deleteExpiredChopes() {
         // Check if there are chopes to update before committing the batch
         if (hasChanges) {
             await batch.commit();
-            console.log("Expired chopes successfully deleted!");
+            // console.log("Expired chopes successfully deleted!");
         } else {
-            console.log("No chopes to update.");
+            // console.log("No chopes to update.");
         }
     } catch (e) {
         console.error("An error occurred: ", e);
@@ -442,12 +442,12 @@ async function checkUniqueUsername(username){
     //         return false
     //     }
     // })\
-    console.log('size', querySnapshot.size)
+    // console.log('size', querySnapshot.size)
     if (querySnapshot.size > 0){
-        console.log('username exists')
+        // console.log('username exists')
         return Promise.resolve(false);
     }else{
-        console.log('username does not exist')
+        // console.log('username does not exist')
         return Promise.resolve(true);
     }
     
@@ -476,7 +476,7 @@ function filterByDistance(foodArr, filterDistance){
                     }
                 }
 
-                console.log(result)
+                // console.log(result)
                 return result
             }
 
@@ -562,7 +562,7 @@ async function getCoordinates() {
     // this function gets the coordinates
     const url = `https://maps.googleapis.com/maps/api/geocode/json?key=${this.key}&address=${this.searchQuery}`;
 
-    console.log(url)
+    // console.log(url)
 
     axios.get(url)
     .then(
@@ -577,8 +577,8 @@ async function getCoordinates() {
         })
     .catch(
         error => {
-            console.log(error)
-            console.log(error.response.data.error_message)
+            // console.log(error)
+            // console.log(error.response.data.error_message)
 
     })
 }
@@ -598,7 +598,7 @@ async function getUserLocation(){
 
     .catch(
         error => {
-            console.log(error)
+            // console.log(error)
         }
     )
 }

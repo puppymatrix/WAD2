@@ -400,7 +400,7 @@ export default {
             this.usersWhoChoped = this.usersWhoChoped.filter(
                 (chopedUser) => chopedUser.Id !== user.Id
             );
-            console.log(user);
+            // console.log(user);
             await collectListing(user.Id, this.listingId);
         },
         async moveToChoped(user) {
@@ -408,7 +408,7 @@ export default {
             this.usersWhoCollected = this.usersWhoCollected.filter(
                 (collectedUser) => collectedUser.Id !== user.Id
             );
-            console.log(user);
+            // console.log(user);
             await collectListing(user.Id, this.listingId);
         },
         getUserInfo() {
@@ -534,7 +534,6 @@ export default {
 }
 
 .card-title {
-    height: 60px;
     margin-bottom: 20px;
 }
 
