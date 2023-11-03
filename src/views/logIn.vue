@@ -61,7 +61,7 @@
 
                         <!-- <div class="row"> -->
                         <p class="mt-2">
-                            Don't have an account? <a @click.prevent="navigate=>{$router.push('/signUp')}" style="display:inline">Sign Up</a>
+                            Don't have an account? <a @click.prevent="navigate=>{$router.push('/signUp')}" style="display:inline; color: blue; text-decoration: underline; cursor: pointer;">Sign Up</a>
                             <!-- </div> -->
                         </p>
                     </form>
