@@ -175,33 +175,19 @@ export default {
 
                 setDoc(doc(db, "userInformation", user.uid), userData);
                 try {
-                    this.$router.push('/logIn')
+                    this.$router.push('/')
                     console.log("Document inserted successfully")
-                
                 }
 
                 catch (error){
                     console.log(error)
                 }
-                // .then(
-                   
-                // .catch((error) => {
-                //     console.log(error.message)
-                // });
-            // })
-            // .catch((error) => {
-            //     const errorCode = error.code;
-            //     const errorMessage = error.message;
-            //     console.log('Firebase Authentication Error:', errorCode, errorMessage)
             })
             .catch((error) =>{
                 console.log(error)
                 this.errors.email = "Email is already in use"
             })
-        } else{
-            //display errors
-            
-        }
+        } 
    }, 
 
     validateForm(){
@@ -248,19 +234,9 @@ export default {
                     this.errors.username = "Username is taken";
                     isValid = false;
                     
-                } else {
-                    // Handle the case where the username is unique
-                    // For example, clear the username error
-                    
-                }
+                } 
             });
             
-            // {
-            //     console.log('checkusername')
-            //     this.errors.username = "Username is taken"
-            //     isValid = false
-            // }
-
             console.log(this.errors.username)
 
             if (!this.hasSpecialCharacters(this.formData.password)){
@@ -304,15 +280,11 @@ export default {
         // Use the test method to check if the string contains any uppercase letters.
         return regex.test(inputString);
     }
-
         
     },
 };
-
-
-
-
 </script>
+
 <style>
 #pwStatus{
     display: inline
