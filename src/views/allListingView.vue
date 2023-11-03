@@ -125,7 +125,7 @@ import { Icon } from "@iconify/vue";
                                                 item.info.details.Location.name
                                             }}
                                             <br/>
-                                            Price: {{ item.info.details.Price }}
+                                            Price: ${{ item.info.details.Price }}
                                             <br />
                                             Quantity Available: {{ item.info.details.QtyAvailable }}
                                             <br/>
@@ -177,7 +177,7 @@ import { Icon } from "@iconify/vue";
                                                 item.info.details.Location.name
                                             }}
                                             <br/>
-                                            Price: {{ item.info.details.Price }}
+                                            Price: ${{ item.info.details.Price }}
                                             <br />
                                             Quantity Available: {{ item.info.details.QtyAvailable }}
                                             <br/>
@@ -498,7 +498,8 @@ a {
 }
 
 .card-subtitle{
-    height: 45px;
+    height: 55px;
+    margin-bottom: 5px;
 }
 
 .card-text{

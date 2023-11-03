@@ -178,8 +178,7 @@ import { Icon } from "@iconify/vue";
                                 class="infoIcon mb-1"
                             />
                             <p id="moreInfo">
-                                Perishable items have 12h & Non-Perishable items
-                                have 48h "Chope Window"
+                                Please collect Perishable items within 12 hours for optimal freshness!
                             </p>
                         </p>
                         <b-form-select
