@@ -161,23 +161,27 @@ import { handleError } from "vue";
 
                     <div class="row pt-2" v-if="!(owner == currentUserInfo)">
                         <div class="col">
-                            <div class="d-grid">
-                                <button
-                                    v-if="choped"
-                                    class="btn btn-success text-bg-listing btn-lg"
+                            <div class="d-grid row px-1">
+                                <div class="col" v-if="choped">
+                                    <button
+                                    class="btn btn-success text-bg-listing btn-lg w-100"
                                     type="button"
                                     @click="chopeThisListing()"
-                                >
-                                    Chope!
-                                </button>
-                                <button
-                                    v-else
-                                    class="btn btn-success text-bg-listing btn-lg"
+                                    >
+                                        Chope!
+                                    </button>
+                                </div>
+                                <div class="col" v-else>
+                                    <button
+                                    class="btn btn-success text-bg-listing btn-lg w-100"
                                     type="button"
                                     disabled
-                                >
-                                    Chope!
-                                </button>
+                                    >
+                                        Chope!
+                                    </button>
+                                    <p class="msg" v-if="this.qty == 0">There are no available product for this listing</p>
+                                    <p  class="msg" v-else>You have already chope this listing!</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -536,6 +540,13 @@ export default {
 
 .card-subtitle {
     height: 55px;
+}
+
+.msg{
+    margin-bottom: 0;
+    color: red;
+    margin-top: 5px;
+    text-align: center;
 }
 
 .moreInfo {
