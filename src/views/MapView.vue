@@ -4,8 +4,6 @@
     import { mapGetters } from 'vuex'
 
     import { Icon } from '@iconify/vue'
-    import Dropdown from 'primevue/dropdown'
-    import Skeleton from 'primevue/skeleton'
 
     import Searchbar from '../components/SearchBar.vue'
 </script>
@@ -21,12 +19,13 @@
                         <div class="container-fluid">
 
                             <div class="card">
-                            
-                                <BCarousel controls indicators imgHeight="300px" v-if="selected.info.details.ImageUrls.length == 1">
+                                
+                                <img id="carousel" :src="selected.info.details.ImageUrls[0]" alt="" v-if="selected.info.details.ImageUrls.length == 1" style="height: 300px">
+
+                                <BCarousel id="carousel" controls indicators imgHeight="300px" v-else>
                                     <BCarouselSlide v-for="photos in selected.info.details.ImageUrls" :img-src="photos" />
                                 </BCarousel>
-                                <img :src="selected.info.details.ImageUrls[0]" alt="" v-else style="height: 300px">
-
+                               
                                 <div class="card-body">
 
                                     <h5 class="card-title">{{ selected.info.details.ListingName }}</h5>
@@ -64,14 +63,14 @@
                                 </div>
                                 
                                 <div class="card-body py-0">
-                                    <div class="row align-items-center">
+                                    <!-- <div class="row align-items-center"> -->
                                     
                                         <div class="row ">
                                             <p class="card-title ps-0">Transport Mode:</p>
                                         </div>
-
+                                       
                                         <div class="row ps-0">
-                                            <div id="travelGrp">
+                                            <div id="travelGrp" class="p-0">
                                                 <SelectButton v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
                                                 aria-labelledby="basic"
                                                 :pt="{
@@ -82,7 +81,7 @@
                                                 @click.prevent="loadDirections"
                                                 />
                                             </div>
-                                    </div>
+                                    <!-- </div> -->
                                 </div>
                             </div>
                             
@@ -108,7 +107,14 @@
                                 <h6 class = "text-right" style="color: #212529">Filter by: </h6>
                             </div>
                             <div class="col-6">
-                                <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
+                                <Dropdown 
+                                    v-model="filterBy" 
+                                    :options="filterOptions" 
+                                    optionLabel="label" 
+                                    optionValue="value" 
+                                    placeholder="Find food by:" 
+                                    style="width: 100%"
+                                >
                                     <template #option="slotProps">
                                         <div class="p-d-flex p-ai-center">
                                             <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
@@ -178,7 +184,9 @@
                 //primevue variables
                 visible: false,
                 modal: false,
-                travelModeOptions: ['TRANSIT', 'DRIVING', 'WALKING'],
+                travelModeOptions: [
+                                    'TRANSIT', 'DRIVING', 'WALKING'
+                                ],
                 displayDirections: false,
                 filterBy: 'DISTANCE',
                 filterOptions: [
@@ -440,6 +448,21 @@
     #searchTextButton {
     display: none
   }
+}
+
+@media (max-width: 983px){
+    .p-button.p-component {
+        width: 100%;
+        border: 1px solid #ced4da
+    }
+
+    #travelGrp {
+        width: 100%
+    }
+
+    #carousel {
+        max-height: 200px
+    }
 }
 
 
