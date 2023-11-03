@@ -61,9 +61,10 @@
   .marquee-listing-name {
     position: relative;
     color: black;
-    font-size: x-large;
+    font-size: large;
     text-decoration: none;
     font-weight: bold;
+    vertical-align: middle;
   }
 
   .card-body {
