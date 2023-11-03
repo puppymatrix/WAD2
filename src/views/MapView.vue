@@ -5,13 +5,13 @@
 
     import { Icon } from '@iconify/vue'
     import Dropdown from 'primevue/dropdown'
+    import Skeleton from 'primevue/skeleton'
 
     import Searchbar from '../components/SearchBar.vue'
 </script>
 
 <template >
     <div class="container-fluid d-flex justify-content-center">
-        <!-- <div class="row "> -->
             <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
             <div class="col col-sm-9">
                     <!-- sidebar for more info  -->
@@ -22,9 +22,10 @@
 
                             <div class="card">
                             
-                                <BCarousel controls indicators imgHeight="300px">
+                                <BCarousel controls indicators imgHeight="300px" v-if="selected.info.details.ImageUrls.length == 1">
                                     <BCarouselSlide v-for="photos in selected.info.details.ImageUrls" :img-src="photos" />
                                 </BCarousel>
+                                <img :src="selected.info.details.ImageUrls[0]" alt="" v-else style="height: 300px">
 
                                 <div class="card-body">
 
@@ -92,77 +93,67 @@
                             
                         </div>
                     </Sidebar>
-
-                <!-- visible: {{ visible }}, display: {{ displayDirections }}, selected: {{ selected }} -->
-                <div class="row justify-content-center">
-                    <div id="map" style="height:600px" class="col-10"></div>
-                    <!-- {{ sideBarPosition }}  -->
+                    
+                <div class="row justify-content-center" >
+                    <div id="map" style="height:600px" class="col-10">
+                        <Skeleton
+                            height="600px"
+                        ></Skeleton></div>
                 </div>
             
                 <div class="row justify-content-center">
                     <div class="col-10 mt-3">
-                                <div class="row justify-content-center align-items-center" style="background-color: #F6FBF6;">
-                                    <div class="col-2">
-                                        <h6 class = "text-right" style="color: #212529">Filter by: </h6>
-                                    </div>
-                                    <div class="col-6">
-                                        <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
-                                            <template #option="slotProps">
-                                                <div class="p-d-flex p-ai-center">
-                                                    <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
-                                                    {{ slotProps.option.label }}
-                                                </div>
-                                            </template>
-                                        </Dropdown>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
-                                    <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
-                                        <h6 class="m-3">Distance (in KM): </h6>
-                                        <span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
-                                    </div>
-                                    <div class="col-md-5 my-2">
-                                        <div class="container">
-                                            <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
-                                            :pt="{root: {class: 'bg-white'}}"/>
+                        <div class="row justify-content-center align-items-center" style="background-color: #F6FBF6;">
+                            <div class="col-2">
+                                <h6 class = "text-right" style="color: #212529">Filter by: </h6>
+                            </div>
+                            <div class="col-6">
+                                <Dropdown v-model="filterBy" :options="filterOptions" optionLabel="label" optionValue="value" placeholder="Find food by:" style="width: 100%">
+                                    <template #option="slotProps">
+                                        <div class="p-d-flex p-ai-center">
+                                            <Icon :icon="slotProps.option.icon" width="20" height="20" class="p-mr-2" />
+                                            {{ slotProps.option.label }}
                                         </div>
-                                    </div>
-                                    <div class="col-md-2 my-1 d-flex justify-content-center">
-                                        <Button @click.prevent="loadByDistance"
-                                        :pt="{ 
-                                                root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
-                                            }">
-                                            <Icon icon="ic:sharp-my-location" width="20" height="20" />
-                                        </Button>
-                                    </div>
-
+                                    </template>
+                                </Dropdown>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
+                            <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
+                                <h6 class="m-3">Distance (in KM): </h6>
+                                <span class="badge" style="background-color: #419544">{{ filterDistance }}</span>
+                            </div>
+                            <div class="col-md-5 my-2">
+                                <div class="container">
+                                    <Slider type="range" :min=1 :max=50 v-model="filterDistance" 
+                                    :pt="{root: {class: 'bg-white'}}"/>
                                 </div>
-                                <div class="row mt-2" v-else>
-                                    <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
-                                </div>
+                            </div>
+                            <div class="col-md-2 my-1 d-flex justify-content-center">
+                                <Button @click.prevent="loadByDistance"
+                                :pt="{ 
+                                        root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
+                                    }">
+                                    <Icon icon="ic:sharp-my-location" width="20" height="20" />
+                                    <span class="ms-2" id="searchTextButton">Go!</span>
+                                </Button>
+                            </div>
+                        </div>
+                        <div class="row mt-2" v-else>
+                            <SearchBar @search="loadFoodByName" class="m-0 ps-0"/>
+                        </div>
                     </div>
                 </div>
             </div>
-       
     </div> 
 </template>
 
 <script>
-    document.addEventListener('click', function(event) {
-        // Check if the click event's target is not the element you're watching
-        if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
-            this.displayDirections = false
-        } 
-    });
-
     export default {
-
         async created(){
             await this.initMap()
             await this.loadFood()
         },
-
         mounted(){
             if (this.$route.query.Id){
                 this.loadSingleListing()
@@ -172,8 +163,13 @@
                 this.viewportWidth = window.innerWidth;
             });
 
+            document.addEventListener('click', function(event) {
+                // Check if the click event's target is not the element you're watching
+                if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
+                    this.displayDirections = false
+                } 
+            });
         },
-                    
         data(){
             return {
                 viewportWidth: window.innerWidth,
@@ -227,30 +223,28 @@
             }
         },
         props: {
-                'apiKey': String,
-                'foodItemsFilteredArr': Array, 
-                'userLocationObj': Object,
-                'listingArr': Array
+            'apiKey': String,
+            'foodItemsFilteredArr': Array, 
+            'userLocationObj': Object,
+            'listingArr': Array
         },
-        
         computed :{
             ...mapGetters(['currentUserLocation']),
-
         },
         methods: {
             // map functions 
             async initMap(){
-                const DELAY = 20
 
                 this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
 
                 this.loader = new Loader({ 
                     apiKey: this.key,
                     version: "beta",
-                    libraries: ["places", "geometry", "marker", "maps", "routes"],
                 })
                 const map = await this.loader.importLibrary('maps')
+                
                 const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
+
                 const marker = await google.maps.importLibrary('marker')
                 const routes = await google.maps.importLibrary('routes')
 
@@ -286,30 +280,28 @@
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        window.setTimeout(() => {
-                            let newMarker = new marker.Marker({
-                                position: { lat: latitude, lng: longitude},
-                                map: this.map,     
-                                animation: google.maps.Animation.DROP               
-                            })
+                        
+                        let newMarker = new marker.Marker({
+                            position: { lat: latitude, lng: longitude},
+                            map: this.map,     
+                        })
 
-                            newMarker.addListener("click", () => {
+                        newMarker.addListener("click", () => {
 
-                                this.selected = item    
-                                this.visible = true
+                            this.selected = item    
+                            this.visible = true
 
-                                if (this.displayDirections){
-                                    this.displayDirections = false
-                                }
-                                
-                                this.routeRequest.destination = { 
-                                    lat: item.info.details.Location.latitude, 
-                                    lng: item.info.details.Location.longitude
-                                }
-                            });
-                        }, i*DELAY)
+                            if (this.displayDirections){
+                                this.displayDirections = false
+                            }
+                            
+                            this.routeRequest.destination = { 
+                                lat: item.info.details.Location.latitude, 
+                                lng: item.info.details.Location.longitude
+                            }
+                        });
+                        }
                     }
-                }
             },
 
             loadRoute(){
@@ -318,6 +310,7 @@
                     this.directionsService.route(this.routeRequest, (result, status) => {
                         if (status == 'OK') {
                             var sideBar = document.getElementById("sideBar")
+                            this.directionsRenderer.setMap(null)
                             this.directionsRenderer.setMap(this.map);
                             this.directionsRenderer.setDirections(result);
                             sideBar.innerHTML = '';
@@ -443,6 +436,11 @@
   }
 }
 
+@media (max-width: 768px) {
+    #searchTextButton {
+    display: none
+  }
+}
 
 
 

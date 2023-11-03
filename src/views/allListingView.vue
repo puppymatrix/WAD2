@@ -32,23 +32,14 @@ import { Icon } from "@iconify/vue";
                             "
                             raised
                             text
-                            plain
-                        >
+                            plain>
                             <Icon icon="logos:google-maps" width="15" height="15" class="img-fluid"/>
                             <span class="ms-1" id="mapViewButton">Food near me</span>
-                            
                         </Button>
                     </router-link>
                 </div>
             </div>
         </div>
-
-        <!-- listings -->
-        <!-- <h3>
-            {{ filterPrice }}
-            {{ filterCategory }}
-            {{ filterDistance }}
-        </h3> -->
 
         <div class="container-fluid">
             <div class="row filterBar">

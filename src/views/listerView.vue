@@ -24,8 +24,6 @@
                     class="col d-flex align-items-center justify-content-start"
                 >
 
-
-               
                     <router-link :to="{
                                     name: 'mapView',
                                     query: { Id: id },
@@ -98,10 +96,7 @@
                     <div class="row pt-2">
                         <div class="col">
                             <div class="d-grid">
-                                <button
-                                    class="btn btn-success text-bg-listing btn-lg"
-                                    type="button"
-                                >
+                                <button class="btn btn-success text-bg-listing btn-lg">
                                     Chope!
                                 </button>
                             </div>
@@ -226,8 +221,6 @@ export default {
         }
     },
     created(){
-        // console.log(this.$route.query.Id);
-        // this.id = this.$route.query.Id;
         this.getListingInfo();
         this.loadNearbyListings();
         this.loadChopes();
