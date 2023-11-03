@@ -20,13 +20,13 @@
             </div>
         </div>
 
-        <div class="row secondRow py-5 align-items-center">
-            <div class="col  ms-4">
+        <div class="row secondRow py-3 justify-content-center align-items-center">
+            <div class="col ms-4" >
                 <div class="row line"></div>
                 <div class="row"></div>
             </div>
             <div class="col-6">
-                <h2 class="carouselHeader font-weight-light text-center  px-auto mb-0" style="color:#ebf1e7"> Featured: Good Deals Available! </h2>
+                <h2 class="carouselHeader font-weight-light text-center px-auto mb-0" style="color:#558C03"> Featured: Good Deals Available! </h2>
             </div>
             <div class="col me-4">
                 <div class="row line"></div>
@@ -34,6 +34,11 @@
             </div>
 
             <CarouselMarquee/>
+            <div class="row p-0">
+                <div class="col line mb-3 mx-4">
+
+                </div>
+            </div>
         </div>
         
         <!-- About the Company -->
@@ -272,7 +277,7 @@ h1{
 
 
 .line {
-    border-bottom: 2px solid white
+    border-bottom: 2px solid #558C03
 }
 
 </style>
