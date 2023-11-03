@@ -159,11 +159,12 @@
                             </div>
                             <div class="col-md-2 my-1 d-flex justify-content-center">
                                 <Button @click="loadByDistance"
+                                id="goButton"
                                 :pt="{ 
                                         root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
                                     }">
-                                    <Icon icon="ic:sharp-my-location" width="20" height="20" />
-                                    <span class="ms-2" id="searchTextButton">Go!</span>
+                                    <Icon id="searchTextButton" icon="ic:sharp-my-location" width="20" height="20" />
+                                    <span class="ms-2" >Go!</span>
                                 </Button>
                             </div>
                         </div>
@@ -474,9 +475,23 @@
 }
 
 @media (max-width: 768px) {
-    #searchTextButton {
-    display: none
+
+  #goButton {
+    width: 15%;
   }
+
+}
+
+@media (max-width: 576px) {
+
+    #searchTextButton {
+        display: none;
+    }
+
+    #goButton {
+    width: 15%;
+    }
+
 }
 
 @media (max-width: 983px){
