@@ -28,7 +28,7 @@ ul.p-cascadeselect-panel.p-cascadeselect-items.p-cascadeselect-sublist {
     margin-bottom: 0;
 }
 
-ul#pv_id_1_list.p-dropdown-items, ul#pv_id_2_list.p-dropdown-items, ul#pv_id_3_list.p-dropdown-items{
+ul.p-dropdown-items {
     padding-left: 0;
     margin-bottom: 0;
 }

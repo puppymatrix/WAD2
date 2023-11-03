@@ -304,7 +304,7 @@ export default {
     }
   },
   mounted(){
-    this.scrollWords()
+    this.scrollWords();
     },
   methods:{
     navigate(){
