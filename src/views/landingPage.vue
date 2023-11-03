@@ -8,7 +8,7 @@
     <div class="container-fluid bod">
         <div class="row">
             <!-- Header Design -->
-            <div class="col px-0 firstRow">
+            <div class="col p-0 firstRow">
                 <video id="homeImage" src="../components/images/landingPage/homePage.mp4" autoplay muted loop></video>
                 <div id="searchText">
                     <h1 class="welcome">Reduce food waste today with FoodCatch! </h1><br>
