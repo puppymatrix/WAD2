@@ -151,6 +151,8 @@ import ScrollTop from "primevue/scrolltop";
                                             <br/>
                                             Lister: {{ item.owner }}
                                             <br/>
+                                            Quantity Available: {{ item.QtyAvailable }}
+                                            <br/>
                                             Location: {{item.Location.name}}
                                         </h6>
                                     </div>
@@ -194,6 +196,8 @@ import ScrollTop from "primevue/scrolltop";
                                             {{ item.Category }} 
                                             <br/>
                                             Lister: {{ item.owner }}
+                                            <br/>
+                                            Quantity Available: {{ item.QtyAvailable }}
                                             <br/>
                                             Location: {{item.Location.name}}
                                         </h6>
