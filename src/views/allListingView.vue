@@ -311,6 +311,7 @@ export default {
     methods: {
         updatePage(event) {
             this.page = event.page;
+            window.scrollTo(0, 0);
         },
         async loadListings() {
             const listings = await getAllListings();
