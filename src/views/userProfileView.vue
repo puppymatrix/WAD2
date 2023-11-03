@@ -315,65 +315,6 @@ import ScrollTop from "primevue/scrolltop";
     </div>
 </template>
 
-<style>
-#pwStatus {
-    display: inline;
-}
-.sideNav {
-    background-color: #a1bf73;
-    padding: 5%;
-    border-radius: 5%;
-    margin-top: 22%;
-    text-align: center;
-}
-.sideNav a {
-    display: block;
-    font-weight: bold;
-}
-.sideNav a:hover {
-    color: #f2f2f2;
-}
-
-/* back to top button */
-#linkTop {
-    bottom: 20px; /* Place the button at the bottom of the page */
-    right: 30px;
-    position: fixed;
-    background-color: #a1bf73;
-    color: black;
-    padding: 1%;
-    border-radius: 50%;
-}
-
-#linkTop:hover {
-    background-color: green;
-    color: white;
-}
-
-.listingName {
-    color: #558c03;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.card-title{
-    padding: 8px 0;
-    margin-bottom: 10px;
-}
-
-.card-text {
-    background-color: lightgrey;
-    border-radius: 5px;
-    padding: 10px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-}
-
-.email {
-    padding: 12px;
-}
-</style>
 
 <script>
 import { mapGetters } from "vuex";
@@ -511,6 +452,65 @@ export default {
 </script>
 
 <style scoped>
+
+#pwStatus {
+    display: inline;
+}
+.sideNav {
+    background-color: #a1bf73;
+    padding: 5%;
+    border-radius: 5%;
+    margin-top: 22%;
+    text-align: center;
+}
+.sideNav a {
+    display: block;
+    font-weight: bold;
+}
+.sideNav a:hover {
+    color: #f2f2f2;
+}
+
+/* back to top button */
+#linkTop {
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px;
+    position: fixed;
+    background-color: #a1bf73;
+    color: black;
+    padding: 1%;
+    border-radius: 50%;
+}
+
+#linkTop:hover {
+    background-color: green;
+    color: white;
+}
+
+.listingName {
+    color: #558c03;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.card-title{
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    background-color: #F5F5F5;
+    border-radius: 5px;
+    padding: 10px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.email {
+    padding: 12px;
+}
+
 .overflow-text {
   overflow: hidden;
   text-overflow: ellipsis;

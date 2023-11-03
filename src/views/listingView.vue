@@ -258,21 +258,21 @@ import { handleError } from "vue";
                                     query: { Id: listing.info.Id },
                                 }"
                             >
-                                <div class="card h-100">
+                                <div class="card h-100 listing-card">
                                     <img
                                         :src="listing.info.details.ImageUrls[0]"
                                         alt=""
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
-                                        <h5 class="card-title">
+                                        <h5 class="card-title overflow-text">
                                             Listing Name: <br />
                                             <span class="listingName">{{
                                                 listing.info.details.ListingName
                                             }}</span>
                                         </h5>
                                         <h6
-                                            class="card-subtitle mb-2 text-body-secondary"
+                                            class="card-subtitle mb-2 text-body-secondary overflow-text"
                                         >
                                             Category:
                                             {{ listing.info.details.Category }}
@@ -280,7 +280,7 @@ import { handleError } from "vue";
                                             Lister: {{ listing.owner }}
                                         </h6>
                                         <p
-                                            class="card-text moreInfo d-flex align-items-center mb-3"
+                                            class="card-text d-flex align-items-center mb-3"
                                         >
                                             Location:
                                             {{
@@ -533,12 +533,33 @@ export default {
     font-size: 22px;
 }
 
-.card-title {
-    margin-bottom: 20px;
+.listing-card:hover{
+    box-shadow: 5px 5px 5px lightgray;
+    transform: scale(1.02);
+    transition: all 0.3s ease-in-out;
 }
 
-.card-subtitle {
-    height: 55px;
+.card-title{
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+.card-subtitle{
+    margin-bottom: 5px;
+}
+
+.card-text{
+    background-color: #F5F5F5;
+    padding: 10px;
+    height: 45%;
+    border-radius: 8px;
+}
+
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
 }
 
 .msg{

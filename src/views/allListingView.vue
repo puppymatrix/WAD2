@@ -452,11 +452,6 @@ export default {
     transform: scale(1.02);
     transition: all 0.3s ease-in-out;
 }
-.card-img-top {
-    width: 100%;
-    height: 25vw;
-    object-fit: cover;
-}
 
 a {
     text-decoration: none;
@@ -468,18 +463,6 @@ a {
     border-radius: 5px;
 }
 
-.overflow-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color:#558C03;
-}
-
-.card-img-top {
-    width: 100%;
-    height: 25vw;
-    object-fit: cover;
-}
 
 .addList {
     position: fixed;
@@ -498,6 +481,12 @@ a {
     font-size: 22px;
 }
 
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
+
 .card-title{
     padding: 8px 0;
     margin-bottom: 10px;
@@ -508,10 +497,17 @@ a {
 }
 
 .card-text{
-    background-color: lightgray;
+    background-color: #F5F5F5;
     padding: 10px;
     height: 55%;
     border-radius: 8px;
+}
+
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
 }
 
 @media screen and (max-width: 992px) {
