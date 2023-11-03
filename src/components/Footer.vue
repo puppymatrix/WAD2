@@ -83,6 +83,7 @@ import { mapGetters } from "vuex";
     }
     .nav-link:hover{
         color: #bee5b0;
+        cursor: pointer;
 
     }
     .footer {
