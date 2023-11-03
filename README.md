@@ -12,13 +12,13 @@ Git Public Repository: https://github.com/puppymatrix/WAD2.git
 First, clone the repository:
 
 ```sh
-git clone https://github.com/yourusername/your-repo-name.git
+git clone https://github.com/puppymatrix/WAD2.git
 ```
 
 ## Then, navigate into the project directory: 
 
 ```sh 
-cd your-repo-name
+cd WAD2
 ```
 
 ## Install the dependencies by running
