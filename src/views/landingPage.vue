@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row secondRow py-5 align-items-center">
             <div class="col  ms-4">
                 <div class="row line"></div>
@@ -95,7 +96,7 @@
 
         <!--Key Partner-->
         <div id="partners" class="row sponsors" >
-            <h3 class="text-center m-0 " style="color:#ebf1e7">Our Partners</h3>
+            <h3 class="text-center m-0 ">Our Partners</h3>
             <!-- <div style="border-top: 1px solid #0b2b26;"></div> -->
             <div class=" col-sm-3 partnerCol p-4">
                 <a href="https://www.fairprice.com.sg/">
@@ -203,9 +204,8 @@ h1{
 
 
 .secondRow{
-    background-color: #b08430;
+    background-color: #fffdd0;
     /* height: 500px */
-    
 }
 
 .carouselHeader{
@@ -239,11 +239,11 @@ h1{
     filter: blur(5px);
 }
 
-.show{
+/* .show{
     opacity: 0.8;
     transform: translateX(0px);
     filter: blur(0px);
-}
+} */
 
 .statsHeader{
     color:  #0b2b26;
@@ -258,7 +258,7 @@ h1{
 }
 
 .sponsors{
-    background-color: #b08430;
+    background-color: #fffdd0;
     padding: 20px;
 
 }
@@ -270,17 +270,16 @@ h1{
     max-width: 70%;
 }
 
+
 .line {
     border-bottom: 2px solid white
 }
-
 
 </style>
 
 
 
 <script >
-
 // vue part
 export default {
   data() {
@@ -288,7 +287,6 @@ export default {
       searchInput: '',
       dataObj: {}, //this is data returned from database
       
-
       // typing effect
       typeValue: '',
       typeStatus: false,
@@ -366,7 +364,7 @@ export default {
 }
 
 
-
+//carousel part
 let items = document.querySelectorAll('.carousel .carousel-item')
 
 items.forEach((el) => {
@@ -382,8 +380,6 @@ items.forEach((el) => {
         next = next.nextElementSibling
     }
 })
-
-
 </script>
 
 

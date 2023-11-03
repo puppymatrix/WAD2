@@ -135,6 +135,7 @@ export default {
         checkLogIn(){
             if(!this.isAuthenticated){
                 this.$router.push('/logIn')
+                window.scrollTo(0, 0);
         }else{
             this.$toast.add({
                 severity: "info",
@@ -145,6 +146,7 @@ export default {
         checkSignUp(){
             if(!this.isAuthenticated){
                 this.$router.push('/signUp')
+                window.scrollTo(0, 0);
             }else{
                 this.$toast.add({
                     severity: "info",
@@ -156,6 +158,7 @@ export default {
         cannotProfile(){
             if(this.isAuthenticated){
                 this.$router.push('/profile')
+                window.scrollTo(0, 0);
             }else{
                 this.$toast.add({
                     severity: "info",
