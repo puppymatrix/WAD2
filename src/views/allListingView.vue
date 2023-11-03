@@ -157,12 +157,12 @@ import { Icon } from "@iconify/vue";
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
-                                        <h5 class="card-title">
+                                        <h5 class="card-title overflow-text">
                                             Listing Name: <br/>
-                                            <span class="listingName">{{ item.info.details.ListingName }}</span>
+                                            <span class="listingName pb-2">{{ item.info.details.ListingName }}</span>
                                         </h5>
                                         <h6
-                                            class="card-subtitle mb-2 text-body-secondary"
+                                            class="card-subtitle mb-2 text-body-secondary overflow-text"
                                         >
                                             Category:
                                             {{ item.info.details.Category }} 
@@ -355,10 +355,12 @@ export default {
             if (searchVal == "") {
                 this.foodItemsFiltered = this.foodItems;
             }
-            if (this.selectedFilter) {
+            if (this.selectedFilter !== null) {
                 await this.filterBySelected();
+                this.foodItemsFiltered = filterByName(this.foodItemsFiltered, searchVal);
+            } else {
+                this.foodItemsFiltered = filterByName(this.foodItems, searchVal);
             }
-            this.foodItemsFiltered = filterByName(this.foodItems, searchVal);
         },
         async filterBySelected() {
             this.foodItemsFiltered = [];
@@ -466,6 +468,13 @@ a {
     border-radius: 5px;
 }
 
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
+}
+
 .card-img-top {
     width: 100%;
     height: 25vw;
@@ -490,12 +499,11 @@ a {
 }
 
 .card-title{
-    height: 45px;
-    margin-bottom: 20px;
+    padding: 8px 0;
+    margin-bottom: 10px;
 }
 
 .card-subtitle{
-    height: 55px;
     margin-bottom: 5px;
 }
 

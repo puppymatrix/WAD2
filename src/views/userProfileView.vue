@@ -1,5 +1,10 @@
 <script setup>
-import { getUser, getListing, updateUser,getAllUsernames } from "../firebase/api.js";
+import {
+    getUser,
+    getListing,
+    updateUser,
+    getAllUsernames,
+} from "../firebase/api.js";
 import ScrollTop from "primevue/scrolltop";
 </script>
 
@@ -90,7 +95,7 @@ import ScrollTop from "primevue/scrolltop";
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-2">
                                 <div class="col email">
                                     <div class="form-group">
@@ -123,7 +128,11 @@ import ScrollTop from "primevue/scrolltop";
                 </div>
                 <!-- userListings div -->
                 <div class="row" id="userListings">
-                    <h1>My Listings</h1>
+                    <div class="row">
+                        <div class="col">
+                            <h1>My Listings</h1>
+                        </div>
+                    </div>
                     <!-- this is a for loop for each listing item -->
                     <div class="col" v-if="loading">
                         <div class="row">
@@ -140,44 +149,54 @@ import ScrollTop from "primevue/scrolltop";
                             </div>
                         </div>
                     </div>
-                    <div class="col" v-if="paginatedListingItems.length > 0 && !loading">
+                    <div
+                        class="col"
+                        v-if="paginatedListingItems.length > 0 && !loading"
+                    >
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedListingItems">
+                            <div
+                                class="col-md-6 col-sm-12 my-2"
+                                v-for="item in paginatedListingItems"
+                            >
                                 <router-link
-                                        :to="{
-                                            name: 'listing',
-                                            query: { Id: item.Id },
-                                        }"
-                                    >
+                                    :to="{
+                                        name: 'listing',
+                                        query: { Id: item.Id },
+                                    }"
+                                >
                                     <div class="card h-100">
-                                            <img
-                                                :src="item.ImageUrls[0]"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top">
-                                                <h5 class="card-title">
-                                                    Listing Name: <br/>
-                                                    <span class="listingName">{{ item.ListingName }}</span>
-                                                </h5>
-                                                <h6
-                                                    class="card-subtitle mb-2 text-body-secondary"
-                                                >
-                                                    Category:
-                                                    {{ item.Category }} 
-                                                    <br/>
-                                                    Lister: {{ item.owner }}
-                                                </h6>
-                                                <p
-                                                    class="card-text d-flex align-items-center mb-3"
-                                                > 
-                                                    Quantity Available: {{ item.QtyAvailable }}
-                                                    <br/>
-                                                    Location: {{item.Location.name}}
-                                                </p>
-                                            </div>
+                                        <img
+                                            :src="item.ImageUrls[0]"
+                                            alt=""
+                                            class="card-img-top"
+                                        />
+                                        <div class="card-body border-top">
+                                            <h5 class="card-title overflow-text">
+                                                Listing Name: <br />
+                                                <span class="listingName">{{
+                                                    item.ListingName
+                                                }}</span>
+                                            </h5>
+                                            <h6
+                                                class="card-subtitle mb-2 text-body-secondary overflow-text"
+                                            >
+                                                Category:
+                                                {{ item.Category }}
+                                                <br />
+                                                Lister: {{ item.owner }}
+                                            </h6>
+                                            <p
+                                                class="card-text d-flex align-items-center mb-3"
+                                            >
+                                                Quantity Available:
+                                                {{ item.QtyAvailable }}
+                                                <br />
+                                                Location:
+                                                {{ item.Location.name }}
+                                            </p>
                                         </div>
-                                    </router-link>
+                                    </div>
+                                </router-link>
                             </div>
                             <Paginator
                                 :rows="listingRows"
@@ -188,13 +207,23 @@ import ScrollTop from "primevue/scrolltop";
                             ></Paginator>
                         </div>
                     </div>
-                    <div class="col" v-else-if="!loading && paginatedListingItems.length == 0">
+                    <div
+                        class="col"
+                        v-else-if="
+                            !loading && paginatedListingItems.length == 0
+                        "
+                    >
                         <h3>You have not posted any listings yet!</h3>
                     </div>
                 </div>
                 <!-- chopedListings div -->
                 <div class="row" id="chopedListings">
-                    <h1>My Chopes</h1>
+                    <div class="row">
+                        <div class="col">
+                            <h1>My Chopes</h1>
+                        </div>
+                    </div>
+                    
                     <!-- listings -->
                     <div class="col" v-if="loading">
                         <div class="row">
@@ -211,44 +240,54 @@ import ScrollTop from "primevue/scrolltop";
                             </div>
                         </div>
                     </div>
-                    <div class="col" v-if="paginatedChopeItems.length > 0 && !loading">
+                    <div
+                        class="col"
+                        v-if="paginatedChopeItems.length > 0 && !loading"
+                    >
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedChopeItems">
+                            <div
+                                class="col-md-6 col-sm-12 my-2"
+                                v-for="item in paginatedChopeItems"
+                            >
                                 <router-link
-                                        :to="{
-                                            name: 'listing',
-                                            query: { Id: item.Id },
-                                        }"
-                                    >
+                                    :to="{
+                                        name: 'listing',
+                                        query: { Id: item.Id },
+                                    }"
+                                >
                                     <div class="card h-100">
-                                            <img
-                                                :src="item.ImageUrls[0]"
-                                                alt=""
-                                                class="card-img-top"
-                                            />
-                                            <div class="card-body border-top">
-                                                <h5 class="card-title">
-                                                    Listing Name: <br/>
-                                                    <span class="listingName">{{ item.ListingName }}</span>
-                                                </h5>
-                                                <h6
-                                                    class="card-subtitle mb-2 text-body-secondary"
-                                                >
-                                                    Category:
-                                                    {{ item.Category }} 
-                                                    <br/>
-                                                    Lister: {{ item.owner }}
-                                                </h6>
-                                                <p
-                                                    class="card-text d-flex align-items-center mb-3"
-                                                > 
-                                                    Quantity Available: {{ item.QtyAvailable }}
-                                                    <br/>
-                                                    Location: {{item.Location.name}}
-                                                </p>
-                                            </div>
+                                        <img
+                                            :src="item.ImageUrls[0]"
+                                            alt=""
+                                            class="card-img-top"
+                                        />
+                                        <div class="card-body border-top">
+                                            <h5 class="card-title">
+                                                Listing Name: <br />
+                                                <span class="listingName">{{
+                                                    item.ListingName
+                                                }}</span>
+                                            </h5>
+                                            <h6
+                                                class="card-subtitle mb-2 text-body-secondary"
+                                            >
+                                                Category:
+                                                {{ item.Category }}
+                                                <br />
+                                                Lister: {{ item.owner }}
+                                            </h6>
+                                            <p
+                                                class="card-text d-flex align-items-center mb-3"
+                                            >
+                                                Quantity Available:
+                                                {{ item.QtyAvailable }}
+                                                <br />
+                                                Location:
+                                                {{ item.Location.name }}
+                                            </p>
                                         </div>
-                                    </router-link>
+                                    </div>
+                                </router-link>
                             </div>
                             <Paginator
                                 :rows="listingRows"
@@ -259,7 +298,10 @@ import ScrollTop from "primevue/scrolltop";
                             ></Paginator>
                         </div>
                     </div>
-                    <div class="col" v-else-if="!loading && paginatedChopeItems.length == 0">
+                    <div
+                        class="col"
+                        v-else-if="!loading && paginatedChopeItems.length == 0"
+                    >
                         <h3>You have not choped any listings yet!</h3>
                     </div>
                 </div>
@@ -308,18 +350,18 @@ import ScrollTop from "primevue/scrolltop";
     color: white;
 }
 
-.listingName{
-    color: #558C03;
+.listingName {
+    color: #558c03;
     font-weight: bold;
     font-size: 22px;
 }
 
 .card-title{
-    height: 45px;
-    margin-bottom: 20px;
+    padding: 8px 0;
+    margin-bottom: 10px;
 }
 
-.card-text{
+.card-text {
     background-color: lightgrey;
     border-radius: 5px;
     padding: 10px;
@@ -328,10 +370,9 @@ import ScrollTop from "primevue/scrolltop";
     align-items: center;
 }
 
-.email{
+.email {
     padding: 12px;
 }
-
 </style>
 
 <script>
@@ -403,39 +444,45 @@ export default {
 
             //this part processes the data for listings posted by the user
             this.myListingIDs = userData.myListings;
-            for (let listingID of this.myListingIDs) {
-                const listingData = await getListing(listingID);
-                if (!listingData) {
-                    continue;
+            if (this.myListingIDs !== undefined) {
+                for (let listingID of this.myListingIDs) {
+                    const listingData = await getListing(listingID);
+                    if (!listingData) {
+                        continue;
+                    }
+                    const owner = users[listingData.Owner];
+                    listingData["Id"] = listingID;
+                    listingData["owner"] = owner;
+                    this.myListings.push(listingData);
                 }
-                const owner = users[listingData.Owner];
-                listingData["Id"] = listingID;
-                listingData["owner"] = owner;
-                this.myListings.push(listingData);
+                this.listingListLength = this.myListings.length;
             }
-            this.listingListLength = this.myListings.length;
+
             // console.log(this.myListings)
-            
 
             //this part processes the data for listings choped by the user
             this.myChopeObjs = userData.chopes; //this is array of objects
-            for (let num in this.myChopeObjs) {
-                this.myChopeIDs.push(this.myChopeObjs[num].listingId); //adds all listing IDs into list
+            if (this.myChopeObjs !== undefined) {
+                for (let num in this.myChopeObjs) {
+                    this.myChopeIDs.push(this.myChopeObjs[num].listingId); //adds all listing IDs into list
+                }
             }
 
-            for (let chopeID of this.myChopeIDs) {
-                const chopeData = await getListing(chopeID);
-                if (!chopeData) {
-                    continue;
+            if (this.myChopeIDs.length > 0) {
+                for (let chopeID of this.myChopeIDs) {
+                    const chopeData = await getListing(chopeID);
+                    if (!chopeData) {
+                        continue;
+                    }
+                    const owner = users[chopeData.Owner];
+                    chopeData["Id"] = chopeID;
+                    chopeData["owner"] = owner;
+                    this.myChopes.push(chopeData);
                 }
-                const owner = users[chopeData.Owner];
-                chopeData["Id"] = chopeID;
-                chopeData["owner"] = owner;
-                this.myChopes.push(chopeData);
+                this.chopeListLength = this.myChopes.length;
             }
-            this.chopeListLength = this.myChopes.length;
+
             this.loading = false;
-            
         },
         updateInfo() {
             //update firebase
@@ -464,6 +511,12 @@ export default {
 </script>
 
 <style scoped>
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
+}
 .text-bg-listing {
     background-color: rgb(67, 160, 70, 1);
     color: white;
@@ -484,7 +537,4 @@ a {
     height: 25vw;
     object-fit: cover;
 }
-
-
-
 </style>
