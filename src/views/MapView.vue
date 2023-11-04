@@ -304,6 +304,14 @@
                 })
                 this.map = unloadedMap
 
+                // if (this.routeReq)
+                console.log(this.routeRequest.destination)
+                if (this.routeRequest.destination != null){
+                    this.map.setCenter(this.routeRequest.destination)
+                }
+
+                this.map.setZoom(this.zoom)
+
                 if (this.foodItemsFiltered.length > 0){
                     for(let i=0;i<this.foodItemsFiltered.length; i++){
 
