@@ -313,6 +313,10 @@
 
                 this.map.setZoom(this.zoom)
 
+                this.map.addListener('zoom_changed', () => {
+                    this.zoom = this.map.getZoom()
+                })
+
                 if (this.foodItemsFiltered.length > 0){
                     for(let i=0;i<this.foodItemsFiltered.length; i++){
 
