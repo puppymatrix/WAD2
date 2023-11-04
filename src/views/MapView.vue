@@ -190,7 +190,8 @@
         data(){
             return {
                 viewportWidth: window.innerWidth,
-                sideBarPosition: 'left',
+                // sideBarPosition: 'left',
+                // sideBarPosition: { this.viewportWidth < 768 ? 'bottom' : 'left'},
 
                 //primevue variables
                 visible: false,
@@ -250,7 +251,15 @@
         },
         computed :{
             ...mapGetters(['currentUserLocation']),
+            sideBarPosition(){
+                if (this.viewportWidth < 768){
+                    return 'bottom'
+                } else {
+                    return 'left'
+                }
+            },
         },
+        
         methods: {
             // map functions 
             async initMap(){
@@ -412,15 +421,15 @@
                     this.initMap()
                 }
             },
-            viewportWidth:{
-                handler(){
-                    if (this.viewportWidth < 768){
-                        this.sideBarPosition = 'bottom'
-                    } else {
-                        this.sideBarPosition = 'left'
-                    }
-                }
-            }
+            // viewportWidth:{
+            //     handler(){
+            //         if (this.viewportWidth < 768){
+            //             this.sideBarPosition = 'bottom'
+            //         } else {
+            //             this.sideBarPosition = 'left'
+            //         }
+            //     }
+            // }
         }
     }
 
