@@ -321,7 +321,11 @@
                 })
 
                 this.map = unloadedMap
-                unloadedMap.setCenter(this.routeRequest.destination)
+                // if (this.routeReq)
+                console.log(this.routeRequest.destination)
+                if (this.routeRequest.destination != null){
+                    this.map.setCenter(this.routeRequest.destination)
+                }
 
                 this.map.setZoom(this.zoom)
 
