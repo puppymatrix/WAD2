@@ -145,7 +145,6 @@
                                 </Dropdown>
                             </div>
                         </div>
-                        visible: {{ visible }} directions: {{ displayDirections }}
                         <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
                             <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
                                 <h6 class="m-3">Distance (in KM): </h6>
@@ -191,16 +190,6 @@
             window.addEventListener('resize', () => {
                 this.viewportWidth = window.innerWidth;
             });
-
-            // document.addEventListener('click', function(event) {
-            //     // Check if the click event's target is not the element you're watching
-            //     console.log(event.target)
-            //     if (event.target != document.getElementsByTagName('Sidebar')[0]) {
-            //         if (event.target != document.getElementById('map')){
-            //             this.displayDirections = false
-            //         }
-            //     } 
-            // });
         },
         data(){
             return {
