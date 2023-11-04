@@ -157,12 +157,12 @@ import { Icon } from "@iconify/vue";
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
-                                        <h5 class="card-title">
+                                        <h5 class="card-title overflow-text">
                                             Listing Name: <br/>
-                                            <span class="listingName">{{ item.info.details.ListingName }}</span>
+                                            <span class="listingName pb-2">{{ item.info.details.ListingName }}</span>
                                         </h5>
                                         <h6
-                                            class="card-subtitle mb-2 text-body-secondary"
+                                            class="card-subtitle mb-2 text-body-secondary overflow-text"
                                         >
                                             Category:
                                             {{ item.info.details.Category }} 
@@ -311,6 +311,7 @@ export default {
     methods: {
         updatePage(event) {
             this.page = event.page;
+            window.scrollTo(0, 0);
         },
         async loadListings() {
             const listings = await getAllListings();
@@ -355,10 +356,12 @@ export default {
             if (searchVal == "") {
                 this.foodItemsFiltered = this.foodItems;
             }
-            if (this.selectedFilter) {
+            if (this.selectedFilter !== null) {
                 await this.filterBySelected();
+                this.foodItemsFiltered = filterByName(this.foodItemsFiltered, searchVal);
+            } else {
+                this.foodItemsFiltered = filterByName(this.foodItems, searchVal);
             }
-            this.foodItemsFiltered = filterByName(this.foodItems, searchVal);
         },
         async filterBySelected() {
             this.foodItemsFiltered = [];
@@ -450,11 +453,6 @@ export default {
     transform: scale(1.02);
     transition: all 0.3s ease-in-out;
 }
-.card-img-top {
-    width: 100%;
-    height: 25vw;
-    object-fit: cover;
-}
 
 a {
     text-decoration: none;
@@ -466,11 +464,6 @@ a {
     border-radius: 5px;
 }
 
-.card-img-top {
-    width: 100%;
-    height: 25vw;
-    object-fit: cover;
-}
 
 .addList {
     position: fixed;
@@ -489,21 +482,33 @@ a {
     font-size: 22px;
 }
 
+.card-img-top {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
+}
+
 .card-title{
-    height: 45px;
-    margin-bottom: 20px;
+    padding: 8px 0;
+    margin-bottom: 10px;
 }
 
 .card-subtitle{
-    height: 55px;
     margin-bottom: 5px;
 }
 
 .card-text{
-    background-color: lightgray;
+    background-color: #F5F5F5;
     padding: 10px;
     height: 55%;
     border-radius: 8px;
+}
+
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
 }
 
 @media screen and (max-width: 992px) {

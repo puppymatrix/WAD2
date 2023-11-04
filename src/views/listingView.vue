@@ -101,7 +101,7 @@ import { handleError } from "vue";
                                 <div class="card-body">
                                     <h5 class="card-title">Food Description</h5>
                                     <p
-                                        class="card-text"
+                                        style="font-size: 16px;"
                                         v-if="
                                             listingInfo.hasOwnProperty(
                                                 'Description'
@@ -110,7 +110,7 @@ import { handleError } from "vue";
                                     >
                                         {{ listingInfo.Description }}
                                     </p>
-                                    <p class="card-text" v-else>
+                                    <p  v-else>
                                         Not Applicable
                                     </p>
                                 </div>
@@ -213,6 +213,9 @@ import { handleError } from "vue";
                                 width="30"
                         /></Button>
                     </div>
+                    <div v-if="usersWhoChoped.length == 0" class="userInfo d-flex justify-content-center align-items-center">
+                        <p class="mb-0" style="font-size:18px">No users who choped and yet to collect!</p>
+                    </div>
                 </div>
 
                 <div class="col-md-1"></div>
@@ -236,6 +239,9 @@ import { handleError } from "vue";
                             ><Icon icon="akar-icons:cross"
                         /></Button>
                     </div>
+                    <div v-if="usersWhoCollected.length == 0" class="userInfo d-flex justify-content-center align-items-center">
+                        <p class="mb-0" style="font-size:18px">No users have collected yet!</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -258,21 +264,21 @@ import { handleError } from "vue";
                                     query: { Id: listing.info.Id },
                                 }"
                             >
-                                <div class="card h-100">
+                                <div class="card h-100 listing-card">
                                     <img
                                         :src="listing.info.details.ImageUrls[0]"
                                         alt=""
                                         class="card-img-top"
                                     />
                                     <div class="card-body border-top">
-                                        <h5 class="card-title">
+                                        <h5 class="card-title overflow-text">
                                             Listing Name: <br />
                                             <span class="listingName">{{
                                                 listing.info.details.ListingName
                                             }}</span>
                                         </h5>
                                         <h6
-                                            class="card-subtitle mb-2 text-body-secondary"
+                                            class="card-subtitle mb-2 text-body-secondary overflow-text"
                                         >
                                             Category:
                                             {{ listing.info.details.Category }}
@@ -280,7 +286,7 @@ import { handleError } from "vue";
                                             Lister: {{ listing.owner }}
                                         </h6>
                                         <p
-                                            class="card-text moreInfo d-flex align-items-center mb-3"
+                                            class="card-text d-flex align-items-center mb-3"
                                         >
                                             Location:
                                             {{
@@ -359,6 +365,13 @@ import { handleError } from "vue";
 <script>
 import { mapGetters } from "vuex";
 export default {
+    mounted() {
+        this.$nextTick(() => {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 150);
+        });
+    },
     data() {
         return {
             similarListing: [],
@@ -377,7 +390,6 @@ export default {
         };
     },
     async created() {
-        window.scrollTo(0, 0);
         this.listingId = this.$route.query.Id;
         await this.getListingInfo();
         await this.loadNearbyListings();
@@ -400,7 +412,7 @@ export default {
             this.usersWhoChoped = this.usersWhoChoped.filter(
                 (chopedUser) => chopedUser.Id !== user.Id
             );
-            console.log(user);
+            // console.log(user);
             await collectListing(user.Id, this.listingId);
         },
         async moveToChoped(user) {
@@ -408,7 +420,7 @@ export default {
             this.usersWhoCollected = this.usersWhoCollected.filter(
                 (collectedUser) => collectedUser.Id !== user.Id
             );
-            console.log(user);
+            // console.log(user);
             await collectListing(user.Id, this.listingId);
         },
         getUserInfo() {
@@ -533,13 +545,33 @@ export default {
     font-size: 22px;
 }
 
-.card-title {
-    height: 60px;
-    margin-bottom: 20px;
+.listing-card:hover{
+    box-shadow: 5px 5px 5px lightgray;
+    transform: scale(1.02);
+    transition: all 0.3s ease-in-out;
 }
 
-.card-subtitle {
-    height: 55px;
+.card-title{
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+.card-subtitle{
+    margin-bottom: 5px;
+}
+
+.card-text{
+    background-color: #F5F5F5;
+    padding: 10px;
+    height: 45%;
+    border-radius: 8px;
+}
+
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:#558C03;
 }
 
 .msg{
@@ -562,9 +594,7 @@ export default {
     color: #558c03;
 }
 
-.userInfo {
-    padding: 10px;
-}
+
 
 .filterBar {
     background-color: #f6fbf6;
@@ -600,7 +630,7 @@ export default {
     justify-content: center;
     display: flex;
     font-size: 20px;
-    height: auto;
+    height: 80px;
 }
 
 input[type="checkbox"] {

@@ -1,40 +1,41 @@
-# wad2_project
+# WAD2_G4T10_Project
 
-This template should help get you started developing with Vue 3 in Vite.
+Welcome to FoodCatch! Follow the instructions below to get the website running locally on your computer.
 
-## Recommended IDE Setup
+Welcome to FoodCatch! 
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Vercel App in cloud deployment: https://wad-2.vercel.app/
+Git Public Repository: https://github.com/puppymatrix/WAD2.git
 
-## Customize configuration
+## Getting Started
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+First, clone the repository:
 
-## Project Setup
-cd into frontend folder / backend folder. Run npm install in both folders.
+```sh
+git clone https://github.com/puppymatrix/WAD2.git
+```
+
+## Then, navigate into the project directory: 
+
+```sh 
+cd WAD2
+```
+
+## Install the dependencies by running
 
 ```sh
 npm install
 ```
 
-## For frontend:
-To use bootstrap together with Vue, there are some compatibility issues. Use this link: https://bootstrap-vue-next.github.io/bootstrap-vue-next/docs/ for Bootstrap w vue.
-### Compile and Hot-Reload for Development
+## To start the development server
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+## To start the production server
 
 ```sh
 npm run build
 ```
 
-## For backend:
-We can just ignore this file for now and not do anything in it. Frontend folder should work as expected.
-### To start backend server
-
-```sh
-npm start
-```

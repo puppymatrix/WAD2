@@ -176,15 +176,15 @@ export default {
                 setDoc(doc(db, "userInformation", user.uid), userData);
                 try {
                     this.$router.push('/')
-                    console.log("Document inserted successfully")
+                    // console.log("Document inserted successfully")
                 }
 
                 catch (error){
-                    console.log(error)
+                    // console.log(error)
                 }
             })
             .catch((error) =>{
-                console.log(error)
+                // console.log(error)
                 this.errors.email = "Email is already in use"
             })
         } 
@@ -237,7 +237,7 @@ export default {
                 } 
             });
             
-            console.log(this.errors.username)
+            // console.log(this.errors.username)
 
             if (!this.hasSpecialCharacters(this.formData.password)){
 
@@ -258,7 +258,7 @@ export default {
                 }
                 isValid = false
                 
-            console.log(this.errors.password)
+            // console.log(this.errors.password)
             } 
 
         return isValid

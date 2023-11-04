@@ -1,5 +1,10 @@
 <script setup>
-import { getUser, getListing, updateUser,getAllUsernames } from "../firebase/api.js";
+import {
+    getUser,
+    getListing,
+    updateUser,
+    getAllUsernames,
+} from "../firebase/api.js";
 import ScrollTop from "primevue/scrolltop";
 </script>
 
@@ -90,7 +95,7 @@ import ScrollTop from "primevue/scrolltop";
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-2">
                                 <div class="col email">
                                     <div class="form-group">
@@ -123,74 +128,139 @@ import ScrollTop from "primevue/scrolltop";
                 </div>
                 <!-- userListings div -->
                 <div class="row" id="userListings">
-                    <h1>My Listings</h1>
-                    <!-- this is a for loop for each listing item -->
-                    <div class="col" v-if="paginatedListingItems.length > 0">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedListingItems">
-                                <router-link
+                    <div class="row">
+                        <div class="col">
+                            <h1>My Listings</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- this is a for loop for each listing item -->
+                        <div class="col" v-if="loading">
+                            <div class="row">
+                                <div class="col">
+                                    <Skeleton height="35rem"></Skeleton>
+                                </div>
+                                <div class="col">
+                                    <Skeleton height="35rem"></Skeleton>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <Skeleton height="3rem"></Skeleton>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="col"
+                            v-if="paginatedListingItems.length > 0 && !loading"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-md-6 col-sm-12 my-2"
+                                    v-for="item in paginatedListingItems"
+                                >
+                                    <router-link
                                         :to="{
                                             name: 'listing',
                                             query: { Id: item.Id },
                                         }"
                                     >
-                                    <div class="card h-100">
+                                        <div class="card h-100">
                                             <img
                                                 :src="item.ImageUrls[0]"
                                                 alt=""
                                                 class="card-img-top"
                                             />
                                             <div class="card-body border-top">
-                                                <h5 class="card-title">
-                                                    Listing Name: <br/>
-                                                    <span class="listingName">{{ item.ListingName }}</span>
+                                                <h5
+                                                    class="card-title overflow-text"
+                                                >
+                                                    Listing Name: <br />
+                                                    <span class="listingName">{{
+                                                        item.ListingName
+                                                    }}</span>
                                                 </h5>
                                                 <h6
-                                                    class="card-subtitle mb-2 text-body-secondary"
+                                                    class="card-subtitle mb-2 text-body-secondary overflow-text"
                                                 >
                                                     Category:
-                                                    {{ item.Category }} 
-                                                    <br/>
+                                                    {{ item.Category }}
+                                                    <br />
                                                     Lister: {{ item.owner }}
                                                 </h6>
                                                 <p
                                                     class="card-text d-flex align-items-center mb-3"
-                                                > 
-                                                    Quantity Available: {{ item.QtyAvailable }}
-                                                    <br/>
-                                                    Location: {{item.Location.name}}
+                                                >
+                                                    Quantity Available:
+                                                    {{ item.QtyAvailable }}
+                                                    <br />
+                                                    Location:
+                                                    {{ item.Location.name }}
                                                 </p>
                                             </div>
                                         </div>
                                     </router-link>
+                                </div>
+                                <Paginator
+                                    :rows="listingRows"
+                                    :totalRecords="listingListLength"
+                                    @page="updateListingPage"
+                                    :first="0"
+                                    class="my-2"
+                                ></Paginator>
                             </div>
-                            <Paginator
-                                :rows="listingRows"
-                                :totalRecords="listingListLength"
-                                @page="updateListingPage"
-                                :first="0"
-                                class="my-2"
-                            ></Paginator>
                         </div>
-                    </div>
-                    <div class="col" v-else>
-                        <h3>You have not posted any listings yet!</h3>
+                        <div
+                            class="col"
+                            v-else-if="
+                                !loading && paginatedListingItems.length == 0
+                            "
+                        >
+                            <h3>You have not posted any listings yet!</h3>
+                        </div>
                     </div>
                 </div>
                 <!-- chopedListings div -->
                 <div class="row" id="chopedListings">
-                    <h1>My Chopes</h1>
-                    <!-- listings -->
-                    <div class="col" v-if="paginatedChopeItems.length > 0">
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12 my-2" v-for="item in paginatedChopeItems">
-                                <router-link
+                    <div class="row">
+                        <div class="col">
+                            <h1>My Chopes</h1>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- listings -->
+                        <div class="col" v-if="loading">
+                            <div class="row">
+                                <div class="col">
+                                    <Skeleton height="35rem"></Skeleton>
+                                </div>
+                                <div class="col">
+                                    <Skeleton height="35rem"></Skeleton>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <Skeleton height="3rem"></Skeleton>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="col"
+                            v-if="paginatedChopeItems.length > 0 && !loading"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-md-6 col-sm-12 my-2"
+                                    v-for="item in paginatedChopeItems"
+                                >
+                                    <router-link
                                         :to="{
                                             name: 'listing',
                                             query: { Id: item.Id },
                                         }"
                                     >
-                                    <div class="card h-100">
+                                        <div class="card h-100">
                                             <img
                                                 :src="item.ImageUrls[0]"
                                                 alt=""
@@ -198,39 +268,49 @@ import ScrollTop from "primevue/scrolltop";
                                             />
                                             <div class="card-body border-top">
                                                 <h5 class="card-title">
-                                                    Listing Name: <br/>
-                                                    <span class="listingName">{{ item.ListingName }}</span>
+                                                    Listing Name: <br />
+                                                    <span class="listingName">{{
+                                                        item.ListingName
+                                                    }}</span>
                                                 </h5>
                                                 <h6
                                                     class="card-subtitle mb-2 text-body-secondary"
                                                 >
                                                     Category:
-                                                    {{ item.Category }} 
-                                                    <br/>
+                                                    {{ item.Category }}
+                                                    <br />
                                                     Lister: {{ item.owner }}
                                                 </h6>
                                                 <p
                                                     class="card-text d-flex align-items-center mb-3"
-                                                > 
-                                                    Quantity Available: {{ item.QtyAvailable }}
-                                                    <br/>
-                                                    Location: {{item.Location.name}}
+                                                >
+                                                    Quantity Available:
+                                                    {{ item.QtyAvailable }}
+                                                    <br />
+                                                    Location:
+                                                    {{ item.Location.name }}
                                                 </p>
                                             </div>
                                         </div>
                                     </router-link>
+                                </div>
+                                <Paginator
+                                    :rows="listingRows"
+                                    :totalRecords="chopeListLength"
+                                    @page="updateChopePage"
+                                    :first="0"
+                                    class="my-2"
+                                ></Paginator>
                             </div>
-                            <Paginator
-                                :rows="listingRows"
-                                :totalRecords="chopeListLength"
-                                @page="updateChopePage"
-                                :first="0"
-                                class="my-2"
-                            ></Paginator>
                         </div>
-                    </div>
-                    <div class="col" v-else>
-                        <h3>You have not choped any listings yet!</h3>
+                        <div
+                            class="col"
+                            v-else-if="
+                                !loading && paginatedChopeItems.length == 0
+                            "
+                        >
+                            <h3>You have not choped any listings yet!</h3>
+                        </div>
                     </div>
                 </div>
                 <!-- others div -->
@@ -242,67 +322,6 @@ import ScrollTop from "primevue/scrolltop";
     </a> -->
     </div>
 </template>
-
-<style>
-#pwStatus {
-    display: inline;
-}
-.sideNav {
-    background-color: #a1bf73;
-    padding: 5%;
-    border-radius: 5%;
-    margin-top: 22%;
-    text-align: center;
-}
-.sideNav a {
-    display: block;
-    font-weight: bold;
-}
-.sideNav a:hover {
-    color: #f2f2f2;
-}
-
-/* back to top button */
-#linkTop {
-    bottom: 20px; /* Place the button at the bottom of the page */
-    right: 30px;
-    position: fixed;
-    background-color: #a1bf73;
-    color: black;
-    padding: 1%;
-    border-radius: 50%;
-}
-
-#linkTop:hover {
-    background-color: green;
-    color: white;
-}
-
-.listingName{
-    color: #558C03;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-.card-title{
-    height: 45px;
-    margin-bottom: 20px;
-}
-
-.card-text{
-    background-color: lightgrey;
-    border-radius: 5px;
-    padding: 10px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-}
-
-.email{
-    padding: 12px;
-}
-
-</style>
 
 <script>
 import { mapGetters } from "vuex";
@@ -333,6 +352,7 @@ export default {
             listingListLength: 0,
             chopePage: 0,
             chopeListLength: 0,
+            loading: true,
         };
     },
 
@@ -372,31 +392,45 @@ export default {
 
             //this part processes the data for listings posted by the user
             this.myListingIDs = userData.myListings;
-            for (let listingID of this.myListingIDs) {
-                const listingData = await getListing(listingID);
-                const owner = users[listingData.Owner];
-                listingData["Id"] = listingID;
-                listingData["owner"] = owner;
-                this.myListings.push(listingData);
+            if (this.myListingIDs !== undefined) {
+                for (let listingID of this.myListingIDs) {
+                    const listingData = await getListing(listingID);
+                    if (!listingData) {
+                        continue;
+                    }
+                    const owner = users[listingData.Owner];
+                    listingData["Id"] = listingID;
+                    listingData["owner"] = owner;
+                    this.myListings.push(listingData);
+                }
+                this.listingListLength = this.myListings.length;
             }
-            this.listingListLength = this.myListings.length;
+
             // console.log(this.myListings)
-            
 
             //this part processes the data for listings choped by the user
             this.myChopeObjs = userData.chopes; //this is array of objects
-            for (let num in this.myChopeObjs) {
-                this.myChopeIDs.push(this.myChopeObjs[num].listingId); //adds all listing IDs into list
+            if (this.myChopeObjs !== undefined) {
+                for (let num in this.myChopeObjs) {
+                    this.myChopeIDs.push(this.myChopeObjs[num].listingId); //adds all listing IDs into list
+                }
             }
 
-            for (let chopeID of this.myChopeIDs) {
-                const chopeData = await getListing(chopeID);
-                const owner = users[chopeData.Owner];
-                chopeData["Id"] = chopeID;
-                chopeData["owner"] = owner;
-                this.myChopes.push(chopeData);
+            if (this.myChopeIDs.length > 0) {
+                for (let chopeID of this.myChopeIDs) {
+                    const chopeData = await getListing(chopeID);
+                    if (!chopeData) {
+                        continue;
+                    }
+                    const owner = users[chopeData.Owner];
+                    chopeData["Id"] = chopeID;
+                    chopeData["owner"] = owner;
+                    this.myChopes.push(chopeData);
+                }
+                this.chopeListLength = this.myChopes.length;
             }
-            this.chopeListLength = this.myChopes.length;
+
+            this.loading = false;
         },
         updateInfo() {
             //update firebase
@@ -425,6 +459,70 @@ export default {
 </script>
 
 <style scoped>
+#pwStatus {
+    display: inline;
+}
+.sideNav {
+    background-color: #a1bf73;
+    padding: 5%;
+    border-radius: 5%;
+    margin-top: 22%;
+    text-align: center;
+}
+.sideNav a {
+    display: block;
+    font-weight: bold;
+}
+.sideNav a:hover {
+    color: #f2f2f2;
+}
+
+/* back to top button */
+#linkTop {
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px;
+    position: fixed;
+    background-color: #a1bf73;
+    color: black;
+    padding: 1%;
+    border-radius: 50%;
+}
+
+#linkTop:hover {
+    background-color: green;
+    color: white;
+}
+
+.listingName {
+    color: #558c03;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.card-title {
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.email {
+    padding: 12px;
+}
+
+.overflow-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #558c03;
+}
 .text-bg-listing {
     background-color: rgb(67, 160, 70, 1);
     color: white;
@@ -445,7 +543,4 @@ a {
     height: 25vw;
     object-fit: cover;
 }
-
-
-
 </style>
