@@ -321,6 +321,7 @@
                 })
 
                 this.map = unloadedMap
+                unloadedMap.setCenter(this.routeRequest.destination)
 
                 this.map.setZoom(this.zoom)
 
