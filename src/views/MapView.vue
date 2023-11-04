@@ -13,7 +13,15 @@
             <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
             <div class="col col-sm-9">
                     <!-- sidebar for more info  -->
-                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" :dismissable="false" :blockScroll="true">
+
+                <Sidebar 
+                    id ='sideBarComponent' 
+                    v-model:visible="visible" 
+                    :modal="sidebarOptions.modal" 
+                    :dismissable="sidebarOptions.dismissable" 
+                    :position="sideBarPosition" 
+                    >
+
                         <h2 style="color: #212529">Listing Information</h2>
 
                         <div class="container-fluid">
@@ -74,38 +82,29 @@
                                 </div>
                                 
                                 <div class="card-body py-0">
-                                    <!-- <div class="row align-items-center"> -->
                                     
-                                        <div class="row ">
-                                            <p class="card-title ps-0 mb-0">Transport Mode:</p>
+
+                                    <div class="row ">
+                                        <p class="card-title ps-0">Transport Mode:</p>
+                                    </div>
+                                    
+                                    <div class="row ps-0">
+                                        <div id="travelGrp" class="p-0">
+                                            
+                                            <select 
+                                                id="transportMode"
+                                                @change="loadDirections" 
+                                                v-model="routeRequest.travelMode" 
+                                                class = "btn btn-outline-success w-100 text-center text-white" 
+                                                >
+                                                <!-- inline object literal -->
+                                                <option :value="mode" v-for="mode in travelModeOptions"
+                                                >{{ mode }}</option>
+                                            </select>
                                         </div>
-                                       
-                                        <div class="row ps-0">
-                                            <div id="travelGrp" class="p-0">
-                                                <!-- <SelectButton 
-                                                v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
-                                                aria-labelledby="basic"
-                                                :pt="{
-                                                    button: ({ context }) => ({
-                                                        class: context.active ? 'bg-primary' : undefined
-                                                    })
-                                                }" 
-                                                @click.prevent="loadDirections"
-                                                /> -->
-                                                <select 
-                                                    id="transportMode"
-                                                    @change="loadDirections" 
-                                                    v-model="routeRequest.travelMode" 
-                                                    class="form-select form-select-sm"
-                                                    >
-                                                    <!-- inline object literal -->
-                                                    <option :value="mode" v-for="mode in travelModeOptions"
-                                                    >{{ mode }}</option>
-                                                </select>
-                                            </div>
-                                    <!-- </div> -->
+                                    </div>
+
                                 </div>
-                            </div>
                             
                                 <div class="card-body p-0">
                                     <div id="sideBar" class="p-0"></div>
@@ -146,6 +145,7 @@
                                 </Dropdown>
                             </div>
                         </div>
+                        visible: {{ visible }} directions: {{ displayDirections }}
                         <div class="row justify-content-center align-items-center" style="background-color: #d7e5d7" v-if="filterBy == 'DISTANCE'">
                             <div id='filterBar' class="col-md-3 d-flex justify-content-center align-items-center">
                                 <h6 class="m-3">Distance (in KM): </h6>
@@ -192,21 +192,26 @@
                 this.viewportWidth = window.innerWidth;
             });
 
-            document.addEventListener('click', function(event) {
-                // Check if the click event's target is not the element you're watching
-                if (event.target !== document.getElementsByClassName('Sidebar')[0]) {
-                    this.displayDirections = false
-                } 
-            });
+            // document.addEventListener('click', function(event) {
+            //     // Check if the click event's target is not the element you're watching
+            //     console.log(event.target)
+            //     if (event.target != document.getElementsByTagName('Sidebar')[0]) {
+            //         if (event.target != document.getElementById('map')){
+            //             this.displayDirections = false
+            //         }
+            //     } 
+            // });
         },
         data(){
             return {
                 viewportWidth: window.innerWidth,
-                sideBarPosition: 'left',
 
                 //primevue variables
                 visible: false,
-                modal: false,
+                sidebarOptions:{
+                    modal: false,
+                    dismissable: false
+                },
                 travelModeOptions: [
                                     'TRANSIT', 'DRIVING', 'WALKING'
                                 ],
@@ -237,6 +242,7 @@
                 map: null,
                 core: null,
                 loader: null,
+                zoom: 11,
                 directionsService: null,
                 directionsRenderer: null,
                 routeRequest: {
@@ -262,7 +268,15 @@
         },
         computed :{
             ...mapGetters(['currentUserLocation']),
+            sideBarPosition(){
+                if (this.viewportWidth < 768){
+                    return 'bottom'
+                } else {
+                    return 'left'
+                }
+            },
         },
+        
         methods: {
             // map functions 
             async initMap(){
@@ -275,7 +289,9 @@
                 })
                 const map = await this.loader.importLibrary('maps')
                 
-                const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);    
+                const unloadedMap = new map.Map(document.getElementById("map"), this.mapOptions);   
+                
+                
 
                 const marker = await google.maps.importLibrary('marker')
                 const routes = await google.maps.importLibrary('routes')
@@ -289,6 +305,7 @@
                     'image/svg+xml'
                 ).documentElement
 
+                //add user location marker
                 const faPin = new marker.PinElement({
                     scale: 1.25,
                     glyph: pinSvg,
@@ -302,8 +319,18 @@
                     content: faPin.element,
                     title: 'user location',
                 })
-                this.map = unloadedMap
 
+                this.map = unloadedMap
+                unloadedMap.setCenter(this.routeRequest.destination)
+
+                this.map.setZoom(this.zoom)
+
+                this.map.addListener('zoom_changed', () => {
+                    this.zoom = unloadedMap.getZoom()
+                    console.log(this.zoom)
+                })
+
+                //add food markers
                 if (this.foodItemsFiltered.length > 0){
                     for(let i=0;i<this.foodItemsFiltered.length; i++){
 
@@ -431,15 +458,7 @@
                     this.initMap()
                 }
             },
-            viewportWidth:{
-                handler(){
-                    if (this.viewportWidth < 768){
-                        this.sideBarPosition = 'bottom'
-                    } else {
-                        this.sideBarPosition = 'left'
-                    }
-                }
-            }
+           
         }
     }
 
