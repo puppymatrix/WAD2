@@ -68,7 +68,7 @@ import { doc } from "firebase/firestore";
 <script>
 export default {
     computed: {
-        ...mapGetters(["isAuthenticated","currentUser"]),
+        ...mapGetters(["isAuthenticated","currentUser","mapError"]),
     },
     methods: {
         closeNav(){
@@ -105,6 +105,17 @@ export default {
         viewportWidth() {
             this.toggleNavBar
         },
+        mapError() {
+            if(this.mapError){
+                this.$toast.add({
+                    severity: "error",
+                    summary: "Error",
+                    detail: "You must allow location services to use this feature.",
+                    life: 3000,
+                });
+            }
+            this.$store.commit("setMapError", false);
+        }
     },
 }
 </script>
