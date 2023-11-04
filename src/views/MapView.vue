@@ -13,7 +13,13 @@
             <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
             <div class="col col-sm-9">
                     <!-- sidebar for more info  -->
-                <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" >
+                <Sidebar 
+                    id ='sideBarComponent' 
+                    v-model:visible="visible" 
+                    :modal="sidebarOptions.modal" 
+                    :dismissable="sidebarOptions.dismissable" 
+                    :position="sideBarPosition" 
+                    >
                         <h2 style="color: #212529">Listing Information</h2>
 
                         <div class="container-fluid">
@@ -170,13 +176,15 @@
                 this.viewportWidth = window.innerWidth;
             });
 
-            document.addEventListener('click', function(event) {
-                // Check if the click event's target is not the element you're watching
-                console.log(event.target)
-                if (event.target != document.getElementsByClassName('Sidebar')[0]) {
-                    this.displayDirections = false
-                } 
-            });
+            // document.addEventListener('click', function(event) {
+            //     // Check if the click event's target is not the element you're watching
+            //     console.log(event.target)
+            //     if (event.target != document.getElementsByTagName('Sidebar')[0]) {
+            //         if (event.target != document.getElementById('map')){
+            //             this.displayDirections = false
+            //         }
+            //     } 
+            // });
         },
         data(){
             return {
@@ -184,7 +192,10 @@
 
                 //primevue variables
                 visible: false,
-                modal: false,
+                sidebarOptions:{
+                    modal: false,
+                    dismissable: false
+                },
                 travelModeOptions: [
                                     'TRANSIT', 'DRIVING', 'WALKING'
                                 ],
