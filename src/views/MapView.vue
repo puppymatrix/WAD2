@@ -237,6 +237,7 @@
                 map: null,
                 core: null,
                 loader: null,
+                zoom: 11,
                 directionsService: null,
                 directionsRenderer: null,
                 routeRequest: {
@@ -305,7 +306,7 @@
                 this.map = unloadedMap
 
                 // if (this.routeReq)
-                console.log(this.routeRequest.destination)
+                // console.log(this.routeRequest.destination)
                 if (this.routeRequest.destination != null){
                     this.map.setCenter(this.routeRequest.destination)
                 }
