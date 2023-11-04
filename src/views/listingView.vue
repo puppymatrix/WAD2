@@ -270,33 +270,32 @@ import { handleError } from "vue";
                                         alt=""
                                         class="card-img-top"
                                     />
-                                    <div class="card-body border-top">
-                                        <h5 class="card-title overflow-text">
-                                            Listing Name: <br />
-                                            <span class="listingName">{{
-                                                listing.info.details.ListingName
-                                            }}</span>
+                                    <div class="card-body border-top d-flex flex-column justify-content-center">
+                                        <h5 class="card-title overflow-text pt-0">
+                                            <span style="color:#212529">Listing Name:</span><br/>
+                                            <span class="listingName">{{ listing.info.details.ListingName }}</span>
                                         </h5>
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary overflow-text"
                                         >
                                             Category:
-                                            {{ listing.info.details.Category }}
-                                            <br />
+                                            {{ listing.info.details.Category }} 
+                                            <br/>
                                             Lister: {{ listing.owner }}
                                         </h6>
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        >
-                                            Location:
-                                            {{
-                                                listing.info.details.Location
-                                                    .name
-                                            }}
-                                            <br />
-                                            Price:
-                                            ${{ listing.info.details.Price }}                                    
-                                        </p>
+                                        <div
+                                            class="card-text d-flex flex-column justify-content-center"
+                                        > 
+                                            <div>
+                                                Location:
+                                                {{listing.info.details.Location.name}}
+                                            </div>
+                                            <!-- <br/> -->
+                                            <div>Price: ${{ listing.info.details.Price }}</div>
+                                            <!-- <br /> -->
+                                            <div>Quantity Available: {{ listing.info.details.QtyAvailable }}</div>
+                                            <!-- <br/> -->
+                                        </div>
                                     </div>
                                 </div>
                             </router-link>
@@ -558,6 +557,7 @@ export default {
 
 .card-subtitle{
     margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .card-text{

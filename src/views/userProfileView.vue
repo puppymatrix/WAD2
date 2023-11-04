@@ -171,11 +171,16 @@ import ScrollTop from "primevue/scrolltop";
                                                 alt=""
                                                 class="card-img-top"
                                             />
-                                            <div class="card-body border-top">
+                                            <div
+                                                class="card-body border-top d-flex flex-column justify-content-center"
+                                            >
                                                 <h5
-                                                    class="card-title overflow-text"
+                                                    class="card-title overflow-text pt-0"
                                                 >
-                                                    Listing Name: <br />
+                                                    <span style="color: #212529"
+                                                        >Listing Name:</span
+                                                    >
+                                                    <br />
                                                     <span class="listingName">{{
                                                         item.ListingName
                                                     }}</span>
@@ -188,15 +193,24 @@ import ScrollTop from "primevue/scrolltop";
                                                     <br />
                                                     Lister: {{ item.owner }}
                                                 </h6>
-                                                <p
-                                                    class="card-text d-flex align-items-center mb-3"
+                                                <div
+                                                    class="card-text d-flex flex-column justify-content-center"
                                                 >
-                                                    Quantity Available:
-                                                    {{ item.QtyAvailable }}
-                                                    <br />
-                                                    Location:
-                                                    {{ item.Location.name }}
-                                                </p>
+                                                    <div>
+                                                        Location:
+                                                        {{ item.Location.name }}
+                                                    </div>
+                                                    <!-- <br/> -->
+                                                    <div>
+                                                        Price: ${{ item.Price }}
+                                                    </div>
+                                                    <!-- <br /> -->
+                                                    <div>
+                                                        Quantity Available:
+                                                        {{ item.QtyAvailable }}
+                                                    </div>
+                                                    <!-- <br/> -->
+                                                </div>
                                             </div>
                                         </div>
                                     </router-link>
@@ -266,31 +280,47 @@ import ScrollTop from "primevue/scrolltop";
                                                 alt=""
                                                 class="card-img-top"
                                             />
-                                            <div class="card-body border-top">
-                                                <h5 class="card-title">
-                                                    Listing Name: <br />
+                                            <div
+                                                class="card-body border-top d-flex flex-column justify-content-center"
+                                            >
+                                                <h5
+                                                    class="card-title overflow-text pt-0"
+                                                >
+                                                    <span style="color: #212529"
+                                                        >Listing Name:</span
+                                                    >
+                                                    <br />
                                                     <span class="listingName">{{
                                                         item.ListingName
                                                     }}</span>
                                                 </h5>
                                                 <h6
-                                                    class="card-subtitle mb-2 text-body-secondary"
+                                                    class="card-subtitle mb-2 text-body-secondary overflow-text"
                                                 >
                                                     Category:
                                                     {{ item.Category }}
                                                     <br />
                                                     Lister: {{ item.owner }}
                                                 </h6>
-                                                <p
-                                                    class="card-text d-flex align-items-center mb-3"
+                                                <div
+                                                    class="card-text d-flex flex-column justify-content-center"
                                                 >
-                                                    Quantity Available:
-                                                    {{ item.QtyAvailable }}
-                                                    <br />
-                                                    Location:
-                                                    {{ item.Location.name }}
-                                                </p>
-                                            </div>
+                                                    <div>
+                                                        Location:
+                                                        {{ item.Location.name }}
+                                                    </div>
+                                                    <!-- <br/> -->
+                                                    <div>
+                                                        Price: ${{ item.Price }}
+                                                    </div>
+                                                    <!-- <br /> -->
+                                                    <div>
+                                                        Quantity Available:
+                                                        {{ item.QtyAvailable }}
+                                                    </div>
+                                                    <!-- <br/> -->
+                                                </div>
+                                            </div>                                            
                                         </div>
                                     </router-link>
                                 </div>
@@ -510,7 +540,7 @@ export default {
     padding: 10px;
     height: 100px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .email {

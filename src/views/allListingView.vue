@@ -105,31 +105,33 @@ import { Icon } from "@iconify/vue";
                                         alt=""
                                         class="card-img-top"
                                     />
-                                    <div class="card-body border-top">
-                                        <h5 class="card-title">
-                                            Listing Name: <br/>
+                                    <div class="card-body border-top d-flex flex-column justify-content-center">
+                                        <h5 class="card-title pt-0 overflow-text">
+                                            <span style="color:#212529">Listing Name:</span> <br/>
                                             <span class="listingName">{{ item.info.details.ListingName }}</span>
                                         </h5>
                                         <h6
-                                            class="card-subtitle mb-2 text-body-secondary"
+                                            class="card-subtitle mb-2 text-body-secondary overflow-text"
                                         >
                                             Category:
                                             {{ item.info.details.Category }} 
                                             <br/>
                                             Lister: {{ item.owner }}
                                         </h6>
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
+                                        <div
+                                            class="card-text d-flex flex-column justify-content-center"
                                         > 
-                                            Location: 
-                                            {{item.info.details.Location.name}}
-                                            <br/>
-                                            Price: ${{ item.info.details.Price }}
-                                            <br />
-                                            Quantity Available: {{ item.info.details.QtyAvailable }}
-                                            <br/>
-                                            Distance: {{ item.distance.toFixed(2) }}km
-                                        </p>
+                                            <div>
+                                                Location:
+                                                {{item.info.details.Location.name}}
+                                            </div>
+                                            <!-- <br/> -->
+                                            <div>Price: ${{ item.info.details.Price }}</div>
+                                            <!-- <br /> -->
+                                            <div>Quantity Available: {{ item.info.details.QtyAvailable }}</div>
+                                            <!-- <br/> -->
+                                            <div v-if="item.distance != null">Distance: {{ item.distance }}km</div>
+                                        </div>
                                     </div>
                                     
                                 </div>
@@ -156,10 +158,10 @@ import { Icon } from "@iconify/vue";
                                         alt=""
                                         class="card-img-top"
                                     />
-                                    <div class="card-body border-top">
-                                        <h5 class="card-title overflow-text">
-                                            Listing Name: <br/>
-                                            <span class="listingName pb-2">{{ item.info.details.ListingName }}</span>
+                                    <div class="card-body border-top d-flex flex-column justify-content-center">
+                                        <h5 class="card-title overflow-text pt-0">
+                                            <span style="color:#212529">Listing Name:</span> <br/>
+                                            <span class="listingName">{{ item.info.details.ListingName }}</span>
                                         </h5>
                                         <h6
                                             class="card-subtitle mb-2 text-body-secondary overflow-text"
@@ -169,17 +171,20 @@ import { Icon } from "@iconify/vue";
                                             <br/>
                                             Lister: {{ item.owner }}
                                         </h6>
-                                        <p
-                                            class="card-text d-flex align-items-center mb-3"
-                                        > Location: 
-                                            {{item.info.details.Location.name}}
-                                            <br/>
-                                            Price: ${{ item.info.details.Price }}
-                                            <br />
-                                            Quantity Available: {{ item.info.details.QtyAvailable }}
-                                            <br/>
-                                            Distance: {{ item.distance.toFixed(2) }}km
-                                        </p>
+                                        <div
+                                            class="card-text d-flex flex-column justify-content-center"
+                                        > 
+                                            <div>
+                                                Location:
+                                                {{item.info.details.Location.name}}
+                                            </div>
+                                            <!-- <br/> -->
+                                            <div>Price: ${{ item.info.details.Price }}</div>
+                                            <!-- <br /> -->
+                                            <div>Quantity Available: {{ item.info.details.QtyAvailable }}</div>
+                                            <!-- <br/> -->
+                                            <div v-if="item.distance != null">Distance: {{ item.distance }}km</div>
+                                        </div>
                                     </div>
                                     
                                 </div>
@@ -317,16 +322,20 @@ export default {
             const listings = await getAllListings();
             const users = await getAllUsernames();
             // console.log(listings);
-
             for (const listing of listings) {
-                let distanceToUser = Number.parseFloat(
-                    calculateDistance(
-                        this.currentUserLocation.lat,
-                        this.currentUserLocation.lng,
-                        listing.details.Location.latitude,
-                        listing.details.Location.longitude
-                    ).toFixed(3)
-                );
+                let distanceToUser = null;
+                // console.log(this.currentUserLocation);
+                if (this.currentUserLocation != null) {
+                    distanceToUser = Number.parseFloat(
+                        calculateDistance(
+                            this.currentUserLocation.lat,
+                            this.currentUserLocation.lng,
+                            listing.details.Location.latitude,
+                            listing.details.Location.longitude
+                        ).toFixed(2)
+                    );
+                }
+                
                 const owner = users[listing.details.Owner];
 
                 this.foodItems.push({
@@ -495,12 +504,13 @@ a {
 
 .card-subtitle{
     margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .card-text{
     background-color: #F5F5F5;
     padding: 10px;
-    height: 55%;
+    height: 50%;
     border-radius: 8px;
 }
 
