@@ -362,7 +362,7 @@
                 this.$nextTick(() => {
                     setTimeout(() => {
                         this.$refs.gettingThere.scrollIntoView({ behavior: 'smooth',  block: 'start' });
-                    }, 300);
+                    }, 350);
                 });
             },
             
