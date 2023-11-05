@@ -13,7 +13,7 @@ import ScrollTop from "primevue/scrolltop";
     <div class="container-fluid">
         <div class="row" id="top">
             <!-- LHS: sticky navbar -->
-            <div class="col-sm-3 ms-sm-5">
+            <div class="col-md-3">
                 <div class="sideNav">
                     <img
                         id="profilePic"
@@ -41,7 +41,7 @@ import ScrollTop from "primevue/scrolltop";
         </div> -->
             <!-- RHS actual info -->
             <div
-                class="col ms-sm-5"
+                class="col"
                 style="
                     background: lightgray;
                     padding: 5%;
@@ -156,7 +156,7 @@ import ScrollTop from "primevue/scrolltop";
                         >
                             <div class="row">
                                 <div
-                                    class="col-md-6 col-sm-12 my-2"
+                                    class="col-lg-6 col-sm-12 my-2"
                                     v-for="item in paginatedListingItems"
                                 >
                                     <router-link
@@ -265,7 +265,7 @@ import ScrollTop from "primevue/scrolltop";
                         >
                             <div class="row">
                                 <div
-                                    class="col-md-6 col-sm-12 my-2"
+                                    class="col-lg-6 col-sm-12 my-2"
                                     v-for="item in paginatedChopeItems"
                                 >
                                     <router-link
