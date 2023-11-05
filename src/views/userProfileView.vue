@@ -9,6 +9,7 @@ import ScrollTop from "primevue/scrolltop";
 </script>
 
 <template>
+    <Toast />
     <ScrollTop />
     <div class="container-fluid">
         <div class="row" id="top">
@@ -471,7 +472,13 @@ export default {
                 this.userName,
                 "individual"
             );
-        },
+            //success mesaage
+                this.$toast.add({
+                severity: "info",
+                summary: "Update Successful",
+                life: 3000,
+        });
+    },
         togglePassword() {
             this.showPassword = !this.showPassword;
             if (this.showPassword) {
