@@ -32,9 +32,9 @@ import { doc } from "firebase/firestore";
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Explore
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><router-link to="/allListings" class="dropdown-item" active-class="active-link" @click="closeNav">All Listings</router-link></li>
-                        <li><router-link to="/mapView" class="dropdown-item" active-class="active-link" @click="closeNav">Food Near Me</router-link></li>
+                    <ul class="dropdown-menu green navfix">
+                        <li><router-link to="/allListings" class="dropdown-item green" active-class="active-link" @click="closeNav">All Listings</router-link></li>
+                        <li><router-link to="/mapView" class="dropdown-item green" active-class="active-link" @click="closeNav">Food Near Me</router-link></li>
                     </ul>
                 </li>
                 <li class="nav-item px-3">
@@ -121,6 +121,13 @@ export default {
 </script>
 
 <style scoped>
+.navfix{
+    border: 1px #ebf1e7 solid
+}
+.green{
+    background-color: #0b2b26;
+    color: #ebf1e7;
+}
 .btn-outline-standard{
     border-color: #558603;
     color: #558603
@@ -211,12 +218,13 @@ button:hover{
     text-underline-offset: 5px;
 } */
 
-.dropdown-item:active {
+/* .dropdown-item:active {
     background-color: #bee5b0;
     color: #212529;
-}
+} */
 
 .dropdown-item:hover {
-    background-color: #bee5b0;
+    /* background-color: #bee5b0; */
+    color:#bee5b0
 }
 </style>
