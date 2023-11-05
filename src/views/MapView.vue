@@ -169,9 +169,10 @@
     export default {
         async created(){
             await this.initMap()
-            await this.loadFood()      
+            await this.loadFood()  
         },
-        mounted(){
+        async mounted(){
+            this.users = await getAllUsernames();    
             this.listingId = this.$route.query.Id;
             if (this.listingId){
                 this.loadSingleListing()
@@ -243,6 +244,7 @@
                 },
                 markers: [],
                 listingId: null,
+                users: null,
                 
             }
         },
@@ -314,6 +316,7 @@
 
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
+                        item.Owner = this.users[item.info.details.Owner]
 
                         let newMarker;
 
@@ -438,8 +441,7 @@
             async loadSingleListing(){
 
                 let item = await getListing(this.listingId)
-                const users = await getAllUsernames();
-                const owner = users[item.Owner];
+                const owner = this.users[item.Owner];
 
                 
                 let listing = {
