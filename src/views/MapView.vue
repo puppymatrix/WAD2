@@ -101,7 +101,7 @@
                             </div>
                             
                         </div>
-                    </Sidebar>
+                </Sidebar>
                     
                 <div class="row justify-content-center" >
                     <div id="map" style="height:600px" class="col-10">
@@ -146,14 +146,14 @@
                                 </div>
                             </div>
                             <div class="col-md-2 my-1 d-flex justify-content-center">
-                                <Button @click="loadByDistance"
-                                id="goButton"
-                                :pt="{ 
-                                        root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
-                                    }">
-                                    <Icon id="searchTextButton" icon="ic:sharp-my-location" width="20" height="20" />
-                                    <span class="ms-2" >Go!</span>
-                                </Button>
+                                    <Button @click="loadByDistance"
+                                    id="goButton"
+                                    :pt="{ 
+                                            root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
+                                        }">
+                                        <Icon id="searchTextButton" icon="ic:sharp-my-location" width="20" height="20" />
+                                        <span class="ms-2" >Go!</span>
+                                    </Button>
                             </div>
                         </div>
                         <div class="row mt-2" v-else>
@@ -169,10 +169,11 @@
     export default {
         async created(){
             await this.initMap()
-            await this.loadFood()
+            await this.loadFood()      
         },
         mounted(){
-            if (this.$route.query.Id){
+            this.listingId = this.$route.query.Id;
+            if (this.listingId){
                 this.loadSingleListing()
             }
 
@@ -241,6 +242,7 @@
                     provideRouteAlternatives: false,
                 },
                 markers: [],
+                listingId: null,
                 
             }
         },
@@ -313,21 +315,34 @@
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        if (this.selected != null && this.markers[i].id == this.selected.info.Id){
-                            var newMarker = new marker.Marker({
+                        let newMarker;
+
+                        if (this.listingId){
+                                newMarker = new marker.Marker({
                                 position: { lat: latitude, lng: longitude},
                                 map: this.map,   
                                 animation: google.maps.Animation.BOUNCE 
                             })
+
                         } else {
-                            var newMarker = new marker.Marker({
+                            // console.log('selected', this.selected)
+                            if (this.selected != null && this.markers[i].id == this.selected.info.Id){
+                                // console.log(this.markers[i].id, this.selected.info.Id)
+                                newMarker = new marker.Marker({
                                 position: { lat: latitude, lng: longitude},
-                                map: this.map, 
-                            })  
+                                map: this.map,   
+                                animation: google.maps.Animation.BOUNCE 
+                            })
+                            } else {
+                                    newMarker = new marker.Marker({
+                                    position: { lat: latitude, lng: longitude},
+                                    map: this.map, 
+                                })  
+                            }
                         }
+                        
 
                         newMarker.addListener("click", () => {
-
                             this.selected = item    
                             this.visible = true
 
@@ -340,11 +355,9 @@
                                 lng: item.info.details.Location.longitude
                             }
 
-
                         });
                         this.markers.push({id: item.info.Id, marker: newMarker})
                     }
-
                 }
 
             },
@@ -399,25 +412,40 @@
             },
 
             loadFoodByName(foodName){
+                this.clearMarkers();
+                this.listingId = null;
+                this.selected = null;
                 this.searchQuery = foodName
                 this.foodItemsFiltered = filterByName(this.foodItems, this.searchQuery)
                 window.scrollTo(0, 0);
             },
 
             loadByDistance(){
+                this.clearMarkers();
+                this.listingId = null;
+                this.selected = null;
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance);
                 window.scrollTo(0, 0);
             },
+
+            clearMarkers() {
+                for (let i = 0; i < this.markers.length; i++) {
+                    this.markers[i].marker.setMap(null);
+                }
+                this.markers = [];
+            },
             
             async loadSingleListing(){
-                let item = await getListing(this.$route.query.Id)
+
+                let item = await getListing(this.listingId)
                 const users = await getAllUsernames();
                 const owner = users[item.Owner];
+
                 
                 let listing = {
                     distance: Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, item.Location.latitude, item.Location.longitude).toFixed(3)),
                     info: {
-                            Id: this.$route.query.Id,
+                            Id: this.listingId,
                             details: item
                     },
                     Owner: owner,
@@ -438,10 +466,8 @@
                 for (let mk of this.markers){
                     if (mk.marker.getAnimation() != null){
                         window.setTimeout(() => {
-                            
                             mk.marker.setAnimation(null)
                         }, 50)
-                        console.log(mk)
                     }
                 }
             }
