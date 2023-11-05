@@ -12,7 +12,7 @@
     <div class="container-fluid d-flex justify-content-center">
             <div class='col-3' id = 'buffer' v-if="visible == true && sideBarPosition == 'left'" ></div>
             <div class="col col-sm-9">
-                    <!-- sidebar for more info  -->
+                <!-- sidebar for more info  -->
                 <Sidebar id ='sideBarComponent' v-model:visible="visible" :modal="false" :position="sideBarPosition" :dismissable="false" :blockScroll="true">
                         <h2 style="color: #212529">Listing Information</h2>
 
@@ -74,7 +74,6 @@
                                 </div>
                                 
                                 <div class="card-body py-0">
-                                    <!-- <div class="row align-items-center"> -->
                                     
                                         <div class="row ">
                                             <p class="card-title ps-0 mb-0">Transport Mode:</p>
@@ -82,28 +81,17 @@
                                        
                                         <div class="row ps-0">
                                             <div id="travelGrp" class="p-0">
-                                                <!-- <SelectButton 
-                                                v-model="this.routeRequest.travelMode" :options="travelModeOptions" 
-                                                aria-labelledby="basic"
-                                                :pt="{
-                                                    button: ({ context }) => ({
-                                                        class: context.active ? 'bg-primary' : undefined
-                                                    })
-                                                }" 
-                                                @click.prevent="loadDirections"
-                                                /> -->
+                                              
                                                 <select 
                                                     id="transportMode"
                                                     @change="loadDirections" 
                                                     v-model="routeRequest.travelMode" 
                                                     class="form-select form-select-sm"
                                                     >
-                                                    <!-- inline object literal -->
                                                     <option :value="mode" v-for="mode in travelModeOptions"
                                                     >{{ mode }}</option>
                                                 </select>
                                             </div>
-                                    <!-- </div> -->
                                 </div>
                             </div>
                             
@@ -233,7 +221,6 @@
                     gestureHandling: 'cooperative',
                     mapId: '7fb5f582643b9459',
                 },
-                // travelMode: 'TRANSIT',
                 map: null,
                 core: null,
                 loader: null,
@@ -270,7 +257,8 @@
             // map functions 
             async initMap(){
 
-                this.routeRequest.origin = this.currentUserLocation // loads user location into the routeRequest object
+                // loads user location into the routeRequest object
+                this.routeRequest.origin = this.currentUserLocation 
 
                 this.loader = new Loader({ 
                     apiKey: this.key,
@@ -282,8 +270,6 @@
 
                 const marker = await google.maps.importLibrary('marker')
                 const routes = await google.maps.importLibrary('routes')
-
-                // const animation = await google.maps.importLibrary('marker')
 
                 this.directionsService = new routes.DirectionsService();
                 this.directionsRenderer = new routes.DirectionsRenderer();
@@ -309,8 +295,6 @@
                 })
                 this.map = unloadedMap
 
-                // if (this.routeReq)
-                // console.log(this.routeRequest.destination)
                 if (this.routeRequest.destination != null){
                     this.map.setCenter(this.routeRequest.destination)
                 }
@@ -359,9 +343,6 @@
 
 
                         });
-
-                        // newMarker.addListener("click", this.toggleBounce)
-
                         this.markers.push({id: item.info.Id, marker: newMarker})
                     }
 
@@ -380,7 +361,7 @@
                             sideBar.innerHTML = '';
                             this.directionsRenderer.setPanel(sideBar)
                         } else {
-                            // console.log(status)
+                            console.log(status)
                         }
                     })
                 }
@@ -399,6 +380,7 @@
                 });
             },
             
+            //loading food functions
             async loadFood(){
 
                 const data = getAllListings()
@@ -492,12 +474,9 @@
             }
         }
     }
-
-        
 </script>
 
 <style scoped>
-
 .img {
     background-size: cover; 
     background-position:center; 
