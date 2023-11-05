@@ -327,7 +327,6 @@
                         }
 
                         newMarker.addListener("click", () => {
-                            console.log(newMarker)
 
                             this.selected = item    
                             this.visible = true
