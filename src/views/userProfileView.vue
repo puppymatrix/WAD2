@@ -498,6 +498,14 @@ export default {
     border-radius: 5%;
     margin-top: 22%;
     text-align: center;
+    margin-left: 15%
+}
+
+@media (max-width: 768px) {
+    .sideNav {
+        margin: 4%;
+        border-radius: 5px;
+    }
 }
 .sideNav a {
     display: block;
