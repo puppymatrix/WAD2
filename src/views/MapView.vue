@@ -253,6 +253,8 @@
                                     },
                     provideRouteAlternatives: false,
                 },
+                markers: [],
+                
             }
         },
         props: {
@@ -280,6 +282,8 @@
 
                 const marker = await google.maps.importLibrary('marker')
                 const routes = await google.maps.importLibrary('routes')
+
+                // const animation = await google.maps.importLibrary('marker')
 
                 this.directionsService = new routes.DirectionsService();
                 this.directionsRenderer = new routes.DirectionsRenderer();
@@ -325,13 +329,21 @@
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        
-                        let newMarker = new marker.Marker({
-                            position: { lat: latitude, lng: longitude},
-                            map: this.map,     
-                        })
+                        if (this.selected != null && this.markers[i].id == this.selected.info.Id){
+                            var newMarker = new marker.Marker({
+                                position: { lat: latitude, lng: longitude},
+                                map: this.map,   
+                                animation: google.maps.Animation.BOUNCE 
+                            })
+                        } else {
+                            var newMarker = new marker.Marker({
+                                position: { lat: latitude, lng: longitude},
+                                map: this.map, 
+                            })  
+                        }
 
                         newMarker.addListener("click", () => {
+                            console.log(newMarker)
 
                             this.selected = item    
                             this.visible = true
@@ -344,9 +356,17 @@
                                 lat: item.info.details.Location.latitude, 
                                 lng: item.info.details.Location.longitude
                             }
+
+
                         });
-                        }
+
+                        // newMarker.addListener("click", this.toggleBounce)
+
+                        this.markers.push({id: item.info.Id, marker: newMarker})
                     }
+
+                }
+
             },
 
             loadRoute(){
@@ -432,6 +452,18 @@
 
                 this.loadDirections()
             },
+
+            removeBounce(){
+                for (let mk of this.markers){
+                    if (mk.marker.getAnimation() != null){
+                        window.setTimeout(() => {
+                            
+                            mk.marker.setAnimation(null)
+                        }, 50)
+                        console.log(mk)
+                    }
+                }
+            }
             
         },
         
@@ -454,6 +486,11 @@
                     } else {
                         this.sideBarPosition = 'left'
                     }
+                }
+            },
+            visible:{
+                handler(){
+                   this.removeBounce()
                 }
             }
         }
