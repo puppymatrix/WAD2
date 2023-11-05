@@ -166,21 +166,6 @@ export default {
     margin: 0;
 }
 
-/* .base {
-    color: white;
-    background-color: #43a046;
-} */
-
-/* .footer {
-    background-color: #263238;
-    padding-top: 80px;
-    padding-bottom: 100px;
-} */
-
-/* .img_small {
-    height: 50%;
-} */
-
 a > li {
     color: #ebf1e7;
 }
@@ -213,10 +198,10 @@ button:hover{
     border-color:  #ebf1e7;
 }
 
-/* .active-link {
+.active-link {
     text-decoration: underline;
     text-underline-offset: 5px;
-} */
+}
 
 /* .dropdown-item:active {
     background-color: #bee5b0;
