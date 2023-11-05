@@ -11,11 +11,13 @@ export default createStore({
         user: null,
         location: null,
         visible: false,
+        mapError: false,
     },
     getters: {
         isAuthenticated: (state) => !!state.user,
         currentUser: (state) => state.user,
         currentUserLocation: (state) => state.location,
+        mapError: (state) => state.mapError,
     },
     mutations: {
         setUser(state, user) {
@@ -26,6 +28,9 @@ export default createStore({
         },
         setVisible(state, value) {
             state.visible = value;
+        },
+        setMapError(state, value) {
+            state.mapError = value;
         },
     },
     actions: {},

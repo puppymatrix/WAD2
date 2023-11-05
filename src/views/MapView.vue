@@ -1,5 +1,5 @@
 <script setup>
-    import { getAllListings, filterByDistance, filterByName, calculateDistance, getListing } from "../firebase/api"
+    import { getAllListings, filterByDistance, filterByName, calculateDistance, getListing, getAllUsernames } from "../firebase/api"
     import { Loader } from '@googlemaps/js-api-loader'
     import { mapGetters } from 'vuex'
 
@@ -35,7 +35,7 @@
                                             Category:
                                             {{ selected.info.details.Category }} 
                                             <br/>
-                                            Lister: {{ selected.owner }}
+                                            Lister: {{ selected.Owner }}
                                         </h6>
                                         <p
                                             class="card-text d-flex align-items-center mb-3"
@@ -388,7 +388,7 @@
                 this.$nextTick(() => {
                     setTimeout(() => {
                         this.$refs.gettingThere.scrollIntoView({ behavior: 'smooth',  block: 'start' });
-                    }, 300);
+                    }, 350);
                 });
             },
             
@@ -436,15 +436,20 @@
             },
             
             async loadSingleListing(){
+
                 let item = await getListing(this.listingId)
+                const users = await getAllUsernames();
+                const owner = users[item.Owner];
+
                 
                 let listing = {
                     distance: Number.parseFloat(calculateDistance(this.currentUserLocation.lat, this.currentUserLocation.lng, item.Location.latitude, item.Location.longitude).toFixed(3)),
                     info: {
                             Id: this.listingId,
                             details: item
-                        }
-                    }
+                    },
+                    Owner: owner,
+                }
 
                 this.selected = listing
                 this.foodItemsFiltered.push(listing)
@@ -580,6 +585,7 @@
 
 .card-subtitle{
     margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .card-text{
