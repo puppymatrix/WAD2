@@ -101,7 +101,7 @@
                             </div>
                             
                         </div>
-                    </Sidebar>
+                </Sidebar>
                     
                 <div class="row justify-content-center" >
                     <div id="map" style="height:600px" class="col-10">
@@ -146,14 +146,21 @@
                                 </div>
                             </div>
                             <div class="col-md-2 my-1 d-flex justify-content-center">
-                                <Button @click="loadByDistance"
-                                id="goButton"
-                                :pt="{ 
-                                        root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
-                                    }">
-                                    <Icon id="searchTextButton" icon="ic:sharp-my-location" width="20" height="20" />
-                                    <span class="ms-2" >Go!</span>
-                                </Button>
+                                <router-link
+                                    style="text-decoration: none"
+                                    :to="{
+                                        name: 'mapView',
+                                    }"
+                                >
+                                    <Button @click="loadByDistance"
+                                    id="goButton"
+                                    :pt="{ 
+                                            root: { class: 'p-button-sm bg-green-600 border-green-400 rounded' } 
+                                        }">
+                                        <Icon id="searchTextButton" icon="ic:sharp-my-location" width="20" height="20" />
+                                        <span class="ms-2" >Go!</span>
+                                    </Button>
+                                </router-link>
                             </div>
                         </div>
                         <div class="row mt-2" v-else>
@@ -313,18 +320,30 @@
                         const latitude = item.info.details.Location.latitude
                         const longitude = item.info.details.Location.longitude
 
-                        if (this.selected != null && this.markers[i].id == this.selected.info.Id){
+                        if (this.$route.query.Id){
                             var newMarker = new marker.Marker({
                                 position: { lat: latitude, lng: longitude},
                                 map: this.map,   
                                 animation: google.maps.Animation.BOUNCE 
                             })
+
                         } else {
+                            // console.log('selected', this.selected)
+                            if (this.selected != null && this.markers[i].id == this.selected.info.Id){
+                                // console.log(this.markers[i].id, this.selected.info.Id)
                             var newMarker = new marker.Marker({
                                 position: { lat: latitude, lng: longitude},
-                                map: this.map, 
-                            })  
+                                map: this.map,   
+                                animation: google.maps.Animation.BOUNCE 
+                            })
+                            } else {
+                                var newMarker = new marker.Marker({
+                                    position: { lat: latitude, lng: longitude},
+                                    map: this.map, 
+                                })  
+                            }
                         }
+                        
 
                         newMarker.addListener("click", () => {
 
@@ -344,7 +363,6 @@
                         });
                         this.markers.push({id: item.info.Id, marker: newMarker})
                     }
-
                 }
 
             },
@@ -405,6 +423,8 @@
             },
 
             loadByDistance(){
+                this.visible = false
+                this.$route.query.Id = ''
                 this.foodItemsFiltered = filterByDistance(this.foodItems, this.filterDistance);
                 window.scrollTo(0, 0);
             },
@@ -435,10 +455,8 @@
                 for (let mk of this.markers){
                     if (mk.marker.getAnimation() != null){
                         window.setTimeout(() => {
-                            
                             mk.marker.setAnimation(null)
                         }, 50)
-                        console.log(mk)
                     }
                 }
             }
