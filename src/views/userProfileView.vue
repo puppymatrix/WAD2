@@ -128,7 +128,7 @@ import ScrollTop from "primevue/scrolltop";
                     </div>
                 </div>
                 <!-- userListings div -->
-                <div class="row" id="userListings">
+                <div class="row justify-content-center" id="userListings">
                     <div class="row">
                         <div class="col">
                             <h1>My Listings</h1>
@@ -236,7 +236,7 @@ import ScrollTop from "primevue/scrolltop";
                     </div>
                 </div>
                 <!-- chopedListings div -->
-                <div class="row" id="chopedListings">
+                <div class="row justify-content-center" id="chopedListings">
                     <div class="row">
                         <div class="col">
                             <h1>My Chopes</h1>
