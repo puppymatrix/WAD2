@@ -179,7 +179,7 @@ import { handleError } from "vue";
                                     >
                                         Chope!
                                     </button>
-                                    <p class="msg" v-if="this.qty == 0">All products are currently choped, check back again later!</p>
+                                    <p class="msg" v-if="qty === 0">All products are currently choped, check back again later!</p>
                                     <p  class="msg" v-else>You have already choped this listing!</p>
                                 </div>
                             </div>
